@@ -22,5 +22,8 @@
   <run_depend>xacro</run_depend>
 
   <export>
+    <gazebo_ros gazebo_media_path="${prefix}"/>
+    <gazebo_ros gazebo_model_path="${prefix}/models:${prefix}/models/create_autorace"/>
+    <gazebo_ros plugin_path="${prefix}/lib:${prefix}/models/create_autorace/gazebo_traffic_plugin"/>
   </export>
 </package>
