@@ -43,6 +43,10 @@
     <axis xyz="0 1 0" />
   </joint>
 
+  <gazebo reference="${link_name}">
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
 </xacro:macro>
 
 </robot>
