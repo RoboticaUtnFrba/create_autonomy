@@ -50,16 +50,19 @@
   <!--   <doc_depend>doxygen</doc_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>actionlib</build_depend>
+  <build_depend>amcl</build_depend>
   <build_depend>move_base</build_depend>
   <build_depend>move_base_msgs</build_depend>
   <build_depend>roscpp</build_depend>
   <build_depend>tf</build_depend>
   <build_export_depend>actionlib</build_export_depend>
+  <build_export_depend>amcl</build_export_depend>
   <build_export_depend>move_base</build_export_depend>
   <build_export_depend>move_base_msgs</build_export_depend>
   <build_export_depend>roscpp</build_export_depend>
   <build_export_depend>tf</build_export_depend>
   <exec_depend>actionlib</exec_depend>
+  <exec_depend>amcl</exec_depend>
   <exec_depend>dwa_local_planner</exec_depend>
   <exec_depend>move_base</exec_depend>
   <exec_depend>move_base_msgs</exec_depend>
