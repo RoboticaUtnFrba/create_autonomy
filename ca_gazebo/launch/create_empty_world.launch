@@ -1,4 +1,9 @@
 <launch>
+	<arg name="world_file" default="$(find ca_gazebo)/worlds/empty.world"/>
+
+	<arg name="x_pos" default="0.0"/>
+	<arg name="y_pos" default="0.0"/>
+	<arg name="z_pos" default="0.0"/>
 
 	<arg name="paused" default="false"/>
 	<arg name="gui" default="true"/>
@@ -8,7 +13,7 @@
 	<arg name="rviz" default="false"/>
 
 	<!-- Create 2 description -->
-	<include file="$(find ca_description)/launch/spawn_create_2.launch">
+	<include file="$(find ca_description)/launch/create_description.launch">
 		<arg name="visualize" value="$(arg visualize)"/>
 		<arg name="rviz" value="$(arg rviz)"/>
 	</include>
@@ -20,10 +25,11 @@
 		<arg name="paused" value="$(arg paused)"/>
 		<arg name="use_sim_time" value="true"/>
 		<arg name="verbose" value="true"/>
-		<arg name="world_name" value="$(find ca_gazebo)/worlds/clearpath_playpen.world"/>
+		<arg name="world_name" value="$(arg world_file)"/>
 	</include>
 
+	<arg name="robot_pose" value="-x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos)"/>
 	<node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
- 		  args="-urdf -model my_robot -param robot_description" />
+ 		  args="-urdf -model irobot_create2 -param robot_description $(arg robot_pose)" />
 
 </launch>
