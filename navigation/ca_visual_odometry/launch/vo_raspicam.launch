@@ -1,10 +1,12 @@
 <launch>
-    <env name="GSCAM_CONFIG" value="udpsrc port=9000 ! application/x-rtp, payload=96 ! rtpjitterbuffer ! rtph264depay ! avdec_h264 ! videoconvert"/>
+    <!-- Use calibration file only with the real robot -->
+    <arg name="simulation" default="false"/>
+    <arg if="$(arg simulation)" name="calib_file" value="false"/>
+    <arg unless="$(arg simulation)" name="calib_file" value="true"/>
 
-    <!-- <node pkg="gscam" type="gscam" name="gscam" output="screen">
-      <rosparam file="$(find ca_visual_odometry)/config/gscam.yaml" command="load"/>
-      <remap from="camera/image_raw" to="raspicam/image_raw"/>
-    </node> -->
+    <include file="$(find ca_visual_odometry)/launch/cam_mapping.launch">
+      <arg name="calibrated" value="$(arg calib_file)"/>
+    </include>
 
     <!-- Recitifies image_raw -->
     <node pkg="ca_visual_odometry" type="image_rect" name="image_rect"/>
