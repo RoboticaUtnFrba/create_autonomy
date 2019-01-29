@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>ca_mpu6050</name>
+  <name>ca_mpu9255</name>
   <version>0.0.0</version>
   <description>The ca_mpu6050 package</description>
 
