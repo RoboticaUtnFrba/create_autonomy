@@ -1,6 +1,6 @@
 <launch>
 	<!-- WiringPi needs superuser permissions -->
-	<node pkg="mpu9255" name="mpu9255_node" type="mpu9255_node" launch-prefix="sudo" required="true"/>
+	<node pkg="ca_mpu9255" name="mpu9255_node" type="mpu9255_node" launch-prefix="sudo" required="true"/>
 
 	<node pkg="imu_complementary_filter" type="complementary_filter_node" name="complementary_filter_node" output="screen">
 		<param name="fixed_frame" value="base_link"/>
