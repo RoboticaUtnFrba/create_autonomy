@@ -52,8 +52,6 @@ int main(int argc, char **argv){
   acc_y = (acc_y / 1000 ) * conversion_acce;
   acc_z = (acc_z / 1000 ) -16384 ;
 
-  }
-
   myfile << giro_x << "," << giro_y << "," << giro_z << "," << acc_x << "," << acc_y << "," << acc_z * conversion_acce << endl;
   myfile.close();
 
