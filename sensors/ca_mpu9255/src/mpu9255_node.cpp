@@ -16,7 +16,7 @@ int main(int argc, char **argv){
   ros::Publisher pub_mag = n.advertise<sensor_msgs::MagneticField>("imu/mag", 2);
 
 	int fd;
-  wiringPiSetup();
+  wiringPiSetupSys();
   fd = wiringPiI2CSetup(0x68);
 
 	if (fd == -1) {
