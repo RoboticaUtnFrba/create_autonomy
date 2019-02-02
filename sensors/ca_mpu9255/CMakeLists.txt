@@ -1,18 +1,20 @@
 if( ${CMAKE_SYSTEM_PROCESSOR} MATCHES "arm" )
   cmake_minimum_required(VERSION 2.8.3)
   project(ca_mpu9255)
+  ## Compile as C++11, supported in ROS Kinetic and newer
+  add_compile_options(-std=c++11)
 
   ## Find catkin macros and libraries
   find_package(catkin REQUIRED COMPONENTS
     geometry_msgs
-    rospy
+    roscpp
+    roslib
     sensor_msgs
     std_msgs
     tf
   )
 
-  catkin_python_setup()
-  catkin_package()
+  catkin_package(CATKIN_DEPENDS roscpp)
   include_directories(${catkin_INCLUDE_DIRS})
 
 	# MPU9255 node

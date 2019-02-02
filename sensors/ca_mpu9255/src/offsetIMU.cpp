@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdint.h>
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
@@ -6,23 +5,25 @@
 #include <iostream>
 #include <fstream>
 #include <unistd.h>
-
-namespace fs = std::filesystem;
+#include <boost/filesystem.hpp>
+#include <ros/package.h>
+#include <sstream>
+#include <string>
 
 int main(int argc, char **argv){
 
   int fd;
-  wiringPiSetup();
+  wiringPiSetupSys();
   fd = wiringPiI2CSetup(0x68);
 
   int16_t InBuffer[9] = {0};
   float giro_x=0,giro_y=0, giro_z=0;
   float acc_x=0,acc_y=0, acc_z=0;
 
-  fs::path filename(ros::package::getPath("ca_mpu9255"));
+  boost::filesystem::path filename(ros::package::getPath("ca_mpu9255"));
   filename /= "config/calibrated.yaml";
-  std::cout << "Recording calibration into " << filename << "\n";
-  std::ofstream outfile(filename, std::ios_base::app);
+  std::cout << "Recording calibration into " << filename.str() << "\n";
+  std::ofstream outfile(filename.c_str(), std::ios_base::app);
 
   float conversion_giro = 1/32.8f;
   float conversion_acce = 9.8/16384.0f;
@@ -55,13 +56,15 @@ int main(int argc, char **argv){
   acc_y = (acc_y / 1000 ) * conversion_acce;
   acc_z = (acc_z / 1000 ) -16384 ;
 
-  std::string str <<
-    "x_acc: "  << std::to_string(acc_x) << "\n"
-    "y_acc: "  << std::to_string(acc_y) << "\n"
-    "z_acc: "  << std::to_string(acc_z) << "\n"
-    "x_gyro: " << std::to_string(giro_x) << "\n"
-    "y_gyro: " << std::to_string(giro_y) << "\n"
-    "z_gyro: " << std::to_string(giro_z) << "\n";
+  std::stringstream ss;
+  ss << "x_acc: "  << std::to_string(acc_x) << "\n"
+        "y_acc: "  << std::to_string(acc_y) << "\n"
+        "z_acc: "  << std::to_string(acc_z) << "\n"
+        "x_gyro: " << std::to_string(giro_x) << "\n"
+        "y_gyro: " << std::to_string(giro_y) << "\n"
+        "z_gyro: " << std::to_string(giro_z) << "\n";
+
+  const std::string str(ss.str());
 
   outfile << str;
 
