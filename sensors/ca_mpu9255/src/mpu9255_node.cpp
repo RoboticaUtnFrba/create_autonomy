@@ -6,6 +6,25 @@
 #include "sensor_msgs/Imu.h"
 #include <sstream>
 #include "sensor_msgs/MagneticField.h"
+#include <ros/package.h>
+#include <boost/filesystem.hpp>
+#include <vector>
+
+//gyroscope offset
+const uint16_t XG_OFFSET_H       = 0x13,
+const uint16_t XG_OFFSET_L       = 0x14,
+const uint16_t YG_OFFSET_H       = 0x15,
+const uint16_t YG_OFFSET_L       = 0x16,
+const uint16_t ZG_OFFSET_H       = 0x17,
+const uint16_t ZG_OFFSET_L       = 0x18,
+
+//accelerometer offset
+const uint16_t XA_OFFSET_H       = 0x77,
+const uint16_t XA_OFFSET_L       = 0x78,
+const uint16_t YA_OFFSET_H       = 0x7A,
+const uint16_t YA_OFFSET_L       = 0x7B,
+const uint16_t ZA_OFFSET_H       = 0x7D,
+const uint16_t ZA_OFFSET_L       = 0x7E,
 
 int main(int argc, char **argv){
 
@@ -23,6 +42,9 @@ int main(int argc, char **argv){
     printf("no i2c device found\n");
     return -1;
 	}
+
+  setOffsets();
+
   int16_t InBuffer[9] = {0};
   static int32_t OutBuffer[3] = {0};
 
@@ -73,4 +95,94 @@ int main(int argc, char **argv){
     ros::spinOnce();
     }
   return 0;
- }
+}
+
+void setOffsets() {
+  std::vector<int16_t> factoryGyroOffsets;
+  std::vector<int16_t> factoryAccelOffsets;
+  // Get factory offset
+  readFactoryOffsets(factoryGyroOffsets, factoryAccelOffsets);
+  // Read offsets from calibration YAML file
+  std::vector<int16_t> offset_V;
+  readCalibrationFile(offset_V);
+  // Set offsets
+  setGyroOffsets();
+  setAccelOffsets();
+}
+
+void readFactoryOffsets(
+  std::vector<int16_t> &factoryGyroOffset, 
+  std::vector<int16_t> &factoryAccelOffset) {
+  // Read factory gyroscope offset
+  factoryGyroOffset.push_back(
+      (wiringPiI2CReadReg8(fd, XG_OFFSET_L)<<8) | 
+       wiringPiI2CReadReg8(fd, XG_OFFSET_H));
+  factoryGyroOffset.push_back(
+      (wiringPiI2CReadReg8(fd, YG_OFFSET_L)<<8) | 
+       wiringPiI2CReadReg8(fd, YG_OFFSET_H));
+  factoryGyroOffset.push_back(
+      (wiringPiI2CReadReg8(fd, ZG_OFFSET_L)<<8) | 
+       wiringPiI2CReadReg8(fd, ZG_OFFSET_H));
+
+  // Based on http://www.digikey.com/en/pdf/i/invensense/mpu-hardware-offset-registers .
+  // Read factory accelerometer offset
+
+  // Read the register values and save them as a 16 bit value
+  factoryAccelOffset.push_back(
+      (wiringPiI2CReadReg8(fd, XA_OFFSET_L)<<8) | 
+       wiringPiI2CReadReg8(fd, XA_OFFSET_H));
+  factoryAccelOffset.push_back(
+      (wiringPiI2CReadReg8(fd, YA_OFFSET_L)<<8) | 
+       wiringPiI2CReadReg8(fd, YA_OFFSET_H));
+  factoryAccelOffset.push_back(
+      (wiringPiI2CReadReg8(fd, ZA_OFFSET_L)<<8) | 
+       wiringPiI2CReadReg8(fd, ZA_OFFSET_H));
+  // Shift offset values to the right to remove the LSB
+  factoryAccelOffset.at(0) >>= 1;
+  factoryAccelOffset.at(1) >>= 1;
+  factoryAccelOffset.at(2) >>= 1;
+}
+
+void readCalibrationFile(std::vector<float> &offset_V) {
+  boost::filesystem::path filename(ros::package::getPath("ca_mpu9255"));
+  filename /= "config/calibrated.yaml";
+  std::cout << "Reading calibration file: " << filename.string() << "\n";
+  std::ifstream infile(filename.c_str());
+  std::string key;
+  float value;
+  while(infile >> key >> value) {
+    offset_V.push_back(static_cast<int16_t>(value));
+  }
+}
+
+void setGyroOffsets(
+  std::vector<int16_t> &factoryGyroOffset,
+  std::vector<int16_t> &offset_V) {
+  offset_V.at(0) += factoryGyroOffset.at(0);
+  wiringPiI2CWriteReg8(fd, XG_OFFSET_L, (offset & 0xFF));
+  wiringPiI2CWriteReg8(fd, XG_OFFSET_H, (offset>>8));
+  
+  offset_V.at(1) += factoryGyroOffset.at(1);
+  wiringPiI2CWriteReg8(fd, YG_OFFSET_L, (offset & 0xFF));
+  wiringPiI2CWriteReg8(fd, YG_OFFSET_H, (offset>>8));
+  
+  offset_V.at(2) += factoryGyroOffset.at(2);
+  wiringPiI2CWriteReg8(fd, ZG_OFFSET_L, (offset & 0xFF));
+  wiringPiI2CWriteReg8(fd, ZG_OFFSET_H, (offset>>8));
+}
+
+void setAccelOffsets(
+  std::vector<int16_t> &factoryAccelOffset,
+  std::vector<int16_t> &offset_V) {
+  offset_V.at(3) += factoryAccelOffset.at(0);
+  wiringPiI2CWriteReg8(fd, XA_OFFSET_L, (offset & 0xFF)<<1);
+  wiringPiI2CWriteReg8(fd, XA_OFFSET_H, (offset>>7));
+  
+  offset_V.at(4) += factoryAccelOffset.at(1);
+  wiringPiI2CWriteReg8(fd, YA_OFFSET_L, (offset & 0xFF)<<1);
+  wiringPiI2CWriteReg8(fd, YA_OFFSET_H, (offset>>7));
+  
+  offset_V.at(5) += factoryAccelOffset.at(2);
+  wiringPiI2CWriteReg8(fd, ZA_OFFSET_L, (offset & 0xFF)<<1);
+  wiringPiI2CWriteReg8(fd, ZA_OFFSET_H, (offset>>7));
+}

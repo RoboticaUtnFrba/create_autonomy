@@ -30,22 +30,22 @@ int main(int argc, char **argv){
 
   for (int i=0; i< 1000;i++){
     //datos acelerómetro
-    InBuffer[0]=  (wiringPiI2CReadReg8 (fd, 0x3B)<<8)|wiringPiI2CReadReg8 (fd, 0x3C);
-    InBuffer[1]=  (wiringPiI2CReadReg8 (fd, 0x3D)<<8)|wiringPiI2CReadReg8 (fd, 0x3E);
-    InBuffer[2]=  (wiringPiI2CReadReg8 (fd, 0x3F)<<8)|wiringPiI2CReadReg8 (fd, 0x40);
+    InBuffer[0] = (wiringPiI2CReadReg8(fd, 0x3B)<<8) | wiringPiI2CReadReg8(fd, 0x3C);
+    InBuffer[1] = (wiringPiI2CReadReg8(fd, 0x3D)<<8) | wiringPiI2CReadReg8(fd, 0x3E);
+    InBuffer[2] = (wiringPiI2CReadReg8(fd, 0x3F)<<8) | wiringPiI2CReadReg8(fd, 0x40);
 
-    acc_x = acc_x + InBuffer[0];
-    acc_y = acc_y + InBuffer[1];
-    acc_z = acc_z + InBuffer[2];
+    acc_x += InBuffer[0];
+    acc_y += InBuffer[1];
+    acc_z += InBuffer[2];
 
     //datos giroscopio
-    InBuffer[3]=  (wiringPiI2CReadReg8 (fd, 0x43)<<8)|wiringPiI2CReadReg8 (fd, 0x44);
-    InBuffer[4]=  (wiringPiI2CReadReg8 (fd, 0x45)<<8)|wiringPiI2CReadReg8 (fd, 0x46);
-    InBuffer[5]=  (wiringPiI2CReadReg8 (fd, 0x47)<<8)|wiringPiI2CReadReg8 (fd, 0x48);
+    InBuffer[3] = (wiringPiI2CReadReg8(fd, 0x43)<<8) | wiringPiI2CReadReg8(fd, 0x44);
+    InBuffer[4] = (wiringPiI2CReadReg8(fd, 0x45)<<8) | wiringPiI2CReadReg8(fd, 0x46);
+    InBuffer[5] = (wiringPiI2CReadReg8(fd, 0x47)<<8) | wiringPiI2CReadReg8(fd, 0x48);
 
-    giro_x = giro_x + InBuffer[3];
-    giro_y = giro_y + InBuffer[4];
-    giro_z = giro_z + InBuffer[5];
+    giro_x += InBuffer[3];
+    giro_y += InBuffer[4];
+    giro_z += InBuffer[5];
 
   }
   giro_x = (giro_x / 1000 ) * conversion_giro;
@@ -57,12 +57,12 @@ int main(int argc, char **argv){
   acc_z = (acc_z / 1000 ) -16384 ;
 
   std::stringstream ss;
-  ss << "x_acc: "  << std::to_string(acc_x) << "\n"
-        "y_acc: "  << std::to_string(acc_y) << "\n"
-        "z_acc: "  << std::to_string(acc_z) << "\n"
-        "x_gyro: " << std::to_string(giro_x) << "\n"
+  ss << "x_gyro: " << std::to_string(giro_x) << "\n"
         "y_gyro: " << std::to_string(giro_y) << "\n"
-        "z_gyro: " << std::to_string(giro_z) << "\n";
+        "z_gyro: " << std::to_string(giro_z) << "\n"
+        "x_acc: "  << std::to_string(acc_x) << "\n"
+        "y_acc: "  << std::to_string(acc_y) << "\n"
+        "z_acc: "  << std::to_string(acc_z) << "\n";
 
   const std::string str(ss.str());
 
