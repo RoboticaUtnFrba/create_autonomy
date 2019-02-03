@@ -60,7 +60,7 @@ void readFactoryOffsets(int &fd,
   factoryAccelOffset.at(2) >>= 1;
 }
 
-void readCalibrationFile(std::vector<uint16_t> &offset_V) {
+void readCalibrationFile(std::vector<int16_t> &offset_V) {
   boost::filesystem::path filename(ros::package::getPath("ca_mpu9255"));
   filename /= "config/calibrated.yaml";
   std::cout << "Reading calibration file: " << filename.string() << "\n";
