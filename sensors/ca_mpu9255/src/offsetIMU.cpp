@@ -23,7 +23,7 @@ int main(int argc, char **argv){
   boost::filesystem::path filename(ros::package::getPath("ca_mpu9255"));
   filename /= "config/calibrated.yaml";
   std::cout << "Recording calibration into " << filename.string() << "\n";
-  std::ofstream outfile(filename.c_str(), std::ios_base::app);
+  std::ofstream outfile(filename.c_str());
 
   float conversion_giro = 1/32.8f;
   float conversion_acce = 9.8/16384.0f;
