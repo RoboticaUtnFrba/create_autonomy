@@ -28,6 +28,7 @@
 #include <ros/ros.h>
 #include <ros/callback_queue.h>
 #include <ros/advertise_options.h>
+#include <tf/transform_datatypes.h>
 
 #include <string>
 #include <boost/thread.hpp>
@@ -40,6 +41,8 @@
 
 #include <std_msgs/String.h>
 #include <ca_msgs/Bumper.h>
+#include <nav_msgs/Odometry.h>
+#include <geometry_msgs/Quaternion.h>
 
 #include <tf/tf.h>
 
@@ -66,6 +69,19 @@ namespace gazebo
       /// \brief pointer to ros node
       std::shared_ptr<ros::NodeHandle> rosnode_;
       ros::Publisher contact_pub_;
+      ros::Subscriber gts_sub_;
+      ca_msgs::Bumper bumper_event_;
+      void PublishBumperMsg();
+
+      void GtsCb(const nav_msgs::Odometry::ConstPtr& msg);
+      double robot_heading_;
+
+      bool bumper_left_was_pressed_;
+      bool bumper_center_was_pressed_;
+      bool bumper_right_was_pressed_;
+      bool bumper_left_is_pressed_;
+      bool bumper_center_is_pressed_;
+      bool bumper_right_is_pressed_;
       
       /// \brief set topic name of broadcast
       std::string bumper_topic_name_;
@@ -73,10 +89,10 @@ namespace gazebo
       
       sensors::ContactSensorPtr bumper_;
       
-      /// \brief for setting ROS name space
+      /// \brief for setting ROS namespace
       std::string robot_namespace_;
       
-      /// \brief Keep track of number of connctions
+      /// \brief Keep track of number of connections
       int contact_connect_count_;
       void ContactConnect();
       void ContactDisconnect();
@@ -86,7 +102,6 @@ namespace gazebo
       
       // Pointer to the update event connection
       event::ConnectionPtr update_connection_;
-
   };
 
 }
