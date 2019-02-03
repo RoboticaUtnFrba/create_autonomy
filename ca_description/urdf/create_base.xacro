@@ -33,7 +33,7 @@
         </geometry>
       </visual>
 
-      <collision>
+      <collision name="base_link">
         <origin xyz="0 0 ${base_link_offset_z}" rpy="0 0 0" />
         <geometry>
           <cylinder length="${base_height}" radius="${base_diameter/2}" />
