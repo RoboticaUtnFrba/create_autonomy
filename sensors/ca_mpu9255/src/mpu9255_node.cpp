@@ -9,6 +9,7 @@
 #include <ros/package.h>
 #include <boost/filesystem.hpp>
 #include <vector>
+#include <fstream>
 
 //gyroscope offset
 const uint16_t XG_OFFSET_H = 0x13;
@@ -59,7 +60,7 @@ void readFactoryOffsets(int &fd,
   factoryAccelOffset.at(2) >>= 1;
 }
 
-void readCalibrationFile(std::vector<float> &offset_V) {
+void readCalibrationFile(std::vector<uint16_t> &offset_V) {
   boost::filesystem::path filename(ros::package::getPath("ca_mpu9255"));
   filename /= "config/calibrated.yaml";
   std::cout << "Reading calibration file: " << filename.string() << "\n";
@@ -75,32 +76,32 @@ void setGyroOffsets(int &fd,
   std::vector<int16_t> &factoryGyroOffsets,
   std::vector<int16_t> &offset_V) {
   offset_V.at(0) += factoryGyroOffsets.at(0);
-  wiringPiI2CWriteReg8(fd, XG_OFFSET_L, (offset & 0xFF));
-  wiringPiI2CWriteReg8(fd, XG_OFFSET_H, (offset>>8));
+  wiringPiI2CWriteReg8(fd, XG_OFFSET_L, (offset_V.at(0) & 0xFF));
+  wiringPiI2CWriteReg8(fd, XG_OFFSET_H, (offset_V.at(0)>>8));
   
   offset_V.at(1) += factoryGyroOffsets.at(1);
-  wiringPiI2CWriteReg8(fd, YG_OFFSET_L, (offset & 0xFF));
-  wiringPiI2CWriteReg8(fd, YG_OFFSET_H, (offset>>8));
+  wiringPiI2CWriteReg8(fd, YG_OFFSET_L, (offset_V.at(1) & 0xFF));
+  wiringPiI2CWriteReg8(fd, YG_OFFSET_H, (offset_V.at(1)>>8));
   
   offset_V.at(2) += factoryGyroOffsets.at(2);
-  wiringPiI2CWriteReg8(fd, ZG_OFFSET_L, (offset & 0xFF));
-  wiringPiI2CWriteReg8(fd, ZG_OFFSET_H, (offset>>8));
+  wiringPiI2CWriteReg8(fd, ZG_OFFSET_L, (offset_V.at(2) & 0xFF));
+  wiringPiI2CWriteReg8(fd, ZG_OFFSET_H, (offset_V.at(2)>>8));
 }
 
 void setAccelOffsets(int &fd,
   std::vector<int16_t> &factoryAccelOffsets,
   std::vector<int16_t> &offset_V) {
   offset_V.at(3) += factoryAccelOffsets.at(0);
-  wiringPiI2CWriteReg8(fd, XA_OFFSET_L, (offset & 0xFF)<<1);
-  wiringPiI2CWriteReg8(fd, XA_OFFSET_H, (offset>>7));
+  wiringPiI2CWriteReg8(fd, XA_OFFSET_L, (offset_V.at(3) & 0xFF)<<1);
+  wiringPiI2CWriteReg8(fd, XA_OFFSET_H, (offset_V.at(3)>>7));
   
   offset_V.at(4) += factoryAccelOffsets.at(1);
-  wiringPiI2CWriteReg8(fd, YA_OFFSET_L, (offset & 0xFF)<<1);
-  wiringPiI2CWriteReg8(fd, YA_OFFSET_H, (offset>>7));
+  wiringPiI2CWriteReg8(fd, YA_OFFSET_L, (offset_V.at(4) & 0xFF)<<1);
+  wiringPiI2CWriteReg8(fd, YA_OFFSET_H, (offset_V.at(4)>>7));
   
   offset_V.at(5) += factoryAccelOffsets.at(2);
-  wiringPiI2CWriteReg8(fd, ZA_OFFSET_L, (offset & 0xFF)<<1);
-  wiringPiI2CWriteReg8(fd, ZA_OFFSET_H, (offset>>7));
+  wiringPiI2CWriteReg8(fd, ZA_OFFSET_L, (offset_V.at(5) & 0xFF)<<1);
+  wiringPiI2CWriteReg8(fd, ZA_OFFSET_H, (offset_V.at(5)>>7));
 }
 
 void setOffsets(int &fd) {
