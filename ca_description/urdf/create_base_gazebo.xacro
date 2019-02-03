@@ -55,12 +55,10 @@
           <topic>bumpers</topic>
         </contact>
         <!-- Plugin -->
-        <!-- <plugin name="gazebo_ros_bumper_controller" filename="libgazebo_ros_bumper.so">
+        <plugin name="create_bumper_controller" filename="libcreate_bumper_plugin.so">
           <frameName>base_link</frameName>
           <bumperTopicName>bumper</bumperTopicName>
-        </plugin> -->
-        
-        <!-- <plugin name="gazebo_ros_bumper_controller" filename="libcreate_bumper_plugin.so"/> -->
+        </plugin>
       </sensor>
     </gazebo>
 
