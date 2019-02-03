@@ -11,20 +11,20 @@
 #include <vector>
 
 //gyroscope offset
-const uint16_t XG_OFFSET_H       = 0x13,
-const uint16_t XG_OFFSET_L       = 0x14,
-const uint16_t YG_OFFSET_H       = 0x15,
-const uint16_t YG_OFFSET_L       = 0x16,
-const uint16_t ZG_OFFSET_H       = 0x17,
-const uint16_t ZG_OFFSET_L       = 0x18,
+const uint16_t XG_OFFSET_H = 0x13;
+const uint16_t XG_OFFSET_L = 0x14;
+const uint16_t YG_OFFSET_H = 0x15;
+const uint16_t YG_OFFSET_L = 0x16;
+const uint16_t ZG_OFFSET_H = 0x17;
+const uint16_t ZG_OFFSET_L = 0x18;
 
 //accelerometer offset
-const uint16_t XA_OFFSET_H       = 0x77,
-const uint16_t XA_OFFSET_L       = 0x78,
-const uint16_t YA_OFFSET_H       = 0x7A,
-const uint16_t YA_OFFSET_L       = 0x7B,
-const uint16_t ZA_OFFSET_H       = 0x7D,
-const uint16_t ZA_OFFSET_L       = 0x7E,
+const uint16_t XA_OFFSET_H = 0x77;
+const uint16_t XA_OFFSET_L = 0x78;
+const uint16_t YA_OFFSET_H = 0x7A;
+const uint16_t YA_OFFSET_L = 0x7B;
+const uint16_t ZA_OFFSET_H = 0x7D;
+const uint16_t ZA_OFFSET_L = 0x7E;
 
 int main(int argc, char **argv){
 
