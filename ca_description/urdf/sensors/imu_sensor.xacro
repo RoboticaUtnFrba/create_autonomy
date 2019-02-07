@@ -7,7 +7,7 @@
   <xacro:include filename="$(find ca_description)/urdf/sensors/imu_sensor_gazebo.xacro"/>
 
   <xacro:property name="parent_link" value="base_link"/>
-  <xacro:property name="link_name" value="gyro_link"/>
+  <xacro:property name="link_name" value="imu_link"/>
 
   <xacro:property name="x" value="0"/>
   <xacro:property name="y" value="-0.04"/>
