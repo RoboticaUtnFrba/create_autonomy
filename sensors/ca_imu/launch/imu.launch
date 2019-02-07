@@ -1,0 +1,19 @@
+<launch>
+	<arg name="x" value="0"/>
+	<arg name="y" value="-0.04"/>
+	<arg name="z" value="0.13"/>
+	<arg name="R" value="0"/>
+	<arg name="P" value="0"/>
+	<arg name="Y" value="0"/>
+
+	<arg name="parent_link" value="base_link"/>
+	<arg name="link_name" value="imu_link"/>
+
+	<node pkg="tf" type="static_transform_publisher" name="imu_to_base" 
+    	args="$(arg x) $(arg y) $(arg z) $(arg R) $(arg P) $(arg Y) 
+			  $(arg parent_link) $(arg link_name) 50" />
+	
+	<node pkg="i2c_imu" type="i2c_imu_node" name="i2c_imu" ns="imu" output="screen">
+		<rosparam file="$(find ca_imu)/config/imu.yaml"/>		
+	</node>        
+</launch>

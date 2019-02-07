@@ -1,0 +1,117 @@
+# https://github.com/RoboticaUtnFrba/RTIMULib2/blob/master/RTIMULib/IMUDrivers/RTIMUDefs.h
+# AUTODISCOVER             0                   // audodiscover the IMU
+# NULL                     1                   // if no physical hardware
+# MPU9150                  2                   // InvenSense MPU9150
+# GD20HM303D               3                   // STM L3GD20H/LSM303D (Pololu Altimu)
+# GD20M303DLHC             4                   // STM L3GD20/LSM303DHLC (old Adafruit IMU)
+# LSM9DS0                  5                   // STM LSM9DS0 (eg Sparkfun IMU)
+# LSM9DS1                  6                   // STM LSM9DS1
+# MPU9250                  7                   // InvenSense MPU9250
+# GD20HM303DLHC            8                   // STM L3GD20H/LSM303DHLC (new Adafruit IMU)
+# BMX055                   9                   // Bosch BMX055
+# BNO055                   10                  // Bosch BNO055
+# MPU9255                  11                  // InvenSense MPU9255
+
+imu_type: 11
+frame_id: imu_link
+
+# Usually 1 for Raspberry Pi
+i2c_bus: 1
+# 0x68 = 104 (base 10)
+i2c_slave_address: 104 
+
+# RTFUSION_TYPE_NULL                  0                   // just a dummy to keep things happy if not needed
+# RTFUSION_TYPE_KALMANSTATE4          1                   // kalman state is the quaternion pose
+# RTFUSION_TYPE_RTQF                  2                   // RT quaternion fusion
+fusion_type: 2
+
+# RTIMU_XNORTH_YEAST              0                   // this is the default identity matrix
+# RTIMU_XEAST_YSOUTH              1
+# RTIMU_XSOUTH_YWEST              2
+# RTIMU_XWEST_YNORTH              3
+# RTIMU_XNORTH_YWEST              4
+# RTIMU_XEAST_YNORTH              5
+# RTIMU_XSOUTH_YEAST              6
+# RTIMU_XWEST_YSOUTH              7
+# RTIMU_XUP_YNORTH                8
+# RTIMU_XUP_YEAST                 9
+# RTIMU_XUP_YSOUTH                10
+# RTIMU_XUP_YWEST                 11
+# RTIMU_XDOWN_YNORTH              12
+# RTIMU_XDOWN_YEAST               13
+# RTIMU_XDOWN_YSOUTH              14
+# RTIMU_XDOWN_YWEST               15
+# RTIMU_XNORTH_YUP                16
+# RTIMU_XEAST_YUP                 17
+# RTIMU_XSOUTH_YUP                18
+# RTIMU_XWEST_YUP                 19
+# RTIMU_XNORTH_YDOWN              20
+# RTIMU_XEAST_YDOWN               21
+# RTIMU_XSOUTH_YDOWN              22
+# RTIMU_XWEST_YDOWN               23
+axis_rotation: 0
+
+# TODO: PUT THE DEFAULT VALUES IN THE DATASHEET
+mpu9255:
+  #Sample Rates
+  # Default: 40
+  compass_sample_rate: 40
+  # Default: 80
+  gyro_accel_sample_rate: 80
+  
+  # Accel
+  
+  # MPU9255_ACCEL_LPF_1130      0x08                    // 1130Hz, 0.75mS delay
+  # MPU9255_ACCEL_LPF_460       0x00                    // 460Hz, 1.94mS delay
+  # MPU9255_ACCEL_LPF_184       0x01                    // 184Hz, 5.80mS delay
+  # MPU9255_ACCEL_LPF_92        0x02                    // 92Hz, 7.80mS delay
+  # MPU9255_ACCEL_LPF_41        0x03                    // 41Hz, 11.80mS delay
+  # MPU9255_ACCEL_LPF_20        0x04                    // 20Hz, 19.80mS delay
+  # MPU9255_ACCEL_LPF_10        0x05                    // 10Hz, 35.70mS delay
+  # MPU9255_ACCEL_LPF_5         0x06                    // 5Hz, 66.96mS delay
+  
+  # Default: MPU9255_ACCEL_LPF_41
+  accel_low_pass_filter: 3
+  
+  # MPU9255_ACCELFSR_2          0                       // +/- 2g
+  # MPU9255_ACCELFSR_4          8                       // +/- 4g
+  # MPU9255_ACCELFSR_8          0x10                    // +/- 8g
+  # MPU9255_ACCELFSR_16         0x18                    // +/- 16g
+  
+  # Default: MPU9255_ACCELFSR_8
+  accel_full_scale_range: 16
+  
+  # Gyro
+
+  # MPU9255_GYRO_LPF_8800       0x11                    // 8800Hz, 0.64mS delay
+  # MPU9255_GYRO_LPF_3600       0x10                    // 3600Hz, 0.11mS delay
+  # MPU9255_GYRO_LPF_250        0x00                    // 250Hz, 0.97mS delay
+  # MPU9255_GYRO_LPF_184        0x01                    // 184Hz, 2.9mS delay
+  # MPU9255_GYRO_LPF_92         0x02                    // 92Hz, 3.9mS delay
+  # MPU9255_GYRO_LPF_41         0x03                    // 41Hz, 5.9mS delay
+  # MPU9255_GYRO_LPF_20         0x04                    // 20Hz, 9.9mS delay
+  # MPU9255_GYRO_LPF_10         0x05                    // 10Hz, 17.85mS delay
+  # MPU9255_GYRO_LPF_5          0x06                    // 5Hz, 33.48mS delay
+
+  # Default: MPU9255_GYRO_LPF_41
+  gyro_low_pass_filter: 3
+
+  # MPU9255_GYROFSR_250         0                       // +/- 250 degrees per second
+  # MPU9255_GYROFSR_500         8                       // +/- 500 degrees per second
+  # MPU9255_GYROFSR_1000        0x10                    // +/- 1000 degrees per second
+  # MPU9255_GYROFSR_2000        0x18                    // +/- 2000 degrees per second
+
+  # Default: MPU9255_GYROFSR_1000
+  gyro_full_scale_range: 16
+
+# Calibration
+calib:
+  compass_min: [-28.451460, -42.645390, -38.086895]
+  compass_max: [68.179794, 48.143326, 57.744003]
+  
+  accel_min: [ -1.004789, -1.014467, -1.015889 ]
+  accel_max: [ 0.995606, 1.002416, 0.996524 ]
+
+magnetic_declination: 0.0
+publish_magnetometer: false
+publish_euler: false
