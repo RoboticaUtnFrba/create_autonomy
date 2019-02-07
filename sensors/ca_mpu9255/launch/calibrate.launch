@@ -1,8 +1,0 @@
-<launch>
-  <node pkg="ca_mpu6050" type="mpu6050_calibrate.py" name="mpu6050" output="screen">
-    <rosparam command="load" file="$(find ca_mpu6050)/config/config.yaml"/>
-    <rosparam command="load" file="$(find ca_mpu6050)/config/uncalibrated.yaml"/>
-    <rosparam command="load" file="$(find ca_mpu6050)/config/calib_params.yaml"/>
-    <param name="~debug" value="true"/>
-  </node>
-</launch>

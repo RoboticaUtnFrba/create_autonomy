@@ -1,8 +1,0 @@
-# The offsets are different for each device and should be changed
-# accordingly using a calibration procedure
-x_acc: 27.139
-y_acc: 16.9835
-z_acc: -435.629
-x_gyro: 114.38075
-y_gyro: 13.96025
-z_gyro: 0.7425
