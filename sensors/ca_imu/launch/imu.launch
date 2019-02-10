@@ -1,4 +1,6 @@
 <launch>
+	<arg name="publish_euler" default="false"/>
+	
 	<arg name="x" value="0"/>
 	<arg name="y" value="-0.04"/>
 	<arg name="z" value="0.13"/>
@@ -13,7 +15,13 @@
     	args="$(arg x) $(arg y) $(arg z) $(arg R) $(arg P) $(arg Y) 
 			  $(arg parent_link) $(arg link_name) 50" />
 	
-	<node pkg="i2c_imu" type="i2c_imu_node" name="i2c_imu" ns="imu" output="screen">
+	<!-- <node pkg="i2c_imu" type="i2c_imu_node" name="i2c_imu" ns="imu" output="screen">
 		<rosparam file="$(find ca_imu)/config/imu.yaml"/>		
-	</node>        
+	</node> -->
+
+	<!-- Automatic parameters : using RTIMULib.ini (calibrate first) -->
+	<node pkg="i2c_imu" type="i2c_imu_node" name="i2c_imu" ns="imu" output"screen">
+		<param name="rate_hz" value="30.0"/>
+		<param name="publish_euler" value="$(arg publish_euler)"/>
+	<node>
 </launch>

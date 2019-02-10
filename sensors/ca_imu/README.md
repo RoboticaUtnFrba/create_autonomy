@@ -4,84 +4,50 @@ Interfacing Raspberry Pi with MPU9255:
 
 ![Connection between RPi and MPU9255](media/wiring.png)
 
-## Calibrate sensor
+## Installation
 
-```sh
-$ roslaunch ca_mpu9255 calibrate.launch
+### [RTIMULib2](https://github.com/RoboticaUtnFrba/RTIMULib2)
+
+Go to the RTIMULib2 directory and compile it:
+
+```
+$ cd Linux
+$ mkdir build
+$ cd build
+$ cmake ..
+$ make -j4
+$ sudo make install
+$ sudo ldconfig
 ```
 
-Copy the resulting values (in green) into `/config/calibrated.yaml`.
+## [Calibrate IMU](https://github.com/RoboticaUtnFrba/RTIMULib2/blob/master/Calibration.pdf)
 
+The normal process is to run the magnetometer min/max option followed by the magnetometer ellipsoid fit option followed finally by the accelerometer min/max option.
 
-ROS MPU9255 Node
-================
-c++ ROS node wrapper for the mpu9255 gyroscope / accelerometer/magnetometer.
-Reads accelerometer, gyroscopic and magnetic data in 3D giving 9 Degrees of Freedom.
+The resulting RTIMULib.ini can then be used by any other RTIMULib application.
 
-Publishes sensor_msgs::IMU to /imu/data_raw topic(angular_velocity and linear_acceleration).
-Publishes sensor_msgs::MagneticField to /imu/data_raw topic(angular_velocity and linear_acceleration).
+```sh
+$ RTIMULibCal
+```
 
-Supported interface : I2C.
-used in Raspberry PI 3.
+### Calibrating the magnetometer
 
-Installation
-------------
+[This video](https://www.youtube.com/watch?v=-Uq7AmSAjt8) shows how to wag your IMU in order to calibrate the magnetometer.
 
-First install WiringPI:
+### Calibrating the accelerometer
 
-	cd
-	git clone git://git.drogon.net/wiringPi
-	cd ~/wiringPi
-	./build
+[This video](https://www.youtube.com/watch?v=CnLtzwCbVc4) shows how the calibration process of the accelerometer has to be made.
 
-Then clone this repository into your ROS workspace(src folder):
+## [i2c_imu ROS package](https://github.com/RoboticaUtnFrba/i2c_imu)
 
-    git clone https://github.com/mdleiton/MPU9255.git
+```
+$ cd catkin_ws/src
+$ git clone git@github.com:RoboticaUtnFrba/i2c_imu.git
+```
 
-Compile it:
+### Running
 
-    catkin_make
-	g++ offsetIMU.cpp -lwiringPi -o offsetIMU
-
-Run a node:
-
-	./offsetIMU
-	source devel/setup.bash
-	rosrun MPU9255 MPU9255_node
-
-Review the published data with:
-
-    rostopic echo /imu/data_raw
-	rostopic echo /imu/mag
-
-
-Complementary filter
---------------------
-
-install imu-tools:
-
-	sudo apt-get install ros-kinetic-imu-tools
-
-run launch file:
-
-	source devel/setup.bash
-	roslaunch MPU9255 imu.launch
-
-reference: http://wiki.ros.org/imu_complementary_filter
-
-Create a rosbag file (.bag)
----------------------------
-
-run launch file:
-
-	source devel/setup.bash
-	roslaunch MPU9255 record_topic.launch
-
-Get data from the topics of the .bag file:
-
-	rostopic echo -b file.bag -p /topic
-
-More information about published topics:
-
-	http://docs.ros.org/api/sensor_msgs/html/msg/Imu.html
-	http://docs.ros.org/jade/api/sensor_msgs/html/msg/MagneticField.html
+```
+$ roslaunch ca_imu imu.launch
+$ rviz
+```
