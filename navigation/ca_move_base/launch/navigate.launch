@@ -5,7 +5,7 @@
 	<include file="$(find ca_bumper2pc)/launch/standalone.launch" />
 
 	<!-- Run the map server with a blank map -->
-	<arg name="map_file" default="$(find ca_move_base)/maps/playpen_map.yaml"/>
+	<arg name="map_file" default="$(find ca_move_base)/maps/playground.yaml"/>
   <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)"/>
 
 	<!-- move_base -->
