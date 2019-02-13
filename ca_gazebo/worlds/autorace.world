@@ -11,21 +11,21 @@
       <uri>model://create_autorace/course</uri>
       <pose> 0 0 0 0 0 -1.54</pose>
     </include>
-    
+
     <include>
       <uri>model://create_autorace/traffic_parking</uri>
       <pose> 1.84 1.27 0.13 0 0 -0.356</pose>
     </include>
-    
+
     <include>
       <uri>model://create_autorace/traffic_tunnel</uri>
       <pose> -1.544 -0.08 0.125 0 0 0</pose>
     </include>
-   
+
     <include>
       <uri>model://create_autorace/traffic_stop</uri>
        <pose> -2.05 0.65 0.125 0 -0 0</pose>
-    </include>    
+    </include>
 
     <light name='sun' type='directional'>
       <cast_shadows>1</cast_shadows>
@@ -96,8 +96,8 @@
       <longitude_deg>0</longitude_deg>
       <elevation>0</elevation>
       <heading_deg>0</heading_deg>
-    </spherical_coordinates> 
- 
+    </spherical_coordinates>
+
     <light name='user_point_light_2' type='point'>
       <pose frame=''>-0.948146 0.604519 1 0 -0 0</pose>
       <diffuse>0.5 0.5 0.5 1</diffuse>
@@ -110,7 +110,7 @@
       </attenuation>
       <cast_shadows>0</cast_shadows>
       <direction>0 0 -1</direction>
-    </light>    
+    </light>
     <light name='user_point_light_6' type='point'>
       <pose frame=''>1.63854 1.69565 1 0 -0 0</pose>
       <diffuse>0.5 0.5 0.5 1</diffuse>
@@ -156,17 +156,6 @@
       <real_time>32 693566475</real_time>
       <wall_time>1525097329 747995208</wall_time>
       <iterations>32558</iterations>
-      <model name='ground'>
-        <pose frame=''>0 0 0 0 -0 0</pose>
-        <scale>1 1 1</scale>
-        <link name='ground'>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
-      
 
       <model name='tunnel_occ_2_1'>
         <pose frame=''>-1.04145 -1.12671 0 0 -0 0</pose>
@@ -219,54 +208,9 @@
         </link>
       </model>
 
-      <model name='unit_box'>
-        <pose frame=''>-1.72  0.56 0.12 0 0 -0.0</pose>
-        <scale>1 1 1</scale>
-        <link name='traffic_bar'>
-          <pose frame=''>-1.72  0.56 0.12 0 0 -0.0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>1.06648 0.03546 4.20605 2.1745 -1.41657 3.10996</acceleration>
-          <wrench>1.06648 0.03546 4.20605 0 -0 0</wrench>
-        </link>
-        <static>1</static>
-      </model>
-      <model name='unit_sphere'>
-        <pose frame=''>1.39 -1.57 0.111741 0 -0 0</pose>
-        <scale>1 1 1</scale>
-        <link name='light_r'>
-          <pose frame=''>1.39 -1.57 0.111741 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-	      <static>1</static>
-      </model>
-      <model name='unit_sphere_clone'>
-        <pose frame=''>1.39 -1.57 0.211741 0 -0 0</pose>
-        <scale>1 1 1</scale>
-        <link name='light_g'>
-          <pose frame=''>1.39 -1.57 0.211741 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-	      <static>1</static>
-      </model>
-      <model name='unit_sphere_clone_clone'>
-        <pose frame=''>1.39 -1.57 0.311741 0 -0 0</pose>
-        <scale>1 1 1</scale>
-        <link name='light_y'>
-          <pose frame=''>1.39 -1.57 0.311741 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-	      <static>1</static>
-      </model>
-
       <light name='sun'>
         <pose frame=''>0 0 10 0 -0 0</pose>
-      </light>      
+      </light>
       <light name='user_point_light_2'>
         <pose frame=''>-0.948146 0.604519 1 0 -0 0</pose>
       </light>
@@ -926,6 +870,6 @@
       <static>1</static>
       <allow_auto_disable>1</allow_auto_disable>
       <pose frame=''>-1.04145 -1.12671 0 0 -0 0</pose>
-    </model>   
+    </model>
   </world>
 </sdf>
