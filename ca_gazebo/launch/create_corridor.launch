@@ -1,6 +1,6 @@
 <launch>
-	<arg name="x_pos" default="-3.0"/>
-	<arg name="y_pos" default="1.0"/>
+	<arg name="x_pos" default="-7.0"/>
+	<arg name="y_pos" default="-1.55"/>
 	<arg name="z_pos" default="0.0"/>
 
 	<arg name="paused" default="false"/>
@@ -14,7 +14,7 @@
         <arg name="debug" value="$(arg debug)" />
 		<arg name="gui" value="$(arg gui)" />
 		<arg name="paused" value="$(arg paused)"/>
-		<arg name="world_file" value="$(find ca_gazebo)/worlds/playpen.world"/>
+		<arg name="world_file" value="$(find ca_gazebo)/worlds/corridor.world"/>
 		<arg name="x_pos" value="$(arg x_pos)"/>
 		<arg name="y_pos" value="$(arg y_pos)"/>
 		<arg name="z_pos" value="$(arg z_pos)"/>

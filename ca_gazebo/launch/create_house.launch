@@ -14,7 +14,7 @@
         <arg name="debug" value="$(arg debug)" />
 		<arg name="gui" value="$(arg gui)" />
 		<arg name="paused" value="$(arg paused)"/>
-		<arg name="world_file" value="$(find ca_gazebo)/worlds/create_house.world"/>
+		<arg name="world_file" value="$(find ca_gazebo)/worlds/house.world"/>
 		<arg name="x_pos" value="$(arg x_pos)"/>
 		<arg name="y_pos" value="$(arg y_pos)"/>
 		<arg name="z_pos" value="$(arg z_pos)"/>
