@@ -1,6 +1,7 @@
 <launch>
 	<arg name="rviz" default="true"/>
 
+	<!-- Bumper to point cloud -->
 	<include file="$(find ca_bumper2pc)/launch/standalone.launch" />
 
 	<!-- Run the map server with a blank map -->
