@@ -1,11 +1,11 @@
 #!/usr/bin/python
 
-package_name = 'create_node'
+package_name = 'ca_node'
 
 import roslib
 roslib.load_manifest(package_name)
 import rospy
-from create_node.srv import SetTurtlebotMode
+from ca_node.srv import SetTurtlebotMode
 import yaml
 import os
 import rospkg
