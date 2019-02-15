@@ -11,7 +11,10 @@ add_message_files(
   DIRECTORY msg
 )
 
-# Generate added messages and services with any dependencies listed here
+add_service_files(
+  DIRECTORY srv
+)
+
 generate_messages(
   DEPENDENCIES
     geometry_msgs
