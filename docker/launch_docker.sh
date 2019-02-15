@@ -20,7 +20,6 @@ ${DOCKER_NETWORK} \
 --volume="/etc/passwd:/etc/passwd:ro" \
 --volume="/etc/shadow:/etc/shadow:ro" \
 --volume="/etc/sudoers.d:/etc/sudoers.d:ro" \
---volume="$HOME/host_docker:/home/user/host_docker" \
 -e LOCAL_USER_ID=`id -u $USER` \
 -e LOCAL_GROUP_ID=`id -g $USER` \
 -e LOCAL_GROUP_NAME=`id -gn $USER` \
