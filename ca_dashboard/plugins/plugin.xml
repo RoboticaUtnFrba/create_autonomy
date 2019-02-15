@@ -1,0 +1,11 @@
+<library path="src">
+  <class name="CreateDashboard" type="ca_dashboard.dashboard.CreateDashboard" base_class_type="rqt_gui_py::Plugin">
+    <description>
+      Dashboard for the iRobot Create
+    </description>
+    <qtgui>
+      <label>Create Dashboard</label>
+      <statustip>Test robot_dashboard.</statustip>
+    </qtgui>
+  </class>
+</library>

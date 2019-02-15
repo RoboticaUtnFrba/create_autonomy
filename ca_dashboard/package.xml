@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<package>
+  <name>ca_dashboard</name>
+  <version>2.3.1</version>
+  <description>
+    The Create dashboard is a RQT-based plug-in for visualising data from the Create and giving easy access
+    to basic functionalities.
+  </description>
+  <maintainer email="marcus.liebhardt@yujinrobot.com">Marcus Liebhardt</maintainer>
+  <license>BSD</license>
+
+  <url type="website">http://ros.org/wiki/create_dashboard</url>
+  <url type="repository">https://github.com/turtlebot/turtlebot_create_desktop</url>
+  <url type="bugtracker">https://github.com/turtlebot/turtlebot_create_desktop/issues</url>
+  <author email="zklapow@gmail.com">Ze'ev Klapow</author>
+  <author email="marcus.liebhardt@yujinrobot.com">Marcus Liebhardt</author>
+  
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>ca_node</build_depend>
+  <build_depend>ca_msgs</build_depend>
+  <build_depend>diagnostic_msgs</build_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>rqt_gui</build_depend>
+  <build_depend>rqt_gui_py</build_depend>
+  <build_depend>rqt_robot_dashboard</build_depend>
+  
+  <run_depend>ca_node</run_depend>
+  <run_depend>ca_msgs</run_depend>
+  <run_depend>diagnostic_msgs</run_depend>
+  <run_depend>rospy</run_depend>
+  <run_depend>rqt_gui</run_depend>
+  <run_depend>rqt_gui_py</run_depend>
+  <run_depend>rqt_robot_dashboard</run_depend>
+  
+  <export>
+    <rqt_gui plugin="${prefix}/plugins/plugin.xml"/>
+  </export>
+</package>
