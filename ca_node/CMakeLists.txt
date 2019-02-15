@@ -33,6 +33,25 @@ include_directories(
   ${Boost_INCLUDE_DIRS}
 )
 
+catkin_package(
+  LIBRARIES ca_nodelet ca_driver
+  CATKIN_DEPENDS
+    libcreate
+    roscpp
+    std_msgs
+    geometry_msgs
+    nav_msgs
+    sensor_msgs
+    tf
+    ca_msgs
+    ca_description
+    diagnostic_msgs
+    diagnostic_updater
+    nodelet
+    pluginlib
+    ecl_threads
+)
+
 add_subdirectory(src)
 
 install(DIRECTORY launch plugins
@@ -42,10 +61,6 @@ install(FILES plugins/nodelet_plugins.xml
         DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/plugins)
 
 install(DIRECTORY scripts
-        DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
-
-install(DIRECTORY scripts
         DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
         USE_SOURCE_PERMISSIONS
-        PATTERN ".svn" EXCLUDE
 )
