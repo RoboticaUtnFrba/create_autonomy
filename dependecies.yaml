@@ -1,0 +1,5 @@
+repositories:
+  libcreate:
+    type: git
+    url: git@github.com:RoboticaUtnFrba/libcreate.git
+    version: master
