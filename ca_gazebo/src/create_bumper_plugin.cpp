@@ -129,8 +129,8 @@ void CreateBumperPlugin::ContactDisconnect()
 
 void CreateBumperPlugin::OnUpdate()
 {
-  if (this->contact_connect_count_ <= 0)
-    return;
+  // if (this->contact_connect_count_ <= 0)
+  //   return;
 
   // reset flags
   this->bumper_left_is_pressed_ = false;
