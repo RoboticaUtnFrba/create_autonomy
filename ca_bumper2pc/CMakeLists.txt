@@ -5,8 +5,7 @@ find_package(catkin REQUIRED COMPONENTS
   nodelet 
   pluginlib 
   ca_msgs
-  sensor_msgs 
-  kobuki_msgs
+  sensor_msgs
 )
 
 catkin_package(
