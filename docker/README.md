@@ -5,9 +5,11 @@
 
 To run docker without super user:
 
-      sudo groupadd docker
-      sudo gpasswd -a ${USER} docker
-      sudo service docker restart
+      ```bash
+      $ sudo groupadd docker
+      $ sudo gpasswd -a ${USER} docker
+      $ sudo service docker restart
+      ```
 
 ## Step 2: Use NVIDIA acceleration
 
@@ -19,13 +21,24 @@ This repository contain the Dockerfile. Move into the directory containing the f
 
 The command below will **create** the container from the base image if it doesn't exist and log you in. 
 
-    docker build -t create-melodic-gazebo9 .
+      ```bash
+      $ make create-melodic-gazebo9
+      ```
 
 ## Step 4: Start the container
 
 To make it easier, I created the launcher **launch_docker.sh** (you might need to call **chmod +x ./launch_docker.sh** first).
 
-     ./launch_docker.sh
+      ```bash
+      $ ./launch_docker.sh
+      ```
+
+Every time you launch the Docker container, you'll need to compile the workspace and source:
+
+      ```bash
+      $ catkin_make -DCMAKE_BUILD_TYPE=Release -j4
+      $ source devel/setup.bash
+      ```
 
 # References
 
