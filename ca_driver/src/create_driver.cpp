@@ -38,7 +38,8 @@ CreateDriver::CreateDriver(ros::NodeHandle& nh, ros::NodeHandle& ph)
     priv_nh_(ph),
     diagnostics_(),
     model_(create::RobotModel::CREATE_2),
-    is_running_slowly_(false)
+    is_running_slowly_(false),
+    orientation_(0.0)
 {
   bool create_one;
   std::string robot_model_name;
@@ -63,7 +64,7 @@ CreateDriver::CreateDriver(ros::NodeHandle& nh, ros::NodeHandle& ph)
 
   priv_nh_.param<int>("baud", baud_, model_.getBaud());
 
-  robot_ = new create::Create(model_);
+  robot_.reset(new create::Create(model_));
 
   if (!robot_->connect(dev_, baud_))
   {
@@ -96,6 +97,7 @@ CreateDriver::CreateDriver(ros::NodeHandle& nh, ros::NodeHandle& ph)
   joint_state_msg_.effort.resize(2);
   joint_state_msg_.name[0] = "left_wheel_joint";
   joint_state_msg_.name[1] = "right_wheel_joint";
+  angle_msg_.header.frame_id = str_base_footprint;
 
   // Populate intial covariances
   for (int i = 0; i < 36; i++)
@@ -119,6 +121,7 @@ CreateDriver::CreateDriver(ros::NodeHandle& nh, ros::NodeHandle& ph)
 
   // Setup publishers
   odom_pub_ = nh.advertise<nav_msgs::Odometry>("odom", 30);
+  angle_pub_ = nh.advertise<geometry_msgs::PoseWithCovarianceStamped>("angle", 30);
   clean_btn_pub_ = nh.advertise<std_msgs::Empty>("clean_button", 30);
   day_btn_pub_ = nh.advertise<std_msgs::Empty>("day_button", 30);
   hour_btn_pub_ = nh.advertise<std_msgs::Empty>("hour_button", 30);
@@ -161,7 +164,6 @@ CreateDriver::~CreateDriver()
 {
   ROS_INFO("[CREATE] Destruct sequence initiated.");
   robot_->disconnect();
-  delete robot_;
 }
 
 void CreateDriver::cmdVelCallback(const geometry_msgs::TwistConstPtr& msg)
@@ -282,6 +284,7 @@ void CreateDriver::mainMotorCallback(const std_msgs::Float32ConstPtr& msg)
 bool CreateDriver::update()
 {
   publishOdom();
+  publishAngle();
   publishJointState();
   publishBatteryInfo();
   publishButtonPresses();
@@ -483,6 +486,25 @@ void CreateDriver::publishOdom()
   }
 
   odom_pub_.publish(odom_msg_);
+}
+
+void CreateDriver::publishAngle()
+{
+    const float orientation_stddev = 5.0*M_PI/180.0; // 5 degrees
+    /*
+     * According to Roomba Open Interface specs, the angle has to be
+     * divided by 0.324056 to get the angle in degrees.
+     * So, to get it in radians, the number has to be divided by 180 too.
+     */
+    orientation_ += (robot_->getAngle() * M_PI / 58.33008);
+    const float yaw = CreateDriver::normalizeAngle(orientation_);
+    const float yaw_2 = yaw / 2.;
+    angle_msg_.pose.pose.orientation.x = cos(yaw_2);
+    angle_msg_.pose.pose.orientation.w = sin(yaw_2);
+    angle_msg_.header.seq += 1;
+    angle_msg_.header.stamp = ros::Time::now();
+    angle_msg_.pose.covariance[35] = orientation_stddev * orientation_stddev;
+    angle_pub_.publish(angle_msg_);
 }
 
 void CreateDriver::publishJointState()

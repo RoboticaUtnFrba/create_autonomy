@@ -29,6 +29,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #ifndef CREATE_AUTONOMY_CREATE_DRIVER_H
 #define CREATE_AUTONOMY_CREATE_DRIVER_H
 
+#include <memory>
+
 #include <ros/ros.h>
 #include <std_msgs/Empty.h>
 #include <std_msgs/Bool.h>
@@ -40,6 +42,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <sensor_msgs/JointState.h>
 #include <geometry_msgs/Twist.h>
 #include <geometry_msgs/TransformStamped.h>
+#include <geometry_msgs/PoseWithCovarianceStamped.h>
 #include <nav_msgs/Odometry.h>
 #include <tf/transform_broadcaster.h>
 #include <diagnostic_updater/diagnostic_updater.h>
@@ -77,17 +80,17 @@ static const float SONG_4_DURATIONS [] = {0.9,0.8,0.2,0.2,0.2,0.8,0.7,0.2,0.2,0.
 
 // Unused covariances must have a large value
 static const double MAX_DBL = 1e10;
-static const double COVARIANCE[36] = {1e-5, 1e-5, 0.0,     0.0,     0.0,     1e-5,
-                                      1e-5, 1e-5, 0.0,     0.0,     0.0,     1e-5,
+static const double COVARIANCE[36] = {1e-5, 0.0,  0.0,     0.0,     0.0,     0.0,
+                                      1e-5, 0.0,  0.0,     0.0,     0.0,     0.0,
                                       0.0,  0.0,  MAX_DBL, 0.0,     0.0,     0.0,
                                       0.0,  0.0,  0.0,     MAX_DBL, 0.0,     0.0,
                                       0.0,  0.0,  0.0,     0.0,     MAX_DBL, 0.0,
-                                      1e-5, 1e-5, 0.0,     0.0,     0.0,     1e-5};
+                                      0.0,  0.0,  0.0,     0.0,     0.0,     1e-3};
 
 class CreateDriver
 {
 private:
-  create::Create* robot_;
+  std::unique_ptr<create::Create> robot_;
   create::RobotModel model_;
   tf::TransformBroadcaster tf_broadcaster_;
   diagnostic_updater::Updater diagnostics_;
@@ -97,6 +100,7 @@ private:
   ca_msgs::Cliff cliff_msg_;
   ca_msgs::Wheeldrop wheeldrop_msg_;
   nav_msgs::Odometry odom_msg_;
+  geometry_msgs::PoseWithCovarianceStamped angle_msg_;
   geometry_msgs::TransformStamped tf_odom_;
   ros::Time last_cmd_vel_time_;
   std_msgs::Empty empty_msg_;
@@ -107,6 +111,7 @@ private:
   std_msgs::Bool is_wall_msg_;
   ca_msgs::Overcurrent is_overcurrent_msg_;
   bool is_running_slowly_;
+  double orientation_;
 
   // ROS params
   double loop_hz_;
@@ -134,6 +139,7 @@ private:
   void updateModeDiagnostics(diagnostic_updater::DiagnosticStatusWrapper& stat);
   void updateDriverDiagnostics(diagnostic_updater::DiagnosticStatusWrapper& stat);
   void publishOdom();
+  void publishAngle();
   void publishJointState();
   void publishBatteryInfo();
   void publishButtonPresses() const;
@@ -144,6 +150,13 @@ private:
   void publishWheeldrop();
   void publishIsWall();
   void publishOvercurrent();
+
+  inline float normalizeAngle(float angle) {
+    angle = std::fmod(angle + M_PI,2*M_PI);
+    if (angle < 0)
+        angle += 2*M_PI;
+    return angle - M_PI;
+  };
 
 protected:
   ros::NodeHandle nh_;
@@ -161,6 +174,7 @@ protected:
   ros::Subscriber main_motor_sub_;
 
   ros::Publisher odom_pub_;
+  ros::Publisher angle_pub_;
   ros::Publisher clean_btn_pub_;
   ros::Publisher day_btn_pub_;
   ros::Publisher hour_btn_pub_;
