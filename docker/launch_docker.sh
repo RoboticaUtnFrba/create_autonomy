@@ -15,7 +15,7 @@ ${DOCKER_NETWORK} \
 --env="QT_X11_NO_MITSHM=1"  \
 --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
 --workdir="/home/$USER/catkin_ws" \
---volume="/home/$USER/catkin_ws:/home/$USER/catkin_ws" \
+--volume="/home/$USER/catkin_ws/src:/home/$USER/catkin_ws/src" \
 --volume="/etc/group:/etc/group:ro" \
 --volume="/etc/passwd:/etc/passwd:ro" \
 --volume="/etc/shadow:/etc/shadow:ro" \
