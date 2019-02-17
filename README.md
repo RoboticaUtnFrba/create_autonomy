@@ -80,15 +80,29 @@ $ sudo apt-get install python-rosdep python-catkin-tools
 3. Install dependencies  
     ``` bash
     $ cd ~/create_ws
-    $ rosdep update  
-    $ rosdep install --from-paths src -i  
+    $ sudo apt install -y python3-vcstool
+    $ vcs import src < src/create_autonomy/<DEVICE>.repos
+    $ rosdep update
+    $ rosdep install --from-paths src -i
     ```
 
-4. Build  
-    ``` bash
-    $ cd ~/create_ws
-    $ catkin_make
-    ```
+4. Build
+
+    4.1. Build RTIMULib2 for Raspberry Pi
+        
+        $ cd ~/create_ws/src/RTIMULib2/Linux
+        $ mkdir build
+        $ cd build
+        $ cmake ..
+        $ make -j4
+        $ sudo make install
+        $ sudo ldconfig
+
+    4.2. Build workspace
+
+        $ cd ~/create_ws
+        $ catkin_make -DCMAKE_BUILD_TYPE=Release
+
 #### USB Permissions
 5. In order to connect to Create over USB, ensure your user is in the dialout group
     ``` bash
