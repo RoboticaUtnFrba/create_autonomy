@@ -17,7 +17,6 @@
   <xacro:property name="Y" value="0"/>
 
   <joint name="gyro_joint" type="fixed">
-    <axis xyz="1 0 0" />
     <origin xyz="${x} ${y} ${z}" rpy="${R} ${P} ${Y}"/>
     <parent link="${parent_link}" />
     <child link="${link_name}" />
