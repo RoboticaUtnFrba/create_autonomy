@@ -1,27 +1,32 @@
-#!/bin/bash 
+#!/bin/bash
+
+CONTAINER=""
+
+while [ "$1" != "" ]; do
+    case "$1" in
+        -d | --docker )  CONTAINER="$2";  shift;;
+    esac
+    shift
+done
+
+IMAGE_NAME=${CONTAINER}
+
+NVIDIA_FLAG=""
+if [[ $IMAGE_NAME = *"nvidia"* ]]; then
+  NVIDIA_FLAG="--runtime=nvidia"
+fi
+
 xhost +
-
-DOCKER_CAPABILITIES="--ipc=host \
-                     --cap-add=IPC_LOCK \
-                     --cap-add=sys_nice"
-
-DOCKER_NETWORK="--network=host"
-
 docker run -it \
---privileged --rm \
-${DOCKER_CAPABILITIES} \
-${DOCKER_NETWORK} \
---env="DISPLAY"  \
---env="QT_X11_NO_MITSHM=1"  \
---volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
---workdir="/home/$USER/catkin_ws" \
---volume="/home/$USER/catkin_ws:/home/$USER/catkin_ws" \
---volume="/etc/group:/etc/group:ro" \
---volume="/etc/passwd:/etc/passwd:ro" \
---volume="/etc/shadow:/etc/shadow:ro" \
---volume="/etc/sudoers.d:/etc/sudoers.d:ro" \
---volume="$HOME/host_docker:/home/user/host_docker" \
--e LOCAL_USER_ID=`id -u $USER` \
--e LOCAL_GROUP_ID=`id -g $USER` \
--e LOCAL_GROUP_NAME=`id -gn $USER` \
- create-melodic-gazebo9
+    --privileged --rm \
+    "--ipc=host" \
+    "--cap-add=IPC_LOCK" \
+    "--cap-add=sys_nice" \
+    "--network=host" \
+    --env="DISPLAY"  \
+    --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+    --volume="/home/$USER/create_ws/src:/create_ws/src" \
+    -e ROS_HOSTNAME=localhost \
+    -e ROS_MASTER_URI=http://localhost:11311 \
+    $NVIDIA_FLAG \
+    create_nvidia
