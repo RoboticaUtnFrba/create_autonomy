@@ -4,24 +4,16 @@
   <version>0.0.0</version>
   <description>The ca_visual_odometry package</description>
 
-  <!-- One maintainer tag required, multiple allowed, one person per tag -->
-  <maintainer email="emiliano@todo.todo">emiliano</maintainer>
+  <maintainer email="emiliano.borghi@gmail.com">Emiliano Borghi</maintainer>
 
+  <license>BSD</license>
 
-  <!-- One license tag required, multiple allowed, one license per tag -->
-  <!-- Commonly used license strings: -->
-  <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
-  <license>TODO</license>
-
-  <!-- The *depend tags are used to specify dependencies -->
-  <!-- Dependencies can be catkin packages or system dependencies -->
   <buildtool_depend>catkin</buildtool_depend>
 
   <exec_depend>camera_calibration</exec_depend>
   <exec_depend>gscam</exec_depend>
   <exec_depend>rqt_pose_view</exec_depend>
 
-  <!-- The export tag contains other, unspecified, tags -->
   <export>
   </export>
 </package>
