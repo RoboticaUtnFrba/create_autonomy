@@ -5,9 +5,11 @@
 
 To run docker without super user:
 
-      sudo groupadd docker
-      sudo gpasswd -a ${USER} docker
-      sudo service docker restart
+        ```bash
+        $ sudo groupadd docker
+        $ sudo gpasswd -a ${USER} docker
+        $ sudo service docker restart
+        ```
 
 ## Step 2: Use NVIDIA acceleration
 
@@ -25,10 +27,10 @@ To run docker without super user:
 Version 1.0 of the nvidia-docker package must be cleanly removed before continuing.
 You must stop and remove all containers started with nvidia-docker 1.0.
 
-```bash
-$ docker volume ls -q -f driver=nvidia-docker | xargs -r -I{} -n1 docker ps -q -a -f volume={} | xargs -r docker rm -f
-$ sudo apt-get purge nvidia-docker
-```
+        ```bash
+        $ docker volume ls -q -f driver=nvidia-docker | xargs -r -I{} -n1 docker ps -q -a -f volume={} | xargs -r docker rm -f
+        $ sudo apt-get purge nvidia-docker
+        ```
 
 #### Installing version 2.0
 
@@ -38,28 +40,28 @@ If you have a custom `/etc/docker/daemon.json`, the `nvidia-docker2` package mig
 
 Install the repository for your distribution by following the instructions here.
 
-```bash
-Wcurl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | \
-  sudo apt-key add -
-distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
-curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | \
-  sudo tee /etc/apt/sources.list.d/nvidia-docker.list
-sudo apt-get update
-```
+      ```bash
+      $ wcurl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | \
+        sudo apt-key add -
+      $ distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
+      $ curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | \
+        sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+      $ sudo apt-get update
+      ```
 
 Add Docker's official GPG key.
 
-```bash
-curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | \
-  sudo apt-key add -
-```
+      ```bash
+      $ curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | \
+        sudo apt-key add -
+      ```
 
 Install the `nvidia-docker2` package and reload the Docker daemon configuration:
 
-```bash
-$ sudo apt-get install nvidia-docker2
-$ sudo pkill -SIGHUP dockerd
-```
+      ```bash
+      $ sudo apt-get install nvidia-docker2
+      $ sudo pkill -SIGHUP dockerd
+      ```
 
 ## Step 3: Creating the container
 
@@ -67,17 +69,24 @@ This repository contain the Dockerfile. Move into the directory containing the f
 
 The command below will **create** the container from the base image if it doesn't exist and log you in.
 
-    ```bash
-    make create-melodic-gazebo9
-    ```
+      ```bash
+      $ make create-melodic-gazebo9
+      ```
 
 ## Step 4: Start the container
 
 To make it easier, I created the launcher **launch_docker.sh** (you might need to call **chmod +x ./launch_docker.sh** first).
 
-    ```bash
-    ./launch_docker.sh
-    ```
+      ```bash
+      $ ./launch_docker.sh -d create_nvidia
+      ```
+
+Every time you launch the Docker container, you'll need to compile the workspace and source:
+
+      ```bash
+      $ catkin_make -DCMAKE_BUILD_TYPE=Release -j4
+      $ source devel/setup.bash
+      ```
 
 # References
 

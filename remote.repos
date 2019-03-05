@@ -1,0 +1,13 @@
+repositories:
+  gscam:
+    type: git
+    url: git@github.com:RoboticaUtnFrba/gscam.git
+    version: master
+  libcreate:
+    type: git
+    url: git@github.com:RoboticaUtnFrba/libcreate.git
+    version: master
+  viso2:
+    type: git
+    url: git@github.com:RoboticaUtnFrba/viso2.git
+    version: kinetic
