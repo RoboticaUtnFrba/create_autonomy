@@ -1,12 +1,11 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(ca_bumper2pc)
-find_package(catkin REQUIRED COMPONENTS 
-  roscpp 
-  nodelet 
-  pluginlib 
+find_package(catkin REQUIRED COMPONENTS
+  roscpp
+  nodelet
+  pluginlib
   ca_msgs
-  sensor_msgs 
-  kobuki_msgs
+  sensor_msgs
 )
 
 catkin_package(
