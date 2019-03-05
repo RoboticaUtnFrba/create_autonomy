@@ -54,18 +54,11 @@ $ sudo apt-get install python-rosdep python-catkin-tools
     $ mkdir -p ~/create_ws/src
     ```
 
-2. Clone this repo and its dependencies
+2. Clone this repo
     ``` bash
     $ cd ~/create_ws/src
-    $ git clone https://github.com/RoboticaUtnFrba/create_autonomy.git && \
-      git clone https://github.com/RoboticaUtnFrba/libcreate.git && \
-      git clone https://github.com/RoboticaUtnFrba/RTIMULib2.git && \
-      git clone https://github.com/RoboticaUtnFrba/i2c_imu.git && \
-      git clone https://github.com/RoboticaUtnFrba/viso2.git && \
-      git clone https://github.com/RoboticaUtnFrba/gscam.git
+    $ git clone https://github.com/RoboticaUtnFrba/create_autonomy.git
     ```
-
-    **Note:** this approach will be changed with a next PR using `vcstool`.
 
 3. Compile RTIMULib2
     ```bash
@@ -81,20 +74,16 @@ $ sudo apt-get install python-rosdep python-catkin-tools
     ``` bash
     $ sudo apt-get install -y gstreamer1.0-tools libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-good1.0-dev
     $ cd ~/create_ws
-<<<<<<< HEAD
-    $ rosdep install --from-path src/ -y -i
-=======
     $ sudo apt install -y python3-vcstool
     $ vcs import src < src/create_autonomy/<DEVICE>.repos
     $ rosdep update
     $ rosdep install --from-paths src -i
->>>>>>> 66c3da928edbd4bcedb572928eadf7e2fa4cab50
     ```
 
 4. Build
 
     4.1. Build RTIMULib2 for Raspberry Pi
-        
+
         $ cd ~/create_ws/src/RTIMULib2/Linux
         $ mkdir build
         $ cd build
