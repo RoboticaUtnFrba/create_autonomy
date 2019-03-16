@@ -7,8 +7,8 @@
         <alwaysOn>true</alwaysOn>
         <rosDebugLevel>na</rosDebugLevel>
         <updateRate>${diffdrive_update_rate}</updateRate>
-        <leftJoint>right_wheel_joint</leftJoint>
-        <rightJoint>left_wheel_joint</rightJoint>
+        <leftJoint>left_wheel_joint</leftJoint>
+        <rightJoint>right_wheel_joint</rightJoint>
         <wheelSeparation>${wheel_separation}</wheelSeparation>
         <wheelDiameter>${wheel_radius * 2}</wheelDiameter>
         <wheelTorque>${wheel_torque}</wheelTorque>
