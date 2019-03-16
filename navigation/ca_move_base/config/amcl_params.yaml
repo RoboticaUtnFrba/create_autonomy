@@ -1,7 +1,4 @@
 use_map_topic: false
-initial_pose_x: 0.0
-initial_pose_y: 0.0
-initial_pose_a: 0.0
 odom_frame_id: "odom"
 base_frame_id: "base_link"
 global_frame_id: "map"
