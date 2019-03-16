@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:macro name="roomblock_gazebo" params="link_name">
 
-    <gazebo reference="block_link">
+    <gazebo reference="${link_name}">
       <material>Gazebo/Grey</material>
     </gazebo>
 
