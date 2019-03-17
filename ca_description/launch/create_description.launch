@@ -11,6 +11,6 @@
 
   <!-- RViz -->
   <include if="$(arg rviz)" file="$(find ca_tools)/launch/rviz.launch">
-    <arg name="config_file" value="$(find ca_description)/rviz/robot_description.rviz"/>
+    <arg name="config_file" value="$(find ca_tools)/rviz/robot_description.rviz"/>
   </include>
 </launch>

@@ -23,7 +23,7 @@
 
 	<!-- RViz -->
 	<include if="$(arg rviz)" file="$(find ca_tools)/launch/rviz.launch">
-    <arg name="config_file" value="$(find ca_move_base)/rviz/navigation.rviz"/>
+    <arg name="config_file" value="$(find ca_tools)/rviz/navigation.rviz"/>
   </include>
 
 </launch>
