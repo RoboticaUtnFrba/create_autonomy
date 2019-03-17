@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="model" default="$(find ca_description)/urdf/create_2.urdf.xacro"/>
+  <arg name="model" default="$(find ca_description)/urdf/create_2.xacro"/>
 
   <arg name="visualize" default="false"/>
   <arg name="rviz" default="false"/>
