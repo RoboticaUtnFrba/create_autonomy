@@ -1,13 +1,13 @@
 repositories:
   i2c_imu:
     type: git
-    url: git@github.com:RoboticaUtnFrba/i2c_imu.git
+    url: https://github.com/RoboticaUtnFrba/i2c_imu.git
     version: master
   libcreate:
     type: git
-    url: git@github.com:RoboticaUtnFrba/libcreate.git
+    url: https://github.com/RoboticaUtnFrba/libcreate.git
     version: master
   RTIMULib2:
     type: git
-    url: git@github.com:RoboticaUtnFrba/RTIMULib2.git
+    url: https://github.com/RoboticaUtnFrba/RTIMULib2.git
     version: master
