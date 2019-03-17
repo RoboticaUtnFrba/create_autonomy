@@ -6,23 +6,32 @@
 
   <xacro:property name="parent_link" value="${parent}"/>
   <xacro:property name="camera_link" value="raspicam_link"/>
+  <xacro:property name="optical_link" value="raspicam_link_optical"/>
 
   <xacro:property name="x" value="0.04"/>
   <xacro:property name="y" value="0.0"/>
   <xacro:property name="z" value="0.1"/>
-  <xacro:property name="R" value="0.0"/>
+  <xacro:property name="R" value="${-pi/2}"/>
   <xacro:property name="P" value="0.0"/>
-  <xacro:property name="Y" value="0.0"/>
+  <xacro:property name="Y" value="${-pi/2}"/>
 
   <joint name="camera_joint" type="fixed">
-    <origin xyz="${x} ${y} ${z}" rpy="${R} ${P} ${Y}" />
+    <origin xyz="${x} ${y} ${z}" rpy="0 0 0" />
     <parent link="${parent_link}" />
     <child link="${camera_link}" />
   </joint>
   <link name="${camera_link}"/>
 
+  <joint name="optical_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="${R} ${P} ${Y}" />
+    <parent link="${camera_link}" />
+    <child link="${optical_link}" />
+  </joint>
+  <link name="${optical_link}"/>
+
+
   <!-- Gazebo plugin -->
-  <xacro:camera_sensor_gazebo link_name="${camera_link}"/>
+  <xacro:camera_sensor_gazebo link_name="${optical_link}"/>
 
 </xacro:macro>
 </robot>
