@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(ca_node)
 
+add_compile_options(-std=c++11)
+
 find_package(catkin REQUIRED COMPONENTS
   libcreate
   roscpp
@@ -22,8 +24,21 @@ find_package(Boost REQUIRED system thread)
 
 catkin_package(
   LIBRARIES ca_nodelet ca_driver
-  CATKIN_DEPENDS libcreate roscpp std_msgs geometry_msgs nav_msgs sensor_msgs tf ca_msgs ca_description diagnostic_msgs diagnostic_updater nodelet pluginlib
-ecl_threads
+  CATKIN_DEPENDS 
+    libcreate 
+    roscpp 
+    std_msgs 
+    geometry_msgs 
+    nav_msgs 
+    sensor_msgs 
+    tf 
+    ca_msgs 
+    ca_description 
+    diagnostic_msgs 
+    diagnostic_updater 
+    nodelet 
+    pluginlib
+    ecl_threads
 )
 
 include_directories(
@@ -42,5 +57,3 @@ install(DIRECTORY launch
 
 install(PROGRAMS scripts/kinect_power.py
         DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
-
-

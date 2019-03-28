@@ -13,7 +13,9 @@
   <xacro:property name="Y" value="${pi/2}"/>
 
   <link name="${prefix}_wheel_link">
-    <xacro:dummy_inertia/>
+    <xacro:inertial_cylinder_with_pose mass="0.1" radius="${wheel_radius}" length="${wheel_width}">
+      <origin xyz="0 0 0" rpy="${R} ${P} ${Y}" />
+    </xacro:inertial_cylinder_with_pose>
 
     <visual>
       <origin xyz="0 0 0" rpy="${R} ${P} ${Y}" />

@@ -19,4 +19,10 @@
     args="load RobotLocalization/EkfNodelet $(arg nodelet_manager)">
     <rosparam command="load" file="$(find ca_localization)/config/ekf_localization.yaml" />
   </node>
+
+  <!-- RViz -->
+  <arg name="rviz" default="false"/>
+  <include if="$(arg rviz)" file="$(find ca_tools)/launch/rviz.launch">
+    <arg name="config_file" value="$(find ca_tools)/rviz/localization.rviz"/>
+  </include>
 </launch>

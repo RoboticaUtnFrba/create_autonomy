@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>ca_slam</name>
+  <version>0.0.0</version>
+  <description>The ca_slam package</description>
+
+  <maintainer email="emiliano.borghi@gmail.com">Emiliano Borghi</maintainer>
+
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <!-- ROS Melodic doesn't support navigation yet -->
+  <!-- <build_depend>slam_gmapping</build_depend> -->
+  <!-- <build_export_depend>slam_gmapping</build_export_depend> -->
+  <exec_depend>slam_gmapping</exec_depend>
+
+  <export>
+  </export>
+</package>

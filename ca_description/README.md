@@ -30,5 +30,5 @@ $ check_urdf test.urdf
 
 To see how Gazebo will use the robot description,
 ```bash
-gzsdf print test.urdf > test.sdf
+gz sdf -p test.urdf > test.sdf
 ```

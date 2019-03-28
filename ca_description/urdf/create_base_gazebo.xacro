@@ -1,14 +1,19 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:macro name="sim_create_base">
+
+    <xacro:property name="diffdrive_update_rate" value="40"/>
+    <xacro:property name="wheel_torque" value="0.5"/>
+    <xacro:property name="wheel_accel" value="0.5"/>
+
     <gazebo>
       <!-- Diff-drive controller -->
       <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
         <alwaysOn>true</alwaysOn>
         <rosDebugLevel>na</rosDebugLevel>
         <updateRate>${diffdrive_update_rate}</updateRate>
-        <leftJoint>right_wheel_joint</leftJoint>
-        <rightJoint>left_wheel_joint</rightJoint>
+        <leftJoint>left_wheel_joint</leftJoint>
+        <rightJoint>right_wheel_joint</rightJoint>
         <wheelSeparation>${wheel_separation}</wheelSeparation>
         <wheelDiameter>${wheel_radius * 2}</wheelDiameter>
         <wheelTorque>${wheel_torque}</wheelTorque>
@@ -20,7 +25,7 @@
         <publishWheelTF>true</publishWheelTF>
         <publishOdomTF>true</publishOdomTF>
         <publishWheelJointState>true</publishWheelJointState>
-        <legacyMode>true</legacyMode>
+        <legacyMode>false</legacyMode>
         <odometrySource>world</odometrySource>
         <publishTf>1</publishTf>
       </plugin>
@@ -28,7 +33,7 @@
       <!-- Ground truth -->
       <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
         <alwaysOn>true</alwaysOn>
-        <updateRate>100.0</updateRate>
+        <updateRate>60.0</updateRate>
         <bodyName>base_link</bodyName>
         <topicName>gts</topicName>
         <gaussianNoise>0</gaussianNoise>

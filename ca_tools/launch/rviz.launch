@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="config_file" default=""/>
+  <arg name="config_file" default="default"/>
   <node type="rviz" name="rviz" pkg="rviz" args="-d $(arg config_file)" required="false"/>
 </launch>

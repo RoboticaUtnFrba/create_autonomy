@@ -1,5 +1,35 @@
+/**
+Software License Agreement (BSD)
+\file      create_driver.h
+\authors   Jacob Perron <jacobmperron@gmail.com>
+\copyright Copyright (c) 2015, Autonomy Lab (Simon Fraser University), All rights reserved.
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+ * Redistributions of source code must retain the above copyright notice,
+   this list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+ * Neither the name of Autonomy Lab nor the names of its contributors may
+   be used to endorse or promote products derived from this software without
+   specific prior written permission.
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+*/
+
 #ifndef CREATE_AUTONOMY_CREATE_DRIVER_H
 #define CREATE_AUTONOMY_CREATE_DRIVER_H
+
+#include <memory>
 
 #include <ros/ros.h>
 #include <std_msgs/Empty.h>
@@ -12,6 +42,7 @@
 #include <sensor_msgs/JointState.h>
 #include <geometry_msgs/Twist.h>
 #include <geometry_msgs/TransformStamped.h>
+#include <geometry_msgs/PoseWithCovarianceStamped.h>
 #include <nav_msgs/Odometry.h>
 #include <tf/transform_broadcaster.h>
 #include <diagnostic_updater/diagnostic_updater.h>
@@ -49,17 +80,17 @@ static const float SONG_4_DURATIONS [] = {0.9,0.8,0.2,0.2,0.2,0.8,0.7,0.2,0.2,0.
 
 // Unused covariances must have a large value
 static const double MAX_DBL = 1e10;
-static const double COVARIANCE[36] = {1e-5, 1e-5, 0.0,     0.0,     0.0,     1e-5,
-                                      1e-5, 1e-5, 0.0,     0.0,     0.0,     1e-5,
+static const double COVARIANCE[36] = {1e-5, 0.0,  0.0,     0.0,     0.0,     0.0,
+                                      1e-5, 0.0,  0.0,     0.0,     0.0,     0.0,
                                       0.0,  0.0,  MAX_DBL, 0.0,     0.0,     0.0,
                                       0.0,  0.0,  0.0,     MAX_DBL, 0.0,     0.0,
                                       0.0,  0.0,  0.0,     0.0,     MAX_DBL, 0.0,
-                                      1e-5, 1e-5, 0.0,     0.0,     0.0,     1e-5};
+                                      0.0,  0.0,  0.0,     0.0,     0.0,     1e-3};
 
 class CreateDriver
 {
 private:
-  create::Create* robot_;
+  std::unique_ptr<create::Create> robot_;
   create::RobotModel model_;
   tf::TransformBroadcaster tf_broadcaster_;
   diagnostic_updater::Updater diagnostics_;
@@ -69,6 +100,7 @@ private:
   ca_msgs::Cliff cliff_msg_;
   ca_msgs::Wheeldrop wheeldrop_msg_;
   nav_msgs::Odometry odom_msg_;
+  geometry_msgs::PoseWithCovarianceStamped angle_msg_;
   geometry_msgs::TransformStamped tf_odom_;
   ros::Time last_cmd_vel_time_;
   std_msgs::Empty empty_msg_;
@@ -79,6 +111,7 @@ private:
   std_msgs::Bool is_wall_msg_;
   ca_msgs::Overcurrent is_overcurrent_msg_;
   bool is_running_slowly_;
+  double orientation_;
 
   // ROS params
   double loop_hz_;
@@ -106,6 +139,7 @@ private:
   void updateModeDiagnostics(diagnostic_updater::DiagnosticStatusWrapper& stat);
   void updateDriverDiagnostics(diagnostic_updater::DiagnosticStatusWrapper& stat);
   void publishOdom();
+  void publishAngle();
   void publishJointState();
   void publishBatteryInfo();
   void publishButtonPresses() const;
@@ -116,6 +150,13 @@ private:
   void publishWheeldrop();
   void publishIsWall();
   void publishOvercurrent();
+
+  inline float normalizeAngle(float angle) {
+    angle = std::fmod(angle + M_PI,2*M_PI);
+    if (angle < 0)
+        angle += 2*M_PI;
+    return angle - M_PI;
+  };
 
 protected:
   ros::NodeHandle nh_;
@@ -133,6 +174,7 @@ protected:
   ros::Subscriber main_motor_sub_;
 
   ros::Publisher odom_pub_;
+  ros::Publisher angle_pub_;
   ros::Publisher clean_btn_pub_;
   ros::Publisher day_btn_pub_;
   ros::Publisher hour_btn_pub_;

@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(ca_driver)
 
+add_compile_options(-std=c++11)
+
 find_package(libcreate REQUIRED)
 
 find_package(catkin REQUIRED COMPONENTS
@@ -54,15 +56,8 @@ install(TARGETS ${PROJECT_NAME}
 install(DIRECTORY include
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
   FILES_MATCHING PATTERN "*.h"
-  PATTERN ".svn" EXCLUDE
 )
 
-install(DIRECTORY launch/
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
-  PATTERN ".svn" EXCLUDE
-)
-
-install(DIRECTORY config/
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/config
-  PATTERN ".svn" EXCLUDE
+install(DIRECTORY launch config
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )

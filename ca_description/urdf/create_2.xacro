@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<robot name="create_2" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find ca_description)/urdf/create_base.xacro"/>
+  <xacro:include filename="$(find ca_description)/urdf/roomblock.xacro"/>
+
+  <xacro:property name="wheel_separation" value="0.235"/>
+  <xacro:property name="base_diameter" value="0.3485"/>
+  <xacro:property name="wheel_width" value="0.024"/>
+  <xacro:property name="wheel_radius" value="0.036"/>
+  
+  <xacro:create_base wheel_separation="${wheel_separation}" 
+                     base_diameter="${base_diameter}" 
+                     wheel_width="${wheel_width}"
+                     wheel_radius="${wheel_radius}"
+                     visualize="$(arg visualize)">
+    <mesh filename="package://ca_description/meshes/create_2.dae" />
+  </xacro:create_base>
+
+  <!-- Roomblock -->
+  <xacro:roomblock parent="base_link" visualize="$(arg visualize)"/>
+</robot>

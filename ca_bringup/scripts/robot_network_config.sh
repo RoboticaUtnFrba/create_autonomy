@@ -2,7 +2,7 @@
 
 # usage: source robot_network_config.sh
 
-ROBOT_IP=$(ip a s|sed -ne '/127.0.0.1/!{s/^[ \t]*inet[ \t]*\([0-9.]\+\)\/.*$/\1/p}')
+ROBOT_IP=`hostname -I | cut --delimiter " " --fields 1`
 
 echo "Configuring ROS Networking on Master [IP: $ROBOT_IP]"
 

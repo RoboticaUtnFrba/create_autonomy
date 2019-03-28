@@ -1,21 +1,22 @@
 <launch>
-    <!-- gscam to receive frames from raspicam and remaping them to a ROS topic -->
-    <arg name="cam_name" value="raspicam"/>
-    <arg name="cam_topic" value="/$(arg cam_name)/image_raw"/>
-
     <env name="GSCAM_CONFIG" value="udpsrc port=9000 ! application/x-rtp, payload=96 ! rtpjitterbuffer ! rtph264depay ! avdec_h264 ! videoconvert"/>
 
-    <node pkg="gscam" type="gscam" name="$(arg cam_name)">
-        <param name="camera_name" value="$(arg cam_name)"/>
-        <remap from="camera/image_raw" to="$(arg cam_topic)"/>
-        <param name="camera_info_url" value="package://ca_visual_odometry/config/ost.yaml"/>
-    </node>
+    <!-- <node pkg="gscam" type="gscam" name="gscam" output="screen">
+      <rosparam file="$(find ca_visual_odometry)/config/gscam.yaml" command="load"/>
+      <remap from="camera/image_raw" to="raspicam/image_raw"/>
+    </node> -->
 
+    <!-- Recitifies image_raw -->
     <node pkg="ca_visual_odometry" type="image_rect" name="image_rect"/>
 
-    <node pkg="viso2_ros" type="mono_odometer" name="visual_odometry" args="image:=/raspicam/image_rect"/>
+    <node pkg="viso2_ros" type="mono_odometer" name="visual_odometry" args="image:=/raspicam/image_rect" output="screen">
+      <rosparam file="$(find ca_visual_odometry)/config/viso2.yaml" command="load"/>
+      <remap from="image" to="raspicam/image_rect"/>
+    </node>
 
     <!-- RViz -->
     <arg name="rviz" default="false"/>
-    <include if="$(arg rviz)" file="$(find ca_tools)/launch/rviz.launch"/>
+    <include if="$(arg rviz)" file="$(find ca_tools)/launch/rviz.launch">
+      <arg name="config_file" value="$(find ca_tools)/rviz/visual_odom.rviz"/>
+    </include>
 </launch>

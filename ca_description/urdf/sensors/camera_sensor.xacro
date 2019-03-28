@@ -1,28 +1,16 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
-<xacro:include filename="$(find ca_description)/urdf/sensors/camera_sensor_gazebo.xacro"/>
+<xacro:include filename="$(find ca_description)/urdf/sensors/camera_generic.xacro"/>
 
 <xacro:macro name="camera_sensor" params="parent">
-
-  <xacro:property name="parent_link" value="${parent}"/>
-  <xacro:property name="camera_link" value="raspicam_link"/>
 
   <xacro:property name="x" value="0.04"/>
   <xacro:property name="y" value="0.0"/>
   <xacro:property name="z" value="0.1"/>
-  <xacro:property name="R" value="0.0"/>
-  <xacro:property name="P" value="0.0"/>
-  <xacro:property name="Y" value="0.0"/>
 
-  <joint name="camera_joint" type="fixed">
-    <origin xyz="${x} ${y} ${z}" rpy="${R} ${P} ${Y}" />
-    <parent link="${parent_link}" />
-    <child link="${camera_link}" />
-  </joint>
-  <link name="${camera_link}"/>
-
-  <!-- Gazebo plugin -->
-  <xacro:camera_sensor_gazebo link_name="${camera_link}"/>
+  <xacro:generic_camera name="raspicam" parent="${parent}">
+    <origin xyz="${x} ${y} ${z}" rpy="0 0 0"/>
+  </xacro:generic_camera>
 
 </xacro:macro>
 </robot>

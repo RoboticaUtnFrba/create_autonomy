@@ -1,0 +1,8 @@
+<launch>
+  <arg name="scan_topic"  default="laser/scan"/>
+
+  <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
+    <rosparam file="$(find ca_slam)/config/slam_gmapping.yaml" command="load"/>
+    <remap from="scan" to="$(arg scan_topic)"/>
+  </node>
+</launch>

@@ -7,20 +7,6 @@ This package wraps the C++ library [libcreate][libcreate], which uses iRobot's [
 * Support: [ROS Answers (tag: create_autonomy)](http://answers.ros.org/questions/scope:all/sort:activity-desc/tags:create_autonomy/page:1/)
 * Author: [Jacob Perron](http://jacobperron.ca) ([Autonomy Lab](http://autonomylab.org), [Simon Fraser University](http://www.sfu.ca))
 
-## Supported Robots
-
-| Model     | Support    |
-|-----------|------------|
-| Create 1  |  Yes       |
-| Create 2  _(firmware >= 3.2.6)_ |  Yes       |
-| Roomba Original Series | No  |
-| Roomba 400 Series |  Yes  |
-| Roomba 500 Series |  Yes *  |
-| Roomba 600 Series |  Yes * |
-| Roomba 700 Series |  Yes +  |
-| Roomba 800 Series |  Yes + |
-| Roomba 900 Series |  No *  |
-
 ## Features
 
 |  Feature          |  Status       |
@@ -53,8 +39,8 @@ This package wraps the C++ library [libcreate][libcreate], which uses iRobot's [
 
 #### Prerequisites
 
-* Internet connection
-* [ROS](http://wiki.ros.org/ROS/Installation) _Kinetic_
+* [ROS](http://wiki.ros.org/ROS/Installation) _Kinetic_ or _Melodic_
+* [Gazebo 9](http://gazebosim.org/tutorials?cat=install&tut=install_ubuntu&ver=9.0#Alternativeinstallation:step-by-step) or higher
 * Ubuntu packages: `python-rosdep`, `python-catkin-tools`
 
 ``` bash
@@ -63,32 +49,54 @@ $ sudo apt-get install python-rosdep python-catkin-tools
 
 #### Compiling
 
-1. Create a catkin workspace  
+1. Create a catkin workspace
     ``` bash
-    $ cd ~
-    $ mkdir -p create_ws/src  
-    $ cd create_ws  
-    $ catkin init  
+    $ mkdir -p ~/create_ws/src
     ```
 
-2. Clone this repo  
+2. Clone this repo
     ``` bash
     $ cd ~/create_ws/src
-    $ git clone https://github.com/eborghi10/create_autonomy.git  
-    ```
-  
-3. Install dependencies  
-    ``` bash
-    $ cd ~/create_ws
-    $ rosdep update  
-    $ rosdep install --from-paths src -i  
+    $ git clone https://github.com/RoboticaUtnFrba/create_autonomy.git
     ```
 
-4. Build  
-    ``` bash
-    $ cd ~/create_ws
-    $ catkin_make
+3. Compile RTIMULib2
+    ```bash
+    $ cd ~/create_ws/src/RTIMULib2/Linux && mkdir build && cd build
+    $ sudo apt-get install -y libqt4-dev
+    $ cmake ..
+    $ make -j4
+    $ sudo make install
+    $ sudo ldconfig
     ```
+
+3. Install dependencies
+    ``` bash
+    $ sudo apt-get install -y gstreamer1.0-tools libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-good1.0-dev
+    $ cd ~/create_ws
+    $ sudo apt install -y python3-vcstool
+    $ vcs import src < src/create_autonomy/<DEVICE>.repos
+    $ rosdep update
+    $ rosdep install --from-paths src -i
+    ```
+
+4. Build
+
+    4.1. Build RTIMULib2 for Raspberry Pi
+
+        $ cd ~/create_ws/src/RTIMULib2/Linux
+        $ mkdir build
+        $ cd build
+        $ cmake ..
+        $ make -j4
+        $ sudo make install
+        $ sudo ldconfig
+
+    4.2. Build workspace
+
+        $ cd ~/create_ws
+        $ catkin_make -DCMAKE_BUILD_TYPE=Release
+
 #### USB Permissions
 5. In order to connect to Create over USB, ensure your user is in the dialout group
     ``` bash
@@ -101,13 +109,12 @@ $ sudo apt-get install python-rosdep python-catkin-tools
 
 ### Setup
 
-1. After compiling from source, don't forget to source your workspace:  
+1. After compiling from source, **don't forget to source your workspace**:
     ``` bash
     $ source ~/create_ws/devel/setup.bash
     ```
 
 2. Connect computer to Create's 7-pin serial port
-  - If using Create 1, ensure that nothing is connected to Create's DB-25 port
 
 3. Launch one of the existing launch files or adapt them to create your own.
 
@@ -155,6 +162,7 @@ $ roslaunch ca_driver create_2.launch config:=/abs/path/to/config.yaml desc:=fal
  `battery/voltage` | Voltage of the robot's battery (V) | [std_msgs/Float32][float32]
  `bumper` | Bumper state message (including light sensors on bumpers) | [ca_msgs/Bumper][bumper_msg]
  `clean_button` | 'clean' button is pressed ('play' button for Create 1) | [std_msgs/Empty][empty]
+ `cliff` | 'cliff' sensors are pressed | [ca_msgs/Cliff][cliff_msg]
  `day_button` |  'day' button is pressed | [std_msgs/Empty][empty]
  `hour_button` | 'hour' button is pressed | [std_msgs/Empty][empty]
  `minute_button` | 'minute' button is pressed | [std_msgs/Empty][empty]
@@ -164,8 +172,9 @@ $ roslaunch ca_driver create_2.launch config:=/abs/path/to/config.yaml desc:=fal
  `joint_states` | The states (position, velocity) of the drive wheel joints | [sensor_msgs/JointState][jointstate_msg]
  `mode` | The current mode of the robot (See [OI Spec][oi_spec] for details)| [ca_msgs/Mode][mode_msg]
  `odom` |  Robot odometry according to wheel encoders | [nav_msgs/Odometry][odometry]
+ `wall` | Wall is detected | [std_msgs/Bool][bool]
  `wheeldrop` | At least one of the drive wheels has dropped | [std_msgs/Empty][empty]
- `/tf` | The transform from the `odom` frame to `base_footprint`. Only if the parameter `publish_tf` is `true` | [tf2_msgs/TFMessage](http://docs.ros.org/jade/api/tf2_msgs/html/msg/TFMessage.html)
+ `/tf` | The transform from the `odom` frame to `base_footprint`. Only if the parameter `publish_tf` is `true` | [tf2_msgs/TFMessage](tf_msg)
 
 
 ### Subscribers
@@ -210,7 +219,7 @@ There exists configuration files for the [Xbox 360 wired controller](https://www
 
 ## Contributions
 
-Contributing to the development and maintenance of _create\_autonomy_ is encouraged. Feel free to open issues or create pull requests on [GitHub](https://github.com/AutonomyLab/create_autonomy).
+Contributing to the development and maintenance of _create\_autonomy_ is encouraged. Feel free to open issues or create pull requests on [GitHub](https://github.com/RoboticaUtnFrba/create_autonomy).
 
 ### Contributors
 
@@ -218,11 +227,11 @@ Contributing to the development and maintenance of _create\_autonomy_ is encoura
     - Confirms driver works with Roomba 700 and 800 series.
 * [Clyde McQueen](https://github.com/clydemcqueen)
     - Added support for sound ([#37](https://github.com/AutonomyLab/create_autonomy/pull/37)).
-* [Ben Wolsieffer](https://github.com/lopsided98) 
+* [Ben Wolsieffer](https://github.com/lopsided98)
     - Added JointState publisher for wheels ([#26](https://github.com/AutonomyLab/create_autonomy/pull/26)).
     - Added Create 1 description ([#27](https://github.com/AutonomyLab/create_autonomy/pull/27)).
 
-[libcreate]:  https://github.com/AutonomyLab/libcreate
+[libcreate]:  https://github.com/RoboticaUtnFrba/libcreate
 [oi_spec]:  https://www.adafruit.com/datasheets/create_2_Open_Interface_Spec.pdf
 [odometry]:  http://docs.ros.org/api/nav_msgs/html/msg/Odometry.html
 [empty]:  http://docs.ros.org/api/std_msgs/html/msg/Empty.html
@@ -232,11 +241,12 @@ Contributing to the development and maintenance of _create\_autonomy_ is encoura
 [bool]:  http://docs.ros.org/api/std_msgs/html/msg/Bool.html
 [uint8multiarray]:  http://docs.ros.org/api/std_msgs/html/msg/UInt8MultiArray.html
 [float32]:  http://docs.ros.org/api/std_msgs/html/msg/Float32.html
-[ca_msgs]:  http://github.com/AutonomyLab/create_autonomy/tree/indigo-devel
-[bumper_msg]:  https://github.com/AutonomyLab/create_autonomy/blob/indigo-devel/ca_msgs/msg/Bumper.msg
-[mode_msg]:  https://github.com/AutonomyLab/create_autonomy/blob/indigo-devel/ca_msgs/msg/Mode.msg
-[chargingstate_msg]:  https://github.com/AutonomyLab/create_autonomy/blob/indigo-devel/ca_msgs/msg/ChargingState.msg
+[ca_msgs]:  http://github.com/RoboticaUtnFrba/create_autonomy/tree/kinetic-devel
+[bumper_msg]:  https://github.com/RoboticaUtnFrba/create_autonomy/blob/kinetic-devel/ca_msgs/msg/Bumper.msg
+[cliff_msg]:https://github.com/RoboticaUtnFrba/create_autonomy/blob/kinetic-devel/ca_msgs/msg/Cliff.msg
+[mode_msg]:  https://github.com/RoboticaUtnFrba/create_autonomy/blob/kinetic-devel/ca_msgs/msg/Mode.msg
+[chargingstate_msg]:  https://github.com/RoboticaUtnFrba/create_autonomy/blob/kinetic-devel/ca_msgs/msg/ChargingState.msg
 [jointstate_msg]:  http://docs.ros.org/api/sensor_msgs/html/msg/JointState.html
-[definesong_msg]:  https://github.com/AutonomyLab/create_autonomy/blob/indigo-devel/ca_msgs/msg/DefineSong.msg
-[playsong_msg]:  https://github.com/AutonomyLab/create_autonomy/blob/indigo-devel/ca_msgs/msg/PlaySong.msg
-
+[definesong_msg]:  https://github.com/RoboticaUtnFrba/create_autonomy/blob/kinetic-devel/ca_msgs/msg/DefineSong.msg
+[playsong_msg]:  https://github.com/RoboticaUtnFrba/create_autonomy/blob/kinetic-devel/ca_msgs/msg/PlaySong.msg
+[tf_msg]: http://docs.ros.org/jade/api/tf2_msgs/html/msg/TFMessage.html

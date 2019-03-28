@@ -13,12 +13,17 @@ Block on top of the Create 2 that contains a Raspicam and an RPLidar
     <xacro:property name="z" value="0.061"/>
     <xacro:property name="roomblock_link" value="block_link"/>
     <xacro:property name="parent_link" value="${parent}"/>
+    <xacro:property name="roomblock_mass" value="0.1"/>
+    <xacro:property name="roomblock_size_x" value="0.1"/>
+    <xacro:property name="roomblock_size_y" value="0.1"/>
+    <xacro:property name="roomblock_size_z" value="0.07"/>
 
     <joint name="block_joint" type="fixed">
       <origin xyz="0 0 ${z}" rpy="0 0 0" />
       <parent link="${parent_link}"/>
       <child link="${roomblock_link}" />
     </joint>
+
     <link name="${roomblock_link}">
       <visual>
         <geometry>
@@ -26,10 +31,15 @@ Block on top of the Create 2 that contains a Raspicam and an RPLidar
         </geometry>
         <material name="Grey" />
       </visual>
+      <xacro:inertial_cuboid_with_pose mass="${roomblock_mass}" 
+                                       x_length="${roomblock_size_x}" 
+                                       y_length="${roomblock_size_y}" 
+                                       z_length="${roomblock_size_z}">
+        <origin xyz="0 0 ${roomblock_size_z/2}" rpy="0 0 0"/>
+      </xacro:inertial_cuboid_with_pose>
     </link>
 
     <xacro:laser_sensor parent="${roomblock_link}" visualize="$(arg visualize)"/>
-
     <xacro:camera_sensor parent="${roomblock_link}"/>
 
     <xacro:roomblock_gazebo link_name="${roomblock_link}"/>
