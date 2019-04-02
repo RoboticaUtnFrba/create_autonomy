@@ -20,9 +20,10 @@ install:
   - sudo rosdep init
   - rosdep update
   # Use rosdep to install all dependencies (including ROS itself)
+  - mkdir -p $CATKIN_WS_SRC
+  - git clone https://github.com/RoboticaUtnFrba/i2c_imu.git $CATKIN_WS_SRC/i2c_imu
   - rosdep install --from-paths ./ -i -y --rosdistro $CI_ROS_DISTRO
   - source /opt/ros/$CI_ROS_DISTRO/setup.bash
-  - mkdir -p $CATKIN_WS_SRC
   # Add the package under integration to the workspace using a symlink
   - ln -s $TRAVIS_BUILD_DIR $CATKIN_WS_SRC
 
