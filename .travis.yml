@@ -21,6 +21,7 @@ install:
   - rosdep update
   # Use rosdep to install all dependencies (including ROS itself)
   - git clone https://github.com/RoboticaUtnFrba/i2c_imu.git $TRAVIS_BUILD_DIR/i2c_imu
+  - git clone https://github.com/RoboticaUtnFrba/libcreate.git $TRAVIS_BUILD_DIR/libcreate
   - rosdep install --from-paths ./ -i -y --rosdistro $CI_ROS_DISTRO
   - source /opt/ros/$CI_ROS_DISTRO/setup.bash
   - mkdir -p $CATKIN_WS_SRC
