@@ -7,6 +7,10 @@ This package wraps the C++ library [libcreate][libcreate], which uses iRobot's [
 * Support: [ROS Answers (tag: create_autonomy)](http://answers.ros.org/questions/scope:all/sort:activity-desc/tags:create_autonomy/page:1/)
 * Author: [Jacob Perron](http://jacobperron.ca) ([Autonomy Lab](http://autonomylab.org), [Simon Fraser University](http://www.sfu.ca))
 
+## Build status ##
+
+![Build Status](https://api.travis-ci.org/RoboticaUtnFrba/create_autonomy.svg?branch=kinetic-devel)
+
 ## Features
 
 |  Feature          |  Status       |
