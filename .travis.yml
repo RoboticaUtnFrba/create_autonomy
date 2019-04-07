@@ -26,7 +26,7 @@ install:
   # Install and compile RTIMULib2
   - git clone https://github.com/RoboticaUtnFrba/RTIMULib2.git $TRAVIS_BUILD_DIR/RTIMULib2
   - cd $TRAVIS_BUILD_DIR/RTIMULib2/Linux && mkdir build && cd build
-  - sudo apt-get install -qq -y libqt4-dev
+  - sudo apt-get install -qq -y libqt4-dev libqt4-opengl-dev
   - cmake ..
   - make -j4
   - sudo make install
