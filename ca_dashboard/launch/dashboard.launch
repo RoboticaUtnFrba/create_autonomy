@@ -1,0 +1,3 @@
+<launch>
+  <node pkg="ca_dashboard" type="create_dashboard" name="create_dashboard" output="screen"/>
+</launch>
