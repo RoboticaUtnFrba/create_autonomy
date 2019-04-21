@@ -10,7 +10,7 @@ Block on top of the Create 2 that contains a Raspicam and an RPLidar
 
   <xacro:macro name="roomblock" params="parent visualize:=false">
 
-    <xacro:property name="z" value="0.061"/>
+    <xacro:property name="z" value="0.07"/>
     <xacro:property name="roomblock_link" value="block_link"/>
     <xacro:property name="parent_link" value="${parent}"/>
     <xacro:property name="roomblock_mass" value="0.1"/>
