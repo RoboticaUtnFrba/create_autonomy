@@ -9,7 +9,7 @@
   </include>
 
   <!-- IMU -->
-  <include file="$(find ca_imu)/launch/imu.launch"/>
+  <!-- <include file="$(find ca_imu)/launch/imu.launch"/> -->
 
   <!-- TODO: Add sensors:
   * Intel RealSense R200
