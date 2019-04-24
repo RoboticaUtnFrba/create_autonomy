@@ -6,7 +6,7 @@
 
   <xacro:property name="x" value="0.04"/>
   <xacro:property name="y" value="0.0"/>
-  <xacro:property name="z" value="0.1"/>
+  <xacro:property name="z" value="0.06"/>
 
   <xacro:generic_camera name="raspicam" parent="${parent}">
     <origin xyz="${x} ${y} ${z}" rpy="0 0 0"/>
