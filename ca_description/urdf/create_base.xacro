@@ -15,12 +15,15 @@
     <xacro:property name="base_height" value="0.0611632"/>
     <xacro:property name="base_mass" value="2"/>
 
-    <link name="base_footprint"/>
+    <link name="base_footprint">
+      <xacro:dummy_inertia/>
+    </link>
 
-    <joint name="base_footprint_joint" type="fixed">
+    <joint name="base_footprint_joint" type="continuous">
       <origin xyz="0 0 ${base_offset_z}" rpy="0 0 0" />
       <parent link="base_footprint" />
       <child link="base_link" />
+      <axis xyz="1 0 0"/>
     </joint>
 
     <link name="base_link">

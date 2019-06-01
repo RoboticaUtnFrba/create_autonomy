@@ -1,5 +1,8 @@
 Header header
 
+bool PRESSED = True
+bool RELEASED = False
+
 # Contact sensors
 bool is_left_pressed
 bool is_right_pressed
