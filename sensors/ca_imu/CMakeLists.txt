@@ -7,7 +7,6 @@ if( ${CMAKE_SYSTEM_PROCESSOR} MATCHES "arm" )
   ## Find catkin macros and libraries
   find_package(catkin REQUIRED COMPONENTS
     geometry_msgs
-    i2c_imu
     roscpp
     sensor_msgs
     std_msgs
