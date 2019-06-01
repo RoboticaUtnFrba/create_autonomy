@@ -1,5 +1,5 @@
 FROM nvidia/opengl:1.0-glvnd-runtime-ubuntu16.04 as nvidia
-FROM create_gazebo9
+FROM create_ros_melodic_gazebo9
 LABEL maintainer="Emiliano Borghi"
 
 # Installing OpenGL for nvidia-docker2
