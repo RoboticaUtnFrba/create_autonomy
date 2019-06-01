@@ -26,12 +26,9 @@
  * Date: 24 Sept 2008
  */
 #include <ros/ros.h>
-#include <ros/callback_queue.h>
-#include <ros/advertise_options.h>
 #include <tf/transform_datatypes.h>
 
 #include <string>
-#include <boost/thread.hpp>
 
 #include <gazebo/gazebo.hh>
 #include <gazebo/sensors/sensors.hh>
@@ -91,14 +88,6 @@ namespace gazebo
       
       /// \brief for setting ROS namespace
       std::string robot_namespace_;
-      
-      /// \brief Keep track of number of connections
-      int contact_connect_count_;
-      void ContactConnect();
-      void ContactDisconnect();
-      ros::CallbackQueue contact_queue_;
-      void ContactQueueThread();
-      boost::thread callback_queue_thread_;
       
       // Pointer to the update event connection
       event::ConnectionPtr update_connection_;

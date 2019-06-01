@@ -31,7 +31,6 @@ namespace gazebo
 
 CreateBumperPlugin::CreateBumperPlugin()
 : SensorPlugin()
-, contact_connect_count_(0)
 , bumper_left_was_pressed_(false)
 , bumper_center_was_pressed_(false)
 , bumper_right_was_pressed_(false)
@@ -41,7 +40,6 @@ CreateBumperPlugin::CreateBumperPlugin()
 CreateBumperPlugin::~CreateBumperPlugin()
 {
   this->rosnode_.reset();
-  this->callback_queue_thread_.join();
   this->update_connection_.reset();
 }
 
@@ -94,17 +92,9 @@ void CreateBumperPlugin::Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf)
     this->rosnode_->getParam(std::string("tf_prefix"), prefix);
     this->frame_name_ = tf::resolve(prefix, this->frame_name_);
     
-    ros::AdvertiseOptions ao =
-        ros::AdvertiseOptions::create<ca_msgs::Bumper>(
-            std::string(this->bumper_topic_name_),1,
-            boost::bind(&CreateBumperPlugin::ContactConnect, this),
-            boost::bind(&CreateBumperPlugin::ContactDisconnect, this),
-            ros::VoidPtr(), &this->contact_queue_);
-    this->contact_pub_ = this->rosnode_->advertise(ao);
+    this->contact_pub_ = this->rosnode_->advertise<ca_msgs::Bumper>(this->bumper_topic_name_, 5);
 
     this->gts_sub_ = this->rosnode_->subscribe("gts", 1, &CreateBumperPlugin::GtsCb, this);
-    
-    this->callback_queue_thread_ = boost::thread(boost::bind( &CreateBumperPlugin::ContactQueueThread,this ) );
     
     // Listen to the update event. This event is broadcast every
     // simulation iteration.
@@ -114,24 +104,11 @@ void CreateBumperPlugin::Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf)
     // Make sure the parent sensor is active.
     this->bumper_->SetActive(true);
     
-    ROS_INFO("bumper loaded");
-}
-
-void CreateBumperPlugin::ContactConnect()
-{
-  this->contact_connect_count_++;
-}
-
-void CreateBumperPlugin::ContactDisconnect()
-{
-  this->contact_connect_count_--;
+    ROS_INFO("Bumper plugin loaded");
 }
 
 void CreateBumperPlugin::OnUpdate()
 {
-  // if (this->contact_connect_count_ <= 0)
-  //   return;
-
   // reset flags
   this->bumper_left_is_pressed_ = false;
   this->bumper_center_is_pressed_ = false;
@@ -227,17 +204,6 @@ void CreateBumperPlugin::GtsCb(const nav_msgs::Odometry::ConstPtr& msg)
   m.getRPY(roll, pitch, this->robot_heading_);
 }
 
-void CreateBumperPlugin::ContactQueueThread()
-{
-  static const double timeout = 0.01;
-  
-  while (this->rosnode_->ok())
-  {
-    this->contact_queue_.callAvailable(ros::WallDuration(timeout));
-  }
-}
-
 // Register this plugin with the simulator
 GZ_REGISTER_SENSOR_PLUGIN(CreateBumperPlugin);
-
 }
