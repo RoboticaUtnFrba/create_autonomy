@@ -70,7 +70,7 @@ This repository contain the Dockerfile. Move into the directory containing the f
 The command below will **create** the container from the base image if it doesn't exist and log you in.
 
       ```bash
-      $ make create-melodic-gazebo9
+      $ make create_ros_melodic_gazebo9
       ```
 
 ## Step 4: Start the container
@@ -78,7 +78,7 @@ The command below will **create** the container from the base image if it doesn'
 To make it easier, I created the launcher **launch_docker.sh** (you might need to call **chmod +x ./launch_docker.sh** first).
 
       ```bash
-      $ ./launch_docker.sh -d create_nvidia
+      $ ./launch_docker.sh -d create_melodic_nvidia
       ```
 
 Every time you launch the Docker container, you'll need to compile the workspace and source:
