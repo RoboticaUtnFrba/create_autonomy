@@ -1,0 +1,21 @@
+<launch>
+  <!-- https://answers.ros.org/question/229489/how-do-i-create-dynamic-launch-files/ -->
+  <arg name="nr" default="1"/>
+  
+  <!-- Start 1 robot -->
+  <group ns="$(eval 'create' + str(arg('nr')))">
+    <include file="$(find ca_gazebo)/launch/spawn_create.launch">
+      <arg name="i" value="$(arg nr)"/>
+      <!-- <arg name="x" value="(arg x_pos)"/>
+      <arg name="y" value="(arg y_pos)"/>
+      <arg name="z" value="(arg z_pos)"/>
+      <arg name="visualize" value="$(arg visualize)"/>
+      <arg name="rviz" value="$(arg rviz)"/> -->
+    </include>
+  </group>
+
+  <!-- Recursively spawn more robots -->
+  <include file="$(find ca_gazebo)/launch/spawn_multirobot.launch" if="$(eval arg('nr') - 1 > 0)">
+    <arg name="nr" value="$(eval arg('nr') - 1)"/>
+  </include>
+</launch>
