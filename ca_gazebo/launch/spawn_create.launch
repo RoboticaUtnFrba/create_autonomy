@@ -1,0 +1,25 @@
+<launch>
+    <arg name="i" default="1"/>
+
+	<arg name="x" default="0.0"/>
+	<arg name="y" default="0.0"/>
+	<arg name="z" default="0.0"/>
+
+	<arg name="visualize" default="false"/>
+	<arg name="rviz" default="false"/>
+
+    <arg name="model_name" value="irobot_create2.$(arg i)"/>
+    <arg name="pose" value="-x $(arg x) -y $(arg y) -z $(arg z)"/>
+
+    <!-- Create 2 description -->
+	<include file="$(find ca_description)/launch/create_description.launch">
+		<arg name="visualize" value="$(arg visualize)"/>
+		<arg name="rviz" value="$(arg rviz)"/>
+	</include>
+
+    <!-- Spawn URDF into Gazebo -->
+    <!-- TODO: Replace with robot_spawner script that receives pose params -->
+	<node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+ 		  args="-urdf -model $(arg model_name) -param robot_description $(arg pose)" />
+
+</launch>
