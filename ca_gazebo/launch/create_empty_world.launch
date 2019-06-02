@@ -12,6 +12,8 @@
 	<arg name="visualize" default="false"/>
 	<arg name="rviz" default="false"/>
 
+	<rosparam command="load" file="$(find ca_gazebo)/config/robots_pose.yaml"/>
+
 	<!-- Launch Gazebo world -->
 	<include file="$(find gazebo_ros)/launch/empty_world.launch">
 		<arg name="debug" value="$(arg debug)" />
