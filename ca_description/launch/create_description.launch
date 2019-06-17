@@ -6,17 +6,23 @@
   <arg name="visualize" default="false"/>
   <arg name="rviz" default="false"/>
 
+  <arg name="freq" value="5.0"/>
+
   <!-- Robot description -->
   <arg name="xacro_args" value="visualize:=$(arg visualize)"/>
   <param name="robot_description" command="$(find xacro)/xacro --inorder $(arg model) $(arg xacro_args)"/>
   <!-- Robot state publisher-->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen">
-    <param name="publish_frequency" type="double" value="5.0" />
+    <param name="publish_frequency" type="double" value="$(arg freq)" />
     <param name="tf_prefix" value="$(arg robot_name)"/>
   </node>
 
-  <node pkg="tf" type="static_transform_publisher" name="base_link_tf" 
-    	args="0 0 0.017 0 0 0 base_footprint base_link 50" />
+  <!-- Static publisher between base_footprint and base_link -->
+  <arg name="base_offset_z" value="0.017"/>
+  <arg name="parent_link" value="$(arg robot_name)/base_footprint"/>
+  <arg name="child_link" value="$(arg robot_name)/base_link"/>
+  <node name="base_static_tf" pkg="tf" type="static_transform_publisher" 
+        args="0 0 ${base_offset_z} 0 0 0 1 $(arg parent_link) $(arg child_link) $(arg freq)"/>
 
   <!-- RViz -->
   <include if="$(arg rviz)" file="$(find ca_tools)/launch/rviz.launch">
