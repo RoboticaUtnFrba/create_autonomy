@@ -23,11 +23,11 @@ class StateMachine(object):
     if data.is_left_pressed and data.is_right_pressed:
       self.goal_queue.append({'goal': self.move_backward, 'velocity': 0.1, 'duration': 3.})
     if data.is_left_pressed:
-      self.goal_queue.append({'goal': self.move_backward, 'velocity': 0.1, 'duration': 1.})
-      self.goal_queue.append({'goal': self.rotate_right, 'velocity': 0.3, 'duration': 1.})
+      self.goal_queue.append({'goal': self.move_backward, 'velocity': 0.1, 'duration': 1.5})
+      self.goal_queue.append({'goal': self.rotate_right, 'velocity': 0.3, 'duration': 2.})
     elif data.is_right_pressed:
-      self.goal_queue.append({'goal': self.move_backward, 'velocity': 0.1, 'duration': 1.})
-      self.goal_queue.append({'goal': self.rotate_left, 'velocity': 0.3, 'duration': 1.})
+      self.goal_queue.append({'goal': self.move_backward, 'velocity': 0.1, 'duration': 1.5})
+      self.goal_queue.append({'goal': self.rotate_left, 'velocity': 0.3, 'duration': 2.})
     else:
       self.goal_queue.append({'goal': self.move_straight, 'velocity': 0.2, 'duration': 0.})
   
@@ -54,7 +54,9 @@ class StateMachine(object):
     if len(self.goal_queue) > 0:
       # Execute next goal
       goal = self.goal_queue.pop()
-      goal.get('goal')(goal.get('velocity'))
+      end_time = rospy.Time.now().secs + goal.get('duration')
+      while end_time > rospy.Time.now().secs:
+        goal.get('goal')(goal.get('velocity'))
     else:
       # Move straight
       self.move_straight(0.2)
