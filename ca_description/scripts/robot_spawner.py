@@ -43,7 +43,7 @@ class RobotSpawner(object):
       msg.reference_frame = "world"
       res = spawn_urdf_model(msg)
       print(res.status_message)
-    except rospy.ServiceException, e:
+    except rospy.ServiceException:
       print("Could not spawn {}".format(msg.model_name))
       exit(1)
     
@@ -51,13 +51,13 @@ class RobotSpawner(object):
   
   def _get_ros_version(self):
     # Get ROS version
-    p = os.popen("rosversion -d")
-    ros_version = p.read
-    p.close()
-    return ros_version
+    with os.popen("rosversion -d") as ros_version:
+      return ros_version.read()
 
 def main():
-  RobotSpawner()
+  try:
+    RobotSpawner()
+  except rospy.ROSInterruptException: pass
 
 if __name__ == "__main__":
   main()
