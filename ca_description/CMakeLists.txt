@@ -3,6 +3,7 @@ project(ca_description)
 
 find_package(catkin REQUIRED COMPONENTS
   roslaunch
+	tf
 )
 
 catkin_package()
