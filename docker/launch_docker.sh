@@ -31,4 +31,4 @@ docker run -it \
     -e ROS_HOSTNAME=localhost \
     -e ROS_MASTER_URI=http://localhost:11311 \
     $NVIDIA_FLAG \
-    create_nvidia
+    $IMAGE_NAME
