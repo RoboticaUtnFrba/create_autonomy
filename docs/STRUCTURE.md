@@ -49,25 +49,25 @@
 
     a. `ca_localization`
 
-        Implements localization using Kalman filters through the `robot_localization` package.
+    Implements localization using Kalman filters through the `robot_localization` package.
 
     b. `ca_move_base`
 
-        Implements navigation capabilities through `move_base`.
+    Implements navigation capabilities through `move_base`.
 
     c. `ca_safety_controller`
 
-        A controller ensuring the safe operation of iRobot Create 2.
+    A controller ensuring the safe operation of iRobot Create 2.
 
-        The SafetyController keeps track of bumper, cliff and wheel drop events. In case of the first two, Create is commanded to move back. In the latter case, Create is stopped.
+    The SafetyController keeps track of bumper, cliff and wheel drop events. In case of the first two, Create is commanded to move back. In the latter case, Create is stopped.
 
     d. `ca_slam`
 
-        SLAM capabilities with different algorithms.
+    SLAM capabilities with different algorithms.
 
     e. `ca_visual_odometry`
 
-        Visual odometry package.
+    Visual odometry package.
 
 13. `sensors`
 
