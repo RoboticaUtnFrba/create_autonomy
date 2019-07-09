@@ -16,12 +16,13 @@ install:
   - sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu xenial main" > /etc/apt/sources.list.d/ros-latest.list'
   - wget http://packages.ros.org/ros.key -O - | sudo apt-key add -
   - sudo apt-get update -qq
-  - sudo apt-get install -qq -y python-rosdep python-catkin-tools
+  - sudo apt-get install -qq -y python-rosdep python-catkin-tools python3-vcstool
   - sudo rosdep init
   - rosdep update
   # Use rosdep to install all dependencies (including ROS itself)
   - git clone https://github.com/RoboticaUtnFrba/i2c_imu.git $TRAVIS_BUILD_DIR/i2c_imu
   - git clone https://github.com/RoboticaUtnFrba/libcreate.git $TRAVIS_BUILD_DIR/libcreate
+  - git clone https://github.com/RoboticaUtnFrba/mbf_tools.git $TRAVIS_BUILD_DIR/mbf_tools
   - rosdep install --from-paths ./ -i -y --rosdistro $CI_ROS_DISTRO
   # Install and compile RTIMULib2
   - git clone https://github.com/RoboticaUtnFrba/RTIMULib2.git $TRAVIS_BUILD_DIR/RTIMULib2

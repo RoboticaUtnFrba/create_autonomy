@@ -9,7 +9,10 @@
   <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)"/>
 
 	<!-- move_base -->
-	<include file="$(find ca_move_base)/launch/move_base.launch" />
+	<include file="$(find ca_move_base)/launch/move_base_flex.launch" />
+
+  <!-- SMACH Navigation State Machine -->
+  <node pkg="ca_move_base" type="mbf_move_base_action.py" name="mbf_move_base_action" output="screen"/>
 
 	<!-- AMCL -->
   <arg name="initial_pose_x"  default="0.0"/>

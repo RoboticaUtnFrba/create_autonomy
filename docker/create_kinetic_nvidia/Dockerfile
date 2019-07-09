@@ -15,7 +15,23 @@ ENV NVIDIA_VISIBLE_DEVICES=all NVIDIA_DRIVER_CAPABILITIES=all
 USER root
 RUN apt-get update
 
+# Added dependencies
 RUN apt-get install -y \
-  ros-$ROS1_DISTRO-image-proc
+  libopencv-dev \
+  ros-$ROS1_DISTRO-dwa-local-planner \
+  ros-$ROS1_DISTRO-eband-local-planner \
+  ros-$ROS1_DISTRO-global-planner \
+  ros-$ROS1_DISTRO-image-proc \
+  ros-$ROS1_DISTRO-joy \
+  ros-$ROS1_DISTRO-joy-teleop \
+  ros-$ROS1_DISTRO-libdlib \
+  ros-$ROS1_DISTRO-map-server \
+  ros-$ROS1_DISTRO-mbf-costmap-core \
+  ros-$ROS1_DISTRO-mbf-msgs \
+  ros-$ROS1_DISTRO-move-base-flex \
+  ros-$ROS1_DISTRO-opengm \
+  ros-$ROS1_DISTRO-sbpl-lattice-planner \
+  ros-$ROS1_DISTRO-slam-gmapping \
+  ros-$ROS1_DISTRO-smach-viewer
 
 USER create
