@@ -4,20 +4,10 @@ project(ca_node)
 add_compile_options(-std=c++11)
 
 find_package(catkin REQUIRED COMPONENTS
-  libcreate
-  roscpp
-  std_msgs
-  geometry_msgs
-  nav_msgs
-  sensor_msgs
-  tf
-  ca_msgs
-  diagnostic_msgs
-  diagnostic_updater
+  ca_driver
+  ecl_threads
   nodelet
   pluginlib
-  ecl_threads
-  ca_driver
 )
 
 find_package(Boost REQUIRED system thread)
@@ -25,20 +15,17 @@ find_package(Boost REQUIRED system thread)
 catkin_package(
   LIBRARIES ca_nodelet ca_driver
   CATKIN_DEPENDS 
-    libcreate 
-    roscpp 
-    std_msgs 
-    geometry_msgs 
-    nav_msgs 
-    sensor_msgs 
-    tf 
-    ca_msgs 
-    ca_description 
-    diagnostic_msgs 
-    diagnostic_updater 
-    nodelet 
-    pluginlib
+    ca_description
+    ca_msgs
     ecl_threads
+    geometry_msgs
+    nodelet
+    pluginlib
+    rospy
+		smach
+		smach_viewer
+    # smach_ros
+    std_msgs
 )
 
 include_directories(
@@ -48,12 +35,9 @@ include_directories(
 
 add_subdirectory(src)
 
-install(DIRECTORY plugins
-        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-)
-install(DIRECTORY launch
+install(DIRECTORY launch plugins
         DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 
-install(PROGRAMS scripts/kinect_power.py
+install(DIRECTORY scripts
         DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
