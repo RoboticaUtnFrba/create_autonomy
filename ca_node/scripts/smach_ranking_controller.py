@@ -18,7 +18,13 @@ class Forward(smach.State):
     def execute(self, userdata):
         rospy.loginfo('Going forward')
         global is_left_pressed, is_right_pressed
-        while not is_left_pressed or not is_right_pressed:
+        # Keep in this loop while:
+        # LEFT | RIGHT | KEEP?
+        #   0  |   0   |  1 --> Keep waiting
+        #   0  |   1   |  0 --> right_pressed
+        #   1  |   0   |  0 --> left_pressed
+        #   1  |   1   |  0 --> both_pressed
+        while not (is_left_pressed or is_right_pressed):
             global vel_pub
             vel_msg = Twist()
             vel_msg.linear.x = 0.2
@@ -101,32 +107,32 @@ def main():
     with sm:
         # Add states to the container
         smach.StateMachine.add('FORWARD', Forward(), 
-                               transitions={'left_pressed':'ROTATE_LEFT_SEQ', 
-                                            'right_pressed':'ROTATE_RIGHT_SEQ',
+                               transitions={'left_pressed':'ROTATE_RIGHT_SEQ', 
+                                            'right_pressed':'ROTATE_LEFT_SEQ',
                                             # 'both_pressed': 'BACKWARD'})
                                             'both_pressed': 'ROTATE_LEFT_SEQ'})
         smach.StateMachine.add('BACKWARD', Backward(), 
                                transitions={'done':'FORWARD'})
 
-        left_sq = smach.Sequence(
+        right_sq = smach.Sequence(
                         outcomes = ['done','aborted'],
                         connector_outcome = 'done')
     
-        with left_sq:
+        with right_sq:
             smach.Sequence.add('BACKWARD', Backward())
             smach.Sequence.add('ROTATE_RIGHT', RotateRight())
         
-        right_sq = smach.Sequence(
+        left_sq = smach.Sequence(
                             outcomes = ['done','aborted'],
                             connector_outcome = 'done')
         
-        with right_sq:
+        with left_sq:
             smach.Sequence.add('BACKWARD', Backward())
             smach.Sequence.add('ROTATE_LEFT', RotateLeft())
 
-        smach.StateMachine.add('ROTATE_LEFT_SEQ', right_sq, 
+        smach.StateMachine.add('ROTATE_RIGHT_SEQ', right_sq, 
                                transitions={'done':'FORWARD'})
-        smach.StateMachine.add('ROTATE_RIGHT_SEQ', left_sq, 
+        smach.StateMachine.add('ROTATE_LEFT_SEQ', left_sq, 
                                transitions={'done':'FORWARD'})
 
     # Create and start the introspection server
@@ -141,5 +147,8 @@ def main():
 
 
 if __name__ == '__main__':
-    while not rospy.is_shutdown():
-        main()
+    try:
+        while not rospy.is_shutdown():
+            main()
+    except rospy.ROSInterruptException:
+        pass
