@@ -22,9 +22,9 @@ catkin_package(
     nodelet
     pluginlib
     rospy
-		smach
-		smach_viewer
-    # smach_ros
+    smach
+    smach_ros
+    smach_viewer
     std_msgs
 )
 

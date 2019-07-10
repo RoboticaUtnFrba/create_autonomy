@@ -26,8 +26,8 @@
   <run_depend>pluginlib</run_depend>
   <run_depend>rospy</run_depend>
   <run_depend>smach</run_depend>
+  <run_depend>smach_ros</run_depend>
   <run_depend>smach_viewer</run_depend>
-  <!-- <run_depend>smach_ros</run_depend> -->
   <run_depend>std_msgs</run_depend>
 
   <export>
