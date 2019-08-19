@@ -108,7 +108,7 @@
           </geometry>
         </visual>
       </link>
-      <plugin name="obstacle_2" filename="libobstacle_2.so"/>
+      <!-- <plugin name="obstacle_2" filename="libobstacle_2.so"/> -->
     </model>  
 
     <scene>
