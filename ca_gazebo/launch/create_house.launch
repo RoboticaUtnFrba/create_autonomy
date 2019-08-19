@@ -1,22 +1,18 @@
 <launch>
-	<arg name="x_pos" default="-3.0"/>
-	<arg name="y_pos" default="1.0"/>
-	<arg name="z_pos" default="0.0"/>
+  <arg name="nr" default="1"/>
 
 	<arg name="paused" default="false"/>
 	<arg name="gui" default="true"/>
 	<arg name="debug" default="false"/>
 
-	<arg name="visualize" default="false"/>
-	<arg name="rviz" default="false"/>
+  <rosparam param="pose" ns="create1">[-3, 4, 0]</rosparam>
+  <rosparam param="pose" ns="create2">[5, 1, 1.5708]</rosparam>
 
-    <include file="$(find ca_gazebo)/launch/create_empty_world.launch">
-        <arg name="debug" value="$(arg debug)" />
-		<arg name="gui" value="$(arg gui)" />
-		<arg name="paused" value="$(arg paused)"/>
-		<arg name="world_file" value="$(find ca_gazebo)/worlds/house.world"/>
-		<arg name="x_pos" value="$(arg x_pos)"/>
-		<arg name="y_pos" value="$(arg y_pos)"/>
-		<arg name="z_pos" value="$(arg z_pos)"/>
-    </include>
+  <include file="$(find ca_gazebo)/launch/create_empty_world.launch">
+    <arg name="debug" value="$(arg debug)" />
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="nr" value="$(arg nr)"/>
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="world_file" value="$(find ca_gazebo)/worlds/house.world"/>
+  </include>
 </launch>

@@ -1,16 +1,11 @@
 <launch>
 	<arg name="world_file" default="$(find ca_gazebo)/worlds/empty.world"/>
 
-	<arg name="x_pos" default="0.0"/>
-	<arg name="y_pos" default="0.0"/>
-	<arg name="z_pos" default="0.0"/>
+  <arg name="nr" default="1"/>
 
 	<arg name="paused" default="false"/>
 	<arg name="gui" default="true"/>
 	<arg name="debug" default="false"/>
-
-	<arg name="visualize" default="false"/>
-	<arg name="rviz" default="false"/>
 
 	<!-- Launch Gazebo world -->
 	<include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -23,10 +18,8 @@
 	</include>
 
 	<!-- Spawn robot/s -->
-	<arg name="nr" default="1"/>
-	<rosparam command="load" file="$(find ca_gazebo)/config/robots_pose.yaml"/>
 	<include file="$(find ca_gazebo)/launch/spawn_multirobot.launch" if="$(eval arg('nr') > 0)">
-    	<arg name="nr" value="$(arg nr)"/>
-  	</include>
+    <arg name="nr" value="$(arg nr)"/>
+  </include>
 
 </launch>
