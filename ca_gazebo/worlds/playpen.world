@@ -90,7 +90,6 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
       <max_step_size>0.01</max_step_size>
       <real_time_factor>1</real_time_factor>
       <real_time_update_rate>100</real_time_update_rate>
-      <gravity>0 0 -9.8</gravity>
     </physics>
     <scene>
       <ambient>0.4 0.4 0.4 1</ambient>
@@ -3465,5 +3464,6 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
         <view_controller>orbit</view_controller>
       </camera>
     </gui>
+    <gravity>0 0 -9.8</gravity>
   </world>
 </sdf>
