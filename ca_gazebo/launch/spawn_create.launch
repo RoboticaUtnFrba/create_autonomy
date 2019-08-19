@@ -1,16 +1,13 @@
 <launch>
   <arg name="i" default="1"/>
   <arg name="robot_name" value="create$(arg i)"/>
-  <arg name="visualize" default="false"/>
 
   <!-- Create 2 description -->
   <include file="$(find ca_description)/launch/create_description.launch">
-    <arg name="visualize" value="$(arg visualize)"/>
     <arg name="robot_name" value="$(arg robot_name)"/>
   </include>
 
   <!-- Spawn URDF into Gazebo -->
   <node pkg="ca_description" type="robot_spawner.py" name="robot_spawner" output="screen"/>
-  <!-- <include file="$(arg ca_description)/launch/robot_spawner.launch"/> -->
 
 </launch>

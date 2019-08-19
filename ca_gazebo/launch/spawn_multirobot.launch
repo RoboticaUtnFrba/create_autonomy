@@ -1,27 +1,23 @@
 <launch>
   <!-- https://answers.ros.org/question/229489/how-do-i-create-dynamic-launch-files/ -->
   <arg name="nr" default="1"/>
-  <arg name="rviz" default="false"/>
-  <arg name="visualize" default="false"/>
+  <arg name="rviz" default="$(optenv RVIZ false)"/>
   
   <!-- Start 1 robot -->
   <group ns="$(eval 'create' + str(arg('nr')))">
     <include file="$(find ca_gazebo)/launch/spawn_create.launch">
       <arg name="i" value="$(arg nr)"/>
-      <arg name="visualize" value="$(arg visualize)"/>
+    </include>
+
+    <!-- RViz -->
+    <include if="$(arg rviz)" file="$(find ca_tools)/launch/rviz.launch">
+      <arg name="config_file" value="$(find ca_tools)/rviz/robot_description.rviz"/>
     </include>
   </group>
 
   <!-- Recursively spawn more robots -->
   <include file="$(find ca_gazebo)/launch/spawn_multirobot.launch" if="$(eval arg('nr') - 1 > 0)">
     <arg name="nr" value="$(eval arg('nr') - 1)"/>
-    <!-- Spawn RViz only once -->
-    <arg name="rviz" default="false"/>
-    <arg name="visualize" default="$(arg visualize)"/>
-  </include>
-
-  <!-- RViz -->
-  <include if="$(arg rviz)" file="$(find ca_tools)/launch/rviz.launch">
-    <arg name="config_file" value="$(find ca_tools)/rviz/robot_description.rviz"/>
+    <arg name="rviz" value="false"/>
   </include>
 </launch>

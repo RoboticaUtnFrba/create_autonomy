@@ -3,7 +3,7 @@
   <arg name="model" default="$(find ca_description)/urdf/create_2.xacro"/>
 
   <arg name="robot_name" default="create"/>
-  <arg name="visualize" default="false"/>
+  <arg name="visualize" default="$(optenv VISUALIZE false)"/>
 
   <arg name="freq" value="5.0"/>
 
