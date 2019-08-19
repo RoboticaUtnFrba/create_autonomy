@@ -4,7 +4,6 @@
 
   <arg name="robot_name" default="create"/>
   <arg name="visualize" default="false"/>
-  <arg name="rviz" default="false"/>
 
   <arg name="freq" value="5.0"/>
 
@@ -23,9 +22,4 @@
   <arg name="child_link" value="$(arg robot_name)/base_link"/>
   <node name="base_static_tf" pkg="tf" type="static_transform_publisher" 
         args="0 0 ${base_offset_z} 0 0 0 1 $(arg parent_link) $(arg child_link) $(arg freq)"/>
-
-  <!-- RViz -->
-  <include if="$(arg rviz)" file="$(find ca_tools)/launch/rviz.launch">
-    <arg name="config_file" value="$(find ca_tools)/rviz/robot_description.rviz"/>
-  </include>
 </launch>
