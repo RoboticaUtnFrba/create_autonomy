@@ -3,6 +3,7 @@
 # import os
 import re
 import rospy
+from random import randint
 from geometry_msgs.msg import Pose, Quaternion
 from gazebo_msgs.srv import SpawnModel, SpawnModelRequest, SpawnModelResponse
 from tf.transformations import quaternion_from_euler
@@ -42,9 +43,11 @@ class RobotSpawner(object):
       
       # Using pose from parameter server
       msg.initial_pose = Pose()
-      msg.initial_pose.position.x = rospy.get_param("{}x".format(self.ns), 0.)
-      msg.initial_pose.position.y = rospy.get_param("{}y".format(self.ns), 0.)
-      q = quaternion_from_euler(0, 0, rospy.get_param("{}yaw".format(self.ns), 0.))
+      pose_param = rospy.get_param(
+            "{}pose".format(self.ns),
+            [randint(-10, 10), randint(-10, 10), 0.])
+      msg.initial_pose.position.x, msg.initial_pose.position.y, _ = pose_param
+      q = quaternion_from_euler(0, 0, pose_param[2])
       msg.initial_pose.orientation = Quaternion(q[0], q[1], q[2], q[3])
       
       msg.reference_frame = "world"
