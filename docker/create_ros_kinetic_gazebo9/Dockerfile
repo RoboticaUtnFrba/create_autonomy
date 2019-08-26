@@ -18,5 +18,5 @@ RUN apt-get update && \
     ros-$ROS1_DISTRO-gazebo9-ros-pkgs \
     ros-$ROS1_DISTRO-gazebo9-ros-control
 
-USER irobot
+USER create
 CMD tmux
