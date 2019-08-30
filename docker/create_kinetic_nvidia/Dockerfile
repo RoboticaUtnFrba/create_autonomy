@@ -16,6 +16,15 @@ USER root
 RUN apt-get update
 
 RUN apt-get install -y \
-  ros-$ROS1_DISTRO-image-proc
+  ros-$ROS1_DISTRO-dwa-local-planner \
+  ros-$ROS1_DISTRO-image-proc \
+  ros-$ROS1_DISTRO-joy \
+  ros-$ROS1_DISTRO-joy-teleop \
+  ros-$ROS1_DISTRO-map-server \
+  ros-$ROS1_DISTRO-mbf-costmap-core \
+  ros-$ROS1_DISTRO-mbf-msgs \
+  ros-$ROS1_DISTRO-move-base-flex \
+  ros-$ROS1_DISTRO-slam-gmapping \
+  ros-$ROS1_DISTRO-smach-viewer
 
 USER create
