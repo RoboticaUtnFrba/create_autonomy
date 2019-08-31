@@ -1,0 +1,10 @@
+<launch>
+  <arg name="x"/>
+  <arg name="y"/>
+  <arg name="Y"/>
+
+  <arg name="ns"/>
+
+  <node pkg="ca_move_base" type="send_goal" name="navigation_goals" 
+        args="$(arg x) $(arg y) $(arg Y)" ns="$(arg ns)"/>
+</launch>

@@ -1,7 +1,8 @@
-use_map_topic: false
-odom_frame_id: "/odom"
-base_frame_id: "/base_link"
+use_map_topic: true
+odom_frame_id: "odom"
+base_frame_id: "base_link"
 global_frame_id: "/map"
+tf:broadcast: true
 
 # Publish scans from best pose at a max of 10 Hz
 odom_model_type: "diff"

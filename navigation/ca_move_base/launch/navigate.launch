@@ -1,16 +1,28 @@
 <launch>
-	<arg name="rviz" default="true"/>
+  <!-- TODO: IMPROVE tf_prefix APPROACH -->
+  <arg name="robot_name"/>
+  <arg name="tf_prefix" value="$(arg robot_name)_tf"/>
+	<!-- <arg name="rviz" default="true"/> -->
 
 	<!-- Bumper to point cloud -->
-	<!-- <include file="$(find ca_bumper2pc)/launch/standalone.launch" /> -->
+	<include file="$(find ca_bumper2pc)/launch/standalone.launch">
+    <!-- <arg name="tf_prefix" value="$(arg tf_prefix)"/> -->
+    <!-- <arg name="ns" value="$(arg robot_name)"/> -->
+  </include>
 
   <!-- map_server -->
   <!-- <include file="$(find ca_move_base)/launch/map_server.launch" /> -->
 
 	<!-- move_base -->
-	<include file="$(find ca_move_base)/launch/move_base.launch" />
+	<include file="$(find ca_move_base)/launch/move_base.launch">
+    <arg name="ns" value="$(arg robot_name)"/>
+  </include>
 
 	<!-- AMCL -->
+  <!-- 
+    TODO: PUBLISH TO initialpose IN ANOTHER PLATE TO LOCALIZE AMCL
+    http://wiki.ros.org/amcl#Subscribed_Topics
+  -->
   <!-- <arg name="initial_pose_x"  default="0.0"/>
   <arg name="initial_pose_y"  default="0.0"/>
   <arg name="initial_pose_a"  default="0.0"/>
@@ -19,6 +31,10 @@
     <arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
     <arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
   </include> -->
+
+  <include file="$(find ca_slam)/launch/slam_gmapping.launch">
+    <arg name="tf_prefix" value="$(arg tf_prefix)"/>
+  </include>
 
 	<!-- RViz -->
 	<!-- <include if="$(arg rviz)" file="$(find ca_tools)/launch/rviz.launch">

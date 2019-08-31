@@ -8,5 +8,8 @@
     <param name="initial_pose_a" value="$(arg initial_pose_a)"/>
     <rosparam file="$(find ca_move_base)/config/amcl_params.yaml" command="load"/>
     <remap from="scan" to="laser/scan"/>
+    <!-- We want a single map for multi-robots -->
+    <remap from="map" to="/map" />
+    <remap from="static_map" to="/static_map"/>
   </node>
 </launch>

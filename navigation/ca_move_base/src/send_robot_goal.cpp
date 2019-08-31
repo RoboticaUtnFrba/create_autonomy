@@ -7,9 +7,11 @@
 
 typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseClient;
 
+const std::string NODE_NAME = "navigation_goals";
+
 int main(int argc, char** argv){
 	
-	ros::init(argc, argv, "navigation_goals");
+	ros::init(argc, argv, NODE_NAME);
 
 	MoveBaseClient ac("move_base", true);
 
@@ -19,7 +21,7 @@ int main(int argc, char** argv){
 
 	move_base_msgs::MoveBaseGoal goal;
 
-	goal.target_pose.header.frame_id = "map";
+	goal.target_pose.header.frame_id = "/map";
 	goal.target_pose.header.stamp = ros::Time::now();
 	try{
 		goal.target_pose.pose.position.x = atof(argv[1]);
@@ -27,7 +29,7 @@ int main(int argc, char** argv){
 		goal.target_pose.pose.orientation.w = atof(argv[3]);
 	   }
 	catch(int e){
-
+    ROS_WARN_STREAM_NAMED(NODE_NAME, "Using default 2D pose: [1 m, 1 m, 0 deg]");
 		goal.target_pose.pose.position.x = 1.0;
 		goal.target_pose.pose.position.y = 1.0;
 		goal.target_pose.pose.orientation.w = 1.0;
