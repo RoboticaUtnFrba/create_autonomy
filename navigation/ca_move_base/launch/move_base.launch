@@ -12,6 +12,9 @@
     <rosparam file="$(find ca_move_base)/config/dwa_local_planner_params.yaml" command="load" />
 
     <rosparam file="$(find ca_move_base)/config/move_base_params.yaml" command="load" />
+
+    <!-- We want a single map for multi-robots -->
+    <remap from="map" to="/map" />
   </node>
 
 </launch>

@@ -2,28 +2,27 @@
 	<arg name="rviz" default="true"/>
 
 	<!-- Bumper to point cloud -->
-	<include file="$(find ca_bumper2pc)/launch/standalone.launch" />
+	<!-- <include file="$(find ca_bumper2pc)/launch/standalone.launch" /> -->
 
-	<!-- Run the map server with a blank map -->
-	<arg name="map_file" default="$(find ca_move_base)/maps/playground.yaml"/>
-  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)"/>
+  <!-- map_server -->
+  <!-- <include file="$(find ca_move_base)/launch/map_server.launch" /> -->
 
 	<!-- move_base -->
 	<include file="$(find ca_move_base)/launch/move_base.launch" />
 
 	<!-- AMCL -->
-  <arg name="initial_pose_x"  default="0.0"/>
+  <!-- <arg name="initial_pose_x"  default="0.0"/>
   <arg name="initial_pose_y"  default="0.0"/>
   <arg name="initial_pose_a"  default="0.0"/>
   <include file="$(find ca_move_base)/launch/amcl.launch">
     <arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
     <arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
     <arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
-  </include>
+  </include> -->
 
 	<!-- RViz -->
-	<include if="$(arg rviz)" file="$(find ca_tools)/launch/rviz.launch">
+	<!-- <include if="$(arg rviz)" file="$(find ca_tools)/launch/rviz.launch">
     <arg name="config_file" value="$(find ca_tools)/rviz/navigation.rviz"/>
-  </include>
+  </include> -->
 
 </launch>
