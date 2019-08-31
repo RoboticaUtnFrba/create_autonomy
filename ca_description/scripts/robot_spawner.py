@@ -38,6 +38,9 @@ class RobotSpawner(object):
       robot_description_param = "/create{}/robot_description".format(i)
       if rospy.has_param(robot_description_param):
         msg.model_xml = rospy.get_param(robot_description_param)
+      # robot_description = "/robot_description"
+      # if rospy.has_param(robot_description):
+      #   msg.model_xml = rospy.get_param(robot_description)
       
       msg.robot_namespace = self.ns
       
