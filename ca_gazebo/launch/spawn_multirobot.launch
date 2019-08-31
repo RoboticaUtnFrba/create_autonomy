@@ -12,11 +12,13 @@
     <param name="tf_prefix" value="create$(arg nr)_tf" />
 
     <!-- Navigation -->
-    <include file="$(find ca_move_base)/launch/navigate.launch"/>
+    <include file="$(find ca_move_base)/launch/navigate.launch">
+      <arg name="robot_name" value="create$(arg nr)"/>
+    </include>
 
     <!-- RViz -->
     <include if="$(arg rviz)" file="$(find ca_tools)/launch/rviz.launch">
-      <arg name="config_file" value="$(find ca_tools)/rviz/robot_description.rviz"/>
+      <arg name="config_file" value="$(find ca_tools)/rviz/multi_robot.rviz"/>
     </include>
   </group>
 
