@@ -9,6 +9,9 @@
   <!-- Robot state publisher-->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen" />
 
+  <node pkg="tf" type="static_transform_publisher" name="base_link_tf" 
+    	args="0 0 0.017 0 0 0 base_footprint base_link 50" />
+
   <!-- RViz -->
   <include if="$(arg rviz)" file="$(find ca_tools)/launch/rviz.launch">
     <arg name="config_file" value="$(find ca_tools)/rviz/robot_description.rviz"/>

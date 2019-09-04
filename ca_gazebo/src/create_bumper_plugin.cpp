@@ -127,7 +127,7 @@ void CreateBumperPlugin::OnUpdate()
     // using the force normals below, since the contact position is given in world coordinates
     // also negating the normal, because it points from contact to robot centre
     const double global_contact_angle = std::atan2(-contacts.contact(i).normal(0).y(), -contacts.contact(i).normal(0).x());
-    const double relative_contact_angle = global_contact_angle - this->robot_heading_;
+    const double relative_contact_angle = normalizeAngle(global_contact_angle - this->robot_heading_);
 
     if ((relative_contact_angle <= (M_PI/2)) && (relative_contact_angle > (M_PI/6)))
     {

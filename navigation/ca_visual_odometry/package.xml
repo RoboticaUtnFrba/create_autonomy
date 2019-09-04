@@ -12,6 +12,7 @@
 
   <exec_depend>camera_calibration</exec_depend>
   <exec_depend>gscam</exec_depend>
+  <exec_depend>image_proc</exec_depend>
   <exec_depend>rqt_pose_view</exec_depend>
 
   <export>

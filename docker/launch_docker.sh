@@ -10,6 +10,8 @@ while [ "$1" != "" ]; do
 done
 
 IMAGE_NAME=${CONTAINER}
+SCRIPTS_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+REPO_DIR=`readlink -f ${SCRIPTS_DIR}/../../`
 
 NVIDIA_FLAG=""
 if [[ $IMAGE_NAME = *"nvidia"* ]]; then
@@ -25,8 +27,8 @@ docker run -it \
     "--network=host" \
     --env="DISPLAY"  \
     --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
-    --volume="/home/$USER/create_ws/src:/create_ws/src" \
+    --volume="${REPO_DIR}:/create_ws/src" \
     -e ROS_HOSTNAME=localhost \
     -e ROS_MASTER_URI=http://localhost:11311 \
     $NVIDIA_FLAG \
-    create_nvidia
+    $IMAGE_NAME

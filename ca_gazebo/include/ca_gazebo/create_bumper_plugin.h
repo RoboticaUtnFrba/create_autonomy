@@ -63,6 +63,13 @@ namespace gazebo
 
   private:
 
+      inline float normalizeAngle(float angle) {
+        angle = std::fmod(angle + M_PI,2*M_PI);
+        if (angle < 0)
+            angle += 2*M_PI;
+        return angle - M_PI;
+      };
+
       /// \brief pointer to ros node
       std::shared_ptr<ros::NodeHandle> rosnode_;
       ros::Publisher contact_pub_;
