@@ -11,16 +11,11 @@ from tf.transformations import quaternion_from_euler
 class RobotSpawner(object):
   
   SPAWN_URDF_TOPIC = '/gazebo/spawn_urdf_model'
-  AMCL_POSE_TOPIC = 'initialpose'
 
   def __init__(self):
     rospy.init_node('robot_spawner')
     self.ns = rospy.get_namespace()
 
-    # Publish AMCL pose
-    RobotSpawner.AMCL_POSE_TOPIC = os.path.join(self.ns, RobotSpawner.AMCL_POSE_TOPIC)
-    self.pub_amcl_pose = rospy.Publisher(RobotSpawner.AMCL_POSE_TOPIC, PoseWithCovarianceStamped, queue_size=1, latch=True)
-    
     # Get robot index
     try:
       index = re.findall('[0-9]+', self.ns)[0]
@@ -39,14 +34,10 @@ class RobotSpawner(object):
       # Model name
       msg.model_name = "irobot_create2.{}".format(i)
       
-      # TODO: Only use one robot_description for all robots
       # Robot information from robot_description
       robot_description_param = "/create{}/robot_description".format(i)
       if rospy.has_param(robot_description_param):
         msg.model_xml = rospy.get_param(robot_description_param)
-      # robot_description = "/robot_description"
-      # if rospy.has_param(robot_description):
-      #   msg.model_xml = rospy.get_param(robot_description)
       
       msg.robot_namespace = self.ns
       
@@ -71,11 +62,9 @@ class RobotSpawner(object):
     print("{} spawned correctly".format(msg.model_name))
 
     # Set AMCL pose: localize robot in the map
-    amcl_pose = PoseWithCovarianceStamped()
-    amcl_pose.header.stamp = rospy.Time.now()
-    amcl_pose.header.frame_id = "/map"
-    amcl_pose.pose.pose = msg.initial_pose
-    self.pub_amcl_pose.publish(amcl_pose)
+    rospy.set_param('/create1/amcl/initial_pose_x', pose_param[0])
+    rospy.set_param('/create1/amcl/initial_pose_y', pose_param[1])
+    rospy.set_param('/create1/amcl/initial_pose_a', pose_param[2])
 
 def main():
   try:
