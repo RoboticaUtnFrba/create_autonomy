@@ -1,18 +1,11 @@
 <launch>
   <arg name="nr" default="1"/>
 
-	<arg name="paused" default="false"/>
-	<arg name="gui" default="true"/>
-	<arg name="debug" default="false"/>
-
-  <rosparam param="pose" ns="create1">[-1, 1, 0]</rosparam>
+	<rosparam param="pose" ns="create1">[-1, 1, 0]</rosparam>
   <rosparam param="pose" ns="create2">[1, -1, 1.5708]</rosparam>
 
   <include file="$(find ca_gazebo)/launch/create_empty_world.launch">
-    <arg name="debug" value="$(arg debug)" />
-    <arg name="gui" value="$(arg gui)" />
     <arg name="nr" value="$(arg nr)"/>
-    <arg name="paused" value="$(arg paused)"/>
     <arg name="world_file" value="$(find ca_gazebo)/worlds/stage_1.world"/>
   </include>
 </launch>

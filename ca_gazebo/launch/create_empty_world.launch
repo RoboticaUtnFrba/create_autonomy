@@ -3,9 +3,9 @@
 
   <arg name="nr" default="1"/>
 
-	<arg name="paused" default="false"/>
-	<arg name="gui" default="true"/>
-	<arg name="debug" default="false"/>
+	<arg name="paused" value="$(optenv PAUSED false)"/>
+	<arg name="gui" value="$(optenv GUI true)"/>
+	<arg name="debug" value="$(optenv DEBUG false)"/>
 
 	<!-- Launch Gazebo world -->
 	<include file="$(find gazebo_ros)/launch/empty_world.launch">
