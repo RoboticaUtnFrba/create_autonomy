@@ -1,20 +1,25 @@
 #!/usr/bin/env python
 
-# import os
+import os
 import re
 import rospy
 from random import randint
-from geometry_msgs.msg import Pose, Quaternion
+from geometry_msgs.msg import Pose, Quaternion, PoseWithCovarianceStamped
 from gazebo_msgs.srv import SpawnModel, SpawnModelRequest, SpawnModelResponse
 from tf.transformations import quaternion_from_euler
 
 class RobotSpawner(object):
   
   SPAWN_URDF_TOPIC = '/gazebo/spawn_urdf_model'
+  AMCL_POSE_TOPIC = 'initialpose'
 
   def __init__(self):
     rospy.init_node('robot_spawner')
     self.ns = rospy.get_namespace()
+
+    # Publish AMCL pose
+    RobotSpawner.AMCL_POSE_TOPIC = os.path.join(self.ns, RobotSpawner.AMCL_POSE_TOPIC)
+    self.pub_amcl_pose = rospy.Publisher(RobotSpawner.AMCL_POSE_TOPIC, PoseWithCovarianceStamped, queue_size=1, latch=True)
     
     # Get robot index
     try:
@@ -34,6 +39,7 @@ class RobotSpawner(object):
       # Model name
       msg.model_name = "irobot_create2.{}".format(i)
       
+      # TODO: Only use one robot_description for all robots
       # Robot information from robot_description
       robot_description_param = "/create{}/robot_description".format(i)
       if rospy.has_param(robot_description_param):
@@ -63,6 +69,13 @@ class RobotSpawner(object):
       exit(1)
     
     print("{} spawned correctly".format(msg.model_name))
+
+    # Set AMCL pose: localize robot in the map
+    amcl_pose = PoseWithCovarianceStamped()
+    amcl_pose.header.stamp = rospy.Time.now()
+    amcl_pose.header.frame_id = "/map"
+    amcl_pose.pose.pose = msg.initial_pose
+    self.pub_amcl_pose.publish(amcl_pose)
 
 def main():
   try:
