@@ -22,4 +22,7 @@
     <arg name="nr" value="$(arg nr)"/>
   </include>
 
+  <!-- map_server -->
+  <include file="$(find ca_move_base)/launch/map_server.launch" />
+
 </launch>

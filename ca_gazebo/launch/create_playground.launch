@@ -15,7 +15,5 @@
     <arg name="paused" value="$(arg paused)"/>
     <arg name="world_file" value="$(find ca_gazebo)/worlds/playground.world"/>
   </include>
-
-  <!-- map_server -->
-  <include file="$(find ca_move_base)/launch/map_server.launch" />
+  
 </launch>
