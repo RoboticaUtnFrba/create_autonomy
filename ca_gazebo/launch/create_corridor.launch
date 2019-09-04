@@ -1,11 +1,8 @@
 <launch>
-  <arg name="nr" default="1"/>
-
-	<rosparam param="pose" ns="create1">[-7, -1.55, 0]</rosparam>
+  <rosparam param="pose" ns="create1">[-7, -1.55, 0]</rosparam>
   <rosparam param="pose" ns="create2">[1, 3.5, 3.1416]</rosparam>
 
   <include file="$(find ca_gazebo)/launch/create_empty_world.launch">
-    <arg name="nr" value="$(arg nr)"/>
     <arg name="world_file" value="$(find ca_gazebo)/worlds/corridor.world"/>
   </include>
 </launch>

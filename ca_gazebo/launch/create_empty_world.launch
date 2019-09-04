@@ -1,9 +1,7 @@
 <launch>
 	<arg name="world_file" default="$(find ca_gazebo)/worlds/empty.world"/>
 
-  <arg name="nr" default="1"/>
-
-	<arg name="paused" value="$(optenv PAUSED false)"/>
+  <arg name="paused" value="$(optenv PAUSED false)"/>
 	<arg name="gui" value="$(optenv GUI true)"/>
 	<arg name="debug" value="$(optenv DEBUG false)"/>
 
@@ -18,9 +16,7 @@
 	</include>
 
 	<!-- Spawn robot/s -->
-	<include file="$(find ca_gazebo)/launch/spawn_multirobot.launch" if="$(eval arg('nr') > 0)">
-    <arg name="nr" value="$(arg nr)"/>
-  </include>
+	<include file="$(find ca_gazebo)/launch/spawn_multirobot.launch"/>
 
   <!-- map_server -->
   <include file="$(find ca_move_base)/launch/map_server.launch" />

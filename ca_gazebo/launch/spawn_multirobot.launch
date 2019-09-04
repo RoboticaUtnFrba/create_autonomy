@@ -1,6 +1,6 @@
 <launch>
   <!-- https://answers.ros.org/question/229489/how-do-i-create-dynamic-launch-files/ -->
-  <arg name="nr" default="1"/>
+  <arg name="nr" default="$(optenv NUM_ROBOTS 1)"/>
   <arg name="rviz" default="$(optenv RVIZ true)"/>
   
   <!-- Start 1 robot -->
