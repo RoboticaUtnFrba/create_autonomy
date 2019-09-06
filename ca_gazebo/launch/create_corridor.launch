@@ -1,8 +1,13 @@
 <launch>
-  <rosparam param="pose" ns="create1">[-7, -1.55, 0]</rosparam>
-  <rosparam param="pose" ns="create2">[1, 3.5, 3.1416]</rosparam>
+  <param name="create1/amcl/initial_pose_x" value="-7"/>
+  <param name="create1/amcl/initial_pose_y" value="-1.55"/>
+  <param name="create1/amcl/initial_pose_a" value="0"/>
+
+  <param name="create2/amcl/initial_pose_x" value="1"/>
+  <param name="create2/amcl/initial_pose_y" value="3.5"/>
+  <param name="create2/amcl/initial_pose_a" value="3.1416"/>
 
   <include file="$(find ca_gazebo)/launch/create_empty_world.launch">
-    <arg name="world_file" value="$(find ca_gazebo)/worlds/corridor.world"/>
+    <arg name="env" value="corridor"/>
   </include>
 </launch>

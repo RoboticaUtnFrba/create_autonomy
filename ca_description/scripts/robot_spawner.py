@@ -43,15 +43,17 @@ class RobotSpawner(object):
       
       # Using pose from parameter server
       msg.initial_pose = Pose()
-      pose_param = rospy.get_param(
-            "{}pose".format(self.ns),
-            [randint(-10, 10), randint(-10, 10), 0.])
-      msg.initial_pose.position.x, msg.initial_pose.position.y, _ = pose_param
-      q = quaternion_from_euler(0, 0, pose_param[2])
+      msg.initial_pose.position.x = rospy.get_param(
+            "{}/amcl/initial_pose_x".format(self.ns), randint(-10, 10))
+      msg.initial_pose.position.y = rospy.get_param(
+            "{}/amcl/initial_pose_y".format(self.ns), randint(-10, 10))
+      yaw = rospy.get_param(
+            "{}/amcl/initial_pose_a".format(self.ns), 0.)
+      q = quaternion_from_euler(0, 0, yaw)
       msg.initial_pose.orientation = Quaternion(q[0], q[1], q[2], q[3])
       
       msg.reference_frame = "world"
-      
+
       # Spawn model
       res = spawn_urdf_model(msg)
       print(res.status_message)
@@ -60,11 +62,6 @@ class RobotSpawner(object):
       exit(1)
     
     print("{} spawned correctly".format(msg.model_name))
-
-    # Set AMCL pose: localize robot in the map
-    rospy.set_param('/create1/amcl/initial_pose_x', pose_param[0])
-    rospy.set_param('/create1/amcl/initial_pose_y', pose_param[1])
-    rospy.set_param('/create1/amcl/initial_pose_a', pose_param[2])
 
 def main():
   try:
