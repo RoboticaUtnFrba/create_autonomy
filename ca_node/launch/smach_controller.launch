@@ -1,0 +1,5 @@
+<launch>
+    <arg name="ns" default="create1"/>
+
+    <node ns="$(arg ns)" pkg="ca_node" type="smach_ranking_controller.py" name="$(arg ns)_smach_controller"/>
+</launch>
