@@ -1,12 +1,16 @@
 <launch>
-  <arg name="initial_pose_x"  default="0.0"/>
-  <arg name="initial_pose_y"  default="0.0"/>
-  <arg name="initial_pose_a"  default="0.0"/>
-  <node pkg="amcl" type="amcl" name="amcl">
-    <param name="initial_pose_x" value="$(arg initial_pose_x)"/>
-    <param name="initial_pose_y" value="$(arg initial_pose_y)"/>
-    <param name="initial_pose_a" value="$(arg initial_pose_a)"/>
+  <arg name="ns"/>
+
+  <node pkg="amcl" type="amcl" name="amcl" output="screen">
     <rosparam file="$(find ca_move_base)/config/amcl_params.yaml" command="load"/>
+    <!-- We want a single map for multi-robots -->
+    <remap from="map" to="/map" />
+    <remap from="static_map" to="/static_map"/>
+
     <remap from="scan" to="laser/scan"/>
+    <param name="odom_frame_id" value="$(arg ns)_tf/odom"/>
+    <param name="base_frame_id" value="$(arg ns)_tf/base_link"/>
+    <param name="global_frame_id" value="/map"/>
   </node>
+  
 </launch>

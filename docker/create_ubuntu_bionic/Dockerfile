@@ -1,4 +1,5 @@
 FROM ubuntu:18.04
+ARG uid
 LABEL maintainer="Emiliano Borghi"
 
 # Setup environment
@@ -36,7 +37,7 @@ RUN apt-get update && \
     rm -rf /usr/share/doc
 
 # Create a user with passwordless sudo
-RUN adduser --gecos "Development User" --disabled-password create
+RUN adduser --gecos "Development User" --disabled-password -u ${uid} create
 RUN adduser create sudo
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 USER root

@@ -1,0 +1,30 @@
+<launch>
+  <!-- https://answers.ros.org/question/229489/how-do-i-create-dynamic-launch-files/ -->
+  <arg name="nr" default="$(optenv NUM_ROBOTS 1)"/>
+  <arg name="rviz" default="$(optenv RVIZ true)"/>
+  
+  <!-- Start 1 robot -->
+  <group ns="$(eval 'create' + str(arg('nr')))">
+    <include file="$(find ca_gazebo)/launch/spawn_create.launch">
+      <arg name="i" value="$(arg nr)"/>
+    </include>
+
+    <param name="tf_prefix" value="create$(arg nr)_tf" />
+
+    <!-- Navigation -->
+    <include file="$(find ca_move_base)/launch/navigate.launch">
+      <arg name="robot_name" value="create$(arg nr)"/>
+    </include>
+
+    <!-- RViz -->
+    <include if="$(arg rviz)" file="$(find ca_tools)/launch/rviz.launch">
+      <arg name="config_file" value="$(find ca_tools)/rviz/multi_robot.rviz"/>
+    </include>
+  </group>
+
+  <!-- Recursively spawn more robots -->
+  <include file="$(find ca_gazebo)/launch/spawn_multirobot.launch" if="$(eval arg('nr') - 1 > 0)">
+    <arg name="nr" value="$(eval arg('nr') - 1)"/>
+    <arg name="rviz" value="false"/>
+  </include>
+</launch>

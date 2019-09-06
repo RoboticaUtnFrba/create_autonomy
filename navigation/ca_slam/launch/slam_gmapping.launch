@@ -1,8 +1,15 @@
 <launch>
-  <arg name="scan_topic"  default="laser/scan"/>
+  <arg name="ns"/>
 
   <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
     <rosparam file="$(find ca_slam)/config/slam_gmapping.yaml" command="load"/>
-    <remap from="scan" to="$(arg scan_topic)"/>
+    <!-- We want a single map for multi-robots -->
+    <remap from="map" to="/map" />
+    <remap from="map_metadata" to="/map_metadata"/>
+    
+    <remap from="scan" to="laser/scan"/>
+    
+    <param name="odom_frame" value="$(arg ns)_tf/odom"/>
+    <param name="base_frame" value="$(arg ns)_tf/base_footprint"/>
   </node>
 </launch>

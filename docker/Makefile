@@ -1,11 +1,12 @@
 # If you want to rebuild all images, set this to --no-cache from the commandline
 DOCKER_ARGS?=
+USER_ID=$(shell id -u)
 
 # ROS Kinetic
 
 .PHONY: create_ubuntu_xenial
 create_ubuntu_xenial:
-	docker build ${DOCKER_ARGS} -t create_ubuntu_xenial create_ubuntu_xenial
+	docker build ${DOCKER_ARGS} --build-arg uid=$(USER_ID) -t create_ubuntu_xenial create_ubuntu_xenial
 
 .PHONY: create_ros_kinetic
 create_ros_kinetic: create_ubuntu_xenial
@@ -23,7 +24,7 @@ create_kinetic_nvidia: create_ros_kinetic_gazebo9
 
 .PHONY: create_ubuntu_bionic
 create_ubuntu_bionic:
-	docker build ${DOCKER_ARGS} -t create_ubuntu_bionic create_ubuntu_bionic
+	docker build ${DOCKER_ARGS} --build-arg uid=$(USER_ID) -t create_ubuntu_bionic create_ubuntu_bionic
 
 .PHONY: create_ros_melodic
 create_ros_melodic: create_ubuntu_bionic

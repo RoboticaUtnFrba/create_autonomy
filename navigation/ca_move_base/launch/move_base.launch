@@ -1,4 +1,5 @@
 <launch>
+  <arg name="ns"/>
 
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
     <rosparam file="$(find ca_move_base)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
@@ -12,6 +13,13 @@
     <rosparam file="$(find ca_move_base)/config/dwa_local_planner_params.yaml" command="load" />
 
     <rosparam file="$(find ca_move_base)/config/move_base_params.yaml" command="load" />
+
+    <!-- We want a single map for multi-robots -->
+    <remap from="map" to="/map"/>
+    <!-- TODO: WHY WAS THIS HACK NECESSARY? -->
+    <remap from="/laser/scan" to="laser/scan"/>
+    <remap from="/mobile_base/sensors/bumper_pointcloud" 
+           to="mobile_base/sensors/bumper_pointcloud"/>
   </node>
 
 </launch>

@@ -1,0 +1,8 @@
+<launch>
+	<arg name="map_file" default="$(find ca_move_base)/maps/playground.yaml"/>
+  
+  <!-- Run the map server node with a predefined map -->
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)">
+    <param name="frame_id" value="/map"/>
+  </node>
+</launch>
