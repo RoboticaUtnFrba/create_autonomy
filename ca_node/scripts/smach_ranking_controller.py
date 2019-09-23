@@ -6,14 +6,16 @@ import smach_ros
 
 from ca_msgs.msg import Bumper
 from geometry_msgs.msg import Twist
+from std_msgs.msg import Bool
 
 is_left_pressed = False
 is_right_pressed = False
+is_virtual_wall_detected = False
 
 # define state Forward
 class Forward(smach.State):
     def __init__(self):
-        smach.State.__init__(self, outcomes=['left_pressed', 'right_pressed', 'both_pressed'])
+        smach.State.__init__(self, outcomes=['left_pressed', 'right_pressed', 'both_pressed' , 'virtual_wall_detected'])
 
     def execute(self, userdata):
         rospy.loginfo('Going forward')
@@ -24,7 +26,7 @@ class Forward(smach.State):
         #   0  |   1   |  0 --> right_pressed
         #   1  |   0   |  0 --> left_pressed
         #   1  |   1   |  0 --> both_pressed
-        while not (is_left_pressed or is_right_pressed):
+        while not (is_left_pressed or is_right_pressed or is_virtual_wall_detected):
             global vel_pub
             vel_msg = Twist()
             vel_msg.linear.x = 0.2
@@ -36,6 +38,8 @@ class Forward(smach.State):
           return 'left_pressed'
         elif is_right_pressed:
           return 'right_pressed'
+        elif is_virtual_wall_detected:
+            return 'virtual_wall_detected'
         else:
           return 'aborted'
 
@@ -89,6 +93,11 @@ def bumper_cb(msg):
     is_left_pressed = msg.is_left_pressed
     is_right_pressed = msg.is_right_pressed
 
+def virtual_wall_cb(data):
+    global is_virtual_wall_detected
+    is_virtual_wall_detected = data.data
+
+
 def stop_cb():
     vel_pub.publish(Twist())
 
@@ -96,6 +105,7 @@ def stop_cb():
 def main():
     rospy.init_node('smach_ranking_controller')
     _ = rospy.Subscriber("bumper", Bumper, bumper_cb)
+    virtual_wall_sub = rospy.Subscriber("virtual_wall", Bool, virtual_wall_cb)
     global vel_pub
     vel_pub = rospy.Publisher("cmd_vel", Twist, queue_size=1)
     rospy.on_shutdown(stop_cb)
@@ -110,7 +120,8 @@ def main():
                                transitions={'left_pressed':'ROTATE_RIGHT_SEQ', 
                                             'right_pressed':'ROTATE_LEFT_SEQ',
                                             # 'both_pressed': 'BACKWARD'})
-                                            'both_pressed': 'ROTATE_LEFT_SEQ'})
+                                            'both_pressed': 'ROTATE_LEFT_SEQ',
+                                            'virtual_wall_detected': 'ROTATE_LEFT_SEQ'})
         smach.StateMachine.add('BACKWARD', Backward(), 
                                transitions={'done':'FORWARD'})
 

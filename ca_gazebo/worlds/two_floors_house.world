@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <world name="default">
+
+    <!-- A global light source -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <!-- A ground plane -->
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <include>
+      <uri>model://two_floors_house</uri>
+    </include>
+
+    <light type="spot" name="room_1">
+      <pose>2.5 0 1.6 0 0 0</pose>
+      <spot>
+        <outer_angle>3.14</outer_angle>
+      </spot>
+      <attenuation>
+        <range>5</range>
+        <quadratic>0.1</quadratic>
+      </attenuation>
+      <diffuse>204 204 204 255</diffuse>
+      <specular>51 51 51 255</specular>
+      <cast_shadows>false</cast_shadows>
+    </light>
+
+    <light type="spot" name="room_2">
+      <pose>-2.5 0 1.6 0 0 0</pose>
+      <spot>
+        <outer_angle>3.14</outer_angle>
+      </spot>
+      <attenuation>
+        <range>5</range>
+        <quadratic>0.1</quadratic>
+      </attenuation>
+      <diffuse>204 204 204 255</diffuse>
+      <specular>51 51 51 255</specular>
+      <cast_shadows>false</cast_shadows>
+    </light>
+
+  </world>
+</sdf>

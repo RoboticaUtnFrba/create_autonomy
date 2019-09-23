@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+<xacro:macro name="omni_sensor" params="name diameter *origin">
+
+  <xacro:include filename="$(find ca_description)/urdf/common_properties.xacro"/>
+  <xacro:include filename="$(find ca_description)/urdf/sensors/omni_sensor_gazebo.xacro"/>
+
+  <xacro:property name="parent_link" value="base_link"/>
+  <xacro:property name="link_name" value="${name}_link"/>
+
+  <joint name="${name}_joint" type="fixed">
+    <xacro:insert_block name="origin" />
+    <parent link="${parent_link}" />
+    <child link="${link_name}" />
+  </joint>
+
+  <link name="${link_name}">
+    <xacro:dummy_inertia/>
+  </link>
+
+  <xacro:omni_sensor_gazebo name="${name}" diameter="${diameter}"/>
+
+</xacro:macro>
+
+</robot>

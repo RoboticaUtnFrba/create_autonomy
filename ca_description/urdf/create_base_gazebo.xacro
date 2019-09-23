@@ -43,6 +43,13 @@
       </plugin>
     </gazebo>
 
+    <!-- Virtual Wall detector -->
+    <gazebo>
+      <plugin name="virtual_wall_detector" filename="libvirtual_wall_detector.so">
+        <updateRate>10</updateRate>
+      </plugin>
+    </gazebo>
+
     <!-- Bumpers -->
     <gazebo reference="base_link">
       <gravity>true</gravity>

@@ -9,6 +9,7 @@
     <xacro:include filename="$(find ca_description)/urdf/sensors/imu_sensor.xacro"/>
     <xacro:include filename="$(find ca_description)/urdf/sensors/wall_sensor.xacro"/>
     <xacro:include filename="$(find ca_description)/urdf/sensors/cliff_sensors.xacro"/>
+    <xacro:include filename="$(find ca_description)/urdf/sensors/omni_sensor.xacro"/>
 
     <xacro:property name="base_link_offset_z" value="0.0308"/>
     <xacro:property name="base_offset_z" value="0.017"/>
@@ -58,6 +59,9 @@
     <xacro:imu_sensor name="imu">
       <origin xyz="0 -0.04 0.13" rpy="0 0 0"/>
     </xacro:imu_sensor>
+    <xacro:omni_sensor name="omni_sensor" diameter="0.1">
+      <origin xyz="0.145 0 ${base_link_offset_z}" rpy="0 0 0"/>
+    </xacro:omni_sensor>
 
     <xacro:create_wheel prefix="left" y_offset="${wheel_separation / 2}" wheel_radius="${wheel_radius}" wheel_width="${wheel_width}"/>
     <xacro:create_wheel prefix="right" y_offset="${wheel_separation / -2}" wheel_radius="${wheel_radius}" wheel_width="${wheel_width}"/>

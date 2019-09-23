@@ -146,6 +146,11 @@ add_dependencies(create_bumper_plugin ${catkin_EXPORTED_TARGETS})
 target_link_libraries(create_bumper_plugin
 	${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
 
+add_library(create_virtual_wall_plugin src/create_virtual_wall_plugin.cpp)
+add_dependencies(create_virtual_wall_plugin ${catkin_EXPORTED_TARGETS})
+target_link_libraries(create_virtual_wall_plugin
+	${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
+
 add_library(model_pose_publisher_plugin src/model_pose_publisher_plugin.cpp)
 target_link_libraries(model_pose_publisher_plugin
 	${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
@@ -155,10 +160,16 @@ add_dependencies(traffic_light_plugin ${catkin_EXPORTED_TARGETS})
 target_link_libraries(traffic_light_plugin
 	${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
 
+add_library(virtual_wall_detector src/virtual_wall_detector.cpp)
+add_dependencies(virtual_wall_detector ${catkin_EXPORTED_TARGETS})
+target_link_libraries(virtual_wall_detector
+	${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
+
 add_library(world_time_publisher src/world_time_publisher.cpp)
 add_dependencies(world_time_publisher ${catkin_EXPORTED_TARGETS})
 target_link_libraries(world_time_publisher
 	${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
+
 
 
 install(DIRECTORY
@@ -174,8 +185,10 @@ install(DIRECTORY include/${PROJECT_NAME}/
 
 install(TARGETS
 		create_bumper_plugin
+		create_virtual_wall_plugin
 		model_pose_publisher_plugin
 		traffic_light_plugin
+		virtual_wall_detector
 		world_time_publisher
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}

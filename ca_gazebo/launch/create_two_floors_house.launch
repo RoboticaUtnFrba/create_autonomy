@@ -1,0 +1,18 @@
+<launch>
+  <arg name="virtual_wall_x" default="0.2"/>
+  <arg name="virtual_wall_y" default="-1.2"/>
+  <arg name="virtual_wall_yaw" default="-1.57"/>
+
+  <param name="create1/amcl/initial_pose_x" value="2"/>
+  <param name="create1/amcl/initial_pose_y" value="0"/>
+  <param name="create1/amcl/initial_pose_a" value="0"/>
+
+  <include file="$(find ca_gazebo)/launch/create_empty_world.launch">
+    <arg name="env" value="two_floors_house"/>
+  </include>
+  <include file="$(find ca_gazebo)/launch/include/spawn_virtual_wall.launch">
+    <arg name="x" value="$(arg virtual_wall_x)"/>
+    <arg name="y" value="$(arg virtual_wall_y)"/>
+    <arg name="yaw" value="$(arg virtual_wall_yaw)"/>
+  </include>
+</launch>
