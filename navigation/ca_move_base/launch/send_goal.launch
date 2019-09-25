@@ -3,7 +3,7 @@
   <arg name="y"/>
   <arg name="Y"/>
 
-  <arg name="ns"/>
+  <arg name="ns" default="create1"/>
 
   <node pkg="ca_move_base" type="send_goal" name="navigation_goals" 
         args="$(arg x) $(arg y) $(arg Y)" ns="$(arg ns)"/>

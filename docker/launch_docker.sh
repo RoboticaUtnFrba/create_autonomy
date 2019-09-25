@@ -28,6 +28,7 @@ docker run -it \
     --env="DISPLAY"  \
     --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
     --volume="${REPO_DIR}:/create_ws/src" \
+    --device=/dev/input/js0 \
     --user="$(id -u):$(id -g)" \
     -e ROS_HOSTNAME=localhost \
     -e ROS_MASTER_URI=http://localhost:11311 \
