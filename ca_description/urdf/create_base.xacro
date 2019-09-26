@@ -55,8 +55,8 @@
     <xacro:create_wheel prefix="right" y_offset="${wheel_separation / -2}" wheel_radius="${wheel_radius}" wheel_width="${wheel_width}"/>
     <xacro:caster_wheel/>
 
-    <xacro:light_sensor prefix="left" pitch="${pi/4}" reflect="1"/>
-    <xacro:light_sensor prefix="right" pitch="${pi/4}" reflect="-1"/>
+    <xacro:light_sensor prefix="left" reflect="1"/>
+    <xacro:light_sensor prefix="right" reflect="-1"/>
     
 
     <!-- Simulation sensors -->
