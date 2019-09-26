@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+<xacro:macro name="light_sensor" params="prefix pitch reflect">
+
+    <xacro:include filename="$(find ca_description)/urdf/common_properties.xacro"/>
+    
+    <xacro:property name="name" value="${prefix}_light_sensor"/>
+    <xacro:property name="parent_link" value="base_link"/>
+    <xacro:property name="x" value="0.095"/>
+    <xacro:property name="y" value="0.14"/>
+    <xacro:property name="z" value="0.065"/>
+    <xacro:property name="R" value="0"/>
+    <xacro:property name="P" value="${pitch}"/>
+    <xacro:property name="Y" value="${pi/2}"/>
+
+
+        <joint name="${name}_joint" type="fixed">
+            <origin xyz="${x} ${y*reflect} ${z}" rpy="0 ${P} 0" doc="x es para adelante, y para izquierda, z para arriba"/>
+            <parent link="${parent_link}" />
+            <child link="${name}_link" />
+            <axis xyz="0 1 0" />
+        </joint>
+
+        <link name="${name}_link"/>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 ${pi/2} 0" />
+            <geometry>
+                <mesh filename="package://ca_description/meshes/last_lens.stl" scale=".0005 .0005 .0005  "/>
+                <box size=".02 .01 .01" doc="'x' es para arriba, 'y' para adelante y 'z' para la derecha"/>
+            </geometry>
+            <material name="blue">
+                <color rgba="0 0 1 1"/>
+            </material>
+        </visual>
+        </link>
+
+        <joint name="${name}_optical_joint" type="fixed">
+            <origin xyz="0.042 0 0" rpy="${-pi/2} 0 ${-pi/2}" />
+            <parent link="${name}_link" />
+            <child link="${name}_optical_frame"/>
+        </joint>
+
+        <link name="${name}_optical_frame"/>
+
+        <gazebo reference="${name}">
+            <material>Gazebo/Blue</material>
+        </gazebo>
+
+
+</xacro:macro>
+</robot>
