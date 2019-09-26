@@ -55,8 +55,14 @@
     <xacro:create_wheel prefix="right" y_offset="${wheel_separation / -2}" wheel_radius="${wheel_radius}" wheel_width="${wheel_width}"/>
     <xacro:caster_wheel/>
 
-    <xacro:light_sensor prefix="left" reflect="1"/>
-    <xacro:light_sensor prefix="right" reflect="-1"/>
+    <xacro:light_sensor prefix="left">
+      <origin xyz="0.095 0.14 0.065" rpy="0 ${pi/4} 0"/>
+      <optical_origin xyz="0.042 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>
+    </xacro:light_sensor>
+    <xacro:light_sensor prefix="right">
+      <origin xyz="0.095 -0.14 0.065" rpy="0 ${pi/4} 0"/>
+      <optical_origin xyz="0.042 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>
+    </xacro:light_sensor>
     
 
     <!-- Simulation sensors -->
