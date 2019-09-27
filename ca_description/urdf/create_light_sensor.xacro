@@ -8,7 +8,6 @@
     <xacro:property name="name" value="${prefix}_light_sensor"/>
     <xacro:property name="parent_link" value="base_link"/>
 
-
         <joint name="${name}_joint" type="fixed">
             <xacro:insert_block name="origin"/>
             <parent link="${parent_link}" />
@@ -31,13 +30,12 @@
             <parent link="${name}_link" />
             <child link="${name}_optical_frame"/>
         </joint>
-
+        
         <link name="${name}_optical_frame"/>
 
         <gazebo reference="${name}_link">
             <material>Gazebo/Blue</material>
         </gazebo>
-
 
 </xacro:macro>
 </robot>
