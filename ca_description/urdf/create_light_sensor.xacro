@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-<xacro:macro name="light_sensor" params="prefix *origin *optical_origin">
+<xacro:macro name="light_sensor" params="prefix *origin">
 
     <xacro:include filename="$(find ca_description)/urdf/common_properties.xacro"/>
     
@@ -26,7 +26,7 @@
         </link>
 
         <joint name="${name}_optical_joint" type="fixed">
-            <xacro:insert_block name="optical_origin"/>
+            <origin xyz="0.052 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>/>
             <parent link="${name}_link" />
             <child link="${name}_optical_frame"/>
         </joint>
