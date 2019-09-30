@@ -8,6 +8,7 @@ catkin_package(
     joy_teleop
     geometry_msgs
     rospy
+    draw_square
 )
 
 install(DIRECTORY config launch

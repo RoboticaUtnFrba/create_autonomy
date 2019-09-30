@@ -19,6 +19,7 @@
 
   <exec_depend>joy</exec_depend>
   <exec_depend>joy_teleop</exec_depend>
+  <exec_depend>draw_square</exec_depend>
 
   <export>
   </export>
