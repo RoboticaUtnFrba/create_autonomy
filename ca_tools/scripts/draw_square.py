@@ -12,31 +12,31 @@ from tf.transformations import euler_from_quaternion as efq
 from tf.transformations import quaternion_from_euler as qfe
 
 ANGLE_THRESHOLD = 0.05
-QUEUE_SIZE = 10
-ANGULAR_VEL = 0.5
+ANGULAR_VEL = 0.3
 LINEAR_VEL = 0.5
-LENGTH_THRESHOLD = 0.1
-GOAL_DIST_THRESHOLD = 0.1
+LENGTH_THRESHOLD = 0.05
+GOAL_DIST_THRESHOLD = 0.05
 
 
 class RobotState():
 
     STATES = [
     "MOVE_FORWARD",
-    "STOP_FORWARD",
     "ROTATE",
-    "STOP_ROTATE"
+    "STOP"
     ]
 
+    _current_state = None
+
     def __init__(self):
-        current_state = "STOP"
+        self._current_state = "STOP"
 
     def SetState(self,state):
         "assert a valid state"
-        current_state = state
+        self._current_state = state
 
     def GetState(self):
-        return current_state
+        return self._current_state
 
 
 class GTSys():
@@ -58,20 +58,20 @@ class DrawSquare():
 
 
     _current_pose = PoseWithCovariance()
-    _linear = None
-    _angular = None
     _state = RobotState()
     _twist = Twist()
     _next_pose = Pose()
     _ground_truth = GTSys()
     _goal_angle = 0
-    _firstGoalReached = False
-    _DEFAULT_LENGTH = 1
+    _currentGoalReached = False
     _goal_pose = Pose()
+    _diff_angle = 0
+    _length_diff = 0
+    _square_length = 2
 
 
     def __init__(self):
-        self._pub_cmd = rospy.Publisher('cmd_vel', Twist, QUEUE_SIZE)
+        self._pub_cmd = rospy.Publisher('cmd_vel', Twist, queue_size=10)
         self._sub_cmd = rospy.Subscriber('cmd_vel', Twist, self._callback)
         self._hz = rospy.get_param('~hz', 10) #hardcode
         self._current_pose = self._ground_truth.GetPose()
@@ -101,7 +101,7 @@ class DrawSquare():
         while(self._diff_angle > ANGLE_THRESHOLD):
             self._publish()
             self._updateCurrentPose()
-            self._getAngle()
+            self._getPoseDiff()
         self._stop()
 
 
@@ -111,8 +111,7 @@ class DrawSquare():
         self._twist.linear.x  = 0
         self._publish()
 
-    def _getAngle(self):
-        rospy.loginfo("Get angle")
+    def _getPoseDiff(self):
         q = self._current_pose.pose.orientation
         euler = efq((q.x,q.y,q.z,q.w))
         self._current_angle = self._wrapAngle(euler[2])
@@ -127,13 +126,20 @@ class DrawSquare():
     def _setSquareGoal(self):
             q = self._current_pose.pose.orientation
             euler = efq((q.x,q.y,q.z,q.w))
-            euler_yaw = self._wrapAngle(euler[2] + math.pi/2.0))
+            euler_yaw = self._wrapAngle(euler[2] + math.pi/2.0)
             q = qfe(euler[0],euler[1],euler_yaw) 
-            self._goal_pose.position.x = self._current_pose.pose.position.x + math.cos(euler_yaw)
-            self._goal_pose.position.y = self._current_pose.pose.position.y + math.sin(euler_yaw)
+            self._goal_pose.position.x = self._current_pose.pose.position.x + self._square_length*math.cos(euler_yaw)
+            self._goal_pose.position.y = self._current_pose.pose.position.y + self._square_length*math.sin(euler_yaw)
             return 
 
-        
+    def _getNextState(self):
+        if(self._diff_angle > ANGLE_THRESHOLD):
+            self._state.SetState("ROTATE")
+        elif(self._length_diff > LENGTH_THRESHOLD):
+            self._state.SetState("MOVE_FORWARD")
+        else:
+            self._state.SetState("STOP")
+            self._currentGoalReached = True
 
 
     def _moveForward(self):
@@ -156,7 +162,7 @@ class DrawSquare():
     def _goalReached(self):
         rospy.loginfo("goal_reached")
         if(self._length_diff < GOAL_DIST_THRESHOLD ):
-            self._firstGoalReached = True
+            self._currentGoalReached = True
             return True
         else:
             return False
@@ -175,20 +181,16 @@ class DrawSquare():
         while True:
             self._updateCurrentPose()
 
-            if(self._firstGoalReached):
-                self._setSquareGoal()
-                self._firstGoalReached=False
-            
-            self._getAngle()
-
             if(self._goalReached()):
-                self._stop()
-            elif(self._diff_angle < ANGLE_THRESHOLD):
-                self._moveForward()
-            else:
-                self._rotate()
+                self._setSquareGoal()
+                self._currentGoalReached = False
+            
+            self._getPoseDiff()
+            self._getNextState()
 
-            rospy.loginfo("First goal: %r",self._firstGoalReached)
+            self._actions[self._state.GetState()](self)
+
+            rospy.loginfo("First goal: %r",self._currentGoalReached)
             rospy.loginfo("diff angle: %f",self._diff_angle)
             rospy.loginfo("diff length :%f",self._length_diff)
             rospy.loginfo("goal x: %f", self._goal_pose.position.x)
@@ -211,14 +213,6 @@ def main(stdscr):
     rospy.init_node('draw_square')
     app = DrawSquare()
     app.run()
-    '''aux = Pose()
-    aux.position.x = 1
-    aux.position.y = 0.1
-    aux.position.z = 0
-    app._getAngle(aux)
-
-    for i in range(0,30):
-        app._rate.sleep()'''
 
 if __name__ == '__main__':
     try:
