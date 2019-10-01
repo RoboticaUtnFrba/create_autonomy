@@ -1,4 +1,6 @@
 <launch>
-  <arg name="id" default="$(optenv ID 1)"/>
-   <node pkg="ca_tools" type="draw_square.py" name="draw_square" output="screen" ns="$(eval 'create' + str(arg('id')))" if="$(eval str(arg('id')).isdigit() and (arg('id') > 0))" />
+  <group ns="$(eval 'create' + str(arg('id')))" if="$(eval str(arg('id')).isdigit() and (arg('id') > 0))">
+    <arg name="id" default="$(optenv ID 1)" ns=/>
+    <node pkg="ca_tools" type="draw_square.py" name="draw_square" output="screen" />
+  </group>
 </launch>

@@ -73,7 +73,7 @@ class DrawSquare():
     def __init__(self):
         self._pub_cmd = rospy.Publisher('cmd_vel', Twist, queue_size=10)
         self._sub_cmd = rospy.Subscriber('cmd_vel', Twist, self._callback)
-        self._hz = rospy.get_param('~hz', 10) #hardcode
+        self._hz = rospy.get_param('~hz', 10)
         self._current_pose = self._ground_truth.GetPose()
         self._rate = rospy.Rate(self._hz)
         self._rate.sleep()
@@ -197,13 +197,6 @@ class DrawSquare():
             rospy.loginfo("goal y: %f", self._goal_pose.position.y)
             for i in range(0,10):
                 self._rate.sleep()
-
-
-
-
-
-
-
 
 
 
