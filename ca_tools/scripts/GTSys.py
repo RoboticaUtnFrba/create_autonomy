@@ -5,7 +5,7 @@
 import math
 
 import rospy
-from geometry_msgs.msg import Twist, Pose, Quaternion, PoseWithCovariance
+from geometry_msgs.msg import Pose
 from nav_msgs.msg import Odometry
 
 
