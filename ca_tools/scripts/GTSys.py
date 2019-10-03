@@ -5,13 +5,14 @@
 import math
 
 import rospy
-from geometry_msgs.msg import Pose
+from geometry_msgs.msg import Pose, Twist
 from nav_msgs.msg import Odometry
 
 
 class GTSys():
 
     _pose = Pose()
+    _twist = Twist()
 
     def __init__(self):
         self._sub_gts=rospy.Subscriber('gts', Odometry, self._callback)
