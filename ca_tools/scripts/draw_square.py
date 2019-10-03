@@ -4,10 +4,12 @@
 
 import math
 from GTSys import GTSys
+from RobotLocalizationTf import RobotLocalizationTf
 
 import rospy
 from geometry_msgs.msg import Twist, Pose, Quaternion, PoseWithCovariance
 from nav_msgs.msg import Odometry
+from std_msgs.msg import Bool
 from tf.transformations import euler_from_quaternion as efq
 from tf.transformations import quaternion_from_euler as qfe
 
@@ -40,8 +42,8 @@ class RobotState():
 class DrawSquare():
 
     ANGLE_THRESHOLD = 0.05
-    ANGULAR_VEL = 0.3
-    LINEAR_VEL = 0.5
+    ANGULAR_VEL = 1
+    LINEAR_VEL = 1
     LENGTH_THRESHOLD = 0.05
     GOAL_DIST_THRESHOLD = 0.1
 
@@ -56,15 +58,17 @@ class DrawSquare():
     _diff_angle = 0
     _length_diff = 0
     _square_length = 2
+    _tf = RobotLocalizationTf()
 
 
     def __init__(self):
         self._pub_cmd = rospy.Publisher('cmd_vel', Twist, queue_size=10)
+        self._pub_controller_on = rospy.Publisher('controller_on', Bool, queue_size=10)
+        self._pub_controller_goal = rospy.Publisher('goal_pose', Pose, queue_size=10)
         self._hz = rospy.get_param('~hz', 10)
         self._current_pose = self._ground_truth.get_pose()
         self._rate = rospy.Rate(self._hz)
         self._rate.sleep()
-
 
     def _wrap_angle(self,angle): #ToDo: make beautiful this horrible function
         while (angle<0):
@@ -73,9 +77,17 @@ class DrawSquare():
             angle-=2.0*math.pi
         return angle
 
-
     def _publish(self):
         self._pub_cmd.publish(self._twist)
+
+    def _controller_on(self):
+        self._pub_controller_on.publish(True)
+    
+    def _controller_off(self):
+        self._pub_controller_on.publish(False)
+
+    def _update_controller_goal(self):
+        self._pub_controller_goal.publish(self._goal_pose)
 
     def _rotate(self):
         rospy.loginfo("rotate")
@@ -88,7 +100,6 @@ class DrawSquare():
             self._get_pose_diff()
         self._stop()
 
-
     def _stop(self):
         rospy.loginfo("stop")
         self._twist.angular.z = 0
@@ -97,8 +108,8 @@ class DrawSquare():
 
     def _get_pose_diff(self):
         q = self._current_pose.orientation
-        euler = efq((q.x,q.y,q.z,q.w))
-        self._current_angle = self._wrap_angle(euler[2])
+        _, _, yaw = efq((q.x,q.y,q.z,q.w))
+        self._current_angle = self._wrap_angle(yaw)
 
         diff_x = (self._goal_pose.position.x - self._current_pose.position.x)
         diff_y = (self._goal_pose.position.y - self._current_pose.position.y)
@@ -114,6 +125,7 @@ class DrawSquare():
             q = qfe(euler[0],euler[1],euler_yaw) 
             self._goal_pose.position.x = self._current_pose.position.x + self._square_length*math.cos(euler_yaw)
             self._goal_pose.position.y = self._current_pose.position.y + self._square_length*math.sin(euler_yaw)
+            self._update_controller_goal()
             return 
 
     def _get_next_state(self):
@@ -126,9 +138,9 @@ class DrawSquare():
             self._state.SetState("STOP")
             self._currentGoalReached = True
 
-
     def _move_forward(self):
         rospy.loginfo("MF")
+        self._controller_on()
         t0 = rospy.get_time()
         distance_travelled = 0
         self._twist.linear.x = self.LINEAR_VEL
@@ -138,6 +150,7 @@ class DrawSquare():
             t1 = rospy.get_time()
             distance_travelled = (self._twist.linear.x)*(t1-t0)
         self._length_diff -= distance_travelled
+        self._controller_off()
         self._stop()
 
 
@@ -162,8 +175,10 @@ class DrawSquare():
         aux.position.y = -2
         aux.position.z = 0
         self._goal_pose = aux
+        self._update_controller_goal()
 
         while True:
+            self._update_controller_goal()
             self._update_current_pose()
             self._get_pose_diff()
 
