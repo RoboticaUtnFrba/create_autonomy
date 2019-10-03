@@ -1,0 +1,33 @@
+#! /usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import math
+from geometry_msgs.msg import Twist, Pose, Quaternion
+from tf.transformations import euler_from_quaternion as efq
+from tf.transformations import quaternion_from_euler as qfe
+
+class RobotLocalizationTf():
+
+    def __init__(self):
+        pass
+
+    def wrap_angle(self,angle,min_angle=0,max_angle=2.0*math.pi): #ToDo: make beautiful this horrible function
+        while (angle<min_angle):
+            angle+=2.0*math.pi
+        while (angle>max_angle):
+            angle-=2.0*math.pi
+        return angle
+
+    def get_pose_diff(self,current_pose,goal_pose):
+        q = current_pose.orientation
+        _, _, yaw = efq((q.x,q.y,q.z,q.w))
+        current_angle = self.wrap_angle(yaw)
+
+        diff_x = (goal_pose.position.x - current_pose.position.x)
+        diff_y = (goal_pose.position.y - current_pose.position.y)
+
+        goal_angle = self.wrap_angle(math.atan2(diff_y,diff_x))
+        angle_diff = self.wrap_angle(goal_angle - current_angle)
+        length_diff = math.sqrt(diff_x*diff_x + diff_y*diff_y)
+
+        return (diff_x, diff_y, angle_diff, length_diff)
