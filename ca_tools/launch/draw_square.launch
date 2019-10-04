@@ -5,5 +5,6 @@
     <node pkg="ca_tools" type="draw_square.py" name="draw_square" output="screen"/>
     <node pkg="ca_tools" type="test_pub.py" name="test_pose" output="screen"/>
     <node pkg="ca_tools" type="controller.py" name="pose_controller" output="screen"/>
+    <node pkg="ca_tools" type="path_printer.py" name="path_printer" output="screen"/>
   </group>
 </launch>
