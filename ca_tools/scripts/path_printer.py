@@ -15,8 +15,13 @@ class pathPrinter():
         self._path = Path()
         self._path_pub = rospy.Publisher('path', Path, queue_size=10)
         self._gt = GTSys()
+
         self._rate = rospy.Rate(1) #1 Path msg per second
         self._rate.sleep()
+
+    def set_path_frame_id(self,frame):
+        self._path.header.frame_id = frame
+        self._gt.set_frame_id(frame)
 
     def _update_path(self):
         self._current_header = self._gt.get_header()
@@ -36,6 +41,7 @@ class pathPrinter():
 def main():
     rospy.init_node('path_printer')
     app = pathPrinter()
+    app.set_path_frame_id("/map")
     app.run()
 
 main()

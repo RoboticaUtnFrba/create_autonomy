@@ -22,6 +22,9 @@ class GTSys():
         self._twist = data.twist.twist
         self._header = data.header
 
+    def set_frame_id(self,frame):
+        self._header.frame_id = frame
+
     def get_pose(self):
         return self._pose
 
