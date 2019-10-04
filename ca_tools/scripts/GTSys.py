@@ -20,9 +20,13 @@ class GTSys():
     def _callback(self,data):
         self._pose = data.pose.pose
         self._twist = data.twist.twist
+        self._header = data.header
 
     def get_pose(self):
         return self._pose
 
     def get_twist(self):
         return self._twist
+
+    def get_header(self):
+        return self._header
