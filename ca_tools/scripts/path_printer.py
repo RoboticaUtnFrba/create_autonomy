@@ -5,7 +5,7 @@
 import math
 
 import rospy
-from GTSys import GroundTruth
+from ground_truth import GroundTruth
 from geometry_msgs.msg import Pose, PoseStamped
 from nav_msgs.msg import Path
 
@@ -27,7 +27,7 @@ class PathPrinter():
         self._current_header = self._gt.get_header()
         self._current_pose = self._gt.get_pose()
         pose = PoseStamped()
-        pose.header = self._gt.get_header()
+        pose.header = self._gt.get_header() # Sets the correct header for printing in RViz
         pose.pose = self._gt.get_pose()
         self._path.poses.append(pose)
 

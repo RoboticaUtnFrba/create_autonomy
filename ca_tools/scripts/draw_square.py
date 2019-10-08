@@ -4,8 +4,8 @@
 
 import math
 import itertools
-from GTSys import GroundTruth
-from RobotLocalizationTf import RobotLocalizationTf
+from ground_truth import GroundTruth
+from robot_localization_tf import RobotLocalizationTf
 from threading import Lock
 from enum import Enum
 
@@ -39,7 +39,7 @@ class DrawSquare():
     """
 
     ANGLE_THRESHOLD = 0.05
-    ANGULAR_VEL = 0.3
+    ANGULAR_VEL = 0.6
     LINEAR_VEL = 0.7
     LENGTH_THRESHOLD = 0.05
     GOAL_DIST_THRESHOLD = 0.05
@@ -135,8 +135,6 @@ class DrawSquare():
             self._publish(self._control_twist)
             self._update_current_pose()
             (_, _, _, self._length_diff) = self._tf.get_pose_diff(self._current_pose, self._goal_pose)
-            if(abs(self._diff_angle) > 1): # If something goes wrong and the angle gets very big, the function stops and the robot will start doing pure rotation
-                break
         self._controller_off()
         self._stop()
 
@@ -173,7 +171,7 @@ class DrawSquare():
 
         self._set_next_goal
         rospy.loginfo("run")
-        while True:
+        while not rospy.is_shutdown():
             self._update_current_pose()
             (_, _, self._diff_angle, self._length_diff) = self._tf.get_pose_diff(self._current_pose, self._goal_pose)
             rospy.loginfo("diff angle: %f",self._diff_angle)

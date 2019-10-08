@@ -22,6 +22,17 @@ class RobotLocalizationTf():
         return angle
 
     def get_pose_diff(self, current_pose, goal_pose):
+
+        """Computes position and angle difference between two poses
+        
+        Returns:
+            Tuple with:
+                difference in x axis
+                difference in y axis
+                angle difference (in radians)
+                distance between positions
+        """
+
         q = current_pose.orientation
         _, _, yaw = efq((q.x, q.y, q.z, q.w))
         current_angle = self.wrap_angle(yaw)
