@@ -3,6 +3,7 @@
 
 
 import math
+import itertools
 from GTSys import GroundTruth
 from RobotLocalizationTf import RobotLocalizationTf
 from threading import Lock
@@ -43,6 +44,9 @@ class DrawSquare():
     LENGTH_THRESHOLD = 0.05
     GOAL_DIST_THRESHOLD = 0.05
 
+
+    _goals = [(0.0, 0.0), (2.0, 0.0), (2.0, 2.0), (0.0, 2.0)]
+
     _current_pose = Pose()
     _state = RobotState.STOP # Current  state of the robot
     _twist = Twist()
@@ -55,6 +59,7 @@ class DrawSquare():
     _length_diff = 999999
     _square_length = 2
     _tf = RobotLocalizationTf() # Transformations and computations for robot poses
+    _goalit = itertools.cycle(_goals) # Iterator for the goal list
 
 
     def __init__(self):
@@ -103,18 +108,13 @@ class DrawSquare():
         self._twist.linear.x  = 0
         self._publish(self._twist)
 
-    def _set_square_goal(self):
+    def _set_next_goal(self):
 
         """
-        Function that sets the next goal for drawing a square
+        Function that sets the next goal for drawing a figure
         """
 
-        q = self._current_pose.orientation
-        euler = efq((q.x,q.y,q.z,q.w))
-        euler_yaw = self._tf.wrap_angle(euler[2] + math.pi/2.0)
-        q = qfe(euler[0],euler[1],euler_yaw) 
-        self._goal_pose.position.x = self._current_pose.position.x + self._square_length*math.cos(euler_yaw)
-        self._goal_pose.position.y = self._current_pose.position.y + self._square_length*math.sin(euler_yaw)
+        (self._goal_pose.position.x, self._goal_pose.position.y) = self._goalit.next()
         self._update_controller_goal()
 
     def _get_next_state(self):
@@ -171,7 +171,7 @@ class DrawSquare():
         Executes the global algorithm for drawing a square.
         """
 
-        self._init_goal()
+        self._set_next_goal
         rospy.loginfo("run")
         while True:
             self._update_current_pose()
@@ -179,7 +179,7 @@ class DrawSquare():
             rospy.loginfo("diff angle: %f",self._diff_angle)
             rospy.loginfo("length diff: %f",self._length_diff)
             if(self._goal_reached()):
-                self._set_square_goal()
+                self._set_next_goal()
                 self._currentGoalReached = False
                 (_, _, self._diff_angle, self._length_diff) = self._tf.get_pose_diff(self._current_pose, self._goal_pose)
             self._get_next_state()
