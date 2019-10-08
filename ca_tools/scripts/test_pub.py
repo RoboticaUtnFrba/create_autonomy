@@ -9,12 +9,12 @@
 import rospy
 from geometry_msgs.msg import Twist, Pose, Quaternion, PoseWithCovariance
 from nav_msgs.msg import Odometry
-from GTSys import GTSys
+from GTSys import GroundTruth
 
 def main():
     rospy.init_node('test_pose')
     pub_current = rospy.Publisher('current_pose', Pose, queue_size=10)
-    gt = GTSys()
+    gt = GroundTruth()
 
     while True:
         pose = gt.get_pose()

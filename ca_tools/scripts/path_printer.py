@@ -5,23 +5,23 @@
 import math
 
 import rospy
-from GTSys import GTSys
+from GTSys import GroundTruth
 from geometry_msgs.msg import Pose, PoseStamped
 from nav_msgs.msg import Path
 
-class pathPrinter():
+class PathPrinter():
 
-    def __init__(self):
+    """
+    Class that sends a Path msg to a desired topic, and updates the message as time passes.
+    """
+
+    def __init__(self, pub_topic="path", frame_id="/map", pub_rate=1):
         self._path = Path()
-        self._path_pub = rospy.Publisher('path', Path, queue_size=10)
-        self._gt = GTSys()
-
-        self._rate = rospy.Rate(1) #1 Path msg per second
-        self._rate.sleep()
-
-    def set_path_frame_id(self,frame):
-        self._path.header.frame_id = frame
-        self._gt.set_frame_id(frame)
+        self._path_pub = rospy.Publisher(pub_topic, Path, queue_size=10)
+        self._gt = GroundTruth()
+        self._rate = rospy.Rate(pub_rate)
+        self._path.header.frame_id = frame_id
+        self._gt.set_frame_id(frame_id)
 
     def _update_path(self):
         self._current_header = self._gt.get_header()
@@ -31,7 +31,6 @@ class pathPrinter():
         pose.pose = self._gt.get_pose()
         self._path.poses.append(pose)
 
-
     def run(self):
         while True:
             self._update_path()
@@ -40,8 +39,7 @@ class pathPrinter():
 
 def main():
     rospy.init_node('path_printer')
-    app = pathPrinter()
-    app.set_path_frame_id("/map")
+    app = PathPrinter('path', '/map', 1)
     app.run()
 
 main()
