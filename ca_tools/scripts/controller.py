@@ -40,12 +40,6 @@ class PoseController():
         self._integral_count = 0 # Variable for counting integral terms summed until setting it back to zero
         self._ground_truth = GroundTruth()
 
-    '''def _current_pose_callback(self, data):
-        self._lock.acquire()
-        self._current_pose = data
-        _, _, self._angle_diff,_ = self._tf.get_pose_diff(self._current_pose, self._goal_pose)
-        self._lock.release()'''
-
     def _goal_pose_callback(self, data):
         self._lock.acquire()
         self._goal_pose = data
@@ -57,8 +51,7 @@ class PoseController():
         self._turned_on = data.data
         self._lock.release()
 
-    def set_pose_subscribers(self, current_pose_topic='current_pose', goal_pose_topic='goal_pose'):
-        '''self._current_pose_sub = rospy.Subscriber(current_pose_topic, Pose, self._current_pose_callback)'''
+    def set_pose_subscribers(self, goal_pose_topic='goal_pose'):
         self._goal_pose_sub = rospy.Subscriber(goal_pose_topic, Pose, self._goal_pose_callback)
         self._switch = rospy.Subscriber('controller_on', Bool, self._on_callback)
 
@@ -73,7 +66,6 @@ class PoseController():
     def _compute_velocity(self):
         self._current_pose = self._ground_truth.get_pose()
         _, _, self._angle_diff, self._length_diff = self._tf.get_pose_diff(self._current_pose, self._goal_pose)
-        rospy.loginfo("Contoller angle diff: %f", self._angle_diff)
         self._integral_error += self._angle_diff * self._dt
         angular = self._angle_diff * self._kp + self._integral_error * self._ki
         twist = Twist()

@@ -55,7 +55,6 @@ class DrawSquare():
     _length_diff = 999999
     _square_length = 2
     _tf = RobotLocalizationTf() # Transformations and computations for robot poses
-    _goal_num = 0   #use iterables
 
 
     def __init__(self):
