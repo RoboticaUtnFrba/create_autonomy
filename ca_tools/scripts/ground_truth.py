@@ -13,6 +13,7 @@ from nav_msgs.msg import Odometry
 
 class GroundTruth():
 
+
     """This class provides methods for easy accessing the ground truth system native to Gazebo simulator.
     """
 

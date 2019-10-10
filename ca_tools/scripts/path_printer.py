@@ -3,13 +3,14 @@
 
 
 import math
-
 import rospy
 from ground_truth import GroundTruth
 from geometry_msgs.msg import Pose, PoseStamped
 from nav_msgs.msg import Path
 
+
 class PathPrinter():
+
 
     """
     Class that sends a Path msg to a desired topic, and updates the message as time passes.
@@ -36,6 +37,7 @@ class PathPrinter():
             self._update_path()
             self._path_pub.publish(self._path)
             self._rate.sleep()
+
 
 def main():
     rospy.init_node('path_printer')

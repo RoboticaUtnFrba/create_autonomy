@@ -14,16 +14,15 @@ from std_msgs.msg import Bool
 from tf.transformations import euler_from_quaternion as efq
 
 
-
-
 class PoseController():
+
 
     """Class that implements a controller for the pose of a robot.
     """
 
-    _INTEGRAL_TERMS = 10000
+    _INTEGRAL_LIMIT = 10000
 
-    def __init__(self, pub_topic='cmd_vel_control', goal_pose_topic='goal_pose', switch_topic='controller_on', kp_angle=0.1, ki_angle=0.0, kd_angle=0.0, kp_vel=0.1, ki_vel=0.0, kd_vel=0.0):
+    def __init__(self, pub_topic, goal_pose_topic, switch_topic='controller_on', kp_angle=0.1, ki_angle=0.0, kd_angle=0.0, kp_vel=0.1, ki_vel=0.0, kd_vel=0.0):
         self._current_pose = Pose()
         self._goal_pose = Pose()
         self._pub_cmd = rospy.Publisher(pub_topic, Twist, queue_size=10)
@@ -98,7 +97,7 @@ class PoseController():
         twist.linear.x = linear
         twist.angular.z = angular
         self._integral_count += 1
-        if(self._integral_count > self._INTEGRAL_TERMS):
+        if(self._integral_count > self._INTEGRAL_LIMIT):
             self._integral_count = 0
         return twist
 
@@ -114,7 +113,7 @@ class PoseController():
 
 def main():
     rospy.init_node('pose_controller')
-    app = PoseController()
+    app = PoseController('cmd_vel_control','goal_pose')
     app.set_constants(1, 0.5, -0.1, 0.1, 1)
     app.run()
 

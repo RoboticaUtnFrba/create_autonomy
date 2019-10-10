@@ -4,8 +4,9 @@
 
 import math
 import itertools
+import sys
 from ground_truth import GroundTruth
-from robot_localization_tf import RobotLocalizationTf
+from robot_localization_tf import RobotLocalizationTf as robot_tf
 from threading import Lock
 from enum import Enum
 
@@ -15,7 +16,6 @@ from nav_msgs.msg import Odometry
 from std_msgs.msg import Bool
 from tf.transformations import euler_from_quaternion as efq
 from tf.transformations import quaternion_from_euler as qfe
-
 
 
 class RobotState(Enum):
@@ -29,10 +29,9 @@ class RobotState(Enum):
     ROTATE = 3
 
 
-
-
 class DrawSquare():
     
+
     """
     Class for implementing the drawing of a square in Gazebo.
     Probably it can be made more generic for drawing any kind of geometric figure.
@@ -53,12 +52,11 @@ class DrawSquare():
     _next_pose = Pose()
     _ground_truth = GroundTruth()
     _goal_angle = 0
-    _currentGoalReached = False # Variable which determines if the next goal has to be given
+    _current_goal_reached = False # Variable which determines if the next goal has to be given
     _goal_pose = Pose()
     _diff_angle = 0
-    _length_diff = 999999
+    _length_diff = sys.maxint
     _square_length = 2
-    _tf = RobotLocalizationTf() # Transformations and computations for robot poses
     _goalit = itertools.cycle(_goals) # Iterator for the goal list
 
 
@@ -99,7 +97,7 @@ class DrawSquare():
         while(abs(self._diff_angle) > self.ANGLE_THRESHOLD):
             self._publish(self._twist)
             self._update_current_pose()
-            (_, _, self._diff_angle, self._length_diff) = self._tf.get_pose_diff(self._current_pose, self._goal_pose)
+            (_, _, self._diff_angle, self._length_diff) = robot_tf.get_pose_diff(self._current_pose, self._goal_pose)
         self._stop()
 
     def _stop(self):
@@ -125,16 +123,16 @@ class DrawSquare():
             self._state = RobotState.MOVE_FORWARD
         else:
             self._state = RobotState.STOP
-            self._currentGoalReached = True
+            self._current_goal_reached = True
 
     def _move_forward(self):
         rospy.loginfo("MF")
         self._controller_on()
-        (_, _, self._diff_angle, self._length_diff) = self._tf.get_pose_diff(self._current_pose, self._goal_pose)
+        (_, _, self._diff_angle, self._length_diff) = robot_tf.get_pose_diff(self._current_pose, self._goal_pose)
         while(self._length_diff > self.LENGTH_THRESHOLD):
             self._publish(self._control_twist)
             self._update_current_pose()
-            (_, _, _, self._length_diff) = self._tf.get_pose_diff(self._current_pose, self._goal_pose)
+            (_, _, _, self._length_diff) = robot_tf.get_pose_diff(self._current_pose, self._goal_pose)
         self._controller_off()
         self._stop()
 
@@ -149,11 +147,8 @@ class DrawSquare():
         """
 
         rospy.loginfo("goal_reached")
-        if(self._length_diff < self.GOAL_DIST_THRESHOLD ):
-            self._currentGoalReached = True
-            return True
-        else:
-            return False
+        self._current_goal_reached = self._length_diff < self.GOAL_DIST_THRESHOLD 
+        return self._current_goal_reached
 
 
     _actions = {RobotState.STOP:_stop , RobotState.MOVE_FORWARD:_move_forward, RobotState.ROTATE:_rotate}
@@ -173,13 +168,13 @@ class DrawSquare():
         rospy.loginfo("run")
         while not rospy.is_shutdown():
             self._update_current_pose()
-            (_, _, self._diff_angle, self._length_diff) = self._tf.get_pose_diff(self._current_pose, self._goal_pose)
+            (_, _, self._diff_angle, self._length_diff) = robot_tf.get_pose_diff(self._current_pose, self._goal_pose)
             rospy.loginfo("diff angle: %f",self._diff_angle)
             rospy.loginfo("length diff: %f",self._length_diff)
             if(self._goal_reached()):
                 self._set_next_goal()
-                self._currentGoalReached = False
-                (_, _, self._diff_angle, self._length_diff) = self._tf.get_pose_diff(self._current_pose, self._goal_pose)
+                self._current_goal_reached = False
+                (_, _, self._diff_angle, self._length_diff) = robot_tf.get_pose_diff(self._current_pose, self._goal_pose)
             self._get_next_state()
             self._actions[self._state](self)
             self._rate.sleep()
