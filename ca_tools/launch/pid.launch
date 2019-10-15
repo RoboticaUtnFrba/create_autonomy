@@ -1,0 +1,28 @@
+ <launch>
+    <arg name="reconfigure" default="$(optenv DYNRECONF true)" doc="If true, dynamic reconfigure is opened with pid values"/>
+    <include file="$(find ca_gazebo)/launch/create_empty_world.launch"/>
+    <node name="lineal_controller" pkg="pid" type="controller" ns="lineal">
+      <param name="Kp" value="2.0" />
+      <param name="Ki" value="0.01" />
+      <param name="Kd" value="0.01" />
+      <param name="upper_limit" value="7" />
+      <param name="lower_limit" value="-7" />
+      <param name="windup_limit" value="10" />
+      <param name="max_loop_frequency" value="60.0" />
+      <param name="min_loop_frequency" value="60.0" />
+
+     </node>
+      <node name="angular_controller" pkg="pid" type="controller" ns="angular">
+      <param name="Kp" value="4.5" />
+      <param name="Ki" value="0.03" />
+      <param name="Kd" value="0.045" />
+      <param name="upper_limit" value="7" />
+      <param name="lower_limit" value="-7" />
+      <param name="windup_limit" value="10" />
+      <param name="max_loop_frequency" value="60.0" />
+      <param name="min_loop_frequency" value="60.0" />
+     </node>
+     <node name="pid_controller" pkg="ca_tools" type="pid_controller.py" output="screen"/>
+  
+     <node name="rqt_reconfigure" pkg="rqt_reconfigure" type="rqt_reconfigure" if="$(arg reconfigure)"/>
+</launch>
