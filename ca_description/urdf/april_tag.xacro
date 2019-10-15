@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="april_tag">
+
+    <xacro:property name="april_tag_z_offset" value="0.3"/>
+
+    <link name="april_tag_link">
+      <visual>
+        <origin xyz=" 0 0 ${april_tag_z_offset}" rpy="0 0 0" />
+        <geometry>
+          <box size="0.5 0.5 0.05" />
+        </geometry>
+        <gazebo reference="april_tag_link">
+          <material>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Wood</name>
+            <!--script>
+              <uri>model://create_april_tags/materials/scripts </uri>
+              <uri>model://create_april_tags/materials/textures </uri>
+              <name>AprilTag1</name>
+            </script-->
+          </material>
+        </gazebo>
+      </visual>
+    </link>
+
+  <joint name="april_tag_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="april_tag_link"/>
+  </joint>
+
+  </xacro:macro>
+
+</robot>

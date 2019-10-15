@@ -1,0 +1,35 @@
+<?xml version='1.0'?>
+<sdf version='1.6'>
+  <model name='camera'>
+    <static>true</static>
+    <link name='link'>
+      <visual name='visual'>
+        <geometry>
+          <box>
+            <size>0.1 0.1 0.1</size>
+          </box>
+        </geometry>
+      </visual>
+      <sensor name='my_camera' type='camera'>
+        <camera>
+          <save enabled="true">
+            <path>/tmp/camera_save_tutorial</path>
+          </save>
+          <horizontal_fov>1.047</horizontal_fov>
+          <image>
+            <width>1920</width>
+            <height>1080</height>
+          </image>
+          <clip>
+            <near>10</near>
+            <far>50</far>
+          </clip>
+        </camera>
+        <always_on>1</always_on>
+        <update_rate>5</update_rate>
+      </sensor>
+    </link>
+  </model>
+
+
+</sdf>

@@ -1,0 +1,71 @@
+material AprilTag1
+{
+  technique
+  {
+    pass
+    {
+      ambient 1.0 1.0 1.0 1.0
+      diffuse 1.0 1.0 1.0 1.0
+      specular 1.0 1.0 1.0 1.0 12.5
+
+      texture_unit
+      {
+        texture apriltag1.png
+      }
+    }
+  }
+}
+
+material AprilTag2
+{
+  technique
+  {
+    pass
+    {
+      ambient 1.0 1.0 1.0 1.0
+      diffuse 1.0 1.0 1.0 1.0
+      specular 1.0 1.0 1.0 1.0 12.5
+
+      texture_unit
+      {
+        texture apriltag2.png
+      }
+    }
+  }
+}
+
+material AprilTag3
+{
+  technique
+  {
+    pass
+    {
+      ambient 1.0 1.0 1.0 1.0
+      diffuse 1.0 1.0 1.0 1.0
+      specular 1.0 1.0 1.0 1.0 12.5
+
+      texture_unit
+      {
+        texture apriltag3.png
+      }
+    }
+  }
+}
+
+material AprilTag4
+{
+  technique
+  {
+    pass
+    {
+      ambient 1.0 1.0 1.0 1.0
+      diffuse 1.0 1.0 1.0 1.0
+      specular 1.0 1.0 1.0 1.0 12.5
+
+      texture_unit
+      {
+        texture apriltag4.png
+      }
+    }
+  }
+}
