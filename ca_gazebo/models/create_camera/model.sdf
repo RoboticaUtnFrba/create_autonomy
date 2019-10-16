@@ -10,23 +10,37 @@
           </box>
         </geometry>
       </visual>
-      <sensor name='my_camera' type='camera'>
+      <sensor name='apriltag_camera' type='camera'>
         <camera>
-          <save enabled="true">
+          <save enabled="false">
             <path>/tmp/camera_save_tutorial</path>
           </save>
           <horizontal_fov>1.047</horizontal_fov>
           <image>
-            <width>1920</width>
-            <height>1080</height>
+            <width>5760</width>
+            <height>3240</height>
           </image>
           <clip>
-            <near>10</near>
-            <far>50</far>
+            <near>0.1</near>
+            <far>500</far>
           </clip>
         </camera>
         <always_on>1</always_on>
-        <update_rate>5</update_rate>
+        <update_rate>50</update_rate>
+        <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+          <alwaysOn>true</alwaysOn>
+          <updateRate>0.0</updateRate>
+          <cameraName>/apriltag_camera</cameraName>
+          <imageTopicName>image_raw</imageTopicName>
+          <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+          <frameName>camera_link</frameName>
+          <hackBaseline>0.07</hackBaseline>
+          <distortionK1>0.0</distortionK1>
+          <distortionK2>0.0</distortionK2>
+          <distortionK3>0.0</distortionK3>
+          <distortionT1>0.0</distortionT1>
+          <distortionT2>0.0</distortionT2>
+        </plugin>
       </sensor>
     </link>
   </model>

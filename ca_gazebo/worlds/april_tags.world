@@ -94,7 +94,7 @@
 
     <include>
       <uri>model://create_camera</uri>
-      <pose> 0 0 40 0 1.57 0</pose>
+      <pose> 0 0 35 0 1.57 0</pose>
       <name>camera</name>
     </include>
 

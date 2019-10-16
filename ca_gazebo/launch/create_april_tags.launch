@@ -12,6 +12,7 @@
 	<arg name="gui" value="$(optenv GUI true)"/>
 	<arg name="debug" value="$(optenv DEBUG false)"/>
 	
+	<env name="GAZEBO_MODEL_PATH" value="$(find ca_gazebo)/models"/>
 
 	<!-- Launch Gazebo world -->
 	<include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -30,5 +31,7 @@
   <include file="$(find ca_move_base)/launch/map_server.launch">
 	<arg name="env" value="$(arg env)"/>
   </include>
+
+  <!-- publish the image -->
 
 </launch>
