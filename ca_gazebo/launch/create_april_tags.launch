@@ -1,37 +1,17 @@
 <launch>
 	<arg name="env" default="april_tags"/>
- 	<param name="create1/amcl/initial_pose_x" value="0"/>
-  	<param name="create1/amcl/initial_pose_y" value="0"/>
-  	<param name="create1/amcl/initial_pose_a" value="0"/>
+ 	<param name="create1/amcl/initial_pose_x" value="5"/>
+  	<param name="create1/amcl/initial_pose_y" value="5"/>
+  	<param name="create1/amcl/initial_pose_a" value="1"/>
 
- 	<param name="create2/amcl/initial_pose_x" value="0"/>
-  	<param name="create2/amcl/initial_pose_y" value="0"/>
-  	<param name="create2/amcl/initial_pose_a" value="0"/>
-
-  	<arg name="paused" value="$(optenv PAUSED false)"/>
-	<arg name="gui" value="$(optenv GUI true)"/>
-	<arg name="debug" value="$(optenv DEBUG false)"/>
+ 	<param name="create2/amcl/initial_pose_x" value="-5"/>
+  	<param name="create2/amcl/initial_pose_y" value="-5"/>
+  	<param name="create2/amcl/initial_pose_a" value="1"/>
 	
 	<env name="GAZEBO_MODEL_PATH" value="$(find ca_gazebo)/models"/>
 
-	<!-- Launch Gazebo world -->
-	<include file="$(find gazebo_ros)/launch/empty_world.launch">
-		<arg name="debug" value="$(arg debug)" />
-		<arg name="gui" value="$(arg gui)" />
-		<arg name="paused" value="$(arg paused)"/>
-		<arg name="use_sim_time" value="true"/>
-		<arg name="verbose" value="true"/>
-		<arg name="world_name" value="$(find ca_gazebo)/worlds/$(arg env).world"/>
+	<include file="$(find ca_gazebo)/launch/create_empty_world.launch">
+    <arg name="env" value="april_tags"/>
 	</include>
-
-	<!-- Spawn robot/s -->
-	<include file="$(find ca_gazebo)/launch/spawn_multirobot.launch"/>
-
-  <!-- map_server -->
-  <include file="$(find ca_move_base)/launch/map_server.launch">
-	<arg name="env" value="$(arg env)"/>
-  </include>
-
-  <!-- publish the image -->
 
 </launch>
