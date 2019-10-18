@@ -39,7 +39,7 @@
         </geometry>
         <material>
           <script>
-            <uri>model://create_april_tags/materials/scripts/apriltag.material </uri>
+            <uri>model://create_april_tags/materials/scripts/create_april_tags.material </uri>
             <name>AprilTag2</name>
           </script>
         </material>
@@ -61,8 +61,7 @@
         </geometry>
         <material>
           <script>
-            <uri>model://create_april_tags/materials/scripts </uri>
-            <uri>model://create_april_tags/materials/textures </uri>
+            <uri>model://create_april_tags/materials/scripts/create_april_tags.material </uri>
             <name>AprilTag3</name>
           </script>
         </material>
@@ -84,8 +83,7 @@
         </geometry>
         <material>
           <script>
-            <uri>model://create_april_tags/materials/scripts </uri>
-            <uri>model://create_april_tags/materials/textures </uri>
+            <uri>model://create_april_tags/materials/scripts/create_april_tags.material </uri>
             <name>AprilTag4</name>
           </script>
         </material>

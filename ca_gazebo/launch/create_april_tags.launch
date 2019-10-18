@@ -7,8 +7,6 @@
  	<param name="create2/amcl/initial_pose_x" value="-5"/>
   	<param name="create2/amcl/initial_pose_y" value="-5"/>
   	<param name="create2/amcl/initial_pose_a" value="1"/>
-	
-	<env name="GAZEBO_MODEL_PATH" value="$(find ca_gazebo)/models"/>
 
 	<include file="$(find ca_gazebo)/launch/create_empty_world.launch">
     <arg name="env" value="april_tags"/>

@@ -1,25 +1,23 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <xacro:macro name="april_tag">
+  <xacro:macro name="april_tag" params="name_prefix *origin">
 
-    <xacro:property name="april_tag_z_offset" value="0.3"/>
-
-    <link name="april_tag_link">
+    <link name="${name_prefix}_april_tag_link">
       <visual>
-        <origin xyz=" 0 0 ${april_tag_z_offset}" rpy="0 0 0" />
         <geometry>
           <box size="0.5 0.5 0.05" />
         </geometry>
       </visual>
     </link>
 
-  <joint name="april_tag_joint" type="fixed">
+  <joint name="${name_prefix}_april_tag_joint" type="fixed">
     <parent link="base_link" />
-    <child link="april_tag_link"/>
+    <child link="${name_prefix}_april_tag_link"/>
+    <xacro:insert_block name="origin"/>
   </joint>
 
-  <gazebo reference="april_tag_link">
+  <gazebo reference="${name_prefix}_april_tag_link">
     <visual>
       <material>            
         <script>
