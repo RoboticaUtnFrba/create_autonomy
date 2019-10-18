@@ -38,58 +38,6 @@
       <uri>model://create_four_walls</uri>
     </include>
 
-    <light type="spot" name="light_1">
-      <pose>-10 7 1000 0 0 0</pose>
-      <diffuse>1 1 1 1</diffuse>
-      <specular>1 1 1 1</specular>
-      <attenuation>
-        <range>20</range>
-        <linear>0.2</linear>
-        <constant>0.8</constant>
-        <quadratic>0.01</quadratic>
-      </attenuation>
-      <cast_shadows>false</cast_shadows>
-    </light>
-
-    <light type="spot" name="light_2">
-      <pose>10 7 1000 0 0 0</pose>
-      <diffuse>1 1 1 1</diffuse>
-      <specular>1 1 1 1</specular>
-      <attenuation>
-        <range>20</range>
-        <linear>0.2</linear>
-        <constant>0.8</constant>
-        <quadratic>0.01</quadratic>
-      </attenuation>
-      <cast_shadows>false</cast_shadows>
-    </light>
-
-    <light type="spot" name="light_3">
-      <pose>-10 -7 1000 0 0 0</pose>
-      <diffuse>1 1 1 1</diffuse>
-      <specular>1 1 1 1</specular>
-      <attenuation>
-        <range>20</range>
-        <linear>0.2</linear>
-        <constant>0.8</constant>
-        <quadratic>0.01</quadratic>
-      </attenuation>
-      <cast_shadows>false</cast_shadows>
-    </light>
-
-    <light type="spot" name="light_4">
-      <pose>10 -7 1000 0 0 0</pose>
-      <diffuse>1 1 1 1</diffuse>
-      <specular>1 1 1 1</specular>
-      <attenuation>
-        <range>20</range>
-        <linear>0.2</linear>
-        <constant>0.8</constant>
-        <quadratic>0.01</quadratic>
-      </attenuation>
-      <cast_shadows>false</cast_shadows>
-    </light>
-
     <include>
       <uri>model://create_camera</uri>
       <pose> 0 0 35 0 1.57 0</pose>
@@ -98,7 +46,7 @@
 
     <include>
       <uri>model://create_april_tags</uri>
-      <name>AprilTag1</name>
+      <name>AprilTag</name>
     </include>
 
     <scene>
