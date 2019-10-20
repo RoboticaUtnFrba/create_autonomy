@@ -1,7 +1,6 @@
 <launch>
   <arg name="robot_name"/>
-  <arg name="slam" default="$(optenv SLAM false)"/>
-
+  <arg name="localization"/>
 	<!-- Bumper to point cloud -->
 	<include file="$(find ca_bumper2pc)/launch/standalone.launch"/>
 
@@ -11,12 +10,12 @@
   </include>
 
 	<!-- AMCL -->
-  <include if="$(eval arg('slam') == False)" file="$(find ca_move_base)/launch/amcl.launch">
+  <include if="$(eval str(arg('localization')) == 'amcl')" file="$(find ca_move_base)/launch/amcl.launch">
     <arg name="ns" value="$(arg robot_name)"/>
   </include>
 
   <!-- slam_gmapping -->
-  <include if="$(eval arg('slam') == True)" file="$(find ca_slam)/launch/slam_gmapping.launch">
+  <include if="$(eval str(arg('localization')) == 'slam')" file="$(find ca_slam)/launch/slam_gmapping.launch">
     <arg name="ns" value="$(arg robot_name)"/>
   </include>
 
