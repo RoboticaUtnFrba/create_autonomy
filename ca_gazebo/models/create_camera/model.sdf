@@ -15,12 +15,12 @@
             <path>/tmp/camera_save_tutorial</path>
           <horizontal_fov>1.047</horizontal_fov>
           <image>
-            <width>5760</width>
-            <height>3240</height>
+            <width>1920</width>
+            <height>1080</height>
           </image>
           <clip>
             <near>0.1</near>
-            <far>500</far>
+            <far>50</far>
           </clip>
         </camera>
         <always_on>1</always_on>

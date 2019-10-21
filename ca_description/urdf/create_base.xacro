@@ -56,7 +56,7 @@
     <xacro:caster_wheel/>
 
     <xacro:april_tag name_prefix="create1" base_link="base_link">
-      <origin xyz=" 0 0 0.3" rpy="0 0 0" />
+      <origin xyz=" 0 0 0.3" rpy="0 0 1.58" />
     </xacro:april_tag>
 
     <!-- Simulation sensors -->

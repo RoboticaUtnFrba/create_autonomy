@@ -3,14 +3,14 @@
   <model name='create_four_walls'>
     <static>1</static>
     <link name='Wall_101'>
-      <pose frame=''>-10 0 0 0 0 -1.5708</pose>
+      <pose frame=''>-5 0 0 0 0 -1.5708</pose>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
       <visual name='Wall_101_Visual'>
         <pose frame=''>0 0 1.25 0 -0 0</pose>
         <geometry>
           <box>
-            <size>20 0.15 2.5</size>
+            <size>10 0.15 2.5</size>
           </box>
         </geometry>
         <material>
@@ -32,7 +32,7 @@
         <pose frame=''>0 0 1.25 0 -0 0</pose>
         <geometry>
           <box>
-            <size>20 0.15 2.5</size>
+            <size>10 0.15 2.5</size>
           </box>
         </geometry>
         <surface>
@@ -84,14 +84,14 @@
     </link>
 
     <link name='Wall_102'>
-      <pose frame=''>10 0 0 0 0 -1.5708</pose>
+      <pose frame=''>5 0 0 0 0 -1.5708</pose>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
       <visual name='Wall_102_Visual'>
         <pose frame=''>0 0 1.25 0 -0 0</pose>
         <geometry>
           <box>
-            <size>20 0.15 2.5</size>
+            <size>10 0.15 2.5</size>
           </box>
         </geometry>
         <material>
@@ -113,7 +113,7 @@
         <pose frame=''>0 0 1.25 0 -0 0</pose>
         <geometry>
           <box>
-            <size>20 0.15 2.5</size>
+            <size>10 0.15 2.5</size>
           </box>
         </geometry>
         <surface>
@@ -167,14 +167,14 @@
 
 
     <link name='Wall_103'>
-      <pose frame=''>0 10 0 0 0 0</pose>
+      <pose frame=''>0 5 0 0 0 0</pose>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
       <visual name='Wall_103_Visual'>
         <pose frame=''>0 0 1.25 0 -0 0</pose>
         <geometry>
           <box>
-            <size>20 0.15 2.5</size>
+            <size>10 0.15 2.5</size>
           </box>
         </geometry>
         <material>
@@ -196,7 +196,7 @@
         <pose frame=''>0 0 1.25 0 -0 0</pose>
         <geometry>
           <box>
-            <size>20 0.15 2.5</size>
+            <size>10 0.15 2.5</size>
           </box>
         </geometry>
         <surface>
@@ -250,14 +250,14 @@
 
 
     <link name='Wall_104'>
-      <pose frame=''>0 -10 0 0 0 0</pose>
+      <pose frame=''>0 -5 0 0 0 0</pose>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
       <visual name='Wall_104_Visual'>
         <pose frame=''>0 0 1.25 0 -0 0</pose>
         <geometry>
           <box>
-            <size>20 0.15 2.5</size>
+            <size>10 0.15 2.5</size>
           </box>
         </geometry>
         <material>
@@ -279,7 +279,7 @@
         <pose frame=''>0 0 1.25 0 -0 0</pose>
         <geometry>
           <box>
-            <size>20 0.15 2.5</size>
+            <size>10 0.15 2.5</size>
           </box>
         </geometry>
         <surface>
