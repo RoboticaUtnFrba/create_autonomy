@@ -55,7 +55,7 @@
     <xacro:create_wheel prefix="right" y_offset="${wheel_separation / -2}" wheel_radius="${wheel_radius}" wheel_width="${wheel_width}"/>
     <xacro:caster_wheel/>
 
-    <xacro:april_tag name_prefix="create1">
+    <xacro:april_tag name_prefix="create1" base_link="base_link">
       <origin xyz=" 0 0 0.3" rpy="0 0 0" />
     </xacro:april_tag>
 

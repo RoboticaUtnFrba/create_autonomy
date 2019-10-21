@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <xacro:macro name="april_tag" params="name_prefix *origin">
+  <xacro:macro name="april_tag" params="name_prefix base_link *origin">
 
     <link name="${name_prefix}_april_tag_link">
       <visual>
@@ -12,7 +12,7 @@
     </link>
 
   <joint name="${name_prefix}_april_tag_joint" type="fixed">
-    <parent link="base_link" />
+    <parent link="${base_link}" />
     <child link="${name_prefix}_april_tag_link"/>
     <xacro:insert_block name="origin"/>
   </joint>
