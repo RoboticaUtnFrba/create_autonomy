@@ -16,7 +16,9 @@ else()
 
   catkin_package(
 		INCLUDE_DIRS include
-		LIBRARIES create_bumper_plugin
+		LIBRARIES 
+			create_bumper_plugin
+			color_sensor_plugin
 		CATKIN DEPENDS
 			gazebo_ros
 			gazebo_plugins
@@ -25,15 +27,20 @@ else()
 	)
 
 	link_directories(${GAZEBO_LIBRARY_DIRS})
-  include_directories(include
-    ${catkin_INCLUDE_DIRS}
+  	include_directories(include
+    	${catkin_INCLUDE_DIRS}
 		${GAZEBO_INCLUDE_DIRS}
+		${Boost_INCLUDE_DIR} 
   )
 
 	add_library(create_bumper_plugin src/create_bumper_plugin.cpp)
+	add_library(color_sensor_plugin src/color_sensor_plugin.cpp)
 	add_dependencies(create_bumper_plugin ${catkin_EXPORTED_TARGETS})
+	add_dependencies(color_sensor_plugin ${catkin_EXPORTED_TARGETS})
 	target_link_libraries(create_bumper_plugin
 				${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
+	target_link_libraries(color_sensor_plugin 
+				${catkin_LIBRARIES} ${GAZEBO_LIBRARIES} CameraPlugin)
 
   install(DIRECTORY launch worlds models
     DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})

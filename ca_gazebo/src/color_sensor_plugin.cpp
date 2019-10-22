@@ -1,17 +1,14 @@
 #include <gazebo/common/Plugin.hh>
 #include <ros/ros.h>
-#include "ca_color_sensor_plugin/color_sensor_plugin.h"
+#include "ca_gazebo/color_sensor_plugin.h"
+#include <ros/console.h>
+#include <boost/algorithm/string.hpp>
 
 #include "gazebo_plugins/gazebo_ros_camera.h"
 
 #include <string>
-
-#include <gazebo/sensors/Sensor.hh>
-#include <gazebo/sensors/CameraSensor.hh>
-#include <gazebo/sensors/SensorTypes.hh>
-
-#include <sensor_msgs/Illuminance.h>
 #include <std_msgs/Bool.h>
+#include <stdlib.h>
 
 namespace gazebo
 {
@@ -24,7 +21,8 @@ namespace gazebo
   _nh("color_sensor_plugin"),
   _fov(6),
   _range(10),
-  CameraPlugin()
+  CameraPlugin(),
+  GazeboRosCameraUtils()
   {
   }
 
@@ -46,7 +44,9 @@ namespace gazebo
     }
 
     CameraPlugin::Load(_parent, _sdf);
-    // copying from CameraPlugin into GazeboRosCameraUtils
+    //copying from CameraPlugin into GazeboRosCameraUtils
+    GazeboRosCameraUtils::Load(_parent, _sdf);
+
     this->parentSensor_ = this->parentSensor;
     this->width_ = this->width;
     this->height_ = this->height;
@@ -55,25 +55,18 @@ namespace gazebo
     this->camera_ = this->camera;
     this->publish_topic_name_ = _sdf-> Get<std::string>("publishTopicName");
     this->sensor_color_ = _sdf-> Get<std::string>("sensorColor");
+    this->update_period_ = 1.0/(atof(_sdf-> Get<std::string>("update_rate").c_str()));
+    //boost::algorithm::to_upper(this->sensor_color_);
     _sensorPublisher = _nh.advertise<std_msgs::Bool>(this->publish_topic_name_, 1);
+    GetColorRGB();
 
-    GazeboRosCameraUtils::Load(_parent, _sdf);
+    this->parentSensor_->SetActive(true);
 
   }
 
   void GazeboRosLight::GetColorRGB()
   {
-    //ToDo: Make this prettier with a dictionary.
-    if(this->sensor_color_ == std::string("Yellow"))
-    {
-      this->RGB_thresholds = this->YELLOW_COLOR;
-      this->RGB_relations = this->YELLOW_RELATIONS;
-    }
-    else if(this->sensor_color_ == std::string("White"))
-    {
-      this->RGB_thresholds = this->WHITE_COLOR;
-      this->RGB_relations = this->WHITE_RELATIONS;
-    }
+    this->RGBGoal = this->colorValues[this->sensor_color_];
   }
 
   bool GazeboRosLight::IsColorPresent(std::vector<double> goal_color, std::vector<double> current_color, std::vector<bool> relations)
@@ -91,52 +84,34 @@ namespace gazebo
     const std::string &_format)
   {
     static int seq=0;
-    GetColorRGB();
-    //this->sensor_update_time_ = this->parentSensor_->GetLastUpdateTime();
+    this->sensor_update_time_ = this->parentSensor_->LastUpdateTime();
+    std_msgs::Bool msg;
+    std::vector<double> current_rgb = std::vector<double>(3);
 
 
-    if (!this->parentSensor->IsActive())
+    common::Time cur_time = this->world_->SimTime();
+    if (cur_time - this->last_update_time_ >= this->update_period_)
     {
-      if ((*this->image_connect_count_) > 0)
-      // do this first so there's chance for sensor to run once after activated
-        this->parentSensor->SetActive(true);
-    }
-    else
-    {
-      if ((*this->image_connect_count_) > 0)
+
+      double goal_color = 0;
+
+      for (int i=0; i<(_height*_width)-2 ; i+=current_rgb.size())
       {
-        common::Time cur_time = this->world_->SimTime();
-        if (cur_time - this->last_update_time_ >= this->update_period_)
-        {
-          this->PutCameraData(_image);
-          this->PublishCameraInfo();
-          this->last_update_time_ = cur_time;
+        current_rgb[0] = _image[i];
+        current_rgb[1] = _image[i+1];
+        current_rgb[2] = _image[i+2];
 
-          std_msgs::Bool msg;
-
-          std::vector<double> current_rgb = std::vector<double>(3);
-
-          double goal_color = 0;
-
-          for (int i=0; i<(_height*_width)-2 ; ++i)
-          {
-            current_rgb[0] = _image[i];
-            i++;
-            current_rgb[1] = _image[i];
-            i++;
-            current_rgb[2] = _image[i];
-
-            if(IsColorPresent(this->RGB_thresholds, current_rgb, this->RGB_relations) )
-              goal_color++;
-          }
-
-
-          msg.data = (goal_color > 100) ; //hardcode
-          _sensorPublisher.publish(msg);
-
-          seq++;
-        }
+        if(IsColorPresent(this->RGBGoal.first, current_rgb, this->RGBGoal.second) )
+          goal_color++;
       }
+
+      msg.data = (goal_color > PIXEL_AMOUNT_THRESHOLD);
+      _sensorPublisher.publish(msg);
+
+      seq++;
+      this->PutCameraData(_image);
+      this->PublishCameraInfo();
+      this->last_update_time_ = cur_time;
     }
   }
 }

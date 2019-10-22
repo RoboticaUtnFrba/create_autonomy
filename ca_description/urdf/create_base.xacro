@@ -55,10 +55,10 @@
     <xacro:create_wheel prefix="right" y_offset="${wheel_separation / -2}" wheel_radius="${wheel_radius}" wheel_width="${wheel_width}"/>
     <xacro:caster_wheel/>
 
-    <xacro:light_sensor name_prefix="left" sensor_color="Yellow">
+    <xacro:light_sensor name_prefix="left" sensor_color="yellow">
       <origin xyz="0.095 0.14 0.065" rpy="0 ${pi/4} 0"/>
     </xacro:light_sensor>
-    <xacro:light_sensor name_prefix="right" sensor_color="White">
+    <xacro:light_sensor name_prefix="right" sensor_color="white">
       <origin xyz="0.095 -0.14 0.065" rpy="0 ${pi/4} 0"/>
     </xacro:light_sensor>
     
