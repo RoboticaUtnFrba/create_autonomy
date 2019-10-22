@@ -18,4 +18,5 @@
 
   <!-- Roomblock -->
   <xacro:roomblock parent="base_link" visualize="$(arg visualize)"/>
+
 </robot>

@@ -1,0 +1,32 @@
+<launch>
+  	<arg name="paused" default="$(optenv PAUSED false)"/>
+	<arg name="gui" default="$(optenv GUI true)"/>
+	<arg name="debug" default="$(optenv DEBUG false)"/>
+	<arg name="aprildebug" default="$(optenv APRILDEBUG false)" doc="if true launches the pose publisher node"/>
+
+	<!--set the position where the robot will be spawned-->
+	<param name="create1/amcl/initial_pose_x" value="2.25"/>
+  	<param name="create1/amcl/initial_pose_y" value="-1.5"/>
+  	<param name="create1/amcl/initial_pose_a" value="0"/>
+	<!-- Launch Gazebo world -->
+
+	<node pkg="ca_tools" type="publish_tags_poses.py" name="april_tags_pose_publisher" if="$(arg aprildebug)">
+		<param name="tags_tf_2_map_rate" type="double" value="10.0"/>
+	</node>
+	<include file="$(find ca_gazebo)/launch/create_empty_world.launch">
+		<arg name="debug" value="$(arg debug)" />
+		<arg name="gui" value="$(arg gui)" />
+		<arg name="env" value="apriltags"/>
+	</include>
+
+	<!--Publish the transform between the camera and the map frame, to close the cycle -->
+	<node pkg="tf" type="static_transform_publisher" name="camera_link_broadcaster" args="1.968 -0.84 9.80 3.14159 3.14159 0 map april_camera_link 20" />
+	<include file="$(find apriltag_ros)/launch/continuous_detection.launch">
+		<arg name="node_namespace" value="april_tag_camera"/>
+		<arg name="camera_name" value="april_tag_camera"/>
+		<arg name="camera_frame" value="april_camera_link"/>
+		<arg name="image_topic" value="april_camera_image_raw"/>
+	</include>
+
+
+</launch>

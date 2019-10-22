@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<sdf version='1.6'>
+  <world name='default'>
+
+      <light type="spot" name="point_light">
+      <pose>1.482 -1.417 22 0 0 0</pose>
+      <diffuse>255 255 255 255</diffuse>
+      <specular>23 23 23 255</specular>
+      <attenuation>
+        <range>200</range>
+        <linear>0</linear>
+        <constant>0.25</constant>
+        <quadratic>0.</quadratic>
+      </attenuation>
+      <cast_shadows>false</cast_shadows>
+    </light>
+
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    <include>
+      <uri>model://sun</uri>
+      <pose>0 0 5000 0 0 0</pose>
+      <name>sun</name>
+    </include>
+    <physics type="ode">
+      <real_time_update_rate>1000.0</real_time_update_rate>
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <ode>
+        <solver>
+          <type>quick</type>
+          <iters>150</iters>
+          <precon_iters>0</precon_iters>
+          <sor>1.400000</sor>
+          <use_dynamic_moi_rescaling>1</use_dynamic_moi_rescaling>
+        </solver>
+        <constraints>
+          <cfm>0.00001</cfm>
+          <erp>0.2</erp>
+          <contact_max_correcting_vel>2000.000000</contact_max_correcting_vel>
+          <contact_surface_layer>0.01000</contact_surface_layer>
+        </constraints>
+      </ode>
+    </physics>
+    <include>
+      <uri>model://april_tags_camera</uri>
+      <pose>1.968 -0.84 10.0 0 1.57079 0</pose>
+      <name>april_tags_camera</name>
+    </include>
+    <include>
+      <uri>model://big_room</uri>
+      <pose>-2.093255 -5.88 -0.3 0 0 0</pose>
+      <name>big_room</name>
+    </include>
+    <include>
+      <uri>model://apriltag1</uri>
+      <pose>1.559 -2.069 0.0298 3.1415 -1.562 1.571</pose>
+      <name>AprilTag1</name>
+    </include>
+  </world>
+</sdf>

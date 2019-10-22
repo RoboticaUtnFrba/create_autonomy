@@ -3,6 +3,7 @@
   <arg name="nr" default="$(optenv NUM_ROBOTS 1)"/>
   <arg name="rviz" default="$(optenv RVIZ true)"/>
   <arg name="localization" default="$(optenv LOCALIZATION none)"/>
+  <arg name="rvizcfg" default="$(optenv RVIZCFG multi_robot)" doc="sets the .rviz file to be launched"/>
   
   <!-- Start 1 robot -->
   <group ns="$(eval 'create' + str(arg('nr')))">
@@ -22,7 +23,7 @@
 
     <!-- RViz -->
     <include if="$(arg rviz)" file="$(find ca_tools)/launch/rviz.launch">
-      <arg name="config_file" value="$(find ca_tools)/rviz/multi_robot.rviz"/>
+      <arg name="config_file" value="$(find ca_tools)/rviz/$(arg rvizcfg).rviz"/>
     </include>
   </group>
 
