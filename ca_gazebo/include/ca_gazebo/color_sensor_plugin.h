@@ -38,7 +38,7 @@ namespace gazebo
 
     double _fov;
     double _range;
-    double PIXEL_AMOUNT_THRESHOLD = 50;
+    double pixel_threshold_;
     std::string publish_topic_name_;
     std::string sensor_color_;
 
@@ -51,10 +51,10 @@ namespace gazebo
 
     std::vector<double> YELLOW_COLOR = {250,250,20};
     std::vector<bool> YELLOW_RELATIONS = {true,true,false};
-    std::pair<std::string, DoubleBool> YELLOW_DATA = {std::string("yellow"), DoubleBool(YELLOW_COLOR, YELLOW_RELATIONS)};
+    std::pair<std::string, DoubleBool> YELLOW_DATA = {std::string("Yellow"), DoubleBool(YELLOW_COLOR, YELLOW_RELATIONS)};
     std::vector<double> WHITE_COLOR = {250,250,250};
     std::vector<bool> WHITE_RELATIONS = {true,true,true};
-    std::pair<std::string, DoubleBool> WHITE_DATA = {std::string("white"), DoubleBool(WHITE_COLOR, WHITE_RELATIONS)};
+    std::pair<std::string, DoubleBool> WHITE_DATA = {std::string("White"), DoubleBool(WHITE_COLOR, WHITE_RELATIONS)};
     
     std::map< std::string, std::pair<std::vector<double>, std::vector<bool>>> colorValues = {YELLOW_DATA,WHITE_DATA};
   };

@@ -47,7 +47,7 @@ namespace gazebo
     //copying from CameraPlugin into GazeboRosCameraUtils
     GazeboRosCameraUtils::Load(_parent, _sdf);
 
-    this->parentSensor_ = this->parentSensor;
+    this->parentSensor_ = _parent;
     this->width_ = this->width;
     this->height_ = this->height;
     this->depth_ = this->depth;
@@ -56,6 +56,7 @@ namespace gazebo
     this->publish_topic_name_ = _sdf-> Get<std::string>("publishTopicName");
     this->sensor_color_ = _sdf-> Get<std::string>("sensorColor");
     this->update_period_ = 1.0/(atof(_sdf-> Get<std::string>("update_rate").c_str()));
+    this->pixel_threshold_ = atof(_sdf-> Get<std::string>("detectionCoefficient").c_str());
     //boost::algorithm::to_upper(this->sensor_color_);
     _sensorPublisher = _nh.advertise<std_msgs::Bool>(this->publish_topic_name_, 1);
     GetColorRGB();
@@ -105,7 +106,7 @@ namespace gazebo
           goal_color++;
       }
 
-      msg.data = (goal_color > PIXEL_AMOUNT_THRESHOLD);
+      msg.data = (goal_color > this->pixel_threshold_);
       _sensorPublisher.publish(msg);
 
       seq++;

@@ -47,10 +47,13 @@
                 </image>
                 <clip>
                 <near>0.1</near>
-                <far>100</far>
+                <far>10</far>
                 </clip>
             </camera>
             <plugin name="gazebo_color_sensor_plugin" filename="libgazebo_color_sensor_plugin.so">
+                <!--Threshold for defining the amount of pixels in an image that has to be the goal color for being considered a positive detection-->
+                <!--Cant be bigger than width*height-->
+                <pixelThreshold>10</pixelThreshold>
                 <publishTopicName>${name}_color_sensor</publishTopicName>
                 <sensorColor>${sensor_color}</sensorColor>
                 <cameraName>${name}_camera</cameraName>
