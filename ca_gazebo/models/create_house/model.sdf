@@ -3979,7 +3979,7 @@
         </geometry>
         <material>
           <script>
-            <uri>file://media/materials/scripts/gazebo.material </uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
             <name>Gazebo/Bricks</name>
           </script>
           <ambient>1 1 1 1</ambient>

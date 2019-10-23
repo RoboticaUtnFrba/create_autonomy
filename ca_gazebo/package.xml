@@ -23,7 +23,7 @@
 
   <export>
     <gazebo_ros gazebo_media_path="${prefix}"/>
-    <gazebo_ros gazebo_model_path="${prefix}/models:${prefix}/models/create_autorace:${prefix}/models/create_house:${prefix}/models/create_april_tags"/>
+    <gazebo_ros gazebo_model_path="${prefix}/models:${prefix}/models/create_autorace:${prefix}/models/create_house"/>
     <gazebo_ros plugin_path="${prefix}/lib:${prefix}/models/create_autorace/gazebo_traffic_plugin"/>
   </export>
 </package>

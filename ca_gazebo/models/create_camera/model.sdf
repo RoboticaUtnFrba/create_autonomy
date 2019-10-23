@@ -12,11 +12,10 @@
       </visual>
       <sensor name='apriltag_camera' type='camera'>
         <camera>
-            <path>/tmp/camera_save_tutorial</path>
           <horizontal_fov>1.047</horizontal_fov>
           <image>
-            <width>1920</width>
-            <height>1080</height>
+            <width>480</width>
+            <height>270</height>
           </image>
           <clip>
             <near>0.1</near>
