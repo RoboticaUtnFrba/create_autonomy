@@ -14,6 +14,16 @@
 		<arg name="verbose" value="true"/>
 		<arg name="world_name" value="$(find ca_gazebo)/worlds/$(arg env).world"/>
 	</include>
+	
+	<group if="$(eval str(arg('env'))=='empty')">
+			<param name="create1/amcl/initial_pose_x" value="-3"/>
+			<param name="create1/amcl/initial_pose_y" value="4"/>
+			<param name="create1/amcl/initial_pose_a" value="0"/>
+			<param name="create2/amcl/initial_pose_x" value="5"/>
+			<param name="create2/amcl/initial_pose_y" value="1"/>
+			<param name="create2/amcl/initial_pose_a" value="1.5708"/>
+	</group>
+
 
 	<!-- Spawn robot/s -->
 	<include file="$(find ca_gazebo)/launch/spawn_multirobot.launch"/>
