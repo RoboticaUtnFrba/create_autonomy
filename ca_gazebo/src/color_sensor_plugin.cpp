@@ -8,6 +8,7 @@
 
 #include <string>
 #include <std_msgs/Bool.h>
+#include <std_msgs/Int64.h>
 #include <stdlib.h>
 
 namespace gazebo
@@ -55,11 +56,14 @@ namespace gazebo
     this->camera_ = this->camera;
     this->publish_topic_name_ = _sdf-> Get<std::string>("publishTopicName");
     this->sensor_color_ = _sdf-> Get<std::string>("sensorColor");
-    this->update_period_ = 1.0/(atof(_sdf-> Get<std::string>("update_rate").c_str()));
+    this->update_period_ = common::Time(1.0/(atof(_sdf-> Get<std::string>("updateRate").c_str()))).Double();
     this->pixel_threshold_ = atof(_sdf-> Get<std::string>("detectionCoefficient").c_str());
     //boost::algorithm::to_upper(this->sensor_color_);
+    colorpub = _nh.advertise<std_msgs::Int64>("goal_color", 100);
     _sensorPublisher = _nh.advertise<std_msgs::Bool>(this->publish_topic_name_, 1);
     GetColorRGB();
+    ros::Rate loop_rate(10);
+
 
     this->parentSensor_->SetActive(true);
 
@@ -94,9 +98,9 @@ namespace gazebo
     if (cur_time - this->last_update_time_ >= this->update_period_)
     {
 
-      double goal_color = 0;
+      int64_t goal_color = 0;
 
-      for (int i=0; i<(_height*_width)-2 ; i+=current_rgb.size())
+      for (int i=0; i<(_height*_width*3)-2 ; i+=current_rgb.size())
       {
         current_rgb[0] = _image[i];
         current_rgb[1] = _image[i+1];
@@ -104,7 +108,12 @@ namespace gazebo
 
         if(IsColorPresent(this->RGBGoal.first, current_rgb, this->RGBGoal.second) )
           goal_color++;
+
       }
+
+      std_msgs::Int64 goal;
+      goal.data = goal_color;
+      colorpub.publish(goal);
 
       msg.data = (goal_color > this->pixel_threshold_);
       _sensorPublisher.publish(msg);
