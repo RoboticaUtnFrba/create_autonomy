@@ -37,6 +37,7 @@ namespace gazebo
 
     ros::NodeHandle _nh;
     ros::Publisher _sensorPublisher;
+    ros::Publisher colorpub;
 
     double _fov;
     double _range;

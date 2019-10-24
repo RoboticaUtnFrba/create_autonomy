@@ -9,7 +9,6 @@
 #include <string>
 #include <std_msgs/Bool.h>
 
-
 namespace gazebo
 {
   // Register this plugin with the simulator
@@ -105,7 +104,7 @@ namespace gazebo
       this->PublishCameraInfo();
       this->last_update_time_ = cur_time;
 
-      double goal_color = 0;
+      int64_t goal_color = 0;
 
       for (int i=0; i<(_height*_width*3)-3 ; i+=current_rgb.size())
       {
@@ -115,6 +114,7 @@ namespace gazebo
 
         if(IsColorPresent(current_rgb))
           goal_color++;
+
       }
 
       msg.data = goal_color > this->_pixel_threshold;
