@@ -55,33 +55,13 @@
     <xacro:create_wheel prefix="right" y_offset="${wheel_separation / -2}" wheel_radius="${wheel_radius}" wheel_width="${wheel_width}"/>
     <xacro:caster_wheel/>
 
-<<<<<<< Updated upstream
-    <xacro:light_sensor name_prefix="left" sensor_color="Yellow">
-      <origin xyz="0.095 0.14 0.065" rpy="0 ${pi/4} 0"/>
-    </xacro:light_sensor>
-    <xacro:light_sensor name_prefix="right" sensor_color="White">
-=======
-<<<<<<< Updated upstream
-    <xacro:color_sensor name_prefix="left" sensor_color="Yellow">
-      <origin xyz="0.095 0.14 0.065" rpy="0 ${pi/4} 0"/>
-    </xacro:color_sensor>
-    <xacro:color_sensor name_prefix="right" sensor_color="White">
-=======
-<<<<<<< Updated upstream
-    <xacro:light_sensor name_prefix="left" sensor_color="Yellow">
-      <origin xyz="0.095 0.14 0.065" rpy="0 ${pi/4} 0"/>
-    </xacro:light_sensor>
-    <xacro:light_sensor name_prefix="right" sensor_color="White">
-=======
+
     <xacro:color_sensor name_prefix="left" sensor_color="yellow">
       <origin xyz="0.095 0.14 0.065" rpy="0 ${pi/4} 0"/>
     </xacro:color_sensor>
     <xacro:color_sensor name_prefix="right" sensor_color="white">
->>>>>>> Stashed changes
->>>>>>> Stashed changes
->>>>>>> Stashed changes
       <origin xyz="0.095 -0.14 0.065" rpy="0 ${pi/4} 0"/>
-    </xacro:light_sensor>
+    </xacro:color_sensor>
     
     <!-- Simulation sensors -->
     <xacro:sim_create_base/>
