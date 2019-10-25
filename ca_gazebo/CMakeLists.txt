@@ -37,10 +37,10 @@ else()
 	add_library(color_sensor_plugin src/color_sensor_plugin.cpp)
 	add_dependencies(create_bumper_plugin ${catkin_EXPORTED_TARGETS})
 	add_dependencies(color_sensor_plugin ${catkin_EXPORTED_TARGETS})
+	target_link_libraries(color_sensor_plugin 
+				${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
 	target_link_libraries(create_bumper_plugin
 				${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
-	target_link_libraries(color_sensor_plugin 
-				${catkin_LIBRARIES} ${GAZEBO_LIBRARIES} CameraPlugin)
 
   install(DIRECTORY launch worlds models
     DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})

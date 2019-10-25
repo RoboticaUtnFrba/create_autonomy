@@ -42,7 +42,7 @@
             <camera name='__default__'>
                 <horizontal_fov>0.5</horizontal_fov>
                 <image>
-                <width>40</width>
+                <width>20</width>
                 <height>40</height>
                 </image>
                 <clip>
@@ -50,15 +50,42 @@
                 <far>10</far>
                 </clip>
             </camera>
-            <plugin name="gazebo_color_sensor_plugin" filename="libgazebo_color_sensor_plugin.so">
+            <plugin name="color_sensor_plugin" filename="libcolor_sensor_plugin.so">
                 <!--Threshold for defining the amount of pixels in an image that has to be the goal color for being considered a positive detection-->
                 <!--Cant be bigger than width*height-->
+<<<<<<< Updated upstream
                 <pixelThreshold>10</pixelThreshold>
                 <publishTopicName>${name}_color_sensor</publishTopicName>
                 <sensorColor>${sensor_color}</sensorColor>
                 <cameraName>${name}_camera</cameraName>
                 <alwaysOn>true</alwaysOn>
                 <updateRate>10</updateRate>
+=======
+<<<<<<< Updated upstream
+                <pixelThreshold>100</pixelThreshold>
+                <publishTopicName>${name}</publishTopicName>
+                <sensorColor>${sensor_color}</sensorColor>
+                <cameraName>${name}_camera</cameraName>
+                <alwaysOn>true</alwaysOn>
+                <updateRate>50</updateRate>
+=======
+<<<<<<< Updated upstream
+                <pixelThreshold>10</pixelThreshold>
+                <publishTopicName>${name}_color_sensor</publishTopicName>
+                <sensorColor>${sensor_color}</sensorColor>
+                <cameraName>${name}_camera</cameraName>
+                <alwaysOn>true</alwaysOn>
+                <updateRate>10</updateRate>
+=======
+                <pixelThreshold>50</pixelThreshold>
+                <publishTopicName>${name}</publishTopicName>
+                <sensorColor>${sensor_color}</sensorColor>
+                <cameraName>${name}_camera</cameraName>
+                <alwaysOn>true</alwaysOn>
+                <updateRate>30</updateRate>
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
                 <imageTopicName>rgb/image_raw</imageTopicName>
                 <depthImageTopicName>depth/image_raw</depthImageTopicName>
                 <pointCloudTopicName>depth/points</pointCloudTopicName>
