@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-<xacro:macro name="light_sensor" params="name_prefix sensor_color *origin">
+<xacro:macro name="color_sensor" params="name_prefix sensor_color *origin">
 
     <xacro:include filename="$(find ca_description)/urdf/common_properties.xacro"/>
     
@@ -53,39 +53,12 @@
             <plugin name="color_sensor_plugin" filename="libcolor_sensor_plugin.so">
                 <!--Threshold for defining the amount of pixels in an image that has to be the goal color for being considered a positive detection-->
                 <!--Cant be bigger than width*height-->
-<<<<<<< Updated upstream
-                <pixelThreshold>10</pixelThreshold>
-                <publishTopicName>${name}_color_sensor</publishTopicName>
-                <sensorColor>${sensor_color}</sensorColor>
-                <cameraName>${name}_camera</cameraName>
-                <alwaysOn>true</alwaysOn>
-                <updateRate>10</updateRate>
-=======
-<<<<<<< Updated upstream
-                <pixelThreshold>100</pixelThreshold>
-                <publishTopicName>${name}</publishTopicName>
-                <sensorColor>${sensor_color}</sensorColor>
-                <cameraName>${name}_camera</cameraName>
-                <alwaysOn>true</alwaysOn>
-                <updateRate>50</updateRate>
-=======
-<<<<<<< Updated upstream
-                <pixelThreshold>10</pixelThreshold>
-                <publishTopicName>${name}_color_sensor</publishTopicName>
-                <sensorColor>${sensor_color}</sensorColor>
-                <cameraName>${name}_camera</cameraName>
-                <alwaysOn>true</alwaysOn>
-                <updateRate>10</updateRate>
-=======
                 <pixelThreshold>50</pixelThreshold>
                 <publishTopicName>${name}</publishTopicName>
                 <sensorColor>${sensor_color}</sensorColor>
                 <cameraName>${name}_camera</cameraName>
                 <alwaysOn>true</alwaysOn>
                 <updateRate>30</updateRate>
->>>>>>> Stashed changes
->>>>>>> Stashed changes
->>>>>>> Stashed changes
                 <imageTopicName>rgb/image_raw</imageTopicName>
                 <depthImageTopicName>depth/image_raw</depthImageTopicName>
                 <pointCloudTopicName>depth/points</pointCloudTopicName>

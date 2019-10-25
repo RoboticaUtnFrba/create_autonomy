@@ -8,18 +8,7 @@
 
 #include <string>
 #include <std_msgs/Bool.h>
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-#include <std_msgs/Int64.h>
-=======
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
->>>>>>> Stashed changes
-#include <stdlib.h>
-=======
 
->>>>>>> Stashed changes
 
 namespace gazebo
 {
@@ -63,23 +52,6 @@ namespace gazebo
     this->format_ = this->format;
     this->camera_ = this->camera;
     this->sensor_color_ = _sdf-> Get<std::string>("sensorColor");
-<<<<<<< Updated upstream
-    this->update_period_ = 1.0/(atof(_sdf-> Get<std::string>("update_rate").c_str()));
-=======
-<<<<<<< Updated upstream
-    this->update_period_ = common::Time(1.0/(atof(_sdf-> Get<std::string>("updateRate").c_str()))).Double();
-=======
-<<<<<<< Updated upstream
-    this->update_period_ = 1.0/(atof(_sdf-> Get<std::string>("update_rate").c_str()));
->>>>>>> Stashed changes
->>>>>>> Stashed changes
-    this->pixel_threshold_ = atof(_sdf-> Get<std::string>("detectionCoefficient").c_str());
-    //boost::algorithm::to_upper(this->sensor_color_);
-    _sensorPublisher = _nh.advertise<std_msgs::Bool>(this->publish_topic_name_, 1);
-    GetColorRGB();
-
-    this->parentSensor_->SetActive(true);
-=======
     boost::algorithm::to_lower(this->sensor_color_);
     this->publish_topic_name_ = _sdf-> Get<std::string>("publishTopicName");
     this->update_period_ = 1.0/(_sdf-> Get<double>("updateRate"));
@@ -90,7 +62,7 @@ namespace gazebo
     InitColorMap();
     GetColorRGB();
   }
->>>>>>> Stashed changes
+
 
   void GazeboRosColor::GetColorRGB()
   {
@@ -135,20 +107,7 @@ namespace gazebo
 
       double goal_color = 0;
 
-<<<<<<< Updated upstream
-      for (int i=0; i<(_height*_width)-2 ; i+=current_rgb.size())
-=======
-<<<<<<< Updated upstream
-      for (int i=0; i<(_height*_width*3)-2 ; i+=current_rgb.size())
-=======
-<<<<<<< Updated upstream
-      for (int i=0; i<(_height*_width)-2 ; i+=current_rgb.size())
-=======
-
       for (int i=0; i<(_height*_width*3)-3 ; i+=current_rgb.size())
->>>>>>> Stashed changes
->>>>>>> Stashed changes
->>>>>>> Stashed changes
       {
         current_rgb[0] = _image[i];
         current_rgb[1] = _image[i+1];
@@ -157,14 +116,9 @@ namespace gazebo
         if(IsColorPresent(current_rgb))
           goal_color++;
       }
-<<<<<<< Updated upstream
 
-      msg.data = (goal_color > this->pixel_threshold_);
-=======
-      msg.data = goal_color>this->_pixel_threshold;
->>>>>>> Stashed changes
+      msg.data = goal_color > this->_pixel_threshold;
       _sensorPublisher.publish(msg);
-
       seq++;
     }
   }
