@@ -19,8 +19,8 @@ def line_follower_client():
 
     # Creates a goal to send to the action server.
     goal = LineFollowerGoal()
-    goal.goal.position.x = 5
-    goal.goal.position.y = 5
+    goal.goal.position.x = 2
+    goal.goal.position.y = -4
     goal.goal.position.z = 0
 
     # Sends the goal to the action server.
@@ -35,6 +35,6 @@ def line_follower_client():
 if __name__ == '__main__':
     # Initializes a rospy node so that the SimpleActionClient can
     # publish and subscribe over ROS.
-    rospy.init_node('line_follower_client_py')
+    rospy.init_node('line_follower_client')
     result = line_follower_client()
     print(result)
