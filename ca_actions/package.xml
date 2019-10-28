@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>ca_actions</name>
+  <version>1.3.0</version>
+  <description>Common action definitions for create_autonomy</description>
+
+  <maintainer email="jperron@sfu.ca">Jacob Perron</maintainer>
+
+  <license>BSD</license>
+
+  <url type="website">http://wiki.ros.org/ca_msgs</url>
+
+  <author email="jperron@sfu.ca">Jacob Perron</author>
+
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>actionlib</build_depend>
+  <build_depend>actionlib_msgs</build_depend>
+  <build_depend>ca_msgs</build_depend>
+  <exec_depend>actionlib</exec_depend>
+  <exec_depend>actionlib_msgs</exec_depend>
+  <exec_depend>message_runtime</exec_depend>
+  <exec_depend>ca_msgs</exec_depend>
+
+
+  <export>
+  </export>
+</package>

@@ -1,0 +1,8 @@
+#goal definition
+ca_msgs/LineFollowerMetrics goal
+---
+#result definition
+bool result
+---
+#feedback
+ca_msgs/LineFollowerMetrics feedback
