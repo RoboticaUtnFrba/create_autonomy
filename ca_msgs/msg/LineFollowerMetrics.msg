@@ -1,3 +1,3 @@
-std_msgs/Float64 distance
-std_msgs/Float64 time
+float64 distance
+float64 time
 geometry_msgs/Point position

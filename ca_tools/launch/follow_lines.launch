@@ -1,8 +1,6 @@
 <launch>
     <arg name="id" default="$(optenv ID 1)"/> 
-    <group ns="$(eval 'create' + str(arg('id')))" if="$(eval str(arg('id')).isdigit() and (arg('id') > 0))">
-        <node pkg="ca_tools" type="line_follower_server.py" name="line_follower_server"/>
-        <node pkg="ca_tools" type="line_follower_client.py" name="line_follower_client"/>
-        <node pkg="ca_tools" type="follow_lines.py" name="line_follower" output="screen"/>
-    </group>
+    <node pkg="ca_tools" type="line_follower_server.py" name="lf_server"/>
+    <node pkg="ca_tools" type="line_follower_client.py" name="lf_client"/>
+    <node pkg="ca_tools" type="follow_lines.py" name="line_follower" output="screen" ns="$(eval 'create' + str(arg('id')))" if="$(eval str(arg('id')).isdigit() and (arg('id') > 0))"/>
 </launch>
