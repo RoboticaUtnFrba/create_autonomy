@@ -15,10 +15,13 @@ def line_follower_client():
     # listening for goals.
     client.wait_for_server()
 
-    # Creates a goal to send to the action server.
+    # Creates a sample goal to send to the action server.
     goal = LineFollowerGoal()
-    goal.goal.time = 20
-    goal.goal.distance = 30
+    goal.goal.time = 250
+    goal.goal.distance = 150
+    goal.goal.position.x = -1.74624174615
+    goal.goal.position.y = 0.00531232024163
+    goal.goal.position.z = 0.0199961078069
 
     # Sends the goal to the action server.
     client.send_goal(goal)
