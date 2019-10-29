@@ -17,8 +17,8 @@ def line_follower_client():
 
     # Creates a goal to send to the action server.
     goal = LineFollowerGoal()
-    goal.goal.time = 2
-    goal.goal.distance = 3
+    goal.goal.time = 20
+    goal.goal.distance = 30
 
     # Sends the goal to the action server.
     client.send_goal(goal)
