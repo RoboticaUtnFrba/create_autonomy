@@ -871,5 +871,6 @@
       <allow_auto_disable>1</allow_auto_disable>
       <pose frame=''>-1.04145 -1.12671 0 0 -0 0</pose>
     </model>
+    <plugin name="word_sim_time_publisher" filename="libworld_time_publisher.so"/>
   </world>
 </sdf>
