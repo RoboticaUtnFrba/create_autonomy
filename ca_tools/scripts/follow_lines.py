@@ -1,8 +1,6 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from threading import Lock
-
 import rospy
 from enum import Enum
 from geometry_msgs.msg import Twist, Pose
@@ -28,26 +26,26 @@ class FollowLines():
     The robot has to start in a position between the two lines. In any other case, an additional algorithm should be implemented for getting the robot to a position between the two lines.
     """
 
-    _LINEAR_VEL = 0.3
+    _LINEAR_VEL = 0.25
     _ANGULAR_VEL = 0.3
+    """ Amount of rotations until the robot is considered stuck """
     _MAX_ROTATIONS = 6
 
     def __init__(self):
         self._pub_cmd = rospy.Publisher('cmd_vel', Twist, queue_size=10)
         self._pub_count = rospy.Publisher('rotation_count', Int64, queue_size=10)
-        """Subscription for the detection topic of both sensors"""
+        """ Subscription for the detection topic of both sensors """
         self._sub_left_sensor = rospy.Subscriber('/color_sensor_plugin/left_color_sensor', Bool, self._left_sensor_cb)
         self._sub_right_sensor = rospy.Subscriber('/color_sensor_plugin/right_color_sensor', Bool, self._right_sensor_cb)
-        """ Two booleans for the detection of both sensors"""
+        """ Two booleans for the detection of both sensors """
         self._left_line_detected = False
         self._right_line_detected= False
         self._twist = Twist()
         self._rate = rospy.Rate(20)
-        """ Counter for amount of rotations without going forward. Avoids the robot getting stuck."""
+        """ Counter for amount of rotations without going forward. Avoids the robot getting stuck """
         self._rotation_count = 0
         """ Current state of the robot """
         self._state = RobotState.STOP
-
 
     def _left_sensor_cb(self,data):
         self._left_line_detected = data.data
@@ -73,7 +71,6 @@ class FollowLines():
             self._rotation_count += 1
             self._state = RobotState.ROTATE_LEFT
 
-
     def _rotate_right(self):
         self._twist.angular.z = -1.0 * self._ANGULAR_VEL
         self._twist.linear.x = 0
@@ -88,6 +85,7 @@ class FollowLines():
         """
         Executes the global algorithm for following the lines.
         """
+
         rospy.loginfo("run")
         while not rospy.is_shutdown():
             if(self._rotation_count > self._MAX_ROTATIONS):
