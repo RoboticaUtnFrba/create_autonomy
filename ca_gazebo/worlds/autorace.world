@@ -23,6 +23,11 @@
     </include>
 
     <include>
+      <uri>model://create_autorace/traffic_light</uri>
+      <pose> -0.016 -0.104 0.125 0 0 3.14159265</pose>
+    </include>  
+
+    <include>
       <uri>model://create_autorace/traffic_stop</uri>
        <pose> -2.05 0.65 0.125 0 -0 0</pose>
     </include>
@@ -871,5 +876,6 @@
       <allow_auto_disable>1</allow_auto_disable>
       <pose frame=''>-1.04145 -1.12671 0 0 -0 0</pose>
     </model>
+    <plugin name="word_sim_time_publisher" filename="libworld_time_publisher.so"/>
   </world>
 </sdf>
