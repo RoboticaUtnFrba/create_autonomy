@@ -58,22 +58,15 @@ namespace gazebo
     this->_sensorPublisher = _nh.advertise<std_msgs::Bool>(this->publish_topic_name_, 1);
     this->_threshold_tolerance = 10;
     GazeboRosCameraUtils::Load(_parent, _sdf);
-    InitColorMap();
+    //InitColorMap();
     GetColorRGB();
 
     this->parentSensor_->SetActive(true);
   }
 
-
   void GazeboRosColor::GetColorRGB()
   {
-    this->_goal_color = this->colorValues[this->sensor_color_];
-  }
-
-  void GazeboRosColor::InitColorMap()
-  {
-    this->colorValues.insert( std::make_pair("yellow", std::vector<int>{255, 255, 20}));
-    this->colorValues.insert( std::make_pair("white",  std::vector<int>{255, 255, 255}));
+    this->_goal_color = this->colorValues.at(this->sensor_color_);
   }
 
   bool GazeboRosColor::IsColorPresent(std::vector<double> current_color)

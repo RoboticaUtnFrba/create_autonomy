@@ -52,7 +52,10 @@ namespace gazebo
 
     //Variable with information about RGB threshold values
     std::vector<int> _goal_color;
-    std::map<std::string, std::vector<int>> colorValues;
+    const std::map<std::string, std::vector<int>> colorValues={
+                                                                {"yellow",{255,255,20}},
+                                                                {"white",{255,255,255}}
+    };
   };
 }
 #endif
