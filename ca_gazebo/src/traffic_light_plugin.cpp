@@ -6,7 +6,8 @@
 #include <gazebo/msgs/msgs.hh>
 #include <gazebo/rendering/Visual.hh>
 #include <gazebo/transport/Node.hh>
- #include <ignition/math/Color.hh>
+#include <ignition/math/Color.hh>
+#include <ros/console.h>
 
 namespace gazebo
 {
@@ -84,32 +85,32 @@ namespace gazebo
         // Listen to Gazebo world_stats topic
         commandSubscriber = this->data_ptr->node->Subscribe("/gazebo/EmptyWorld/WorldTime_topic", &GazeboTrafficLight::time_update_cb, this);
         this->next_color_ = "red";
+        this->last_time_ = this->current_time_;
     }
 
     void GazeboTrafficLight::Update()
     {
         //std::lock_guard<std::mutex> lock(this->data_ptr->mutex);
-
         if (!this->data_ptr->visual)
         {
             gzerr << "The visual is null." << std::endl;
             return;
         }
 
-        common::Time period_time;
+        common::Time period_time = common::Time(1);
 
-        if(this->next_color_ == "green")
+        /*if(this->next_color_ == "green")
             period_time = this->data_ptr->red_time_;
         else if(this->next_color_ == "red")
             period_time = this->data_ptr->yellow_time_;
         else
-            period_time = this->data_ptr->green_time_;
+            period_time = this->data_ptr->green_time_;*/
 
         auto elapsed = this->current_time_ - this->last_time_;
 
         if(elapsed > period_time)
         {
-
+            ROS_ERROR("ENTERED");
             this->last_time_ = this->current_time_;
 
             double red = 0;
@@ -137,7 +138,8 @@ namespace gazebo
 
             this->data_ptr->visual->SetDiffuse(color);
             this->data_ptr->visual->SetAmbient(color);
-            this->data_ptr->visual->SetTransparency(1);
+            this->data_ptr->visual->SetSpecular(color);
+            this->data_ptr->visual->SetTransparency(0);
         }
     }
 
