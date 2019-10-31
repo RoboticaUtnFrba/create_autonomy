@@ -16,16 +16,16 @@ namespace gazebo {
     class WorldTimePublisher: public WorldPlugin
     {
         /// \brief Remembering previus simulation time.
-        private : double PreviusRefTime;
+        private : double previous_ref_time;
 
         /// \brief Copy of current simulation time.
-        private : double tmpTime;
+        private : double tmp_time;
 
         /// \brief Pointer to the world.
         private: physics::WorldPtr world;
 
         /// \brief Standard connection pointer.
-        private: event::ConnectionPtr updateConnection;
+        private: event::ConnectionPtr update_connection;
 
         /// \brief Transport node pointer.
         private: gazebo::transport::NodePtr node;

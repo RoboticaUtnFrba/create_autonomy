@@ -4,16 +4,16 @@ using namespace gazebo;
 
 //////////////////////////////////////////////////
 void WorldTimePublisher::Load(physics::WorldPtr _parent, sdf::ElementPtr /*_sdf*/)
-{	std::cout << "WorldPublisher: Entering Load()" << std::endl;
+{
     this->world = _parent;
-    this->updateConnection = event::Events::ConnectWorldUpdateBegin(
+    this->update_connection = event::Events::ConnectWorldUpdateBegin(
             boost::bind(&WorldTimePublisher::OnUpdate, this));
-    PreviusRefTime = 0;
+    previous_ref_time = 0;
 }
 
 ////////////////////////////////////////////////
 void WorldTimePublisher::Init()
- {	std::cout << "WorldPublisher: Entering Init()" << std::endl;
+ {
     this->node = transport::NodePtr(new transport::Node());
     this->node->Init("EmptyWorld");
     this->pub = node->Advertise<gazebo::msgs::Time>("~/WorldTime_topic");
@@ -22,13 +22,10 @@ void WorldTimePublisher::Init()
 //////////////////////////////////////////////////
 void WorldTimePublisher::OnUpdate()
 {
-    //std::cout << "WorldPublisher: Entering OnUpdate()" << std::endl;
-    tmpTime = this->world->SimTime().Double() ;
-    if ( (tmpTime- PreviusRefTime) <= REFTIME )
+    tmp_time = this->world->SimTime().Double() ;
+    if ( (tmp_time- previous_ref_time) <= REFTIME )
         return;
-    PreviusRefTime = tmpTime;
-    //msg.set_sec(this->world->GetSimTime().sec);
-    //msg.set_nsec(this->world->GetSimTime().nsec);
+    previous_ref_time = tmp_time;
     gazebo::msgs::Set(&msg, this->world->SimTime());
     pub->Publish(msg);
 }
