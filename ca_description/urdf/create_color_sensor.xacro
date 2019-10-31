@@ -5,7 +5,7 @@
 
     <xacro:include filename="$(find ca_description)/urdf/common_properties.xacro"/>
     
-    <xacro:property name="name" value="${name_prefix}_light_sensor"/>
+    <xacro:property name="name" value="${name_prefix}_color_sensor"/>
     <xacro:property name="parent_link" value="base_link"/>
 
         <joint name="${name}_joint" type="fixed">
@@ -57,7 +57,6 @@
                 <publishTopicName>${name}</publishTopicName>
                 <sensorColor>${sensor_color}</sensorColor>
                 <cameraName>${name}_camera</cameraName>
-                <always_on>true</always_on>
                 <updateRate>30</updateRate>
                 <imageTopicName>rgb/image_raw</imageTopicName>
                 <depthImageTopicName>depth/image_raw</depthImageTopicName>
