@@ -23,13 +23,13 @@ void WorldTimePublisher::Init()
 void WorldTimePublisher::OnUpdate()
 {
     //std::cout << "WorldPublisher: Entering OnUpdate()" << std::endl;
-    tmpTime = this->world->GetSimTime().Double() ;
+    tmpTime = this->world->SimTime().Double() ;
     if ( (tmpTime- PreviusRefTime) <= REFTIME )
         return;
     PreviusRefTime = tmpTime;
     //msg.set_sec(this->world->GetSimTime().sec);
     //msg.set_nsec(this->world->GetSimTime().nsec);
-    gazebo::msgs::Set(&msg, this->world->GetSimTime());
+    gazebo::msgs::Set(&msg, this->world->SimTime());
     pub->Publish(msg);
 }
 
