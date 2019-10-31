@@ -57,7 +57,7 @@
                 <publishTopicName>${name}</publishTopicName>
                 <sensorColor>${sensor_color}</sensorColor>
                 <cameraName>${name}_camera</cameraName>
-                <alwaysOn>true</alwaysOn>
+                <always_on>true</always_on>
                 <updateRate>30</updateRate>
                 <imageTopicName>rgb/image_raw</imageTopicName>
                 <depthImageTopicName>depth/image_raw</depthImageTopicName>
