@@ -110,7 +110,6 @@ namespace gazebo
 
         if(elapsed > period_time)
         {
-            ROS_ERROR("ENTERED");
             this->last_time_ = this->current_time_;
 
             double red = 0;
