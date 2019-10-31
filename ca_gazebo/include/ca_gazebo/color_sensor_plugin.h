@@ -12,26 +12,31 @@ namespace gazebo
 {
   class GazeboRosColor : public CameraPlugin, GazeboRosCameraUtils
   {
-    /// \brief Constructor
-    /// \param parent The parent entity, must be a Model or a Sensor
-    public: GazeboRosColor();
+    
+    /// The parent entity must be a Model or a Sensor
+    public: 
+    
+    /// Constructor
+    GazeboRosColor();
 
-    /// \brief Destructor
-    public: ~GazeboRosColor();
+    /// Destructor
+    ~GazeboRosColor();
 
-    /// \brief Load the plugin
-    /// \param take in SDF root element
-    public: void Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf);
+    /// Load the plugin
+    /// take in SDF root element
+    void Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf);
 
-    public: void GetColorRGB();
+    void GetColorRGB();
 
-    //Decides if a given color is present, given the goal color
-    public: bool IsColorPresent(std::vector<double>);
+    // Decides if a given color is present, given the goal color
+    bool IsColorPresent(std::vector<double>);
 
-    public: void InitColorMap();
+    void InitColorMap();
 
-    /// \brief Update the controller
-    protected: virtual void OnNewFrame(const unsigned char *_image,
+    /// Update the controller
+    protected: 
+    
+    virtual void OnNewFrame(const unsigned char *_image,
     unsigned int _width, unsigned int _height,
     unsigned int _depth, const std::string &_format);
 

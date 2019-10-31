@@ -18,11 +18,11 @@ namespace gazebo
   ////////////////////////////////////////////////////////////////////////////////
   // Constructor
   GazeboRosColor::GazeboRosColor():
-  _nh("color_sensor_plugin"),
-  _fov(6),
-  _range(10),
-  CameraPlugin(),
-  GazeboRosCameraUtils()
+    _nh("color_sensor_plugin"),
+    _fov(6),
+    _range(10),
+    CameraPlugin(),
+    GazeboRosCameraUtils()
   {
   }
 
@@ -48,7 +48,6 @@ namespace gazebo
     this->parentSensor_ = this->parentSensor;
     this->width_ = this->width;
     this->height_ = this->height;
-    this->depth_ = this->depth;
     this->format_ = this->format;
     this->camera_ = this->camera;
     this->sensor_color_ = _sdf-> Get<std::string>("sensorColor");
@@ -61,6 +60,8 @@ namespace gazebo
     GazeboRosCameraUtils::Load(_parent, _sdf);
     InitColorMap();
     GetColorRGB();
+
+    this->parentSensor_->SetActive(true);
   }
 
 
@@ -89,25 +90,18 @@ namespace gazebo
   ////////////////////////////////////////////////////////////////////////////////
   // Update the controller
   void GazeboRosColor::OnNewFrame(const unsigned char *_image,
-    unsigned int _width, unsigned int _height, unsigned int _depth,
+    unsigned int _width, unsigned int _height, unsigned int _depth, 
     const std::string &_format)
   {
-    static int seq=0;
-    std_msgs::Bool msg;
-    std::vector<double> current_rgb(3,0);
-    this->sensor_update_time_ = this->parentSensor_->LastUpdateTime();
-
-
-    common::Time cur_time = this->world_->SimTime();
+    const common::Time cur_time = this->world_->SimTime();
     if (cur_time - this->last_update_time_ >= this->update_period_)
     {
-      this->PutCameraData(_image);
-      this->PublishCameraInfo();
       this->last_update_time_ = cur_time;
+      std::vector<double> current_rgb(3,0);
 
       double goal_color = 0;
 
-      for (int i=0; i<(_height*_width*3)-3 ; i+=current_rgb.size())
+      for (int i = 0; i < (_height*_width*3)-3 ; i += current_rgb.size())
       {
         current_rgb[0] = _image[i];
         current_rgb[1] = _image[i+1];
@@ -117,9 +111,9 @@ namespace gazebo
           goal_color++;
       }
 
+      std_msgs::Bool msg;
       msg.data = goal_color > this->_pixel_threshold;
       _sensorPublisher.publish(msg);
-      seq++;
     }
   }
 }
