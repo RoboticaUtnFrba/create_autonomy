@@ -42,6 +42,9 @@ namespace gazebo
         std::string next_color_;
         common::Time current_time_;
         common::Time last_time_;
+        common::Time red_time_;
+        common::Time yellow_time_;
+        common::Time green_time_;
     };
 }
 #endif

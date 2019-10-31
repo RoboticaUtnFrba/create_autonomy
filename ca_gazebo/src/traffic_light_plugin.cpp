@@ -63,14 +63,14 @@ namespace gazebo
         }
         // Get parameters
         this->data_ptr->visual = _visual;
-        /*this->data_ptr->red_time_    = _sdf-> Get<common::Time>("redTime");
-        this->data_ptr->yellow_time_ = _sdf-> Get<common::Time>("yellowTime");
-        this->data_ptr->green_time_  = _sdf-> Get<common::Time>("greenTime");*/
+        this->red_time_    = common::Time(_sdf-> Get<double>("redTime"));
+        this->yellow_time_ = common::Time(_sdf-> Get<double>("yellowTime"));
+        this->green_time_  = common::Time(_sdf-> Get<double>("greenTime"));
         // Check for correct time for every color
         if (this->data_ptr->red_time_ <= 0 || this->data_ptr->yellow_time_ <= 0 || this->data_ptr->green_time_ <= 0)
         {
-        gzerr << "Time can't be lower than zero." << std::endl;
-        return;
+            gzerr << "Time can't be lower than zero." << std::endl;
+            return;
         }
         // Connect to the world update signal
         this->data_ptr->updateConnection = event::Events::ConnectPreRender(std::bind(&GazeboTrafficLight::Update, this));
@@ -97,14 +97,14 @@ namespace gazebo
             return;
         }
 
-        common::Time period_time = common::Time(1);
+        common::Time period_time;
 
-        /*if(this->next_color_ == "green")
-            period_time = this->data_ptr->red_time_;
-        else if(this->next_color_ == "red")
-            period_time = this->data_ptr->yellow_time_;
+        if(this->next_color_ == "red")
+            period_time = this->green_time_;
+        else if(this->next_color_ == "yellow")
+            period_time = this->red_time_;
         else
-            period_time = this->data_ptr->green_time_;*/
+            period_time = this->yellow_time_;
 
         auto elapsed = this->current_time_ - this->last_time_;
 
