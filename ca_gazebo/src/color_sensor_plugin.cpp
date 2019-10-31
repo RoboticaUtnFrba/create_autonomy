@@ -69,9 +69,12 @@ namespace gazebo
     this->_goal_color = this->colorValues.at(this->sensor_color_);
   }
 
-  bool GazeboRosColor::IsColorPresent(std::vector<double> current_color)
+  bool GazeboRosColor::IsColorPresent(std::vector<double>& current_color)
   {
-    auto lambda = [=](double value, double threshold){return (abs(threshold+this->_threshold_tolerance) > value && abs(threshold-this->_threshold_tolerance) < value);};
+    auto lambda = [=](double value, double threshold)
+    {
+      return (abs(threshold+this->_threshold_tolerance) > value   &&   abs(threshold-this->_threshold_tolerance) < value);
+    };
 
     //ToDo: Make this prettier
     return (lambda(current_color[0], this->_goal_color[0]) &&

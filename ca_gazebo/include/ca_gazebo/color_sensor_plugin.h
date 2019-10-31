@@ -29,9 +29,7 @@ namespace gazebo
     void GetColorRGB();
 
     // Decides if a given color is present, given the goal color
-    bool IsColorPresent(std::vector<double>);
-
-    void InitColorMap();
+    bool IsColorPresent(std::vector<double>&);
 
     /// Update the controller
     protected: 
