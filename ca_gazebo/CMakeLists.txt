@@ -18,6 +18,7 @@ else()
 		INCLUDE_DIRS include
 		LIBRARIES create_bumper_plugin 
 				  traffic_light_plugin	
+				  world_time_publisher
 		CATKIN DEPENDS
 			gazebo_ros
 			gazebo_plugins
@@ -35,9 +36,15 @@ else()
 	add_dependencies(create_bumper_plugin ${catkin_EXPORTED_TARGETS})
 	target_link_libraries(create_bumper_plugin
 				${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
+
 	add_library(traffic_light_plugin src/traffic_light_plugin.cpp)	
 	add_dependencies(traffic_light_plugin ${catkin_EXPORTED_TARGETS})
 	target_link_libraries(traffic_light_plugin
+				${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
+
+	add_library(world_time_publisher src/world_time_publisher.cpp)	
+	add_dependencies(world_time_publisher ${catkin_EXPORTED_TARGETS})
+	target_link_libraries(world_time_publisher
 				${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
 
   install(DIRECTORY launch worlds models
