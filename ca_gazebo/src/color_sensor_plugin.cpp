@@ -66,6 +66,7 @@ namespace gazebo
     GetColorRGB();
 
     this->parentSensor_->SetActive(true);
+    this->last_update_time_ = SimTime();
   }
 
   void GazeboRosColor::GetColorRGB()
@@ -117,4 +118,4 @@ namespace gazebo
       _sensorPublisher.publish(msg);
     }
   }
-}
+} // namespace gazebo
