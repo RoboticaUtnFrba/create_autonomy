@@ -1,18 +1,23 @@
-#include <gazebo/common/Plugin.hh>
-#include <ros/ros.h>
-#include "ca_gazebo/color_sensor_plugin.h"
-#include <ros/console.h>
+// C++ libraries
+#include <string>
 #include <boost/algorithm/string.hpp>
 
-#include "gazebo_plugins/gazebo_ros_camera.h"
-
-#include <string>
+// ROS libraries
+#include <ros/ros.h>
+#include <ros/console.h>
 #include <std_msgs/Bool.h>
+
+// Gazebo libraries
+#include "gazebo_plugins/gazebo_ros_camera.h"
+#include <gazebo/common/Plugin.hh>
+
+// Project libraries
+#include "ca_gazebo/color_sensor_plugin.h"
 
 
 namespace gazebo
 {
-  // Register this plugin with the simulator
+  // Register this plugin with the simulator.
   GZ_REGISTER_SENSOR_PLUGIN(GazeboRosColor)
 
   ////////////////////////////////////////////////////////////////////////////////
@@ -35,7 +40,7 @@ namespace gazebo
 
   void GazeboRosColor::Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf)
   {
-    // Make sure the ROS node for Gazebo has already been initialized
+    // Make sure the ROS node for Gazebo has already been initialized.
     if (!ros::isInitialized())
     {
       ROS_FATAL_STREAM("A ROS node for Gazebo has not been initialized, unable to load plugin. "
@@ -44,21 +49,20 @@ namespace gazebo
     }
 
     CameraPlugin::Load(_parent, _sdf);
-    // copying from CameraPlugin into GazeboRosCameraUtils
+    // Copying from CameraPlugin into GazeboRosCameraUtils.
     this->parentSensor_ = this->parentSensor;
     this->width_ = this->width;
     this->height_ = this->height;
     this->format_ = this->format;
     this->camera_ = this->camera;
-    this->sensor_color_ = _sdf-> Get<std::string>("sensorColor");
+    this->sensor_color_ = _sdf->Get<std::string>("sensorColor");
     boost::algorithm::to_lower(this->sensor_color_);
-    this->publish_topic_name_ = _sdf-> Get<std::string>("publishTopicName");
-    this->update_period_ = 1.0/(_sdf-> Get<double>("updateRate"));
-    this->_pixel_threshold = _sdf-> Get<double>("detectionCoefficient");
-    this->_sensorPublisher = _nh.advertise<std_msgs::Bool>(this->publish_topic_name_, 1);
+    std::string publish_topic_name_ = _sdf->Get<std::string>("publishTopicName");
+    this->update_period_ = 1.0/(_sdf->Get<double>("updateRate"));
+    this->_pixel_threshold = _sdf->Get<double>("detectionCoefficient");
+    this->_sensorPublisher = _nh.advertise<std_msgs::Bool>(publish_topic_name_, 1);
     this->_threshold_tolerance = 10;
     GazeboRosCameraUtils::Load(_parent, _sdf);
-    //InitColorMap();
     GetColorRGB();
 
     this->parentSensor_->SetActive(true);
@@ -71,20 +75,21 @@ namespace gazebo
 
   bool GazeboRosColor::IsColorPresent(std::vector<double>& current_color)
   {
-    auto lambda = [=](double value, double threshold)
+    // This lambda function compares, one at a time, each of the RGB values of the parameter of this function with the target RGB colors.
+    auto compare_element = [=](double value, double threshold)
     {
       return (abs(threshold+this->_threshold_tolerance) > value   &&   abs(threshold-this->_threshold_tolerance) < value);
     };
 
     //ToDo: Make this prettier
-    return (lambda(current_color[0], this->_goal_color[0]) &&
-            lambda(current_color[1], this->_goal_color[1]) && 
-            lambda(current_color[2], this->_goal_color[2]) 
+    return (compare_element(current_color[0], this->_goal_color[0]) &&
+            compare_element(current_color[1], this->_goal_color[1]) && 
+            compare_element(current_color[2], this->_goal_color[2]) 
           ) ;
   }
 
   ////////////////////////////////////////////////////////////////////////////////
-  // Update the controller
+  // Proccesses each new frame given by Gazebo for detecting if the target color is present.
   void GazeboRosColor::OnNewFrame(const unsigned char *_image,
     unsigned int _width, unsigned int _height, unsigned int _depth, 
     const std::string &_format)
