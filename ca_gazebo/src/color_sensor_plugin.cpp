@@ -50,6 +50,7 @@ namespace gazebo
 
     CameraPlugin::Load(_parent, _sdf);
     // Copying from CameraPlugin into GazeboRosCameraUtils.
+    GazeboRosCameraUtils::Load(_parent, _sdf);
     this->parentSensor_ = this->parentSensor;
     this->width_ = this->width;
     this->height_ = this->height;
@@ -62,11 +63,11 @@ namespace gazebo
     this->_pixel_threshold = _sdf->Get<double>("detectionCoefficient");
     this->_sensorPublisher = _nh.advertise<std_msgs::Bool>(publish_topic_name_, 1);
     this->_threshold_tolerance = 10;
-    GazeboRosCameraUtils::Load(_parent, _sdf);
+
     GetColorRGB();
 
     this->parentSensor_->SetActive(true);
-    this->last_update_time_ = SimTime();
+    this->last_update_time_ = this->world_->SimTime();
   }
 
   void GazeboRosColor::GetColorRGB()
