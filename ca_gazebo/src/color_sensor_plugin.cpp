@@ -114,8 +114,8 @@ namespace gazebo
           goal_color++;
       }
 
-      std_msgs::Bool msg;
-      msg.data = goal_color > this->_pixel_threshold;
+      std_msgs::BoolPtr msg(new std_msgs::Bool);
+      msg->data = goal_color > this->_pixel_threshold;
       _sensorPublisher.publish(msg);
     }
   }
