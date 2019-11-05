@@ -38,18 +38,18 @@ namespace gazebo
     unsigned int _width, unsigned int _height,
     unsigned int _depth, const std::string &_format);
 
-    ros::NodeHandle _nh;
-    ros::Publisher _sensorPublisher;
+    ros::NodeHandle nh_;
+    ros::Publisher sensor_publisher_;
 
-    double _fov;
-    double _range;
-    double _pixel_threshold;
-    double _threshold_tolerance;
+    double fov_;
+    double range_;
+    double pixel_threshold_;
+    double threshold_tolerance_;
     std::string sensor_color_;
 
     // Variable with information about RGB threshold values depending on the target color of the sensor.
-    std::vector<int> _goal_color;
-    const std::map<std::string, std::vector<int>> colorValues={
+    std::vector<int> goal_color_;
+    const std::map<std::string, std::vector<int>> color_values_={
                                                                 {"yellow",{255,255,20}},
                                                                 {"white",{255,255,255}}
     };

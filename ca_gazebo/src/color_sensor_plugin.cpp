@@ -23,9 +23,9 @@ namespace gazebo
   ////////////////////////////////////////////////////////////////////////////////
   // Constructor
   GazeboRosColor::GazeboRosColor():
-    _nh("color_sensor_plugin"),
-    _fov(6),
-    _range(10),
+    nh_("color_sensor_plugin"),
+    fov_(6),
+    range_(10),
     CameraPlugin(),
     GazeboRosCameraUtils()
   {
@@ -60,9 +60,9 @@ namespace gazebo
     boost::algorithm::to_lower(this->sensor_color_);
     std::string publish_topic_name_ = _sdf->Get<std::string>("publishTopicName");
     this->update_period_ = 1.0/(_sdf->Get<double>("updateRate"));
-    this->_pixel_threshold = _sdf->Get<double>("detectionCoefficient");
-    this->_sensorPublisher = _nh.advertise<std_msgs::Bool>(publish_topic_name_, 1);
-    this->_threshold_tolerance = 10;
+    this->pixel_threshold_ = _sdf->Get<double>("detectionCoefficient");
+    this->sensor_publisher_ = nh_.advertise<std_msgs::Bool>(publish_topic_name_, 1);
+    this->threshold_tolerance_ = 10;
 
     GetColorRGB();
 
@@ -72,7 +72,7 @@ namespace gazebo
 
   void GazeboRosColor::GetColorRGB()
   {
-    this->_goal_color = this->colorValues.at(this->sensor_color_);
+    this->goal_color_ = this->color_values_.at(this->sensor_color_);
   }
 
   bool GazeboRosColor::IsColorPresent(std::vector<double>& current_color)
@@ -80,13 +80,13 @@ namespace gazebo
     // This lambda function compares, one at a time, each of the RGB values of the parameter of this function with the target RGB colors.
     auto compare_element = [=](double value, double threshold)
     {
-      return (abs(threshold+this->_threshold_tolerance) > value   &&   abs(threshold-this->_threshold_tolerance) < value);
+      return (abs(threshold+this->threshold_tolerance_) > value   &&   abs(threshold-this->threshold_tolerance_) < value);
     };
 
     //ToDo: Make this prettier
-    return (compare_element(current_color[0], this->_goal_color[0]) &&
-            compare_element(current_color[1], this->_goal_color[1]) && 
-            compare_element(current_color[2], this->_goal_color[2]) 
+    return (compare_element(current_color[0], this->goal_color_[0]) &&
+            compare_element(current_color[1], this->goal_color_[1]) && 
+            compare_element(current_color[2], this->goal_color_[2]) 
           ) ;
   }
 
@@ -102,7 +102,7 @@ namespace gazebo
       this->last_update_time_ = cur_time;
       std::vector<double> current_rgb(3,0);
 
-      double goal_color = 0;
+      double pixel_count = 0;
 
       for (int i = 0; i < (_height*_width*3)-3 ; i += current_rgb.size())
       {
@@ -111,12 +111,12 @@ namespace gazebo
         current_rgb[2] = _image[i+2];
 
         if(IsColorPresent(current_rgb))
-          goal_color++;
+          pixel_count++;
       }
 
       std_msgs::BoolPtr msg(new std_msgs::Bool);
-      msg->data = goal_color > this->_pixel_threshold;
-      _sensorPublisher.publish(msg);
+      msg->data = pixel_count > this->pixel_threshold_;
+      sensor_publisher_.publish(msg);
     }
   }
 } // namespace gazebo
