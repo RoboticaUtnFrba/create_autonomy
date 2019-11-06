@@ -28,6 +28,7 @@ docker run -it \
     --env="DISPLAY"  \
     --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
     --volume="${REPO_DIR}:/create_ws/src" \
+    --volume="${REPO_DIR}/.gazebo:/home/create/.gazebo" \
     --device=/dev/input/js0 \
     --user="$(id -u):$(id -g)" \
     -e ROS_HOSTNAME=localhost \

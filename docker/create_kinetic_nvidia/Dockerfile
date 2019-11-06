@@ -27,4 +27,6 @@ RUN apt-get install -y \
   ros-$ROS1_DISTRO-slam-gmapping \
   ros-$ROS1_DISTRO-smach-viewer
 
+RUN chown $USER /home/$USER/.gazebo
+
 USER create
