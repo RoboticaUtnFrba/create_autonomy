@@ -18,8 +18,9 @@
     <remap from="map" to="/map"/>
     <!-- TODO: WHY WAS THIS HACK NECESSARY? -->
     <remap from="/laser/scan" to="laser/scan"/>
-    <remap from="/mobile_base/sensors/bumper_pointcloud" 
+    <remap from="/mobile_base/sensors/bumper_pointcloud"
            to="mobile_base/sensors/bumper_pointcloud"/>
+    <remap from="/odom" to="/unit_box/odom"/>
   </node>
 
 </launch>

@@ -15,7 +15,7 @@
 #include "geometry_msgs/Pose.h"
 #include "nav_msgs/Odometry.h"
 
-static const ros::Duration update_rate = ros::Duration(1); // 1 Hz
+static const ros::Duration update_period = ros::Duration(0.01); // 10 ms
 namespace gazebo
 {
 class ModelPosePublisherPlugin : public ModelPlugin
@@ -56,7 +56,7 @@ class ModelPosePublisherPlugin : public ModelPlugin
     // Called by the world update start event
     public: void OnUpdate()
     {
-      if ((ros::Time::now() - this->prev_update_time_) < update_rate) {
+      if ((ros::Time::now() - this->prev_update_time_) < update_period) {
        return;
       }
 
@@ -98,7 +98,7 @@ class ModelPosePublisherPlugin : public ModelPlugin
       transformStamped.transform.translation.y = pose_msg->position.y;
       transformStamped.transform.translation.z = 0.0;
       transformStamped.transform.rotation = pose_msg->orientation;
-      
+
       this->br_.sendTransform(transformStamped);
 
       // Update time
