@@ -10,12 +10,10 @@
 
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>actionlib</build_depend>
-  <build_depend>amcl</build_depend>
   <build_depend>ca_move_base</build_depend>
   <build_depend>move_base</build_depend>
   <build_depend>move_base_msgs</build_depend>
   <build_depend>roscpp</build_depend>
-  <build_depend>tf</build_depend>
   <build_export_depend>actionlib</build_export_depend>
   <build_export_depend>amcl</build_export_depend>
   <build_export_depend>move_base</build_export_depend>

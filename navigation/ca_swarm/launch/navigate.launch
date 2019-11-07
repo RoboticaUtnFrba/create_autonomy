@@ -1,7 +1,8 @@
 <launch>
+  <arg name="ns" default="unit_box" />
 	<!-- move_base -->
 	<include file="$(find ca_swarm)/launch/move_base.launch">
-    <arg name="ns" value="unit_box"/>
+    <arg name="ns" value="$(arg ns)" />
   </include>
 
 </launch>
