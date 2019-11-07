@@ -50,7 +50,7 @@ class ModelPosePublisherPlugin : public ModelPlugin
       this->odom_pub_ = this->rosnode_->advertise<nav_msgs::Odometry>((this->model_->GetName() + "/odom").c_str(), 1);
       this->link_ = this->model_->GetLink("link");
 
-      this->odom_msg_.header.frame_id = "/map";
+      this->odom_msg_.header.frame_id = kMapFrameID_;
     }
 
     // Called by the world update start event
@@ -90,17 +90,16 @@ class ModelPosePublisherPlugin : public ModelPlugin
       this->odom_pub_.publish(this->odom_msg_);
 
       // Publish Tf
-      static tf2_ros::TransformBroadcaster br;
       geometry_msgs::TransformStamped transformStamped;
       transformStamped.header.stamp = ros::Time::now();
-      transformStamped.header.frame_id= "/map";
+      transformStamped.header.frame_id= kMapFrameID_;
       transformStamped.child_frame_id = this->model_->GetName();
       transformStamped.transform.translation.x = pose_msg->position.x;
       transformStamped.transform.translation.y = pose_msg->position.y;
       transformStamped.transform.translation.z = 0.0;
       transformStamped.transform.rotation = pose_msg->orientation;
       
-      br.sendTransform(transformStamped);
+      this->br_.sendTransform(transformStamped);
 
       // Update time
       this->prev_update_time_ = ros::Time::now();
@@ -113,6 +112,8 @@ class ModelPosePublisherPlugin : public ModelPlugin
     private: physics::ModelPtr model_;
     private: physics::LinkPtr link_;
     private: ros::Time prev_update_time_;
+    private: tf2_ros::TransformBroadcaster br_;
+    private: const std::string kMapFrameID_ = "map";
 
     // Pointer to the update event connection
     private: event::ConnectionPtr updateConnection;
