@@ -11,5 +11,5 @@
     <arg name="env" value="two_rooms"/>
   </include>
 
-  <include file="$(find ca_collaborative_move_base)/launch/navigate.launch" />
+  <include file="$(find ca_swarm)/launch/navigate.launch" />
 </launch>

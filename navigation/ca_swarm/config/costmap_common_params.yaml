@@ -1,0 +1,6 @@
+robot_base_frame: unit_box
+
+transform_tolerance: 0.5
+
+# unit_box side is 1 meters, so the radious should be sqrt(2)/2
+robot_radius: 0.707
