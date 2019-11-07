@@ -1,0 +1,97 @@
+#!/usr/bin/env python
+
+import subprocess
+from subprocess import PIPE
+import os
+
+KNOWN_NVIDIA_ERRORS = [
+    ("Failed to initialize NVML: Driver/library version mismatch"),
+    ("NVIDIA-SMI has failed because it couldn't communicate with the NVIDIA driver. "
+     "Make sure that the latest NVIDIA driver is installed and running."),
+]
+
+
+def is_nvidia():
+    try:
+        everything, _ = subprocess.Popen(["nvidia-smi", "--query-gpu=driver_version", "--format=noheader,csv"],
+                                         stdout=PIPE, stderr=PIPE).communicate()
+        everything = everything.strip()
+
+        if everything in KNOWN_NVIDIA_ERRORS:
+            return False
+        
+        return True
+    except OSError:
+        return False
+    
+    return False
+
+
+def run_command(command):
+    subprocess.call(command, shell=True)
+
+
+def get_repo_root():
+    return subprocess.check_output('git rev-parse --show-toplevel'.split()).strip()
+
+
+def run_dev_environment():
+    user = os.getlogin()
+    uid = os.getuid()
+    docker_args = []
+    image_name = 'create_ros_kinetic_gazebo9'
+
+    docker_args.append("-it")
+    docker_args.append("--rm")
+    docker_args.append("--env=\"DISPLAY\"")
+    docker_args.append("--volume=\"/tmp/.X11-unix:/tmp/.X11-unix:rw\"")
+    docker_args.append("--volume=\"$HOME/.Xauthority:/root/.Xauthority:rw\"")
+    docker_args.append("--name=\"gazebo_dev_environment\"")
+    docker_args.append("--privileged")
+    docker_args.append("--network=\"host\"")
+    docker_args.append("--user {}:{}".format(uid, uid))
+    docker_args.append("--volume /home/{}/.gazebo_dev_environment/user/:/home/{}/".format(user, user))
+    docker_args.append("--volume {}:/create_ws/src".format(os.path.dirname(get_repo_root())))
+    docker_args.append("--volume /dev/bus/usb:/dev/bus/usb")
+    docker_args.append("-e ROS_HOSTNAME=localhost")
+    docker_args.append("-e ROS_MASTER_URI=http://localhost:11311")
+    docker_args.append("--workdir /create_ws/")
+
+
+    if is_nvidia():
+        docker_args.append("--runtime=\"nvidia\"")
+        image_name = 'create_kinetic_nvidia'
+
+    docker_args = ' '.join(docker_args)
+    docker_command = "docker run {} {} bash".format(docker_args, image_name)
+    
+    run_command("mkdir -p /home/{}/.gazebo_dev_environment/user/".format(user))
+
+    run_command("xhost +local:root")
+    run_command(docker_command)
+    run_command("xhost -local:root")
+
+
+def attach_dev_environment():
+    uid = os.getuid()
+    command = 'docker exec -it --user {}:{} gazebo_dev_environment bash'
+    run_command(command.format(uid, uid))
+
+def is_running():
+    command = 'docker ps | grep gazebo_dev_environment > /dev/null'
+    try:
+        subprocess.check_call(command, shell=True)
+    except Exception:
+        return False
+
+    return True
+
+
+def main():
+    if not is_running():
+        run_dev_environment()
+    else:
+        attach_dev_environment()
+
+if __name__ == '__main__':
+    main()
