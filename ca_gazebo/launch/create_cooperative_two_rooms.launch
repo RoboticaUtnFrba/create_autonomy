@@ -1,11 +1,11 @@
 <launch>
-  <param name="create1/amcl/initial_pose_x" value="-1"/>
-  <param name="create1/amcl/initial_pose_y" value="1"/>
-  <param name="create1/amcl/initial_pose_a" value="0"/>
+  <param name="create1/amcl/initial_pose_x" value="$(optenv X1 -1)"/>
+  <param name="create1/amcl/initial_pose_y" value="$(optenv Y1 1)"/>
+  <param name="create1/amcl/initial_pose_a" value="$(optenv A1 0)"/>
 
-  <param name="create2/amcl/initial_pose_x" value="1"/>
-  <param name="create2/amcl/initial_pose_y" value="1"/>
-  <param name="create2/amcl/initial_pose_a" value="3.1416"/>
+  <param name="create2/amcl/initial_pose_x" value="$(optenv X2 1)"/>
+  <param name="create2/amcl/initial_pose_y" value="$(optenv Y2 1)"/>
+  <param name="create2/amcl/initial_pose_a" value="$(optenv A2 3.1416)"/>
 
   <include file="$(find ca_gazebo)/launch/create_empty_world.launch">
     <arg name="env" value="two_rooms"/>
