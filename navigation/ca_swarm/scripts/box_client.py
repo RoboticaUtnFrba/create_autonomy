@@ -49,7 +49,7 @@ class MoveBaseSquare():
         i = 0
 
         # Cycle through the four waypoints
-        while i < 4 and not rospy.is_shutdown():
+        while i < len(waypoints) and not rospy.is_shutdown():
             # Update the marker display
             self.marker_pub.publish(self.markers)
 
