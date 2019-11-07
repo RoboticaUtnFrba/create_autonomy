@@ -1,0 +1,7 @@
+<launch>
+	<!-- move_base -->
+	<include file="$(find ca_collaborative_move_base)/launch/move_base.launch">
+    <arg name="ns" value="unit_box"/>
+  </include>
+
+</launch>
