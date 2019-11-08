@@ -65,20 +65,26 @@ Install the `nvidia-docker2` package and reload the Docker daemon configuration:
 
 ## Step 3: Creating the container
 
-This repository contain the Dockerfile. Move into the directory containing the file and type
+This repository contains the Dockerfile. Move into the directory containing the file and type
 
 The command below will **create** the container from the base image if it doesn't exist and log you in.
 
       ```bash
-      $ make create_ros_melodic_gazebo9
+      $ ./build
+      ```
+
+The build script will automatically detect whether you are running with a nvidia setup or not. However, it's also possible to force the build script to build for a nvidia setup.
+
+      ```bash
+      $ ./build --force-nvidia
       ```
 
 ## Step 4: Start the container
 
-To make it easier, I created the launcher **launch_docker.sh** (you might need to call **chmod +x ./launch_docker.sh** first).
+To run the container, you can use the run script:
 
       ```bash
-      $ ./launch_docker.sh -d create_melodic_nvidia
+      $ ./run
       ```
 
 Every time you launch the Docker container, you'll need to compile the workspace and source:
