@@ -32,20 +32,3 @@ oscillation_timeout: 10.0
 # oscillating. Moving this far resets the timer counting up to the
 # ~oscillation_timeout 
 oscillation_distance: 0.2
-
-# global planner
-# The name of the plugin for the global planner to use with move_base.
-# This plugin must adhere to the nav_core::BaseGlobalPlanner interface
-# specified in the nav_core package. 
-#
-# http://wiki.ros.org/nav_core#BaseGlobalPlanner
-#alternatives: global_planner/GlobalPlanner, carrot_planner/CarrotPlanner
-base_global_planner: "navfn/NavfnROS"
-
-# local planner
-# The name of the plugin for the local planner to use with move_base.
-# This plugin must adhere to the nav_core::BaseLocalPlanner interface
-# specified in the nav_core package.
-#
-# http://wiki.ros.org/nav_core#BaseLocalPlanner
-base_local_planner: "dwa_local_planner/DWAPlannerROS"

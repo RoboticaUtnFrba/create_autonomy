@@ -1,3 +1,5 @@
+base_global_planner: "navfn/NavfnROS"
+
 NavfnROS:
   visualize_potential: false    #Publish potential for rviz as pointcloud2, not really helpful, default false
   allow_unknown: false          #Specifies whether or not to allow navfn to create plans that traverse unknown space, default true

@@ -16,6 +16,7 @@ USER root
 RUN apt-get update
 
 RUN apt-get install -y \
+  ros-$ROS1_DISTRO-carrot-planner \
   ros-$ROS1_DISTRO-dwa-local-planner \
   ros-$ROS1_DISTRO-image-proc \
   ros-$ROS1_DISTRO-joy \

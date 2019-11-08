@@ -1,16 +1,18 @@
 <launch>
-  <arg name="ns"/>
+  <arg name="ns" />
+  <arg name="global_planner" default="navfn" />
+  <arg name="local_planner" default="dwa" />
 
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
     <rosparam file="$(find ca_move_base)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
     <rosparam file="$(find ca_move_base)/config/global_costmap_params.yaml" command="load" />
     <!-- <rosparam file="$(find ca_move_base)/config/global_planner_params.yaml" command="load" /> -->
-    <rosparam file="$(find ca_move_base)/config/navfn_global_planner_params.yaml" command="load" />
+    <rosparam file="$(find ca_move_base)/config/$(arg global_planner)_global_planner_params.yaml" command="load" />
 
     <rosparam file="$(find ca_move_base)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
     <rosparam file="$(find ca_move_base)/config/local_costmap_params.yaml" command="load" />
     <!-- <rosparam file="$(find ca_move_base)/config/base_local_planner_params.yaml" command="load" /> -->
-    <rosparam file="$(find ca_move_base)/config/dwa_local_planner_params.yaml" command="load" />
+    <rosparam file="$(find ca_move_base)/config/$(arg local_planner)_local_planner_params.yaml" command="load" />
 
     <rosparam file="$(find ca_move_base)/config/move_base_params.yaml" command="load" />
 
