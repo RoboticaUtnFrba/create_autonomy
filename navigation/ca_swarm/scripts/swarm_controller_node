@@ -1,0 +1,135 @@
+#! /usr/bin/env python
+
+from collections import namedtuple
+import numpy as np
+
+import rospy
+import tf2_ros
+
+from tf import transformations
+
+from geometry_msgs.msg import Twist
+
+class SwarmRobotProxy(object):
+
+    def __init__(self, name, frame, cmd_vel, initial_tf):
+        self.name = name
+        self.frame = frame
+        self.cmd_vel = cmd_vel
+        self.initial_tf = initial_tf
+
+class SwarmControllerNode(object):
+
+    def __init__(self):
+        rospy.init_node('swarm_controller')
+        robot_frame_suffix = rospy.get_param(
+            '~robot_frame_suffix', '_tf/base_link'
+        )
+        self._swarm_robots = [
+            SwarmRobotProxy(
+                name=robot_name,
+                frame=robot_name + robot_frame_suffix,
+                cmd_vel=rospy.Publisher(
+                    robot_name + '/cmd_vel', Twist, queue_size=10
+                ),
+                initial_tf=transformations.identity_matrix()
+            ) for robot_name in rospy.get_param('~swarm_robots')
+        ]
+
+        self._tf_buffer = tf2_ros.Buffer()
+        self._tf_listener = tf2_ros.TransformListener(self._tf_buffer)
+        self._body_frame = rospy.get_param('~body_frame')
+
+        self._swarm_cmd_vel_sub = rospy.Subscriber(
+            'cmd_vel', Twist, self._on_swarm_cmd_vel
+        )
+
+    def _on_swarm_cmd_vel(self, swarm_twist):
+        v = swarm_twist.linear.x
+        w = swarm_twist.angular.z
+        R = v / w if w != 0. else np.inf
+        for robot in self._swarm_robots:
+            robot_twist = Twist()
+            try:
+                robot_transform_in_body_frame = self._tf_buffer.lookup_transform(
+                    self._body_frame, robot.frame, rospy.Time()
+                ).transform
+
+                x = robot_transform_in_body_frame.translation.x
+                y = robot_transform_in_body_frame.translation.y
+                _, _, yaw = transformations.euler_from_quaternion([
+                    robot_transform_in_body_frame.rotation.x,
+                    robot_transform_in_body_frame.rotation.y,
+                    robot_transform_in_body_frame.rotation.z,
+                    robot_transform_in_body_frame.rotation.w
+                ])
+
+                if np.allclose(robot.initial_tf, np.identity(4, dtype=np.float64)):
+                  robot.initial_tf = transformations.compose_matrix(angles=[0., 0., yaw], translate=[x, y, 0.])
+                else:
+                  new_tf = transformations.compose_matrix(angles=[0, 0, yaw], translate=[x, y, 0])
+                  tf_error = transformations.concatenate_matrices(
+                    transformations.inverse_matrix(robot.initial_tf),
+                    new_tf
+                  )
+                  [tx, ty, _] = transformations.translation_from_matrix(tf_error)
+                  [_, _, rz] = transformations.euler_from_matrix(tf_error)
+
+
+                  linear_k_ = 0.02 # Scale linear velocity, chosen by trial and error
+                  angular_k_ = 0.08 # Scale angular velocity, chosen by trial and error
+                  # Bad readings, stop
+                  if np.isclose(rz, 0., rtol=1e-3, atol=1e-3) and \
+                     np.isclose(tx, 0., rtol=1e-3, atol=1e-3) and \
+                     np.isclose(ty, 0., rtol=1e-3, atol=1e-3):
+                      x_box = 0
+                      w_box = 0
+                  elif np.isclose(tx, 0., rtol=1e-3, atol=1e-3) and \
+                       np.isclose(ty, 0., rtol=1e-3, atol=1e-3):
+                      # Too close, just rotate
+                      x_box = 0
+                      w_box = rz * angular_k_
+                  else:
+                      x_box = linear_k_ / abs(rz)
+                      w_box = rz * angular_k_
+
+                # if not np.isclose(yaw, 0., rtol=1e-3, atol=1e-3):
+                #     rospy.logerr(
+                #         'normal at point of contact between %s'
+                #         ' and body is not axis-aligned (wrt %s)',
+                #         robot.name, self._body_frame
+                #     )
+                # else:
+                x_move_base = v if R == np.inf else w * (R - y)
+                w_move_base = w
+
+                magic_k = 0.75
+
+                robot_twist.linear.x = magic_k * x_move_base + (1 - magic_k) * x_box
+                robot_twist.angular.z = magic_k * w_move_base + (1 - magic_k) * w_box
+
+            except (tf2_ros.LookupException,
+                    tf2_ros.ConnectivityException,
+                    tf2_ros.ExtrapolationException) as e:
+                rospy.logwarn(
+                    'cannot lookup transform from %s to %s: %s',
+                    robot.frame, self._body_frame, str(e)
+                )
+                continue
+
+            robot.cmd_vel.publish(robot_twist)
+
+    def spin(self):
+        rospy.spin()
+
+
+def main():
+    node = SwarmControllerNode()
+    try:
+        node.spin()
+    except rospy.ROSInterruptException:
+        pass
+
+
+if __name__ == '__main__':
+    main()

@@ -1,11 +1,16 @@
 <launch>
-  <param name="create1/amcl/initial_pose_x" value="$(optenv X1 -1)"/>
-  <param name="create1/amcl/initial_pose_y" value="$(optenv Y1 1)"/>
+  <param name="create1/amcl/initial_pose_x" value="$(optenv X1 3.74)"/>
+  <param name="create1/amcl/initial_pose_y" value="$(optenv Y1 0.96)"/>
   <param name="create1/amcl/initial_pose_a" value="$(optenv A1 0)"/>
 
-  <param name="create2/amcl/initial_pose_x" value="$(optenv X2 1)"/>
-  <param name="create2/amcl/initial_pose_y" value="$(optenv Y2 1)"/>
-  <param name="create2/amcl/initial_pose_a" value="$(optenv A2 3.1416)"/>
+  <param name="create2/amcl/initial_pose_x" value="$(optenv X2 3.74)"/>
+  <param name="create2/amcl/initial_pose_y" value="$(optenv Y2 0.27)"/>
+  <param name="create2/amcl/initial_pose_a" value="$(optenv A2 0)"/>
+
+  <node pkg="ca_swarm" type="another_swarm_controller_node" name="another_swarm_controller_node" output="screen">
+    <rosparam param="swarm_robots">[create1, create2]</rosparam>
+    <param name="body_frame" value="unit_box"/>
+  </node>
 
   <include file="$(find ca_gazebo)/launch/create_empty_world.launch">
     <arg name="env" value="two_rooms"/>

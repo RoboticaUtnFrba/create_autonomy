@@ -1,0 +1,77 @@
+#! /usr/bin/env python
+
+from collections import namedtuple
+import numpy as np
+
+import rospy
+import tf2_ros
+import actionlib
+from tf import transformations
+from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
+from geometry_msgs.msg import Twist, Pose
+
+class SwarmRobotProxy(object):
+
+    def __init__(self, name, frame, cmd_vel, initial_tf, move_base):
+        self.name = name
+        self.frame = frame
+        self.cmd_vel = cmd_vel
+        self.initial_tf = initial_tf
+        self.move_base = move_base
+
+class AnotherSwarmControllerNode(object):
+
+    def __init__(self):
+        rospy.init_node('another_swarm_controller')
+        robot_frame_suffix = rospy.get_param(
+            '~robot_frame_suffix', '_tf/base_link'
+        )
+        self._swarm_robots = [
+            SwarmRobotProxy(
+                name=robot_name,
+                frame=robot_name + robot_frame_suffix,
+                cmd_vel=rospy.Publisher(
+                    robot_name + '/cmd_vel', Twist, queue_size=10
+                ),
+                initial_tf=transformations.identity_matrix(),
+                move_base=actionlib.SimpleActionClient(robot_name + "/move_base", MoveBaseAction)
+            ) for robot_name in rospy.get_param('~swarm_robots')
+        ]
+
+
+        self._tf_buffer = tf2_ros.Buffer()
+        self._tf_listener = tf2_ros.TransformListener(self._tf_buffer)
+        self._body_frame = rospy.get_param('~body_frame')
+
+        self.obj_desired_twist = Twist()
+        self._obj_cmd_vel_sub = rospy.Subscriber(
+            'cmd_vel', Twist, self._on_obj_cmd_vel
+        )
+        self._obj_pose_sub = rospy.Subscriber(
+            '/unit_box/pose', Pose, self._on_obj_pose
+        )
+    def _on_obj_cmd_vel(self, obj_twist):
+        self.obj_desired_twist = obj_twist
+
+    def _on_obj_pose(self, obj_pose):
+        for robot in self._swarm_robots:
+            goal = MoveBaseGoal()
+            goal.target_pose.header.frame_id = 'map'
+            goal.target_pose.header.stamp = rospy.Time.now()
+            goal.target_pose.pose = obj_pose
+            robot.move_base.send_goal(goal)
+
+    def spin(self):
+        rospy.spin()
+
+
+def main():
+    node = AnotherSwarmControllerNode()
+    try:
+        node.spin()
+    except rospy.ROSInterruptException:
+        pass
+
+
+if __name__ == '__main__':
+    main()
