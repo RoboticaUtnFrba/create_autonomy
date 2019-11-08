@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import argparse
 import subprocess
 from subprocess import PIPE
 import os
@@ -37,9 +38,15 @@ def get_repo_root():
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--force-nvidia', dest="force_nvidia", action="store_true")
+    args = parser.parse_args()
+
+    force_nvidia = args.force_nvidia
+
     image_name = 'create_ros_kinetic_gazebo9'
 
-    if is_nvidia():
+    if is_nvidia() or force_nvidia:
         image_name = 'create_kinetic_nvidia'
 
     command = 'cd {} && make {}'.format(os.path.join(get_repo_root(), 'docker'), image_name)
