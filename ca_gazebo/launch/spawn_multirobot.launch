@@ -3,8 +3,6 @@
   <arg name="nr" default="$(optenv NUM_ROBOTS 1)" />
   <arg name="rviz" default="$(optenv RVIZ true)" />
   <arg name="localization" default="$(optenv LOCALIZATION none)" />
-  <arg name="global_planner" value="$(optenv GLOBAL_PLANNER navfn)" />
-  <arg name="local_planner" value="$(optenv LOCAL_PLANNER dwa)" />
 
   <!-- Start 1 robot -->
   <group ns="$(eval 'create' + str(arg('nr')))">
@@ -19,8 +17,6 @@
      file="$(find ca_move_base)/launch/navigate.launch">
       <arg name="robot_name" value="create$(arg nr)" />
       <arg name="localization" value="$(arg localization)" />
-      <arg name="global_planner" value="$(arg global_planner)" />
-      <arg name="local_planner" value="$(arg local_planner)" />
     </include>
 
     <!-- RViz -->

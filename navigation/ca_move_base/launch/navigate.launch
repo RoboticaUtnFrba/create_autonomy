@@ -1,8 +1,8 @@
 <launch>
   <arg name="robot_name" />
   <arg name="localization" />
-  <arg name="global_planner" default="navfn" />
-  <arg name="local_planner" default="dwa" />
+  <arg name="global_planner" value="$(optenv GLOBAL_PLANNER navfn)" />
+  <arg name="local_planner" value="$(optenv LOCAL_PLANNER dwa)" />
 	<!-- Bumper to point cloud -->
 	<include file="$(find ca_bumper2pc)/launch/standalone.launch"/>
 
