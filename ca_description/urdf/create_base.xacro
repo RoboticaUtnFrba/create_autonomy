@@ -52,7 +52,12 @@
 
     <xacro:create_wheel prefix="left" y_offset="${wheel_separation / 2}" wheel_radius="${wheel_radius}" wheel_width="${wheel_width}"/>
     <xacro:create_wheel prefix="right" y_offset="${wheel_separation / -2}" wheel_radius="${wheel_radius}" wheel_width="${wheel_width}"/>
-    <xacro:caster_wheel/>
+    <xacro:caster_wheel name="caster_front">
+      <origin xyz="0.13 0 0" rpy="0 ${pi/2} ${pi/2}" />
+    </xacro:caster_wheel>
+    <xacro:caster_wheel name="caster_back">
+      <origin xyz="-0.13 0 0" rpy="0 ${pi/2} ${pi/2}" />
+    </xacro:caster_wheel>
 
     <!-- Simulation sensors -->
     <xacro:sim_create_base/>

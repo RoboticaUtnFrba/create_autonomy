@@ -9,14 +9,15 @@ import tf2_ros
 from tf import transformations
 
 from geometry_msgs.msg import Twist
+from nav_msgs.msg import Odometry
 
 class SwarmRobotProxy(object):
 
-    def __init__(self, name, frame, cmd_vel, initial_tf):
+    def __init__(self, name, frame, cmd_vel, b_T_i):
         self.name = name
         self.frame = frame
         self.cmd_vel = cmd_vel
-        self.initial_tf = initial_tf
+        self.b_T_i = b_T_i
 
 class SwarmControllerNode(object):
 
@@ -32,9 +33,16 @@ class SwarmControllerNode(object):
                 cmd_vel=rospy.Publisher(
                     robot_name + '/cmd_vel', Twist, queue_size=10
                 ),
-                initial_tf=transformations.identity_matrix()
+                b_T_i=transformations.identity_matrix()
             ) for robot_name in rospy.get_param('~swarm_robots')
         ]
+
+        self._box_v = 0.
+        self._box_w = 0.
+        rospy.Subscriber("/unit_box/odom", Odometry, self.box_odometry)
+
+        self._v0 = 0.
+        self._w0 = 0.
 
         self._tf_buffer = tf2_ros.Buffer()
         self._tf_listener = tf2_ros.TransformListener(self._tf_buffer)
@@ -44,83 +52,98 @@ class SwarmControllerNode(object):
             'cmd_vel', Twist, self._on_swarm_cmd_vel
         )
 
+        self._dt = 0.1
+        rospy.Timer(rospy.Duration(self._dt), self.timer_cb) # 20 Hz
+
+    def timer_cb(self, event):
+      self.run()
+    
     def _on_swarm_cmd_vel(self, swarm_twist):
-        v = swarm_twist.linear.x
-        w = swarm_twist.angular.z
-        R = v / w if w != 0. else np.inf
-        for robot in self._swarm_robots:
-            robot_twist = Twist()
-            try:
-                robot_transform_in_body_frame = self._tf_buffer.lookup_transform(
-                    self._body_frame, robot.frame, rospy.Time()
-                ).transform
-
-                x = robot_transform_in_body_frame.translation.x
-                y = robot_transform_in_body_frame.translation.y
-                _, _, yaw = transformations.euler_from_quaternion([
-                    robot_transform_in_body_frame.rotation.x,
-                    robot_transform_in_body_frame.rotation.y,
-                    robot_transform_in_body_frame.rotation.z,
-                    robot_transform_in_body_frame.rotation.w
-                ])
-
-                if np.allclose(robot.initial_tf, np.identity(4, dtype=np.float64)):
-                  robot.initial_tf = transformations.compose_matrix(angles=[0., 0., yaw], translate=[x, y, 0.])
-                else:
-                  new_tf = transformations.compose_matrix(angles=[0, 0, yaw], translate=[x, y, 0])
-                  tf_error = transformations.concatenate_matrices(
-                    transformations.inverse_matrix(robot.initial_tf),
-                    new_tf
-                  )
-                  [tx, ty, _] = transformations.translation_from_matrix(tf_error)
-                  [_, _, rz] = transformations.euler_from_matrix(tf_error)
-
-
-                  linear_k_ = 0.02 # Scale linear velocity, chosen by trial and error
-                  angular_k_ = 0.08 # Scale angular velocity, chosen by trial and error
-                  # Bad readings, stop
-                  if np.isclose(rz, 0., rtol=1e-3, atol=1e-3) and \
-                     np.isclose(tx, 0., rtol=1e-3, atol=1e-3) and \
-                     np.isclose(ty, 0., rtol=1e-3, atol=1e-3):
-                      x_box = 0
-                      w_box = 0
-                  elif np.isclose(tx, 0., rtol=1e-3, atol=1e-3) and \
-                       np.isclose(ty, 0., rtol=1e-3, atol=1e-3):
-                      # Too close, just rotate
-                      x_box = 0
-                      w_box = rz * angular_k_
-                  else:
-                      x_box = linear_k_ / abs(rz)
-                      w_box = rz * angular_k_
-
-                # if not np.isclose(yaw, 0., rtol=1e-3, atol=1e-3):
-                #     rospy.logerr(
-                #         'normal at point of contact between %s'
-                #         ' and body is not axis-aligned (wrt %s)',
-                #         robot.name, self._body_frame
-                #     )
-                # else:
-                x_move_base = v if R == np.inf else w * (R - y)
-                w_move_base = w
-
-                magic_k = 0.75
-
-                robot_twist.linear.x = magic_k * x_move_base + (1 - magic_k) * x_box
-                robot_twist.angular.z = magic_k * w_move_base + (1 - magic_k) * w_box
-
-            except (tf2_ros.LookupException,
-                    tf2_ros.ConnectivityException,
-                    tf2_ros.ExtrapolationException) as e:
-                rospy.logwarn(
-                    'cannot lookup transform from %s to %s: %s',
-                    robot.frame, self._body_frame, str(e)
-                )
-                continue
-            
-            robot.cmd_vel.publish(robot_twist)
+        self._v0 = swarm_twist.linear.x
+        self._w0 = swarm_twist.angular.z
+    
+    def box_odometry(self, msg):
+        self._box_v = msg.twist.twist.linear.x
+        self._box_w = msg.twist.twist.angular.z
 
     def spin(self):
         rospy.spin()
+    
+    def run(self):
+      R_desired = 2
+
+      v = min(max(self._v0, R_desired * self._w0), 0.3)
+      w = min(v/R_desired, self._w0)
+
+      R = v / w if w != 0. else np.inf
+
+      self._box_error_v = v - self._box_v
+      self._box_error_w = w - self._box_w
+
+      for robot in self._swarm_robots:
+          robot_twist = Twist()
+          try:
+              robot_transform_in_body_frame = self._tf_buffer.lookup_transform(
+                  self._body_frame, robot.frame, rospy.Time()
+              ).transform
+
+              x = robot_transform_in_body_frame.translation.x
+              y = robot_transform_in_body_frame.translation.y
+              _, _, yaw = transformations.euler_from_quaternion([
+                  robot_transform_in_body_frame.rotation.x,
+                  robot_transform_in_body_frame.rotation.y,
+                  robot_transform_in_body_frame.rotation.z,
+                  robot_transform_in_body_frame.rotation.w
+              ])
+
+              v_box = 0.
+              w_box = 0.
+
+              if np.allclose(robot.b_T_i, np.identity(4, dtype=np.float64)):
+                robot.b_T_i = transformations.compose_matrix(angles=[0., 0., yaw], translate=[x, y, 0.])
+              else:
+                b_T_c = transformations.compose_matrix(angles=[0, 0, yaw], translate=[x, y, 0])
+                
+                K = 0.65
+                box_mass = 1 # kg
+
+                dv = self._box_error_v if R == np.inf else self._box_error_w * (R - y)
+                i_T_tau = transformations.compose_matrix(translate=[max(0, dv * box_mass / K), 0., 0])
+                
+                c_T_tau = transformations.concatenate_matrices(
+                  transformations.inverse_matrix(b_T_c),
+                  robot.b_T_i,
+                  i_T_tau
+                )
+
+                # https://globaljournals.org/GJRE_Volume14/1-Kinematics-Localization-and-Control.pdf
+                [xd, yd, _] = transformations.translation_from_matrix(c_T_tau)
+                [_, _, beta] = transformations.euler_from_matrix(c_T_tau)
+                
+                rho = np.linalg.norm([xd, yd])
+                theta = np.arctan2(yd, xd)
+
+                K_theta = 1.0
+                K_rho = 1.2
+                K_alpha = 0.5
+
+                v_box = K_rho * rho * np.cos(theta)
+                w_box = K_theta * theta * rho + K_alpha * beta
+
+              # Send velocities to the robots
+              robot_twist.linear.x = v_box
+              robot_twist.angular.z = w_box
+
+          except (tf2_ros.LookupException,
+                  tf2_ros.ConnectivityException,
+                  tf2_ros.ExtrapolationException) as e:
+              rospy.logwarn(
+                  'cannot lookup transform from %s to %s: %s',
+                  robot.frame, self._body_frame, str(e)
+              )
+              continue
+          
+          robot.cmd_vel.publish(robot_twist)
 
 
 def main():

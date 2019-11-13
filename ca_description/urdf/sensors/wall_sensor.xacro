@@ -21,9 +21,7 @@
     <child link="wall_sensor_link" />
   </joint>
 
-  <link name="wall_sensor_link">
-    <xacro:dummy_inertia/>
-  </link>
+  <link name="wall_sensor_link"/>
 
   <xacro:sim_create_wall_sensor visualize="${visualize}"/>
 

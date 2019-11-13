@@ -37,21 +37,13 @@
     <child link="${name_front_right}_cliff_sensor_link" />
   </joint>
 
-  <link name="${name_side_left}_cliff_sensor_link">
-    <xacro:dummy_inertia/>
-  </link>
+  <link name="${name_side_left}_cliff_sensor_link"/>
 
-  <link name="${name_side_right}_cliff_sensor_link">
-    <xacro:dummy_inertia/>
-  </link>
+  <link name="${name_side_right}_cliff_sensor_link"/>
 
-  <link name="${name_front_left}_cliff_sensor_link">
-    <xacro:dummy_inertia/>
-  </link>
+  <link name="${name_front_left}_cliff_sensor_link"/>
 
-  <link name="${name_front_right}_cliff_sensor_link">
-    <xacro:dummy_inertia/>
-  </link>
+  <link name="${name_front_right}_cliff_sensor_link"/>
 
   <xacro:sim_create_cliff_sensors visualize="${visualize}"/>
 

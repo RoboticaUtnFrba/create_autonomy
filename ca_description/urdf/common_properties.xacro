@@ -4,8 +4,7 @@
 <xacro:macro name="dummy_inertia">
   <inertial>
     <mass value="0.01" />
-    <origin xyz="0 0 0" />
-    <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
+    <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001" />
   </inertial>
 </xacro:macro>
 

@@ -17,5 +17,5 @@
   </xacro:create_base>
 
   <!-- Roomblock -->
-  <xacro:roomblock parent="base_link" visualize="$(arg visualize)"/>
+  <!-- <xacro:roomblock parent="base_link" visualize="$(arg visualize)"/> -->
 </robot>

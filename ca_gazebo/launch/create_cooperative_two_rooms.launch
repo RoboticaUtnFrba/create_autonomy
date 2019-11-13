@@ -1,10 +1,10 @@
 <launch>
-  <param name="create1/amcl/initial_pose_x" value="$(optenv X1 5.74)"/>
-  <param name="create1/amcl/initial_pose_y" value="$(optenv Y1 0.96)"/>
+  <param name="create1/amcl/initial_pose_x" value="$(optenv X1 -9.85)"/>
+  <param name="create1/amcl/initial_pose_y" value="$(optenv Y1 1.3)"/>
   <param name="create1/amcl/initial_pose_a" value="$(optenv A1 0)"/>
 
-  <param name="create2/amcl/initial_pose_x" value="$(optenv X2 5.74)"/>
-  <param name="create2/amcl/initial_pose_y" value="$(optenv Y2 0.27)"/>
+  <param name="create2/amcl/initial_pose_x" value="$(optenv X2 -9.85)"/>
+  <param name="create2/amcl/initial_pose_y" value="$(optenv Y2 -0.1)"/>
   <param name="create2/amcl/initial_pose_a" value="$(optenv A2 0)"/>
 
   <node pkg="ca_swarm" type="swarm_controller_node" name="swarm_controller_node" output="screen">
