@@ -1,18 +1,52 @@
-#include <mutex>
-#include "ca_gazebo/traffic_light_plugin.h"
+// Gazebo libraries
 #include <gazebo/common/Color.hh>
 #include <gazebo/common/Events.hh>
 #include <gazebo/common/Time.hh>
 #include <gazebo/msgs/msgs.hh>
 #include <gazebo/rendering/Visual.hh>
 #include <gazebo/transport/Node.hh>
+
+// Ignition libraries
 #include <ignition/math/Color.hh>
+
+// ROS libraries
 #include <ros/console.h>
+
+// Project libraries
+#include "ca_gazebo/traffic_light_plugin.h"
 
 namespace gazebo
 {
 
     GZ_REGISTER_VISUAL_PLUGIN(GazeboTrafficLight)
+
+    TrafficLightState::TrafficLightState()
+    {}
+
+    TrafficLightState::~TrafficLightState()
+    {}
+
+    void TrafficLightState::next_state()
+    {
+        switch(st)
+        {
+            case States::RED:
+                st = States::YELLOW;
+                break;
+            case States::YELLOW:
+                st = States::GREEN;
+                break;
+            case States::GREEN:
+                st = States::RED;
+                break;                
+        }
+    }
+
+    TrafficLightState::States TrafficLightState::get_current_state()
+    {
+        return st;
+    }
+    
 
     class GazeboTrafficLightPrivate
     {
@@ -62,9 +96,9 @@ namespace gazebo
         ColorTime green_data = std::make_pair(ignition::math::Color(0,1,0), this->green_time_);
 
         this-> state_map = {
-            {TrafficLightState::RED, red_data},
-            {TrafficLightState::YELLOW, yellow_data},
-            {TrafficLightState::GREEN, green_data},
+            {TrafficLightState::States::RED, red_data},
+            {TrafficLightState::States::YELLOW, yellow_data},
+            {TrafficLightState::States::GREEN, green_data},
         };
     }
 
@@ -106,14 +140,13 @@ namespace gazebo
 
     void GazeboTrafficLight::update()
     {
-        //std::lock_guard<std::mutex> lock(this->data_ptr->mutex);
         if (!this->data_ptr->visual)
         {
             gzerr << "The visual is null." << std::endl;
             return;
         }
 
-        common::Time period_time = (this->state_map[this->curr_color_]).second;
+        common::Time period_time = (this->state_map[this->curr_color_.get_current_state()]).second;
 
         auto elapsed = this->current_time_ - this->last_time_;
 
@@ -121,7 +154,7 @@ namespace gazebo
         {
             this->last_time_ = this->current_time_;
 
-            ignition::math::Color color = (this->state_map[this->curr_color_]).first;
+            ignition::math::Color color = (this->state_map[this->curr_color_.get_current_state()]).first;
             this->curr_color_.next_state();
 
             this->data_ptr->visual->SetDiffuse(color);
@@ -136,5 +169,5 @@ namespace gazebo
         this->current_time_ = _msg->sec();
     }
 
-}
+} // namespace gazebo
 

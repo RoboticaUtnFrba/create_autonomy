@@ -1,7 +1,10 @@
 #ifndef GAZEBO_TRAFFIC_LIGHT_PLUGIN_HH
 #define GAZEBO_TRAFFIC_LIGHT_PLUGIN_HH
 
+// C++ library
 #include <memory>
+
+// Gazebo libraries
 #include <gazebo/common/Plugin.hh>
 #include <gazebo/gazebo.hh>
 #include <gazebo/rendering/rendering.hh>
@@ -15,11 +18,25 @@
 namespace gazebo
 {
     class GazeboTrafficLightPrivate;
-
+ 
     class TrafficLightState {
         
+        public:
+
         enum class States{RED, YELLOW, GREEN};
+
+        TrafficLightState();
+
+        ~TrafficLightState();
+
+        void next_state();
+
+        States get_current_state();
         
+        private:
+
+        States st = States::RED; // initial state is red
+
     };
 
     class GazeboTrafficLight : public VisualPlugin
@@ -58,12 +75,12 @@ namespace gazebo
         common::Time red_time_;
         common::Time yellow_time_;
         common::Time green_time_;
-        TrafficLightState curr_color_ = TrafficLightState::RED; // Initial state is red
+        TrafficLightState curr_color_;
 
         // Custom type for making the code easier to read
         typedef std::pair<ignition::math::Color, common::Time> ColorTime;
 
-        std::map<TrafficLightState, ColorTime> state_map;
+        std::map<TrafficLightState::States, ColorTime> state_map;
 
     }; // class GazeboTrafficLight
 
