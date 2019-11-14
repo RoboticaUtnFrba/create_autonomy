@@ -46,11 +46,27 @@ namespace gazebo
         public: transport::SubscriberPtr infoSub;
     };
 
-    GazeboTrafficLight::GazeboTrafficLight() : data_ptr(new GazeboTrafficLightPrivate)
-    {}
+    GazeboTrafficLight::GazeboTrafficLight() : 
+    data_ptr(new GazeboTrafficLightPrivate)
+    {    
+        init_map();
+    }
 
     GazeboTrafficLight::~GazeboTrafficLight()
     {}
+
+    void GazeboTrafficLight::init_map()
+    {
+        ColorTime red_data = std::make_pair(ignition::math::Color(1,0,0), this->red_time_);
+        ColorTime yellow_data = std::make_pair(ignition::math::Color(1,1,0), this->yellow_time_);
+        ColorTime green_data = std::make_pair(ignition::math::Color(0,1,0), this->green_time_);
+
+        this-> state_map = {
+            {TrafficLightState::RED, red_data},
+            {TrafficLightState::YELLOW, yellow_data},
+            {TrafficLightState::GREEN, green_data},
+        };
+    }
 
     void GazeboTrafficLight::Load(rendering::VisualPtr _visual, sdf::ElementPtr _sdf)
     {
@@ -73,7 +89,7 @@ namespace gazebo
             return;
         }
         // Connect to the world update signal
-        this->data_ptr->updateConnection = event::Events::ConnectPreRender(std::bind(&GazeboTrafficLight::Update, this));
+        this->data_ptr->updateConnection = event::Events::ConnectPreRender(std::bind(&GazeboTrafficLight::update, this));
         // Subscribe to world statistics to get sim time
         // Warning: topic ~/pose/local/info is meant for high-bandwidth local
         // network access. It will kill the system if a remote gzclient tries to
@@ -83,12 +99,12 @@ namespace gazebo
         // Initialize the node with the world name
         this->data_ptr->node->Init();
         // Listen to Gazebo world_stats topic
-        commandSubscriber = this->data_ptr->node->Subscribe("/gazebo/EmptyWorld/WorldTime_topic", &GazeboTrafficLight::time_update_cb, this);
+        command_subscriber = this->data_ptr->node->Subscribe("/gazebo/EmptyWorld/WorldTime_topic", &GazeboTrafficLight::time_update_cb, this);
         this->next_color_ = "red";
         this->last_time_ = this->current_time_;
     }
 
-    void GazeboTrafficLight::Update()
+    void GazeboTrafficLight::update()
     {
         //std::lock_guard<std::mutex> lock(this->data_ptr->mutex);
         if (!this->data_ptr->visual)
@@ -97,14 +113,7 @@ namespace gazebo
             return;
         }
 
-        common::Time period_time;
-
-        if(this->next_color_ == "red")
-            period_time = this->green_time_;
-        else if(this->next_color_ == "yellow")
-            period_time = this->red_time_;
-        else
-            period_time = this->yellow_time_;
+        common::Time period_time = (this->state_map[this->curr_color_]).second;
 
         auto elapsed = this->current_time_ - this->last_time_;
 
@@ -112,28 +121,8 @@ namespace gazebo
         {
             this->last_time_ = this->current_time_;
 
-            double red = 0;
-            double green = 0;
-            double blue = 0;
-
-            if(this->next_color_ == "red")
-            {
-                red = 1;
-                this->next_color_ = "yellow";
-            }
-            else if(this->next_color_ == "yellow")
-            {
-                red = 1;
-                green = 1;
-                this->next_color_ = "green";
-            }
-            else
-            {
-                green = 1;
-                this->next_color_ = "red";
-            }
-
-            ignition::math::Color color(red, green, blue);
+            ignition::math::Color color = (this->state_map[this->curr_color_]).first;
+            this->curr_color_.next_state();
 
             this->data_ptr->visual->SetDiffuse(color);
             this->data_ptr->visual->SetAmbient(color);

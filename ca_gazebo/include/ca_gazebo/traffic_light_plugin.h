@@ -16,35 +16,57 @@ namespace gazebo
 {
     class GazeboTrafficLightPrivate;
 
+    class TrafficLightState {
+        
+        enum class States{RED, YELLOW, GREEN};
+        
+    };
+
     class GazeboTrafficLight : public VisualPlugin
     {
 
+        /// Class for implementing a light traffic plugin for Gazebo.
+        
+        public:
+
         /// \brief Constructor.
-        public: GazeboTrafficLight();
+        GazeboTrafficLight();
 
         /// \brief Destructor.
-        public: ~GazeboTrafficLight();
+        ~GazeboTrafficLight();
 
         // Documentation inherited
-        public: virtual void Load(rendering::VisualPtr _visual,
+        virtual void Load(rendering::VisualPtr _visual,
             sdf::ElementPtr _sdf);
 
-        public: void time_update_cb(ConstTimePtr &);
+        void time_update_cb(ConstTimePtr &);
 
+        void init_map();
+  
+        private:
+        
         /// \brief Update the plugin once every iteration of simulation.
-        private: void Update();
+        void update();
 
-        /// \internal
         /// \brief Private data pointer
-        private: std::unique_ptr<GazeboTrafficLightPrivate> data_ptr;
+        std::unique_ptr<GazeboTrafficLightPrivate> data_ptr;
 
-        transport::SubscriberPtr commandSubscriber;
+        transport::SubscriberPtr command_subscriber;
         std::string next_color_;
         common::Time current_time_;
         common::Time last_time_;
         common::Time red_time_;
         common::Time yellow_time_;
         common::Time green_time_;
-    };
-}
-#endif
+        TrafficLightState curr_color_ = TrafficLightState::RED; // Initial state is red
+
+        // Custom type for making the code easier to read
+        typedef std::pair<ignition::math::Color, common::Time> ColorTime;
+
+        std::map<TrafficLightState, ColorTime> state_map;
+
+    }; // class GazeboTrafficLight
+
+} // namespace gazebo
+
+#endif //GAZEBO_TRAFFIC_LIGHT_PLUGIN_HH
