@@ -51,7 +51,9 @@ class RobotSpawner(object):
             "{}/amcl/initial_pose_a".format(self.ns), 0.)
       q = quaternion_from_euler(0, 0, yaw)
       msg.initial_pose.orientation = Quaternion(q[0], q[1], q[2], q[3])
+      
       msg.reference_frame = "world"
+
       # Spawn model
       res = spawn_urdf_model(msg)
       print(res.status_message)

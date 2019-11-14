@@ -1,54 +1,58 @@
 #ifndef GAZEBO_ROS_COLOR_SENSOR_HH
 #define GAZEBO_ROS_COLOR_SENSOR_HH
 
+// C++ libraries
 #include <string>
 
-// library for processing camera data for gazebo / ros conversions
+// Gazebo libraries
 #include <gazebo/plugins/CameraPlugin.hh>
-
 #include <gazebo_plugins/gazebo_ros_camera_utils.h>
 
 namespace gazebo
 {
   class GazeboRosColor : public CameraPlugin, GazeboRosCameraUtils
   {
-    /// \brief Constructor
-    /// \param parent The parent entity, must be a Model or a Sensor
-    public: GazeboRosColor();
+    public: 
+    
+    // Constructor
+    GazeboRosColor();
 
-    /// \brief Destructor
-    public: ~GazeboRosColor();
+    // Destructor
+    ~GazeboRosColor();
 
-    /// \brief Load the plugin
-    /// \param take in SDF root element
-    public: void Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf);
+    // Load the plugin. The load function is called by Gazebo when the plugin is inserted into simulation.
+    // _parent is the parent entity, must be a Model or a Sensor.
+    // _sdf is the SDF which invokes this plugin, which defines parameters for this plugin.
+    void Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf);
 
-    public: void GetColorRGB();
+    void GetColorRGB();
 
-    //Decides if a given color is present, given the goal color
-    public: bool IsColorPresent(std::vector<double>);
+    // Decides if a given color is present, given the goal color.
+    // The input parameter is the RGB vector of a pixel, which is compared with the class attribute 'colorValues'.
+    bool IsColorPresent(std::vector<double>&);
 
-    public: void InitColorMap();
-
-    /// \brief Update the controller
-    protected: virtual void OnNewFrame(const unsigned char *_image,
+    protected: 
+    
+    // Proccesses each new frame given by Gazebo for detecting if the target color is present.
+    virtual void OnNewFrame(const unsigned char *_image,
     unsigned int _width, unsigned int _height,
     unsigned int _depth, const std::string &_format);
 
-    ros::NodeHandle _nh;
-    ros::Publisher _sensorPublisher;
-    ros::Publisher colorpub;
+    ros::NodeHandle nh_;
+    ros::Publisher sensor_publisher_;
 
-    double _fov;
-    double _range;
-    double _pixel_threshold;
-    double _threshold_tolerance;
-    std::string publish_topic_name_;
+    double fov_;
+    double range_;
+    double pixel_threshold_;
+    double threshold_tolerance_;
     std::string sensor_color_;
 
-    //Variable with information about RGB threshold values
-    std::vector<int> _goal_color;
-    std::map<std::string, std::vector<int>> colorValues;
+    // Variable with information about RGB threshold values depending on the target color of the sensor.
+    std::vector<int> goal_color_;
+    const std::map<std::string, std::vector<int>> color_values_={
+                                                                {"yellow",{255,255,20}},
+                                                                {"white",{255,255,255}}
+    };
   };
 }
-#endif
+#endif //GAZEBO_ROS_COLOR_SENSOR_HH

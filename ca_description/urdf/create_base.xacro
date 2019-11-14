@@ -6,7 +6,7 @@
     <xacro:include filename="$(find ca_description)/urdf/create_base_gazebo.xacro"/>
     <xacro:include filename="$(find ca_description)/urdf/create_caster_wheel.xacro"/>
     <xacro:include filename="$(find ca_description)/urdf/create_wheel.xacro"/>
-    <xacro:include filename="$(find ca_description)/urdf/create_light_sensor.xacro"/>
+    <xacro:include filename="$(find ca_description)/urdf/create_color_sensor.xacro"/>
     <xacro:include filename="$(find ca_description)/urdf/sensors/imu_sensor.xacro"/>
     <xacro:include filename="$(find ca_description)/urdf/sensors/wall_sensor.xacro"/>
     <xacro:include filename="$(find ca_description)/urdf/sensors/cliff_sensors.xacro"/>
@@ -55,12 +55,11 @@
     <xacro:create_wheel prefix="right" y_offset="${wheel_separation / -2}" wheel_radius="${wheel_radius}" wheel_width="${wheel_width}"/>
     <xacro:caster_wheel/>
 
-
-    <xacro:color_sensor name_prefix="left" sensor_color="yellow">
-      <origin xyz="0.095 0.14 0.065" rpy="0 ${pi/4} 0"/>
-    </xacro:color_sensor>
     <xacro:color_sensor name_prefix="right" sensor_color="white">
       <origin xyz="0.095 -0.14 0.065" rpy="0 ${pi/4} 0"/>
+    </xacro:color_sensor>
+    <xacro:color_sensor name_prefix="left" sensor_color="yellow">
+      <origin xyz="0.095 0.14 0.065" rpy="0 ${pi/4} 0"/>
     </xacro:color_sensor>
     
     <!-- Simulation sensors -->
