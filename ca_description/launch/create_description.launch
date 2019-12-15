@@ -9,7 +9,7 @@
   <arg name="freq" value="5.0"/>
 
   <!-- Robot description -->
-  <arg name="xacro_args" value="visualize:=$(arg visualize)"/>
+  <arg name="xacro_args" value="visualize:=$(arg visualize) robot_name:=$(arg robot_name)"/>
   <param name="robot_description" command="$(find xacro)/xacro $(arg model) $(arg xacro_args)"/>
   <!-- Robot state publisher-->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen">
@@ -21,6 +21,6 @@
   <arg name="base_offset_z" value="0.017"/>
   <arg name="parent_link" value="$(arg tf_prefix)/base_footprint"/>
   <arg name="child_link" value="$(arg tf_prefix)/base_link"/>
-  <node name="base_static_tf" pkg="tf" type="static_transform_publisher" 
+  <node name="base_static_tf" pkg="tf" type="static_transform_publisher"
         args="0 0 ${base_offset_z} 0 0 0 1 $(arg parent_link) $(arg child_link) $(arg freq)"/>
 </launch>

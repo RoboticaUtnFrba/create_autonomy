@@ -141,9 +141,18 @@ install(TARGETS ${vicinity_plugin_name}
 ###### iRobot Create plugins ######
 ###################################
 
+add_library(cliff_msg_publisher src/cliff_msg_publisher.cpp)
+target_link_libraries(cliff_msg_publisher
+	${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
+
 add_library(create_bumper_plugin src/create_bumper_plugin.cpp)
 add_dependencies(create_bumper_plugin ${catkin_EXPORTED_TARGETS})
 target_link_libraries(create_bumper_plugin
+	${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
+
+add_library(create_cliff_plugin src/create_cliff_plugin.cpp)
+add_dependencies(create_cliff_plugin ${catkin_EXPORTED_TARGETS})
+target_link_libraries(create_cliff_plugin
 	${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
 
 add_library(create_virtual_wall_plugin src/create_virtual_wall_plugin.cpp)
@@ -184,7 +193,9 @@ install(DIRECTORY include/${PROJECT_NAME}/
 )
 
 install(TARGETS
+		cliff_msg_publisher
 		create_bumper_plugin
+		create_cliff_plugin
 		create_virtual_wall_plugin
 		model_pose_publisher_plugin
 		traffic_light_plugin

@@ -2,6 +2,7 @@
 <robot name="create_2" xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:include filename="$(find ca_description)/urdf/create_base.xacro"/>
   <xacro:include filename="$(find ca_description)/urdf/roomblock.xacro"/>
+  <xacro:property name="robot_name" value="$(arg robot_name)"/>
 
   <xacro:property name="wheel_separation" value="0.235"/>
   <xacro:property name="base_diameter" value="0.3485"/>
