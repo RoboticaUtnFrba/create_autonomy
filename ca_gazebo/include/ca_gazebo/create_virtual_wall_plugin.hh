@@ -27,6 +27,7 @@ private:
   event::ConnectionPtr updateConnection_;
   event::ConnectionPtr updateNewEntity_;
   ros::Time prev_update_time_;
+  double rcon_distance_;
 
   std::unique_ptr<ros::NodeHandle> rosnode_;
   std::vector<ros::Publisher> pubs_;

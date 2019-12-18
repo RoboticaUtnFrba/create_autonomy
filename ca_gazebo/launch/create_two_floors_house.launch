@@ -1,7 +1,7 @@
 <launch>
   <arg name="virtual_wall_x" default="0.2"/>
   <arg name="virtual_wall_y" default="-1.2"/>
-  <arg name="virtual_wall_yaw" default="-1.57"/>
+  <arg name="virtual_wall_yaw" default="1.57"/>
 
   <param name="create1/amcl/initial_pose_x" value="2"/>
   <param name="create1/amcl/initial_pose_y" value="0"/>

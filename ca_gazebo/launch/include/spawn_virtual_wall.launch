@@ -5,7 +5,7 @@
   <arg name="y" default="0"/>
   <arg name="yaw" default="0"/>
 
-  <node name="sdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+  <node name="$(anon virtual_wall_sdf_spawner)" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
     args="-sdf -model $(arg virtual_wall_name) -file $(find ca_gazebo)/models/virtual_wall/model.sdf -x $(arg x) -y $(arg y) -Y $(arg yaw)"
   />
 </launch>
