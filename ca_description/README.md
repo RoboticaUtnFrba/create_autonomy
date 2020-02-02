@@ -15,7 +15,7 @@ To convert the xacro file into a URDF file:
 ```bash
 roscd ca_description/urdf/
 roscore &
-rosrun xacro xacro --inorder create_2.xacro [ARGS] > test.urdf
+rosrun xacro xacro create_2.xacro [ARGS] > test.urdf
 ```
 
 Replace [ARGS] with the corresponding XACRO arguments. As an example, `visualize:=false`.
