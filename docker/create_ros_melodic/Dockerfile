@@ -64,5 +64,3 @@ RUN mkdir -p /create_ws/src/ && \
 USER create
 WORKDIR /create_ws/
 RUN rosdep update
-
-CMD tmux

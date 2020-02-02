@@ -19,4 +19,3 @@ RUN apt-get update && \
     ros-$ROS1_DISTRO-gazebo-ros-control
 
 USER create
-CMD tmux

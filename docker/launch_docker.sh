@@ -19,8 +19,8 @@ if [[ $IMAGE_NAME = *"nvidia"* ]]; then
 fi
 
 xhost +
-docker run -it \
-    --privileged --rm \
+docker run -it --rm \
+    --privileged \
     "--ipc=host" \
     "--cap-add=IPC_LOCK" \
     "--cap-add=sys_nice" \
@@ -34,3 +34,5 @@ docker run -it \
     -e ROS_MASTER_URI=http://localhost:11311 \
     $NVIDIA_FLAG \
     $IMAGE_NAME
+
+xhost -

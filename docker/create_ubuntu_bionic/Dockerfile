@@ -41,5 +41,3 @@ RUN adduser --gecos "Development User" --disabled-password -u ${uid} create
 RUN adduser create sudo
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 USER root
-
-CMD tmux
