@@ -1,6 +1,10 @@
 local_costmap:
   global_frame: map
 
+  plugins:
+    - {name: obstacle_layer,  type: "costmap_2d::ObstacleLayer" }
+    - {name: inflation_layer,  type: "costmap_2d::InflationLayer" }
+
   rolling_window: true
   publish_frequency: 2.0
   update_frequency: 5.0
