@@ -20,9 +20,14 @@
       <arg name="localization" value="$(arg localization)"/>
     </include>
 
+    <arg if ="$(eval 'localization' == 'amcl')" name="rviz_config" value="localization"/>
+    <arg if ="$(eval 'localization' == 'none')" name="rviz_config" value="robot_description"/>
+    <arg if ="$(eval 'localization' == 'slam')" name="rviz_config" value="navigation"/>
+    <arg if ="$(eval 'nr' > 1)"                 name="rviz_config" value="multi_robot"/>
+
     <!-- RViz -->
     <include if="$(arg rviz)" file="$(find ca_tools)/launch/rviz.launch">
-      <arg name="config_file" value="$(find ca_tools)/rviz/swarm.rviz"/>
+      <arg name="config_file" value="$(find ca_tools)/rviz/$(arg rviz_config).rviz"/>
     </include>
   </group>
 
