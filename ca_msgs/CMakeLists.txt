@@ -2,27 +2,30 @@ cmake_minimum_required(VERSION 2.8.3)
 project(ca_msgs)
 
 find_package(catkin REQUIRED COMPONENTS
+  geometry_msgs
   message_generation
   std_msgs
 )
 
 add_message_files(
-  FILES
-  Bumper.msg
-  ChargingState.msg
-  Cliff.msg
-  DefineSong.msg
-  Mode.msg
-  Overcurrent.msg
-  PlaySong.msg
-  Wheeldrop.msg
+  DIRECTORY msg
 )
 
+# Generate services in the 'srv' folder
+add_service_files(
+  DIRECTORY srv
+)
+
+# Generate added messages and services with any dependencies listed here
 generate_messages(
   DEPENDENCIES
-  std_msgs
+    geometry_msgs
+    std_msgs
 )
 
 catkin_package(
-  CATKIN_DEPENDS message_runtime std_msgs
+  CATKIN_DEPENDS
+    geometry_msgs
+    message_runtime
+    std_msgs
 )
