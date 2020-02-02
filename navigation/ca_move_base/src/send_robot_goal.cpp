@@ -21,7 +21,7 @@ int main(int argc, char** argv){
 
 	move_base_msgs::MoveBaseGoal goal;
 
-	goal.target_pose.header.frame_id = "/map";
+	goal.target_pose.header.frame_id = "map";
 	goal.target_pose.header.stamp = ros::Time::now();
 	try{
 		goal.target_pose.pose.position.x = atof(argv[1]);

@@ -1,5 +1,3 @@
-map_frame: "/map"
-
 map_update_interval: "5.0"
 maxUrange: "6.0"
 maxRange: "8.0"
