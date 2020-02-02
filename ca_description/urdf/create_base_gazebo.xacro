@@ -26,7 +26,7 @@
         <publishOdomTF>true</publishOdomTF>
         <publishWheelJointState>true</publishWheelJointState>
         <legacyMode>false</legacyMode>
-        <odometrySource>encoder</odometrySource>
+        <odometrySource>world</odometrySource>
         <publishTf>1</publishTf>
       </plugin>
 
