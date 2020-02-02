@@ -5,14 +5,15 @@ add_compile_options(-std=c++11)
 
 find_package(gazebo REQUIRED)
 
-find_package(catkin REQUIRED COMPONENTS
-	ca_msgs
-	gazebo_plugins
-	gazebo_ros
-	roscpp
-	roslint
-	tf2
-	tf2_ros
+find_package(catkin REQUIRED
+  COMPONENTS
+    ca_msgs
+    gazebo_plugins
+    gazebo_ros
+    roscpp
+    roslint
+    tf2
+    tf2_ros
 )
 
 set(trajectory_actor_plugin_name TrajectoryActorPlugin)
@@ -27,7 +28,8 @@ catkin_package(
     ca_msgs
 )
 
-include_directories(include
+include_directories(
+  include
 	${catkin_INCLUDE_DIRS}
 	${GAZEBO_INCLUDE_DIRS}
 )
@@ -58,6 +60,9 @@ install(TARGETS ${trajectory_actor_plugin_name}
 set(follow_actor_plugin_name FollowActorPlugin)
 add_library(${follow_actor_plugin_name} SHARED
   src/servicesim/FollowActorPlugin.cc
+)
+add_dependencies(${follow_actor_plugin_name}
+  ${catkin_EXPORTED_TARGETS}
 )
 target_link_libraries(${follow_actor_plugin_name}
   ${GAZEBO_LIBRARIES}
@@ -116,6 +121,9 @@ install(TARGETS ${attach_model_plugin_name}
 set(vicinity_plugin_name VicinityPlugin)
 add_library(${vicinity_plugin_name} SHARED
   src/servicesim/VicinityPlugin.cc
+)
+add_dependencies(${vicinity_plugin_name}
+  ${catkin_EXPORTED_TARGETS}
 )
 target_link_libraries(${vicinity_plugin_name}
   ${GAZEBO_LIBRARIES}
