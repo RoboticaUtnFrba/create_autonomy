@@ -1,0 +1,9 @@
+# Each line is a file pattern followed by one or more owners.  The owner
+# can be specified by their @username, or an email address.
+#
+# Order is important.  The last matching pattern takes the most precedence.
+
+# These owners will be the default owners for all the files in the
+# repository.  Unless a later match is found, these owners
+# will be requested for a review when a PR is opened.
+* @eborghi10
