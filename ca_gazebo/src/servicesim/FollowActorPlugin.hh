@@ -120,13 +120,13 @@ namespace servicesim
     /// \param[in] _req Request with target name
     /// \param[out] _res Response with true for success
     /// \param[out] _result True for success
-    private: void OnFollow(const ignition::msgs::StringMsg &_req,
-        ignition::msgs::Boolean &_res, bool &_result);
+    private: bool OnFollow(const ignition::msgs::StringMsg &_req,
+        ignition::msgs::Boolean &_res);
 
     /// \brief Callback for Ignition unfollow service
     /// \param[out] _res Response with true for success
     /// \param[out] _result True for success
-    private: void OnUnfollow(ignition::msgs::Boolean &_res, bool &_result);
+    private: bool OnUnfollow(ignition::msgs::Boolean &_res);
 
     /// \brief Service when the drift service is requested
     /// \param[in] _req Empty request

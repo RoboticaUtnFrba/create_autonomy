@@ -198,13 +198,13 @@ void FollowActorPlugin::Load(gazebo::physics::ModelPtr _model,
       std::bind(&FollowActorPlugin::OnUpdate, this, std::placeholders::_1)));
 
   // Pickup service
+  const std::string followSrvName = this->dataPtr->ns + "/" + this->dataPtr->actor->GetName() + "/follow";
   this->dataPtr->ignNode.Advertise(
-      this->dataPtr->ns + "/" + this->dataPtr->actor->GetName() + "/follow",
-      &FollowActorPlugin::OnFollow, this);
+      followSrvName, &FollowActorPlugin::OnFollow, this);
 
+  const std::string unfollowSrvName = this->dataPtr->ns + "/" + this->dataPtr->actor->GetName() + "/unfollow";
   this->dataPtr->ignNode.Advertise(
-      this->dataPtr->ns + "/" + this->dataPtr->actor->GetName() + "/unfollow",
-      &FollowActorPlugin::OnUnfollow, this);
+      unfollowSrvName, &FollowActorPlugin::OnUnfollow, this);
 
   // Drift publisher
   this->dataPtr->driftIgnPub =
@@ -393,12 +393,11 @@ void FollowActorPlugin::OnUpdate(const gazebo::common::UpdateInfo &_info)
 }
 
 /////////////////////////////////////////////////
-void FollowActorPlugin::OnFollow(const ignition::msgs::StringMsg &_req,
-    ignition::msgs::Boolean &_res, bool &_result)
+bool FollowActorPlugin::OnFollow(const ignition::msgs::StringMsg &_req,
+    ignition::msgs::Boolean &_res)
 {
   _res.set_data(false);
-  _result = false;
-
+  
   // Get target model
   auto targetName = _req.data();
 
@@ -408,7 +407,7 @@ void FollowActorPlugin::OnFollow(const ignition::msgs::StringMsg &_req,
   if (!model)
   {
     gzwarn << "Failed to find model: [" << targetName << "]" << std::endl;
-    return;
+    return false;
   }
 
   // Check pickup radius
@@ -422,7 +421,7 @@ void FollowActorPlugin::OnFollow(const ignition::msgs::StringMsg &_req,
   {
     gzwarn << "Target [" << model->GetName() <<  "] too far from actor ["
            << this->dataPtr->actor->GetName() <<"]" << std::endl;
-    return;
+    return false;
   }
 
   gzmsg << "Actor [" << this->dataPtr->actor->GetName()
@@ -430,18 +429,16 @@ void FollowActorPlugin::OnFollow(const ignition::msgs::StringMsg &_req,
 
   this->dataPtr->target = model;
   _res.set_data(true);
-  _result = true;
+  return true;
 }
 
 /////////////////////////////////////////////////
-void FollowActorPlugin::OnUnfollow(ignition::msgs::Boolean &_res,
-    bool &_result)
+bool FollowActorPlugin::OnUnfollow(ignition::msgs::Boolean &_res)
 {
   if (!this->dataPtr->target)
   {
     _res.set_data(false);
-    _result = false;
-    return;
+    return false;
   }
 
   gzmsg << "Actor [" << this->dataPtr->actor->GetName()
@@ -457,7 +454,7 @@ void FollowActorPlugin::OnUnfollow(ignition::msgs::Boolean &_res,
   this->dataPtr->driftIgnPub.Publish(msg);
 
   _res.set_data(true);
-  _result = true;
+  return true;
 }
 
 /////////////////////////////////////////////////
