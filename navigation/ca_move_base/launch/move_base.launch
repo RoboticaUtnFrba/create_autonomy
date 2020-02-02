@@ -19,10 +19,13 @@
     <remap from="/laser/scan" to="laser/scan"/>
     <remap from="/mobile_base/sensors/bumper_pointcloud" 
            to="mobile_base/sensors/bumper_pointcloud"/>
+    
     <!-- Remap frames for specific robots -->
     <param name="local_costmap/robot_base_frame" value="$(arg ns)_tf/base_link"/>
     <param name="global_costmap/robot_base_frame" value="$(arg ns)_tf/base_link"/>
     <param name="local_costmap/global_frame" value="$(arg ns)_tf/odom"/>
+    <param name="global_costmap/global_frame" value="map"/>
+    <param name="local_costmap/obstacle_layer/scan/sensor_frame" value="$(arg ns)_tf/laser_link"/>
   </node>
 
 </launch>
