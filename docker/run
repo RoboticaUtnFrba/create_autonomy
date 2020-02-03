@@ -1,85 +1,62 @@
 #!/usr/bin/env python
 
+"""
+Author:     Diego Maldonado (@dmnunez1993)
+Maintainer: Emiliano Borghi (@eborghi10)
+"""
+
 import argparse
 import subprocess
-from subprocess import PIPE
+import docker_utils as ut
 import os
 
-KNOWN_NVIDIA_ERRORS = [
-    ("Failed to initialize NVML: Driver/library version mismatch"),
-    ("NVIDIA-SMI has failed because it couldn't communicate with the NVIDIA driver. "
-     "Make sure that the latest NVIDIA driver is installed and running."),
-]
+IMAGE_NAME = "robotica_utn_frba"
 
-
-def is_nvidia():
-    try:
-        everything, _ = subprocess.Popen(["nvidia-smi", "--query-gpu=driver_version", "--format=noheader,csv"],
-                                         stdout=PIPE, stderr=PIPE).communicate()
-        everything = everything.strip()
-
-        if everything in KNOWN_NVIDIA_ERRORS:
-            return False
-        
-        return True
-    except OSError:
-        return False
-    
-    return False
-
-
-def run_command(command):
-    subprocess.call(command, shell=True)
-
-
-def get_repo_root():
-    return subprocess.check_output('git rev-parse --show-toplevel'.split()).strip()
-
-
-def run_dev_environment(command):
+def run_dev_environment(command, ros="melodic", gazebo="9"):
     user = os.getlogin()
     uid = os.getuid()
     docker_args = []
-    image_name = 'create_ros_kinetic_gazebo9'
+    image_name = 'create_ros_{}_gazebo{}'.format(ros, gazebo)
 
     docker_args.append("-it")
     docker_args.append("--rm")
     docker_args.append("--env=\"DISPLAY\"")
     docker_args.append("--volume=\"/tmp/.X11-unix:/tmp/.X11-unix:rw\"")
     docker_args.append("--volume=\"$HOME/.Xauthority:/root/.Xauthority:rw\"")
-    docker_args.append("--name=\"gazebo_dev_environment\"")
+    docker_args.append("--name=\"{}\"".format(IMAGE_NAME))
     docker_args.append("--privileged")
     docker_args.append("--network=\"host\"")
     docker_args.append("--user {}:{}".format(uid, uid))
+    # TODO (@eborghi10): IMPROVE THIS PATHS
     docker_args.append("--volume /home/{}/.gazebo_dev_environment/user/:/home/{}/".format(user, user))
-    docker_args.append("--volume {}:/create_ws/src".format(os.path.dirname(get_repo_root())))
+    docker_args.append("--volume {}:/create_ws/src".format(os.path.dirname(ut.get_repo_root())))
     docker_args.append("--volume /dev/bus/usb:/dev/bus/usb")
     docker_args.append("-e ROS_HOSTNAME=localhost")
     docker_args.append("-e ROS_MASTER_URI=http://localhost:11311")
     docker_args.append("--workdir /create_ws/")
 
-
-    if is_nvidia():
+    if ut.is_nvidia():
         docker_args.append("--runtime=\"nvidia\"")
-        image_name = 'create_kinetic_nvidia'
+        image_name = 'create_{}_nvidia'.format(ros)
 
+    # Join arguments together separated by a space
     docker_args = ' '.join(docker_args)
     docker_command = "docker run {} {} {}".format(docker_args, image_name, command)
     
-    run_command("mkdir -p /home/{}/.gazebo_dev_environment/user/".format(user))
+    # TODO (@eborghi10): WHAT'S THIS FOR? (CHECK PREVIOUS TODO)
+    ut.run_command("mkdir -p /home/{}/.gazebo_dev_environment/user/".format(user))
 
-    run_command("xhost +local:root")
-    run_command(docker_command)
-    run_command("xhost -local:root")
+    ut.run_command("xhost +local:root")
+    ut.run_command(docker_command)
+    ut.run_command("xhost -local:root")
 
-
-def attach_dev_environment(command):
+def attach_dev_environment(command, ros="melodic", gazebo="9"):
     uid = os.getuid()
-    command = 'docker exec -it --user {}:{} gazebo_dev_environment {}'.format(uid, uid, command)
-    run_command(command)
+    command = 'docker exec -it --user {}:{} {} {}'.format(uid, uid, IMAGE_NAME, command)
+    ut.run_command(command)
 
 def is_running():
-    command = 'docker ps | grep gazebo_dev_environment > /dev/null'
+    command = 'docker ps | grep {} > /dev/null'.format(IMAGE_NAME)
     try:
         subprocess.check_call(command, shell=True)
     except Exception:
@@ -87,16 +64,18 @@ def is_running():
 
     return True
 
-
 def main():
+    # Parse arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('-c', dest='command', default='tmux')
+    parser.add_argument('-c', '--cmd', dest='command', default='tmux')
+    parser.add_argument('-g', '--gazebo', dest="gazebo_version", default="9")
+    parser.add_argument('-r', '--ros', dest="ros_version", default="melodic")
     args = parser.parse_args()
 
     if not is_running():
-        run_dev_environment(args.command)
+        run_dev_environment(args.command, ros=args.ros_version, gazebo=args.gazebo_version)
     else:
-        attach_dev_environment(args.command)
+        attach_dev_environment(args.command, ros=args.ros_version, gazebo=args.gazebo_version)
 
 if __name__ == '__main__':
     main()
