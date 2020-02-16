@@ -15,16 +15,11 @@ KNOWN_NVIDIA_ERRORS = [
 ]
 
 def is_nvidia():
-    return False
     try:
         everything, _ = subprocess.Popen(["nvidia-smi", "--query-gpu=driver_version", "--format=noheader,csv"],
                                          stdout=PIPE, stderr=PIPE).communicate()
-        everything = everything.strip()
 
-        if everything in KNOWN_NVIDIA_ERRORS:
-            return False
-        
-        return True
+        return (False if everything.strip() in KNOWN_NVIDIA_ERRORS else True)
     except OSError:
         return False
     
