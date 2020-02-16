@@ -16,7 +16,8 @@ def run_dev_environment(command, ros="melodic", gazebo="9"):
     user = os.getlogin()
     uid = os.getuid()
     docker_args = []
-    image_name = 'create_ros_{}_gazebo{}'.format(ros, gazebo)
+    dockerfile  = "create_ros_{}_gazebo{}".format(ros, gazebo)
+    temp_volume = "/home/{}/.{}".format(user, IMAGE_NAME)
 
     docker_args.append("-it")
     docker_args.append("--rm")
@@ -27,9 +28,12 @@ def run_dev_environment(command, ros="melodic", gazebo="9"):
     docker_args.append("--privileged")
     docker_args.append("--network=\"host\"")
     docker_args.append("--user {}:{}".format(uid, uid))
-    # TODO (@eborghi10): IMPROVE THIS PATHS
-    docker_args.append("--volume /home/{}/.gazebo_dev_environment/user/:/home/{}/".format(user, user))
+    # Keep user settings
+    docker_args.append("--volume {}/user/:/home/{}/".format(temp_volume, user))
+    # Mount workspace
     docker_args.append("--volume {}:/create_ws/src".format(os.path.dirname(ut.get_repo_root())))
+    docker_args.append("--volume {}/ws/build/:/create_ws/build/".format(temp_volume))
+    docker_args.append("--volume {}/ws/devel/:/create_ws/devel/".format(temp_volume))
     docker_args.append("--volume /dev/bus/usb:/dev/bus/usb")
     docker_args.append("-e ROS_HOSTNAME=localhost")
     docker_args.append("-e ROS_MASTER_URI=http://localhost:11311")
@@ -37,14 +41,15 @@ def run_dev_environment(command, ros="melodic", gazebo="9"):
 
     if ut.is_nvidia():
         docker_args.append("--runtime=\"nvidia\"")
-        image_name = 'create_{}_nvidia'.format(ros)
+        dockerfile = 'create_{}_nvidia'.format(ros)
 
     # Join arguments together separated by a space
     docker_args = ' '.join(docker_args)
-    docker_command = "docker run {} {} {}".format(docker_args, image_name, command)
+    docker_command = "docker run {} {} {}".format(docker_args, dockerfile, command)
     
-    # TODO (@eborghi10): WHAT'S THIS FOR? (CHECK PREVIOUS TODO)
-    ut.run_command("mkdir -p /home/{}/.gazebo_dev_environment/user/".format(user))
+    ut.run_command("sudo chown {0}:{0} {1}/user/".format(user, temp_volume))
+    ut.run_command("sudo chown {0}:{0} {1}/ws/build/".format(user, temp_volume))
+    ut.run_command("sudo chown {0}:{0} {1}/ws/devel/".format(user, temp_volume))
 
     ut.run_command("xhost +local:root")
     ut.run_command(docker_command)

@@ -13,17 +13,13 @@ def main():
     # Parse arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('-g', '--gazebo', dest="gazebo_version", default="9")
-    parser.add_argument('-n', '--nvidia', dest="nvidia", action="store_true")
     parser.add_argument('-r', '--ros', dest="ros_version", default="melodic")
     args = parser.parse_args()
-    # Get arguments
-    nvidia = args.nvidia
 
     # Select image to compile
-    image_name = 'create_{}_nvidia'.format(
-        args.ros_version) if ut.is_nvidia() or nvidia \
-            else 'create_ros_{}_gazebo{}'.format(
-                args.ros_version, args.gazebo_version)
+    image_name = 'create_{}_nvidia'.format(args.ros_version) \
+            if ut.is_nvidia() \
+            else 'create_ros_{}_gazebo{}'.format(args.ros_version, args.gazebo_version)
     
     # Build selected image
     command = 'cd {} && make {}'.format(os.path.join(ut.get_repo_root(), 'docker'), image_name)
