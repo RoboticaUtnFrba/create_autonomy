@@ -1,7 +1,7 @@
 FROM create_ros_melodic
 LABEL maintainer="Emiliano Borghi"
 
-ENV ROS1_DISTRO="melodic"
+ENV USER="create"
 
 USER root
 
@@ -23,4 +23,4 @@ COPY packages.txt packages.txt
 RUN apt-get update && \
     xargs -a packages.txt apt-get install -y
 
-USER create
+USER $USER

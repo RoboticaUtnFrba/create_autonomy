@@ -15,7 +15,7 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key C1CF6E31E6B
 # Install ROS packages
 RUN apt-get update && \
     apt-get install -y \
-    ros-$ROS1_DISTRO-desktop && \
+    ros-${ROS1_DISTRO}-desktop && \
     apt-get clean && \
     apt-get autoremove && \
     apt-get autoclean && \
@@ -28,7 +28,7 @@ RUN rosdep init
 RUN pip install --upgrade pip
 
 USER $USER
-RUN echo ". /opt/ros/$ROS1_DISTRO/setup.bash" >> /home/${USER}/.bashrc
+RUN echo ". /opt/ros/${ROS1_DISTRO}/setup.bash" >> /home/${USER}/.bashrc
 USER root
 
 # Workspace
