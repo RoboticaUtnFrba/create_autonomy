@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+<xacro:macro name="create_apriltag" params="parent *origin">
+ <joint name="apriltag_joint" type="fixed">
+    <xacro:insert_block name='origin' />
+    <parent link="${parent}" />
+    <child link="apriltag_link" />
+  </joint>
+
+  <link name="apriltag_link">
+    <visual>
+        <geometry>
+  	       <box size="0.5 0.5 0.01"/>
+        </geometry>            
+      </visual>
+  </link> 
+
+  <gazebo reference="apriltag_link">
+    <visual>
+      <material>
+        <script>
+          <uri>model://camera_world/apriltag3/materials/scripts/textures.material</uri>
+          <uri>model://camera_world/apriltag3/materials/textures/apriltag3.png</uri>
+          <name>apriltag3</name>
+        </script>-
+        <ambient>1 1 1 1</ambient>
+        <diffuse>1 1 1 1</diffuse>
+        <specular>1 1 1 1</specular>
+        <emissive>1 1 1 1</emissive>
+      </material>
+    </visual>
+  </gazebo>
+
+</xacro:macro>  
+
+</robot>

@@ -1,0 +1,19 @@
+<launch>
+  <param name="create1/amcl/initial_pose_x" value="0"/>
+  <param name="create1/amcl/initial_pose_y" value="4"/>
+  <param name="create1/amcl/initial_pose_a" value="0"/>
+  
+  <include file="$(find ca_gazebo)/launch/create_empty_world.launch">
+    <arg name="env" value="camera_world"/>
+  </include>
+
+    <node pkg="tf" type="static_transform_publisher" name="camera_link_tf" args="0 4 15 0 3.1416 0 map camera_link 50" />
+
+  <include file="$(find apriltag_ros)/launch/continuous_detection.launch">
+    <arg name="camera_name" value="camera_world/camera1"/>
+    <arg name="camera_frame" value="camera_link"/>
+    <arg name="image_topic" value="apriltag_tracking_camera"/>
+  </include>
+  
+</launch>
+

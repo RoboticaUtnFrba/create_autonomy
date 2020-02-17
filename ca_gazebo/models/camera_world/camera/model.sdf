@@ -1,0 +1,58 @@
+<?xml version='1.0'?>
+<sdf version='1.6'>
+  <model name='camera'>
+  <static>1</static>
+  <link name='camera_link'>
+    <visual name='visual'>
+      <geometry>
+        <box>
+          <size>0.1 0.1 0.1</size>
+        </box>
+      </geometry>
+    </visual>
+    <sensor type="camera" name="camera1">
+      <update_rate>30.0</update_rate>
+      <camera name="head">
+        <horizontal_fov>1.3962634</horizontal_fov>
+        <image>
+          <width>800</width>
+          <height>800</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.02</near>
+          <far>300</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+      </camera>
+      <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+        <alwaysOn>true</alwaysOn>
+        <updateRate>60.0</updateRate>
+        <cameraName>camera_world/camera1</cameraName>
+        <imageTopicName>apriltag_tracking_camera</imageTopicName>
+        <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+        <frameName>camera_link</frameName>
+        <hackBaseline>0.07</hackBaseline>
+        <distortionK1>0.0</distortionK1>
+        <distortionK2>0.0</distortionK2>
+        <distortionK3>0.0</distortionK3>
+        <distortionT1>0.0</distortionT1>
+        <distortionT2>0.0</distortionT2>
+      </plugin>
+    </sensor>
+  </link>
+  
+  <joint name="camera_optical_joint" type="fixed">
+     <parent>camera_link</parent>
+     <child>camera_optical_frame</child>
+     <pose frame=''>0 0 0 0 1.57 0</pose>
+   </joint>
+
+  <link name="camera_optical_frame"/>
+
+  </model>
+</sdf>

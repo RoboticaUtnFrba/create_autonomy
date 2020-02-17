@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<sdf version='1.6'>
+  <world name='default'>
+  
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <include>
+      <uri>model://camera_world/walls</uri>  
+    </include>
+
+    <include>
+      <uri>model://camera_world/apriltag1</uri>
+      <pose>3 7 0 0 0 0</pose>
+    </include>
+ 
+     <include>
+      <uri>model://camera_world/apriltag2</uri>
+      <pose>-3 7 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <include>
+      <uri>model://camera_world/camera</uri>
+      <pose>0 4 12 0 1.57 0</pose>
+    </include>
+
+  </world>
+</sdf> 
