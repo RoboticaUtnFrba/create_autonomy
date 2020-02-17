@@ -14,8 +14,7 @@ IMAGE_NAME = "robotica_utn_frba"
 WS_NAME    = "create_ws"
 
 def run_dev_environment(command, ros="melodic", gazebo="9"):
-    user = os.getlogin()
-    uid = os.getuid()
+    user = ut.get_user()
     docker_args = []
     dockerfile  = "create_ros_{}_gazebo{}".format(ros, gazebo)
     temp_volume = "/home/{}/.{}".format(user, IMAGE_NAME)
@@ -28,7 +27,7 @@ def run_dev_environment(command, ros="melodic", gazebo="9"):
     docker_args.append("--name=\"{}\"".format(IMAGE_NAME))
     docker_args.append("--privileged")
     docker_args.append("--network=\"host\"")
-    docker_args.append("--user {}:{}".format(uid, uid))
+    docker_args.append("--user {0}:{0}".format(ut.get_uid()))
     # Keep user settings
     docker_args.append("--volume {}/user/:/home/{}/".format(temp_volume, user))
     # Mount workspace
@@ -48,17 +47,16 @@ def run_dev_environment(command, ros="melodic", gazebo="9"):
     docker_args = ' '.join(docker_args)
     docker_command = "docker run {} {} {}".format(docker_args, dockerfile, command)
 
-    ut.run_command("sudo chown {0}:{0} {1}/user/".format(user, temp_volume))
-    ut.run_command("sudo chown {0}:{0} {1}/ws/build/".format(user, temp_volume))
-    ut.run_command("sudo chown {0}:{0} {1}/ws/devel/".format(user, temp_volume))
+    ut.create_directory("{}/user/".format(temp_volume))
+    ut.create_directory("{}/ws/build/".format(temp_volume))
+    ut.create_directory("{}/ws/devel/".format(temp_volume))
 
     ut.run_command("xhost +local:root")
     ut.run_command(docker_command)
     ut.run_command("xhost -local:root")
 
 def attach_dev_environment(command, ros="melodic", gazebo="9"):
-    uid = os.getuid()
-    command = 'docker exec -it --user {}:{} {} {}'.format(uid, uid, IMAGE_NAME, command)
+    command = 'docker exec -it --user {0}:{0} {1} {2}'.format(ut.get_uid(), IMAGE_NAME, command)
     ut.run_command(command)
 
 def is_running():

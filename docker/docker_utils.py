@@ -5,6 +5,7 @@ Author:     Diego Maldonado (@dmnunez1993)
 Maintainer: Emiliano Borghi (@eborghi10)
 """
 
+import os
 import subprocess
 from subprocess import PIPE
 
@@ -22,7 +23,7 @@ def is_nvidia():
         return (False if everything.strip() in KNOWN_NVIDIA_ERRORS else True)
     except OSError:
         return False
-    
+
     return False
 
 def run_command(command):
@@ -30,3 +31,13 @@ def run_command(command):
 
 def get_repo_root():
     return subprocess.check_output('git rev-parse --show-toplevel'.split()).strip()
+
+def get_uid():
+    return os.getuid()
+
+def get_user():
+    return os.getlogin()
+
+def create_directory(directory):
+    run_command("mkdir -p {}".format(directory))
+    run_command("sudo chown {0}:{0} {1}".format(get_user(), directory))
