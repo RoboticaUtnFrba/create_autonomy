@@ -34,6 +34,7 @@ def run_dev_environment(command, ros="melodic", gazebo="9"):
     docker_args.append("--volume {}:/{}/src".format(os.path.dirname(ut.get_repo_root()), WS_NAME))
     docker_args.append("--volume {}/ws/build/:/{}/build/".format(temp_volume, WS_NAME))
     docker_args.append("--volume {}/ws/devel/:/{}/devel/".format(temp_volume, WS_NAME))
+
     docker_args.append("--volume /dev/bus/usb:/dev/bus/usb")
     docker_args.append("-e ROS_HOSTNAME=localhost")
     docker_args.append("-e ROS_MASTER_URI=http://localhost:11311")
