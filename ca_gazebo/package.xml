@@ -10,7 +10,6 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  
   <build_depend>ca_msgs</build_depend>
   <build_depend>gazebo_plugins</build_depend>
   <build_depend>gazebo_ros</build_depend>
@@ -30,7 +29,8 @@
 
   <export>
     <gazebo_ros gazebo_media_path="${prefix}
-                                  :${prefix}/media"/>
+                                  :${prefix}/media
+                                  :${prefix}/models/create_hector_nist_arenas"/>
     <gazebo_ros gazebo_model_path="${prefix}/models
                                   :${prefix}/models/create_autorace
                                   :${prefix}/models/create_house
