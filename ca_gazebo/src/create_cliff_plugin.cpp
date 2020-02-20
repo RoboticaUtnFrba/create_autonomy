@@ -69,7 +69,7 @@ void GazeboRosCliff::Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf)
 
   if (!this->sdf->HasElement("frameName"))
   {
-    ROS_INFO_NAMED("laser", "Laser plugin missing <frameName>, defaults to /world");
+    ROS_INFO_NAMED("laser", "Cliff plugin missing <frameName>, defaults to /world");
     this->frame_name_ = "/world";
   }
   else
@@ -77,14 +77,21 @@ void GazeboRosCliff::Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf)
 
   if (!this->sdf->HasElement("topicName"))
   {
-    ROS_INFO_NAMED("laser", "Laser plugin missing <topicName>, defaults to /world");
-    this->topic_name_ = "/world";
+    ROS_INFO_NAMED("laser", "Cliff plugin missing <topicName>, defaults to /cliff");
+    this->topic_name_ = "/cliff";
   }
   else
     this->topic_name_ = this->sdf->Get<std::string>("topicName");
 
   this->laser_connect_count_ = 0;
-  this->min_cliff_value = _sdf->Get<double>("cliffValue");
+
+  if (!this->sdf->HasElement("cliffValue"))
+  {
+    ROS_INFO_NAMED("laser", "Cliff plugin missing <cliffValue>, defaults to 5 cm");
+    this->min_cliff_value = 0.05;
+  }
+  else
+    this->min_cliff_value = _sdf->Get<double>("cliffValue");
 
   // Make sure the ROS node for Gazebo has already been initialized
   if (!ros::isInitialized())
@@ -95,7 +102,7 @@ void GazeboRosCliff::Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf)
     return;
   }
 
-  ROS_INFO_NAMED("laser", "Starting Laser Plugin (ns = %s)", this->robot_namespace_.c_str());
+  ROS_INFO_NAMED("laser", "Starting Cliff Plugin (ns = %s)", this->robot_namespace_.c_str());
   // ros callback queue for processing subscription
   this->deferred_load_thread_ = boost::thread(
       boost::bind(&GazeboRosCliff::LoadThread, this));

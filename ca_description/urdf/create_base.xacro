@@ -55,10 +55,27 @@
     </link>
 
     <xacro:wall_sensor visualize="${visualize}"/>
-    <xacro:cliff_sensors visualize="${visualize}"/>
+
+    <xacro:cliff_sensor name="side_left">
+      <origin xyz="0.07 0.14 0.01" rpy="0 ${pi/2 - 0.09} 0" />
+    </xacro:cliff_sensor>
+
+    <xacro:cliff_sensor name="side_right">
+      <origin xyz="0.07 -0.14 0.01" rpy="0 ${pi/2 - 0.09} 0" />
+    </xacro:cliff_sensor>
+
+    <xacro:cliff_sensor name="front_left">
+      <origin xyz="0.15 0.04 0.01" rpy="0 ${pi/2 - 0.09} 0" />
+    </xacro:cliff_sensor>
+
+    <xacro:cliff_sensor name="front_right">
+      <origin xyz="0.15 -0.04 0.01" rpy="0 ${pi/2 - 0.09} 0" />
+    </xacro:cliff_sensor>
+
     <xacro:imu_sensor name="imu">
       <origin xyz="0 -0.04 0.13" rpy="0 0 0"/>
     </xacro:imu_sensor>
+
     <xacro:omni_sensor name="omni_sensor" diameter="0.1">
       <origin xyz="0.145 0 ${base_link_offset_z}" rpy="0 0 0"/>
     </xacro:omni_sensor>

@@ -3,13 +3,19 @@
   <arg name="virtual_wall_y" default="-1.2"/>
   <arg name="virtual_wall_yaw" default="1.57"/>
 
-  <param name="create1/amcl/initial_pose_x" value="2"/>
-  <param name="create1/amcl/initial_pose_y" value="0"/>
-  <param name="create1/amcl/initial_pose_a" value="0"/>
+  <param name="create1/amcl/initial_pose_x" value="$(optenv X1 2)"/>
+  <param name="create1/amcl/initial_pose_y" value="$(optenv Y1 0)"/>
+  <param name="create1/amcl/initial_pose_a" value="$(optenv A1 0)"/>
+
+  <param name="create2/amcl/initial_pose_x" value="$(optenv X2 0)"/>
+  <param name="create2/amcl/initial_pose_y" value="$(optenv Y2 0)"/>
+  <param name="create2/amcl/initial_pose_z" value="$(optenv Z2 2.62)"/>
+  <param name="create2/amcl/initial_pose_a" value="$(optenv A2 0)"/>
 
   <include file="$(find ca_gazebo)/launch/create_empty_world.launch">
     <arg name="env" value="two_floors_house"/>
   </include>
+
   <include file="$(find ca_gazebo)/launch/include/spawn_virtual_wall.launch">
     <arg name="x" value="$(arg virtual_wall_x)"/>
     <arg name="y" value="$(arg virtual_wall_y)"/>

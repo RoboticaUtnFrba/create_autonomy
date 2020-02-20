@@ -17,7 +17,8 @@ cliff_msg = {'is_cliff_left': False, 'is_cliff_right': False, 'is_cliff_front_le
 # define state Forward
 class Forward(smach.State):
     def __init__(self):
-        smach.State.__init__(self, outcomes=['left_pressed', 'right_pressed', 'both_pressed' , 'virtual_wall_detected',
+        smach.State.__init__(self, outcomes=['left_pressed', 'right_pressed', 'both_pressed',
+                                             'virtual_wall_detected',
                                              'cliff_right', 'cliff_left'])
 
     def execute(self, userdata):
