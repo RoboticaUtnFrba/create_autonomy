@@ -1,55 +1,60 @@
-    #ifndef GAZEBO_VIRTUAL_WALL_DETECTOR_HH
-    #define GAZEBO_VIRTUAL_WALL_DETECTOR_HH
-    
-    #include <ros/ros.h>
-    
-    #include <gazebo/gazebo.hh>
-    #include <gazebo/physics/physics.hh>
-    #include <gazebo/common/common.hh>
-    #include <gazebo/common/Plugin.hh>
+/*
+ * Copyright 2020 Emiliano Borghi"
+ */
 
-    #include <mutex>
+#ifndef CA_GAZEBO_VIRTUAL_WALL_DETECTOR_H
+#define CA_GAZEBO_VIRTUAL_WALL_DETECTOR_H
 
-    #include "std_msgs/Bool.h"
+#include <ros/ros.h>
 
-    namespace gazebo
-    {
-        /// \brief A Virtual Wall publisher
-        class GazeboVirtualWallDetector : public ModelPlugin
-    {
-        public:
+#include <gazebo/gazebo.hh>
+#include <gazebo/physics/physics.hh>
+#include <gazebo/common/common.hh>
+#include <gazebo/common/Plugin.hh>
 
-        /// \brief Load the plugin
-        /// \param take in SDF root element
-        void Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf); 
+#include <mutex>
+#include <string>
 
-        /// \brief Callback to the virtual wall sensors
-        /// \param take pointer to the message
-        void WallCallback(const std_msgs::Bool::ConstPtr& data); 
+#include "std_msgs/Bool.h"
 
-        /// \brief Update the controller
-        void OnUpdate();
+namespace gazebo
+{
+/// \brief A Virtual Wall publisher
+class GazeboVirtualWallDetector : public ModelPlugin
+{
+public:
+  /// \brief Load the plugin
+  /// \param take in SDF root element
+  void Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf);
 
-        private:
+  /// \brief Callback to the virtual wall sensors
+  /// \param take pointer to the message
+  void WallCallback(const std_msgs::Bool::ConstPtr& data);
 
-        /// Pointer to the model
-        physics::ModelPtr model;
+  /// \brief Update the controller
+  void OnUpdate();
 
-        /// Pointer to the update event connection
-        private: event::ConnectionPtr updateConnection;
+private:
+  /// Pointer to the model
+  physics::ModelPtr model;
 
-        /// Initialize ROS variables
-        ros::NodeHandle nh_;
-        ros::Publisher publisher_;
-        ros::Subscriber subscriber_;
-        ros::Time prev_update_time_;
-        event::ConnectionPtr updateConnection_;
-        
-        /// Auxiliar variables
-        bool is_vwall_detected_;
-        bool get_vwall_;
-        double update_period_;
-        std::mutex vwall_mutex;
-      }; // GazeboVirtualWallDetector
-    } // gazebo
-    #endif // GAZEBO_VIRTUAL_WALL_DETECTOR_HH
+  /// Pointer to the update event connection
+private:
+  event::ConnectionPtr updateConnection;
+
+  /// Initialize ROS variables
+  ros::NodeHandle nh_;
+  ros::Publisher publisher_;
+  ros::Subscriber subscriber_;
+  ros::Time prev_update_time_;
+  event::ConnectionPtr updateConnection_;
+
+  /// Auxiliar variables
+  bool is_vwall_detected_;
+  bool get_vwall_;
+  double update_period_;
+  std::mutex vwall_mutex;
+};  // GazeboVirtualWallDetector
+}  // namespace gazebo
+
+#endif  // CA_GAZEBO_VIRTUAL_WALL_DETECTOR_H

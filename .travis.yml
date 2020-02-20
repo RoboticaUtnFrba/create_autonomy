@@ -51,4 +51,15 @@ script:
   # Lint package files
   - sudo apt-get install python-catkin-lint
   - catkin lint -W2 --strict --explain src/create_autonomy --ignore plugin_missing_install --ignore missing_depend --ignore target_name_collision
+  # Tips
+  #
+  # C++:
+  # ----
+  # sudo apt-get install astyle
+  # find -regextype egrep -regex '.*\.[ch](pp)?$' -exec astyle '{}' --style=allman --indent=spaces=2 --pad-oper --unpad-paren --pad-header --convert-tabs \;
+  #
+  # Python:
+  # -------
+  # sudo pip install pep8ify
+  # pep8ify -nw .
   - catkin_make roslint
