@@ -175,6 +175,8 @@ install(DIRECTORY include/${PROJECT_NAME}/
 install(TARGETS
 		create_bumper_plugin
 		model_pose_publisher_plugin
+		traffic_light_plugin
+		world_time_publisher
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
