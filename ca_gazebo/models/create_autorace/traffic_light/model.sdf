@@ -10,13 +10,13 @@
             <sphere>
               <radius>0.015</radius>
             </sphere>
-          </geometry>   
+          </geometry>
         </collision>
         <visual name='visual'>
           <plugin name="traffic_light_plugin" filename="libtraffic_light_plugin.so">
-            <redTime>3</redTime>
-            <yellowTime>0.5</yellowTime>
-            <greenTime>1</greenTime>
+            <redTime>15</redTime>
+            <yellowTime>2</yellowTime>
+            <greenTime>6</greenTime>
           </plugin>
           <pose frame=''>1.3 -1.95 0.13 0 0 0</pose>
           <geometry>
@@ -37,7 +37,7 @@
           <box>
             <size>0.04 0.008 0.04</size>
           </box>
-        </geometry> 
+        </geometry>
         <material>
           <script>
             <name>Gazebo/Black</name>
@@ -48,7 +48,7 @@
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
     </link>
-  
+
     <link name='traffic_light_wall1_2'>
       <visual name='visual'>
         <pose frame=''>1.3 -1.95 0.15 1.57 0 0</pose>
@@ -56,7 +56,7 @@
           <box>
             <size>0.04 0.008 0.04</size>
           </box>
-        </geometry> 
+        </geometry>
         <material>
           <script>
             <name>Gazebo/Black</name>
@@ -75,7 +75,7 @@
           <box>
             <size>0.04 0.008 0.04</size>
           </box>
-        </geometry> 
+        </geometry>
         <material>
           <script>
             <name>Gazebo/Black</name>
@@ -94,7 +94,7 @@
           <box>
             <size>0.04 0.008 0.04</size>
           </box>
-        </geometry> 
+        </geometry>
         <material>
           <script>
             <name>Gazebo/Black</name>
@@ -113,7 +113,7 @@
           <box>
             <size>0.04 0.008 0.04</size>
           </box>
-        </geometry> 
+        </geometry>
         <material>
           <script>
             <name>Gazebo/Black</name>
@@ -133,7 +133,7 @@
             <radius>0.01</radius>
             <length>0.25</length>
           </cylinder>
-        </geometry> 
+        </geometry>
         <material>
           <script>
             <name>Gazebo/Black</name>
@@ -143,7 +143,7 @@
       </visual>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
-    </link>  
+    </link>
 
     <!--Light for the traffic light to have context-independent illumination-->
     <link name='traffic_light_illumination_link'>

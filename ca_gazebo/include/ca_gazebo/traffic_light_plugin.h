@@ -18,9 +18,9 @@
 namespace gazebo
 {
     class GazeboTrafficLightPrivate;
- 
+
     class TrafficLightState {
-        
+
         public:
 
         enum class States{RED, YELLOW, GREEN};
@@ -32,7 +32,7 @@ namespace gazebo
         void next_state();
 
         States get_current_state();
-        
+
         private:
 
         States st = States::RED; // initial state is red
@@ -43,7 +43,7 @@ namespace gazebo
     {
 
         /// Class for implementing a light traffic plugin for Gazebo.
-        
+
         public:
 
         /// \brief Constructor.
@@ -59,9 +59,9 @@ namespace gazebo
         void time_update_cb(ConstTimePtr &);
 
         void init_map();
-  
+
         private:
-        
+
         /// \brief Update the plugin once every iteration of simulation.
         void update();
 
@@ -69,7 +69,6 @@ namespace gazebo
         std::unique_ptr<GazeboTrafficLightPrivate> data_ptr;
 
         transport::SubscriberPtr command_subscriber;
-        std::string next_color_;
         common::Time current_time_;
         common::Time last_time_;
         common::Time red_time_;
