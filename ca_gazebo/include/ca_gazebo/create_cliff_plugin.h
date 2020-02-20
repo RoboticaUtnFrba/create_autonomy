@@ -1,12 +1,16 @@
-#ifndef GAZEBO_ROS_CLIFF_SENSOR_HH
-#define GAZEBO_ROS_CLIFF_SENSOR_HH
+/*
+ * Copyright 2020 Steven Desvars
+ */
+#ifndef CA_GAZEBO_CREATE_CLIFF_PLUGIN_H
+#define CA_GAZEBO_CREATE_CLIFF_PLUGIN_H
 
 #include <ros/ros.h>
 #include <ros/advertise_options.h>
 #include <tf/tf.h>
 #include <tf/transform_listener.h>
 
-#include <vector> 
+#include <string>
+#include <vector>
 
 #include <gazebo/transport/transport.hh>
 #include <gazebo/plugins/RayPlugin.hh>
@@ -17,58 +21,60 @@
 
 namespace gazebo
 {
-  class GazeboRosCliff : public RayPlugin
-  {
-    /// \brief Constructor
-    public: GazeboRosCliff();
+class GazeboRosCliff : public RayPlugin
+{
+public:
+  /// \brief Constructor
+  GazeboRosCliff();
 
-    /// \brief Destructor
-    public: ~GazeboRosCliff();
+  /// \brief Destructor
+  ~GazeboRosCliff();
 
-    /// \brief Load the plugin
-    /// \param take in SDF root element
-    public: void Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf);
+  /// \brief Load the plugin
+  /// \param take in SDF root element
+  void Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf);
 
-    /// \brief Keep track of number of connctions
-    private: int laser_connect_count_;
-    private: void LaserConnect();
-    private: void LaserDisconnect();
+private:
+  /// \brief Keep track of number of connctions
+  int laser_connect_count_;
+  void LaserConnect();
+  void LaserDisconnect();
 
-    // Pointer to the model
-    private: std::string world_name_;
-    private: physics::WorldPtr world_;
-    /// \brief The parent sensor
-    private: sensors::RaySensorPtr parent_ray_sensor_;
+  // Pointer to the model
+  std::string world_name_;
+  physics::WorldPtr world_;
+  /// \brief The parent sensor
+  sensors::RaySensorPtr parent_ray_sensor_;
 
-    /// \brief pointer to ros node
-    private: std::shared_ptr<ros::NodeHandle> rosnode_;
-    private: ros::Publisher pub_;
-    private: PubQueue<std_msgs::Bool>::Ptr pub_queue_;
+  /// \brief pointer to ros node
+  std::shared_ptr<ros::NodeHandle> rosnode_;
+  ros::Publisher pub_;
+  PubQueue<std_msgs::Bool>::Ptr pub_queue_;
 
-    /// \brief topic name
-    private: std::string topic_name_;
+  /// \brief topic name
+  std::string topic_name_;
 
-    /// \brief frame transform name, should match link name
-    private: std::string frame_name_;
+  /// \brief frame transform name, should match link name
+  std::string frame_name_;
 
-    /// \brief for setting ROS name space
-    private: std::string robot_namespace_;
+  /// \brief for setting ROS name space
+  std::string robot_namespace_;
 
-    // deferred load in case ros is blocking
-    private: sdf::ElementPtr sdf;
-    private: void LoadThread();
-    private: boost::thread deferred_load_thread_;
-    private: unsigned int seed;
+  // deferred load in case ros is blocking
+  sdf::ElementPtr sdf;
+  void LoadThread();
+  boost::thread deferred_load_thread_;
+  unsigned int seed;
 
-    private: gazebo::transport::NodePtr gazebo_node_;
-    private: gazebo::transport::SubscriberPtr laser_scan_sub_;
-    private: void OnScan(ConstLaserScanStampedPtr &_msg);
+  gazebo::transport::NodePtr gazebo_node_;
+  gazebo::transport::SubscriberPtr laser_scan_sub_;
+  void OnScan(const ConstLaserScanStampedPtr &_msg);
 
-    /// Auxiliar variables to get the info from the Ray Sensor
-    private: float min_cliff_value;
+  /// Auxiliar variables to get the info from the Ray Sensor
+  float min_cliff_value;
 
-    /// \brief prevents blocking
-    private: PubMultiQueue pmq;
-  };
-}
-#endif
+  /// \brief prevents blocking
+  PubMultiQueue pmq;
+};
+}  // namespace gazebo
+#endif  // CA_GAZEBO_CREATE_CLIFF_PLUGIN_H

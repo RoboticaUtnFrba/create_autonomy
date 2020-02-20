@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Emiliano Borghi"
+ * Copyright 2020 Emiliano Borghi
  */
 
 #ifndef CA_GAZEBO_VIRTUAL_WALL_DETECTOR_H

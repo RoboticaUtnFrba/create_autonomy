@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Lucas Scheinkerman"
+ * Copyright 2020 Lucas Scheinkerman
  */
 
 #ifndef CA_GAZEBO_TRAFFIC_LIGHT_PLUGIN_H

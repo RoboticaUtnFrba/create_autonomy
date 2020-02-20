@@ -1,5 +1,9 @@
-#ifndef GAZEBO_CLIFF_MSG_PUBLISHER_HH
-#define GAZEBO_CLIFF_MSG_PUBLISHER_HH
+/*
+ * Copyright 2020 Steven Desvars
+ */
+
+#ifndef CA_GAZEBO_CLIFF_MSG_PUBLISHER_H
+#define CA_GAZEBO_CLIFF_MSG_PUBLISHER_H
 
 #include <ros/ros.h>
 
@@ -21,7 +25,6 @@ namespace gazebo
 class GazeboCliffMsgPublisher : public ModelPlugin
 {
 public:
-
   /// \brief Load the plugin
   /// \param take in SDF root element
   void Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf);
@@ -56,6 +59,6 @@ private:
   bool get_side_left_, get_side_right_, get_front_left_, get_front_right_;
   double update_period_;
   std::mutex side_left_mutex, side_right_mutex, front_left_mutex, front_right_mutex;
-}; // GazeboCliffMsgPublisher
-} // namespace gazebo
-#endif // GAZEBO_CLIFF_MSG_PUBLISHER_HH
+};  // GazeboCliffMsgPublisher
+}  // namespace gazebo
+#endif  // CA_GAZEBO_CLIFF_MSG_PUBLISHER_H

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Lucas Scheinkerman"
+ * Copyright 2020 Lucas Scheinkerman
  */
 
 #ifndef CA_GAZEBO_WORLD_TIME_PUBLISHER_H

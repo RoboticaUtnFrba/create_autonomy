@@ -1,4 +1,31 @@
+/*
+ * Copyright 2020
+ *     Steven Desvars
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ */
+/*
+ * Desc: Cliff publisher plugin
+ * Author: Steven Desvars
+ * Date: 19 February 2020
+ */
+
 #include <ca_gazebo/create_cliff_plugin.h>
+
+#include <string>
 
 namespace gazebo
 {
@@ -62,8 +89,9 @@ void GazeboRosCliff::Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf)
   // Make sure the ROS node for Gazebo has already been initialized
   if (!ros::isInitialized())
   {
-    ROS_FATAL_STREAM_NAMED("laser", "A ROS node for Gazebo has not been initialized, unable to load plugin. "
-                                        << "Load the Gazebo system plugin 'libgazebo_ros_api_plugin.so' in the gazebo_ros package)");
+    ROS_FATAL_STREAM_NAMED("laser",
+        "A ROS node for Gazebo has not been initialized, unable to load plugin. "
+      << "Load the Gazebo system plugin 'libgazebo_ros_api_plugin.so' in the gazebo_ros package)");
     return;
   }
 
@@ -136,4 +164,4 @@ void GazeboRosCliff::OnScan(ConstLaserScanStampedPtr &_msg)
   msg_output.data = _msg->scan().ranges(0) > this->min_cliff_value;
   this->pub_queue_->push(msg_output, this->pub_);
 }
-} // namespace gazebo
+}  // namespace gazebo
