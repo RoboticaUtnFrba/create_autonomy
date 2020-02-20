@@ -186,8 +186,6 @@ void VirtualWallSensorPlugin::OnUpdate()
     // If the robot detects the ray but it's interfering with another object
     const bool in_range = detected_range > (error.Length() - this->rcon_distance_) &&
                           error.Length() < this->sensor_->RangeMax();
-    ROS_WARN_STREAM_THROTTLE_NAMED(2 /* Hz */, "virtual_wall_plugin",
-                                   "\nIn front of laser: " << in_front_of_laser << "\nIn range: " << in_range);
     msg.data = d < 0.3 && in_range && in_front_of_laser;
     ROS_DEBUG_NAMED("virtual_wall_plugin", "result=%d",
                     msg.data);
