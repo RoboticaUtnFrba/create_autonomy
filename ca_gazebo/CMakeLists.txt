@@ -142,6 +142,7 @@ install(TARGETS ${vicinity_plugin_name}
 ###################################
 
 add_library(cliff_msg_publisher src/cliff_msg_publisher.cpp)
+add_dependencies(cliff_msg_publisher ${catkin_EXPORTED_TARGETS})
 target_link_libraries(cliff_msg_publisher
 	${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
 
@@ -161,6 +162,7 @@ target_link_libraries(create_virtual_wall_plugin
 	${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
 
 add_library(model_pose_publisher_plugin src/model_pose_publisher_plugin.cpp)
+add_dependencies(model_pose_publisher_plugin ${catkin_EXPORTED_TARGETS})
 target_link_libraries(model_pose_publisher_plugin
 	${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
 
