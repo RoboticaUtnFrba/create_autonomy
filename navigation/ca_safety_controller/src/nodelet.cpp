@@ -86,7 +86,7 @@ private:
   {
     ros::Rate spin_rate(10);
     controller_->enable();  // enable the controller when loading the nodelet
-    while ( !shutdown_requested_ && ros::ok() )
+    while (!shutdown_requested_ && ros::ok())
     {
       controller_->spin();
       spin_rate.sleep();

@@ -31,13 +31,13 @@ public:
   virtual void onInit()
   {
     NODELET_DEBUG_STREAM("Create : initialising nodelet...");
-    create_.reset(new CreateDriver(this->getNodeHandle(),this->getPrivateNodeHandle()));
+    create_.reset(new CreateDriver(this->getNodeHandle(), this->getPrivateNodeHandle()));
     update_thread_.start(&CreateNodelet::update, *this);
   }
 private:
   void update()
   {
-	create_->spin();
+    create_->spin();
   }
 
   boost::shared_ptr<CreateDriver> create_;
