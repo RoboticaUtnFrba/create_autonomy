@@ -1,0 +1,14 @@
+<launch>
+	<arg name="env" default="april_tags"/>
+ 	<param name="create1/amcl/initial_pose_x" value="3"/>
+  	<param name="create1/amcl/initial_pose_y" value="3"/>
+  	<param name="create1/amcl/initial_pose_a" value="1"/>
+
+	<include file="$(find ca_gazebo)/launch/create_empty_world.launch">
+		<arg name="env" value="april_tags"/>
+	</include>
+
+	<node pkg="tf" type="static_transform_publisher" name="camera_link_broadcaster" args="0 0 16 3.14159 3.14159 0 map camera_link 20" />
+	<include file="$(find apriltag_ros)/launch/continuous_detection.launch"/>
+
+</launch>
