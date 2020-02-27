@@ -35,7 +35,10 @@ def run_dev_environment(command, ros="melodic", gazebo="9"):
     docker_args.append("--volume {}/ws/build/:/{}/build/".format(temp_volume, WS_NAME))
     docker_args.append("--volume {}/ws/devel/:/{}/devel/".format(temp_volume, WS_NAME))
 
-    docker_args.append("--volume /dev/bus/usb:/dev/bus/usb")
+    # USB devices and dialout group for the real robot
+    docker_args.append("--device=\"/dev/ttyUSB*:/dev/ttyUSB*:rwm\"")
+    docker_args.append("--group-add=dialout")
+
     docker_args.append("-e ROS_HOSTNAME=localhost")
     docker_args.append("-e ROS_MASTER_URI=http://localhost:11311")
     docker_args.append("--workdir /{}/".format(WS_NAME))
