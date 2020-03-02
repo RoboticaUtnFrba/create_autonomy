@@ -1,24 +1,23 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-<xacro:macro name="laser_sensor_gazebo" params="link_name visualize:=false">
+<xacro:macro name="rplidar_gazebo" params="link_name visualize:=false">
 
   <xacro:property name="rplidar_a2_rate_hz" value="10"/>
   <xacro:property name="rplidar_a2_min_range_m" value="0.15"/>
   <xacro:property name="rplidar_a2_max_range_m" value="12.0"/>
-  <xacro:property name="rplidar_a2_samples" value="360.0/0.9"/> <!-- samples = range / resolution -->
+  <xacro:property name="rplidar_a2_samples" value="720"/>
   <xacro:property name="rplidar_a2_resolution_mm" value="0.5"/>
   <xacro:property name="rplidar_a2_min_angle_rad" value="${-pi}"/>
   <xacro:property name="rplidar_a2_max_angle_rad" value="${pi}"/>
 
-  <xacro:property name="laser_link" value="${link_name}"/>
   <xacro:property name="topic_name" value="laser/scan"/>
 
   <gazebo reference="${link_name}">
     <material>Gazebo/Black</material>
     <sensor type="ray" name="rplidar_sensor">
       <pose>0 0 0 0 0 0</pose>
-      <visualize>${visualize}</visualize>
+      <visualize>$(arg visualize)</visualize>
       <update_rate>${rplidar_a2_rate_hz}</update_rate>
       <ray>
         <scan>
@@ -36,15 +35,11 @@
         </range>
         <noise>
           <type>gaussian</type>
-          <!-- Noise parameters based on published spec for Hokuyo laser
-               achieving "+-30mm" accuracy at range < 10m.  A mean of 0.0m and
-               stddev of 0.01m will put 99.7% of samples within 0.03m of the true
-               reading. -->
           <mean>0.0</mean>
           <stddev>0.01</stddev>
         </noise>
       </ray>
-      <plugin name="gazebo_ros_rplidar_controller" filename="libgazebo_ros_laser.so">
+      <plugin name="gazebo_ros_rplidar_sensor" filename="libgazebo_ros_laser.so">
         <topicName>${topic_name}</topicName>
         <frameName>${link_name}</frameName>
       </plugin>

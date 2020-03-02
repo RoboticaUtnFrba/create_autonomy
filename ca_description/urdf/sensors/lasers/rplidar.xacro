@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+<xacro:macro name="rplidar" params="parent visualize:=false *origin">
+  <xacro:include filename="$(find ca_description)/urdf/sensors/lasers/rplidar_gazebo.xacro"/>
+
+  <xacro:property name="parent_link" value="${parent}"/>
+  <xacro:property name="link_name" value="rplidar_link"/>
+
+  <joint name="rplidar_joint" type="fixed">
+    <xacro:insert_block name="origin"/>
+    <parent link="${parent_link}"/>
+    <child link="${link_name}"/>
+  </joint>
+
+  <link name="${link_name}">
+    <visual>
+      <geometry>
+        <mesh filename="package://ca_description/meshes/rplidar.dae"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <!-- Gazebo plugin -->
+  <xacro:rplidar_gazebo link_name="{link_name}" visualize="$(arg visualize)"/>
+
+</xacro:macro>
+
+</robot>
