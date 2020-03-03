@@ -54,35 +54,43 @@
       </collision>
     </link>
 
-    <xacro:wall_sensor visualize="${visualize}"/>
+    <xacro:wall_sensor visualize="${visualize}">
+      <origin xyz="0.09 -0.12 0.042" rpy="0 0 -1"/>
+    </xacro:wall_sensor>
 
-    <xacro:cliff_sensor name="side_left" parent="base_link">
+    <xacro:cliff_sensor name="side_left_cliff_sensor">
       <origin xyz="0.07 0.14 0.01" rpy="0 ${pi/2 - 0.09} 0" />
     </xacro:cliff_sensor>
 
-    <xacro:cliff_sensor name="side_right" parent="base_link">
+    <xacro:cliff_sensor name="side_right_cliff_sensor">
       <origin xyz="0.07 -0.14 0.01" rpy="0 ${pi/2 - 0.09} 0" />
     </xacro:cliff_sensor>
 
-    <xacro:cliff_sensor name="front_left" parent="base_link">
+    <xacro:cliff_sensor name="front_left_cliff_sensor">
       <origin xyz="0.15 0.04 0.01" rpy="0 ${pi/2 - 0.09} 0" />
     </xacro:cliff_sensor>
 
-    <xacro:cliff_sensor name="front_right" parent="base_link">
+    <xacro:cliff_sensor name="front_right_cliff_sensor">
       <origin xyz="0.15 -0.04 0.01" rpy="0 ${pi/2 - 0.09} 0" />
     </xacro:cliff_sensor>
 
     <xacro:imu_sensor name="imu">
-      <origin xyz="0 -0.04 0.13" rpy="0 0 0"/>
+      <origin xyz="0 -0.04 0.13"/>
     </xacro:imu_sensor>
 
-    <xacro:omni_sensor name="omni_sensor" diameter="0.1">
-      <origin xyz="0.145 0 ${base_link_offset_z}" rpy="0 0 0"/>
+    <xacro:omni_sensor diameter="0.1">
+      <origin xyz="0.145 0 ${base_link_offset_z}"/>
     </xacro:omni_sensor>
 
-    <xacro:create_wheel prefix="left" y_offset="${wheel_separation / 2}" wheel_radius="${wheel_radius}" wheel_width="${wheel_width}"/>
-    <xacro:create_wheel prefix="right" y_offset="${wheel_separation / -2}" wheel_radius="${wheel_radius}" wheel_width="${wheel_width}"/>
-    <xacro:caster_wheel/>
+    <xacro:wheel name="wheel_left" radius="${wheel_radius}" width="${wheel_width}">
+      <origin xyz="0 ${wheel_separation/2} 0.015" rpy="0 ${pi/2} ${pi/2}"/>
+    </xacro:wheel>
+    <xacro:wheel name="wheel_right" radius="${wheel_radius}" width="${wheel_width}">
+      <origin xyz="0 ${-wheel_separation/2} 0.015" rpy="0 ${pi/2} ${pi/2}"/>
+    </xacro:wheel>
+    <xacro:caster_wheel>
+      <origin xyz="0.13 0 0"/>
+    </xacro:caster_wheel>
 
     <!-- Simulation sensors -->
     <xacro:sim_create_base/>

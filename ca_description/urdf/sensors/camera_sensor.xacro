@@ -2,14 +2,12 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 <xacro:include filename="$(find ca_description)/urdf/sensors/camera_generic.xacro"/>
 
-<xacro:macro name="camera_sensor" params="parent">
+<xacro:macro name="camera_sensor" params="name:=camera parent:=base_link">
 
-  <xacro:property name="x" value="0.04"/>
-  <xacro:property name="y" value="0.0"/>
-  <xacro:property name="z" value="0.06"/>
+  <xacro:property name="parent_link" value="${parent}"/>
 
-  <xacro:generic_camera name="raspicam" parent="${parent}">
-    <origin xyz="${x} ${y} ${z}" rpy="0 0 0"/>
+  <xacro:generic_camera name="${name}" parent="${parent_link}">
+    <origin xyz="0.04 0 0.06"/>
   </xacro:generic_camera>
 
 </xacro:macro>

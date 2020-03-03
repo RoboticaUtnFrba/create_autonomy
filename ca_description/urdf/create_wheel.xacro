@@ -1,43 +1,38 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-<xacro:macro name="create_wheel" params="prefix y_offset wheel_radius wheel_width">
+<xacro:macro name="wheel" params="name:=wheel parent:=base_link radius width *origin">
 
   <xacro:include filename="$(find ca_description)/urdf/common_properties.xacro"/>
 
-  <xacro:property name="x" value="0"/>
-  <xacro:property name="y" value="${y_offset}"/>
-  <xacro:property name="z" value="0.015"/>
-  <xacro:property name="R" value="0"/>
-  <xacro:property name="P" value="${pi/2}"/>
-  <xacro:property name="Y" value="${pi/2}"/>
+  <xacro:property name="parent_link" value="${parent}"/>
+  <xacro:property name="link_name"   value="${name}_link"/>
 
-  <link name="${prefix}_wheel_link">
-    <xacro:inertial_cylinder_with_pose mass="0.1" radius="${wheel_radius}" length="${wheel_width}">
-      <origin xyz="0 0 0" rpy="${R} ${P} ${Y}" />
-    </xacro:inertial_cylinder_with_pose>
+  <xacro:property name="mass"        value="0.1"/>
+
+  <joint name="${name}_joint" type="continuous">
+    <xacro:insert_block name="origin"/>
+    <parent link="${parent_link}" />
+    <child link="${link_name}" />
+    <axis xyz="0 1 0" />
+  </joint>
+
+  <link name="${link_name}">
+    <xacro:inertial_cylinder mass="${mass}" radius="${radius}" length="${width}"/>
 
     <visual>
-      <origin xyz="0 0 0" rpy="${R} ${P} ${Y}" />
       <geometry>
-        <cylinder radius="${wheel_radius}" length="${wheel_width}" />
+        <cylinder radius="${radius}" length="${width}" />
       </geometry>
     </visual>
 
     <collision>
-      <origin xyz="0 0 0" rpy="${R} ${P} ${Y}" />
       <geometry>
-        <cylinder radius="${wheel_radius}" length="${wheel_width}" />
+        <cylinder radius="${radius}" length="${width}" />
       </geometry>
     </collision>
   </link>
 
- <joint name="${prefix}_wheel_joint" type="continuous">
-    <origin xyz="${x} ${y} ${z}" rpy="0 0 0" />
-    <parent link="base_link" />
-    <child link="${prefix}_wheel_link" />
-    <axis xyz="0 1 0" />
-  </joint>
 </xacro:macro>
 
 </robot>

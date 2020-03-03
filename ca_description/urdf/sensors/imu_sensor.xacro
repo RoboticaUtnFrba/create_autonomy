@@ -1,12 +1,11 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-<xacro:macro name="imu_sensor" params="name *origin">
+<xacro:macro name="imu_sensor" params="name:=imu_sensor parent:=base_link *origin">
 
   <xacro:include filename="$(find ca_description)/urdf/common_properties.xacro"/>
-  <xacro:include filename="$(find ca_description)/urdf/sensors/imu_sensor_gazebo.xacro"/>
 
-  <xacro:property name="parent_link" value="base_link"/>
+  <xacro:property name="parent_link" value="${parent}"/>
   <xacro:property name="link_name" value="${name}_link"/>
 
   <joint name="${name}_joint" type="fixed">
@@ -15,11 +14,20 @@
     <child link="${link_name}" />
   </joint>
 
-  <link name="${link_name}">
-    <xacro:dummy_inertia/>
-  </link>
+  <link name="${link_name}"/>
 
-  <xacro:imu_sensor_gazebo name="${name}" link_name="${link_name}"/>
+  <gazebo reference="${link_name}">
+    <plugin name="${name}" filename="libgazebo_ros_imu.so">
+      <alwaysOn>true</alwaysOn>
+      <updateRate>30</updateRate>
+      <bodyName>${link_name}</bodyName>
+      <topicName>${name}/data</topicName>
+      <serviceName>${name}/is_calibrated</serviceName>
+      <gaussianNoise>${0.0017*0.0017}</gaussianNoise>
+      <xyzOffsets>0 0 0</xyzOffsets>
+      <rpyOffsets>0 0 0</rpyOffsets>
+    </plugin>
+  </gazebo>
 
 </xacro:macro>
 

@@ -12,8 +12,8 @@
         <alwaysOn>true</alwaysOn>
         <rosDebugLevel>na</rosDebugLevel>
         <updateRate>${diffdrive_update_rate}</updateRate>
-        <leftJoint>left_wheel_joint</leftJoint>
-        <rightJoint>right_wheel_joint</rightJoint>
+        <leftJoint>wheel_left_joint</leftJoint>
+        <rightJoint>wheel_right_joint</rightJoint>
         <wheelSeparation>${wheel_separation}</wheelSeparation>
         <wheelDiameter>${wheel_radius * 2}</wheelDiameter>
         <wheelTorque>${wheel_torque}</wheelTorque>
@@ -71,7 +71,7 @@
 
     <!-- Wheels -->
 
-    <gazebo reference="left_wheel_link">
+    <gazebo reference="wheel_left_link">
       <mu1>1.0</mu1>
       <mu2>1.0</mu2>
       <kp>1000000.0</kp>
@@ -81,7 +81,7 @@
       <material>Gazebo/Grey</material>
     </gazebo>
 
-    <gazebo reference="right_wheel_link">
+    <gazebo reference="wheel_right_link">
       <mu1>1.0</mu1>
       <mu2>1.0</mu2>
       <kp>1000000.0</kp>

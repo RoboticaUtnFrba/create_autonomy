@@ -8,9 +8,9 @@
   <xacro:property name="base_diameter" value="0.3485"/>
   <xacro:property name="wheel_width" value="0.024"/>
   <xacro:property name="wheel_radius" value="0.036"/>
-  
-  <xacro:create_base wheel_separation="${wheel_separation}" 
-                     base_diameter="${base_diameter}" 
+
+  <xacro:create_base wheel_separation="${wheel_separation}"
+                     base_diameter="${base_diameter}"
                      wheel_width="${wheel_width}"
                      wheel_radius="${wheel_radius}"
                      visualize="$(arg visualize)">
@@ -18,5 +18,7 @@
   </xacro:create_base>
 
   <!-- Roomblock -->
-  <xacro:roomblock parent="base_link" visualize="$(arg visualize)"/>
+  <xacro:roomblock visualize="$(arg visualize)">
+    <origin xyz="0 0 0.07"/>
+  </xacro:roomblock>
 </robot>

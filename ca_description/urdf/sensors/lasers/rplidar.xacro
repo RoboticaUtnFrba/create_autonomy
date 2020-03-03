@@ -1,16 +1,25 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-<xacro:include filename="$(find ca_description)/urdf/sensors/lasers/rplidar_gazebo.xacro"/>
+<xacro:macro name="rplidar" params="name:=rplidar parent:=base_link visualize:=false *origin">
 
-<xacro:macro name="rplidar" params="parent visualize:=false *origin">
+  <xacro:property name="parent_link"              value="${parent}"/>
+  <xacro:property name="link_name"                value="${name}_link"/>
+  <xacro:property name="laser_link"               value="laser_link"/>
 
-  <xacro:property name="link_name"  value="rplidar_link"/>
-  <xacro:property name="laser_name" value="laser_link"/>
+  <xacro:property name="rplidar_a2_rate_hz"       value="10"/>
+  <xacro:property name="rplidar_a2_min_range_m"   value="0.15"/>
+  <xacro:property name="rplidar_a2_max_range_m"   value="12.0"/>
+  <xacro:property name="rplidar_a2_samples"       value="720"/>
+  <xacro:property name="rplidar_a2_resolution_mm" value="0.5"/>
+  <xacro:property name="rplidar_a2_min_angle_rad" value="${-pi}"/>
+  <xacro:property name="rplidar_a2_max_angle_rad" value="${pi}"/>
 
-  <joint name="rplidar_joint" type="fixed">
+  <xacro:property name="topic_name"               value="laser/scan"/>
+
+  <joint name="${name}_joint" type="fixed">
     <xacro:insert_block name="origin"/>
-    <parent link="${parent}"/>
+    <parent link="${parent_link}"/>
     <child link="${link_name}"/>
   </joint>
 
@@ -25,25 +34,17 @@
   <joint name="laser_joint" type="fixed">
     <origin xyz="0 0 0.0308"/>
     <parent link="${link_name}"/>
-    <child link="${laser_name}"/>
+    <child link="${laser_link}"/>
   </joint>
 
-  <link name="${laser_name}"/>
+  <link name="${laser_link}"/>
 
-  <!-- <xacro:property name="rplidar_a2_rate_hz" value="10"/>
-  <xacro:property name="rplidar_a2_min_range_m" value="0.15"/>
-  <xacro:property name="rplidar_a2_max_range_m" value="12.0"/>
-  <xacro:property name="rplidar_a2_samples" value="720"/>
-  <xacro:property name="rplidar_a2_resolution_mm" value="0.5"/>
-  <xacro:property name="rplidar_a2_min_angle_rad" value="${-pi}"/>
-  <xacro:property name="rplidar_a2_max_angle_rad" value="${pi}"/>
+  <gazebo reference="${laser_link}">
 
-  <xacro:property name="topic_name" value="laser/scan"/>
-
-  <gazebo reference="${laser_name}">
     <material>Gazebo/FlatBlack</material>
-    <sensor type="ray" name="rplidar_sensor">
-      <visualize>true</visualize>
+
+    <sensor type="ray" name="${name}_sensor">
+      <visualize>${visualize}</visualize>
       <update_rate>${rplidar_a2_rate_hz}</update_rate>
       <ray>
         <scan>
@@ -65,15 +66,12 @@
           <stddev>0.01</stddev>
         </noise>
       </ray>
-      <plugin name="gazebo_ros_rplidar_sensor" filename="libgazebo_ros_laser.so">
+      <plugin name="gazebo_ros_${name}" filename="libgazebo_ros_laser.so">
         <topicName>${topic_name}</topicName>
-        <frameName>${laser_name}</frameName>
+        <frameName>${laser_link}</frameName>
       </plugin>
     </sensor>
-  </gazebo> -->
-
-  <!-- Gazebo plugin -->
-  <xacro:rplidar_gazebo link_name="${laser_name}" visualize="${visualize}"/>
+  </gazebo>
 
 </xacro:macro>
 
