@@ -16,7 +16,7 @@
 
   <link name="${link_name}"/>
 
-  <gazebo reference="${link_name}">
+  <gazebo>
     <plugin name="${name}" filename="libgazebo_ros_imu.so">
       <alwaysOn>true</alwaysOn>
       <updateRate>30</updateRate>

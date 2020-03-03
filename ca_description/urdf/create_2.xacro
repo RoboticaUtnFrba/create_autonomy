@@ -17,8 +17,12 @@
     <mesh filename="package://ca_description/meshes/create_2.dae" />
   </xacro:create_base>
 
+  <xacro:property name="stack" value="$(arg stack)"/>
+
   <!-- Roomblock -->
-  <xacro:roomblock visualize="$(arg visualize)">
-    <origin xyz="0 0 0.07"/>
-  </xacro:roomblock>
+  <xacro:if value="${stack == 'roomblock'}">
+    <xacro:roomblock visualize="$(arg visualize)">
+      <origin xyz="0 0 0.07"/>
+    </xacro:roomblock>
+  </xacro:if>
 </robot>

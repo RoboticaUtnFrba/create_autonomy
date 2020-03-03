@@ -6,6 +6,7 @@ Block on top of the iRobot Create 2
   <xacro:include filename="$(find ca_description)/urdf/common_properties.xacro"/>
   <xacro:include filename="$(find ca_description)/urdf/sensors/camera_sensor.xacro"/>
   <xacro:include filename="$(find ca_description)/urdf/sensors/lasers/rplidar.xacro"/>
+  <xacro:include filename="$(find ca_description)/urdf/sensors/lasers/astra.xacro"/>
 
   <xacro:macro name="roomblock" params="name:=roomblock parent:=base_link visualize:=false *origin">
 
@@ -42,9 +43,19 @@ Block on top of the iRobot Create 2
       <material>Gazebo/Grey</material>
     </gazebo>
 
-    <xacro:rplidar parent="${link_name}" visualize="${visualize}">
-      <origin xyz="0 0 0.1"/>
-    </xacro:rplidar>
+    <xacro:property name="laser" default="$(arg laser)"/>
+
+    <xacro:if value="${laser == 'rplidar'}">
+      <xacro:rplidar_a2 parent="${link_name}" visualize="${visualize}">
+        <origin xyz="0 0 0.1"/>
+      </xacro:rplidar_a2>
+    </xacro:if>
+    <xacro:if value="${laser == 'astra'}">
+      <xacro:orbec_astra>
+      <!-- TODO: USE ORIGIN TAG -->
+        <origin xyz="0 0 0.1"/>
+      </xacro:orbec_astra>
+    </xacro:if>
 
     <!-- TODO (eborghi): ADD CAMERA CAD? REMOVE CAMERA/USE ANOTHER ONE? -->
     <xacro:camera_sensor name="raspicam" parent="${link_name}"/>

@@ -1,47 +1,49 @@
-<!-- Orbbec Astra RGBD Camera -->
-  <joint name="astra_joint" type="fixed">
-    <axis xyz="0 0 0" />
-    <origin xyz="-0.03 0 0.18" rpy="0 0 0"/>
-    <parent link="base_link"/>
-    <child link="camera_link"/>
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+<xacro:include filename="$(find ca_description)/urdf/sensors/lasers/sim_3d_sensor.xacro"/>
+
+<xacro:macro name="orbec_astra" params="name:=astra parent:=base_link visualize:=false *origin">
+
+  <xacro:property name="parent_link" value="${parent}"/>
+  <xacro:property name="link_name"   value="${name}_link"/>
+  <xacro:property name="link_rgb"    value="${name}_rgb_frame"/>
+  <xacro:property name="link_depth"  value="${name}_depth_frame"/>
+
+  <!-- Orbbec Astra RGBD Camera -->
+  <joint name="${name}_joint" type="fixed">
+    <origin xyz="-0.03 0 0.18"/>
+    <parent link="${parent_link}"/>
+    <child link="${link_name}"/>
   </joint>
 
-  <link name="camera_link">
-    <collision>
-      <origin xyz="0.02 0 0" rpy="0 0 0"/>
-      <geometry>0
-        <box size="0.001 0.001 0.001"/>
-      </geometry>
-    </collision>
-
+  <link name="${link_name}">
     <visual>
-      <origin xyz="-0.01 0 -0.03" rpy="1.5707 0 1.5707"/>
+      <origin xyz="-0.01 0 -0.03" rpy="${pi/2} 0 ${pi/2}"/>
       <geometry>
-        <mesh filename="package://rosbot_description/meshes/astra.dae" scale="0.001 0.001 0.001" />
+        <mesh filename="package://ca_description/meshes/astra.dae" scale="0.001 0.001 0.001" />
       </geometry>
     </visual>
-
-    <inertial>
-      <mass value="1e-5" />
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
-    </inertial>
   </link>
 
-  <joint name="camera_optical_joint" type="fixed">
+  <joint name="${name}_optical_joint" type="fixed">
     <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>
-    <parent link="camera_link"/>
-    <child link="camera_rgb_frame"/>
+    <parent link="${link_name}"/>
+    <child link="${link_rgb}"/>
   </joint>
 
-  <link name="camera_rgb_frame">
-  </link>
+  <link name="${link_rgb}"/>
 
-  <joint name="camera_depth_joint" type="fixed">
+  <joint name="${name}_depth_joint" type="fixed">
     <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>
-    <parent link="camera_link"/>
-    <child link="camera_depth_frame"/>
+    <parent link="${link_name}"/>
+    <child link="${link_depth}"/>
   </joint>
 
-  <link name="camera_depth_frame">
-  </link>
+  <link name="${link_depth}"/>
+
+  <xacro:sim_3d_sensor name="${name}" visualize="true"/>
+
+</xacro:macro>
+
+</robot>

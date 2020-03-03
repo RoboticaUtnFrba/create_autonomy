@@ -6,10 +6,24 @@
   <arg name="visualize" default="$(optenv VISUALIZE false)"/>
   <arg name="tf_prefix" value="$(arg robot_name)_tf"/>
 
+  <!-- Stacks:
+    * turtlebot
+    * roomblock
+   -->
+  <arg name="stack" value="$(optenv STACK roomblock)"/>
+  <!-- Lasers:
+    * astra
+    * kinect
+    * r200
+    * rplidar
+    * xtion_pro
+   -->
+  <arg name="laser" value="$(optenv LASER roomblock)"/>
+
   <arg name="freq" value="5.0"/>
 
   <!-- Robot description -->
-  <arg name="xacro_args" value="visualize:=$(arg visualize) robot_name:=$(arg robot_name)"/>
+  <arg name="xacro_args" value="visualize:=$(arg visualize) robot_name:=$(arg robot_name) stack:=$(arg stack) laser:=$(arg laser)"/>
   <param name="robot_description" command="$(find xacro)/xacro $(arg model) $(arg xacro_args)"/>
   <!-- Robot state publisher-->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen">

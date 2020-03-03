@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-<xacro:macro name="rplidar" params="name:=rplidar parent:=base_link visualize:=false *origin">
+<xacro:macro name="rplidar_a2" params="name:=rplidar parent:=base_link visualize:=false *origin">
 
   <xacro:property name="parent_link"              value="${parent}"/>
   <xacro:property name="link_name"                value="${name}_link"/>
