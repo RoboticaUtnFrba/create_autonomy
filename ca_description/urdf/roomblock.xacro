@@ -39,12 +39,12 @@ Block on top of the iRobot Create 2
       </xacro:inertial_cuboid_with_pose>
     </link>
 
-    <xacro:rplidar parent="${roomblock_link}" visualize="$(arg visualize)">
+    <xacro:rplidar parent="${roomblock_link}" visualize="${visualize}">
       <origin xyz="0 0 0.1"/>
     </xacro:rplidar>
     <!-- TODO: REMOVE VISUALIZE USING ARG OR XACRO:ARG -->
     <!-- TODO (eborghi): ADD CAMERA CAD? REMOVE CAMERA/USE ANOTHER ONE? -->
-    <xacro:camera_sensor parent="${roomblock_link}"/>
+    <!-- <xacro:camera_sensor parent="${roomblock_link}"/> -->
 
     <xacro:roomblock_gazebo link_name="${roomblock_link}"/>
 

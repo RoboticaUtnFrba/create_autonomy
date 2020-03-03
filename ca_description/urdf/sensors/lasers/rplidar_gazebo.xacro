@@ -14,10 +14,10 @@
   <xacro:property name="topic_name" value="laser/scan"/>
 
   <gazebo reference="${link_name}">
-    <material>Gazebo/Black</material>
+    <material>Gazebo/FlatBlack</material>
     <sensor type="ray" name="rplidar_sensor">
       <pose>0 0 0 0 0 0</pose>
-      <visualize>$(arg visualize)</visualize>
+      <visualize>${visualize}</visualize>
       <update_rate>${rplidar_a2_rate_hz}</update_rate>
       <ray>
         <scan>
