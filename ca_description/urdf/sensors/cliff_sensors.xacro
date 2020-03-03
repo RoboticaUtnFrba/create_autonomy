@@ -1,12 +1,12 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-<xacro:macro name="cliff_sensor" params="name *origin visualize:=false">
+<xacro:macro name="cliff_sensor" params="name parent *origin visualize:=false">
 
   <xacro:include filename="$(find ca_description)/urdf/common_properties.xacro"/>
   <xacro:include filename="$(find ca_description)/urdf/sensors/cliff_sensors_gazebo.xacro"/>
 
-  <xacro:property name="parent_link" value="base_link"/>
+  <xacro:property name="parent_link" value="${parent}"/>
 
   <joint name="${name}_cliff_sensor_joint" type="fixed">
     <xacro:insert_block name="origin" />

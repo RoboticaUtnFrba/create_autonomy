@@ -56,19 +56,19 @@
 
     <xacro:wall_sensor visualize="${visualize}"/>
 
-    <xacro:cliff_sensor name="side_left">
+    <xacro:cliff_sensor name="side_left" parent="base_link">
       <origin xyz="0.07 0.14 0.01" rpy="0 ${pi/2 - 0.09} 0" />
     </xacro:cliff_sensor>
 
-    <xacro:cliff_sensor name="side_right">
+    <xacro:cliff_sensor name="side_right" parent="base_link">
       <origin xyz="0.07 -0.14 0.01" rpy="0 ${pi/2 - 0.09} 0" />
     </xacro:cliff_sensor>
 
-    <xacro:cliff_sensor name="front_left">
+    <xacro:cliff_sensor name="front_left" parent="base_link">
       <origin xyz="0.15 0.04 0.01" rpy="0 ${pi/2 - 0.09} 0" />
     </xacro:cliff_sensor>
 
-    <xacro:cliff_sensor name="front_right">
+    <xacro:cliff_sensor name="front_right" parent="base_link">
       <origin xyz="0.15 -0.04 0.01" rpy="0 ${pi/2 - 0.09} 0" />
     </xacro:cliff_sensor>
 
