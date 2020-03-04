@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <!--
   Hexagon stacks
+
+  https://github.com/turtlebot/turtlebot/blob/melodic/turtlebot_description/urdf/stacks/hexagons.urdf.xacro
  -->
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <!-- <xacro:include filename="$(find ca_description)/urdf/common_properties.urdf.xacro"/> -->
@@ -19,12 +21,6 @@
           <mesh filename="package://ca_description/meshes/turtlebot_stack/pole_bottom.dae"/>
         </geometry>
       </visual>
-      <!-- <inertial>
-        <mass value="0.008"/>
-        <inertia ixx="0.000001686" ixy="0.0" ixz="0.0"
-                 iyy="0.000001686" iyz="0.0"
-                 izz="0.000000144"/>
-      </inertial> -->
     </link>
   </xacro:macro>
 
@@ -42,12 +38,38 @@
           <mesh filename="package://ca_description/meshes/turtlebot_stack/pole_middle.dae"/>
         </geometry>
       </visual>
-      <!-- <inertial>
-        <mass value="0.012"/>
-        <inertia ixx="0.000003805" ixy="0.0" ixz="0.0"
-                 iyy="0.000003805" iyz="0.0"
-                 izz="0.000000216"/>
-      </inertial> -->
+    </link>
+  </xacro:macro>
+
+  <xacro:macro name="stack_top_pole" params="parent:=base_link number *origin">
+    <xacro:property name="link_name" value="pole_top_${number}_link"/>
+    <joint name="pole_top_${number}_joint" type="fixed">
+      <xacro:insert_block name="origin"/>
+      <parent link="${parent}"/>
+      <child link="${link_name}"/>
+    </joint>
+    <link name="${link_name}">
+      <visual>
+        <geometry>
+          <mesh filename="package://ca_description/meshes/turtlebot_stack/pole_top.dae"/>
+        </geometry>
+      </visual>
+    </link>
+  </xacro:macro>
+
+  <xacro:macro name="stack_3d_sensor_pole" params="parent:=base_link number *origin">
+    <xacro:property name="link_name" value="pole_kinect_${number}_link"/>
+    <joint name="pole_kinect_${number}_joint" type="fixed">
+      <xacro:insert_block name="origin"/>
+      <parent link="${parent}"/>
+      <child link="${link_name}"/>
+    </joint>
+    <link name="${link_name}">
+      <visual>
+        <geometry>
+          <mesh filename="package://ca_description/meshes/turtlebot_stack/pole_kinect.dae"/>
+        </geometry>
+      </visual>
     </link>
   </xacro:macro>
 
@@ -88,12 +110,6 @@
           <mesh filename="package://ca_description/meshes/turtlebot_stack/plate_bottom.dae"/>
         </geometry>
       </visual>
-      <!-- <inertial>
-        <mass value="0.520" />
-        <inertia ixx="0.003328" ixy="0.0" ixz="0.0"
-                 iyy="0.003328" iyz="0.0"
-                 izz="0.006656" />
-      </inertial> -->
     </link>
 
     <xacro:stack_middle_pole number="0">
@@ -120,12 +136,39 @@
           <mesh filename="package://ca_description/meshes/turtlebot_stack/plate_middle.dae"/>
         </geometry>
       </visual>
-      <!-- <inertial>
-        <mass value="0.520" />
-        <inertia ixx="0.003328" ixy="0.0" ixz="0.0"
-                 iyy="0.003328" iyz="0.0"
-                 izz="0.006656" />
-      </inertial> -->
+    </link>
+
+    <xacro:stack_top_pole number="0">
+      <origin xyz="0.0381 0.1505 0.2920"/>
+    </xacro:stack_top_pole>
+    <xacro:stack_top_pole number="1">
+      <origin xyz="0.0381 -0.1505 0.2920"/>
+    </xacro:stack_top_pole>
+    <xacro:stack_top_pole number="2">
+      <origin xyz="-0.0381 0.1505 0.2920"/>
+    </xacro:stack_top_pole>
+    <xacro:stack_top_pole number="3">
+      <origin xyz="-0.0381 -0.1505 0.2920"/>
+    </xacro:stack_top_pole>
+
+    <xacro:stack_3d_sensor_pole number="0">
+      <origin xyz="-0.1024 0.098 0.2372"/>
+    </xacro:stack_3d_sensor_pole>
+    <xacro:stack_3d_sensor_pole number="1">
+      <origin xyz="-0.1024 -0.098 0.2372"/>
+    </xacro:stack_3d_sensor_pole>
+
+    <joint name="plate_top_joint" type="fixed">
+      <origin xyz="-0.01364 0 0.3966"/>
+      <parent link="${parent}"/>
+      <child link="plate_top_link"/>
+    </joint>
+    <link name="plate_top_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://ca_description/meshes/turtlebot_stack/plate_top.dae"/>
+        </geometry>
+      </visual>
     </link>
   </xacro:macro>
 </robot>
