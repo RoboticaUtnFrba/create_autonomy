@@ -1,15 +1,16 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <xacro:macro name="create_base" params="wheel_separation wheel_radius wheel_width base_diameter *mesh visualize:=false">
+  <xacro:include filename="$(find ca_description)/urdf/common_properties.xacro"/>
+  <xacro:include filename="$(find ca_description)/urdf/create_base_gazebo.xacro"/>
+  <xacro:include filename="$(find ca_description)/urdf/create_caster_wheel.xacro"/>
+  <xacro:include filename="$(find ca_description)/urdf/create_wheel.xacro"/>
+  <xacro:include filename="$(find ca_description)/urdf/sensors/imu_sensor.xacro"/>
+  <xacro:include filename="$(find ca_description)/urdf/sensors/wall_sensor.xacro"/>
+  <xacro:include filename="$(find ca_description)/urdf/sensors/cliff_sensors.xacro"/>
+  <xacro:include filename="$(find ca_description)/urdf/sensors/omni_sensor.xacro"/>
 
-    <xacro:include filename="$(find ca_description)/urdf/create_base_gazebo.xacro"/>
-    <xacro:include filename="$(find ca_description)/urdf/create_caster_wheel.xacro"/>
-    <xacro:include filename="$(find ca_description)/urdf/create_wheel.xacro"/>
-    <xacro:include filename="$(find ca_description)/urdf/sensors/imu_sensor.xacro"/>
-    <xacro:include filename="$(find ca_description)/urdf/sensors/wall_sensor.xacro"/>
-    <xacro:include filename="$(find ca_description)/urdf/sensors/cliff_sensors.xacro"/>
-    <xacro:include filename="$(find ca_description)/urdf/sensors/omni_sensor.xacro"/>
+  <xacro:macro name="create_base" params="wheel_separation wheel_radius wheel_width base_diameter *mesh visualize:=false">
 
     <xacro:property name="base_link_offset_z" value="0.0308"/>
     <xacro:property name="base_offset_z" value="0.017"/>

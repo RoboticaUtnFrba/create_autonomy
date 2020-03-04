@@ -3,16 +3,19 @@
 
 <xacro:include filename="$(find ca_description)/urdf/sensors/lasers/sim_3d_sensor.xacro"/>
 
-<xacro:macro name="orbec_astra" params="name:=astra parent:=base_link visualize:=false *origin">
+<!-- Orbbec Astra RGBD Camera -->
+<xacro:macro name="orbbec_astra" params="name:=astra parent:=base_link *origin">
 
-  <xacro:property name="parent_link" value="${parent}"/>
-  <xacro:property name="link_name"   value="${name}_link"/>
-  <xacro:property name="link_rgb"    value="${name}_rgb_frame"/>
-  <xacro:property name="link_depth"  value="${name}_depth_frame"/>
+  <xacro:property name="parent_link"    value="${parent}"/>
+  <xacro:property name="link_name"      value="${name}_link"/>
+  <xacro:property name="link_rgb"       value="${name}_rgb_frame"/>
+  <xacro:property name="link_depth"     value="${name}_depth_frame"/>
+  <xacro:property name="link_optical"   value="${name}_depth_optical_frame"/>
 
-  <!-- Orbbec Astra RGBD Camera -->
+  <xacro:property name="optical_offset" value="0.01"/>
+
   <joint name="${name}_joint" type="fixed">
-    <origin xyz="-0.03 0 0.18"/>
+    <xacro:insert_block name="origin"/>
     <parent link="${parent_link}"/>
     <child link="${link_name}"/>
   </joint>
@@ -21,28 +24,33 @@
     <visual>
       <origin xyz="-0.01 0 -0.03" rpy="${pi/2} 0 ${pi/2}"/>
       <geometry>
-        <mesh filename="package://ca_description/meshes/astra.dae" scale="0.001 0.001 0.001" />
+        <mesh filename="package://ca_description/meshes/astra.dae"/>
       </geometry>
     </visual>
   </link>
 
   <joint name="${name}_optical_joint" type="fixed">
-    <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>
+    <origin xyz="0 ${optical_offset} 0" rpy="${-pi/2} 0 ${-pi/2}"/>
     <parent link="${link_name}"/>
     <child link="${link_rgb}"/>
   </joint>
-
   <link name="${link_rgb}"/>
 
   <joint name="${name}_depth_joint" type="fixed">
-    <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>
+    <origin rpy="${-pi/2} 0 ${-pi/2}"/>
     <parent link="${link_name}"/>
     <child link="${link_depth}"/>
   </joint>
-
   <link name="${link_depth}"/>
 
-  <xacro:sim_3d_sensor name="${name}" visualize="true"/>
+   <joint name="${name}_depth_optical_joint" type="fixed">
+    <origin rpy="${-pi/2} 0 ${-pi/2}"/>
+    <parent link="${link_depth}"/>
+    <child link="${link_optical}"/>
+  </joint>
+  <link name="${link_optical}"/>
+
+  <xacro:sim_3d_sensor name="${name}" color="Gazebo/FlatBlack"/>
 
 </xacro:macro>
 

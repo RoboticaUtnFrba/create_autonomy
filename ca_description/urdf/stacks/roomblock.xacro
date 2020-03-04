@@ -5,18 +5,16 @@ Block on top of the iRobot Create 2
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:include filename="$(find ca_description)/urdf/common_properties.xacro"/>
   <xacro:include filename="$(find ca_description)/urdf/sensors/camera_sensor.xacro"/>
-  <xacro:include filename="$(find ca_description)/urdf/sensors/lasers/rplidar.xacro"/>
-  <xacro:include filename="$(find ca_description)/urdf/sensors/lasers/astra.xacro"/>
 
   <xacro:macro name="roomblock" params="name:=roomblock parent:=base_link visualize:=false *origin">
 
-    <xacro:property name="parent_link"    value="${parent}"/>
-    <xacro:property name="link_name"      value="${name}_link"/>
+    <xacro:property name="parent_link" value="${parent}"/>
+    <xacro:property name="link_name"   value="${name}_link"/>
 
-    <xacro:property name="mass"           value="0.1"/>
-    <xacro:property name="size_x"         value="0.1"/>
-    <xacro:property name="size_y"         value="0.1"/>
-    <xacro:property name="size_z"         value="0.07"/>
+    <xacro:property name="mass"        value="0.1"/>
+    <xacro:property name="size_x"      value="0.1"/>
+    <xacro:property name="size_y"      value="0.1"/>
+    <xacro:property name="size_z"      value="0.07"/>
 
     <joint name="block_joint" type="fixed">
       <xacro:insert_block name="origin"/>
@@ -43,18 +41,39 @@ Block on top of the iRobot Create 2
       <material>Gazebo/Grey</material>
     </gazebo>
 
+    <xacro:include filename="$(find ca_description)/urdf/sensors/lasers/astra.xacro"/>
+    <!-- <xacro:include filename="$(find ca_description)/urdf/sensors/lasers/kinect.xacro"/> -->
+    <xacro:include filename="$(find ca_description)/urdf/sensors/lasers/realsense.xacro"/>
+    <xacro:include filename="$(find ca_description)/urdf/sensors/lasers/rplidar.xacro"/>
+    <!-- <xacro:include filename="$(find ca_description)/urdf/sensors/lasers/xtion_pro.xacro"/> -->
+
     <xacro:property name="laser" default="$(arg laser)"/>
 
+    <!-- TODO: Implement this in a dictionary (along with include file) -->
+    <xacro:if value="${laser == 'astra'}">
+      <xacro:orbbec_astra>
+        <origin xyz="0 0 0.2"/>
+      </xacro:orbbec_astra>
+    </xacro:if>
+    <xacro:if value="${laser == 'kinect'}">
+      <!-- <xacro:kinect>
+        <origin xyz="0 0 0.15"/>
+      </xacro:kinect> -->
+    </xacro:if>
     <xacro:if value="${laser == 'rplidar'}">
       <xacro:rplidar_a2 parent="${link_name}" visualize="${visualize}">
         <origin xyz="0 0 0.1"/>
       </xacro:rplidar_a2>
     </xacro:if>
-    <xacro:if value="${laser == 'astra'}">
-      <xacro:orbec_astra>
-      <!-- TODO: USE ORIGIN TAG -->
-        <origin xyz="0 0 0.1"/>
-      </xacro:orbec_astra>
+    <xacro:if value="${laser == 'r200'}">
+      <xacro:realsense_r200>
+        <origin xyz="0 0 0.15"/>
+      </xacro:realsense_r200>
+    </xacro:if>
+    <xacro:if value="${laser == 'xtion_pro'}">
+      <!-- <xacro:asus_xtion_pro>
+        <origin xyz="0 0 0.15"/>
+      </xacro:asus_xtion_pro> -->
     </xacro:if>
 
     <!-- TODO (eborghi): ADD CAMERA CAD? REMOVE CAMERA/USE ANOTHER ONE? -->

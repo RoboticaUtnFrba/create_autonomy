@@ -1,7 +1,6 @@
 <?xml version="1.0" ?>
 <robot name="create_2" xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:include filename="$(find ca_description)/urdf/create_base.xacro"/>
-  <xacro:include filename="$(find ca_description)/urdf/roomblock.xacro"/>
   <xacro:property name="robot_name" value="$(arg robot_name)"/>
 
   <xacro:property name="wheel_separation" value="0.235"/>
@@ -17,6 +16,12 @@
     <mesh filename="package://ca_description/meshes/create_2.dae" />
   </xacro:create_base>
 
+  <!-- ##### STACKS ##### -->
+  <!-- TODO: Implement this in a dictionary (along with include file) -->
+
+  <xacro:include filename="$(find ca_description)/urdf/stacks/roomblock.xacro"/>
+  <xacro:include filename="$(find ca_description)/urdf/stacks/turtlebot.xacro"/>
+
   <xacro:property name="stack" value="$(arg stack)"/>
 
   <!-- Roomblock -->
@@ -24,5 +29,11 @@
     <xacro:roomblock visualize="$(arg visualize)">
       <origin xyz="0 0 0.07"/>
     </xacro:roomblock>
+  </xacro:if>
+  <!-- Turtlebot stack -->
+  <xacro:if value="${stack == 'turtlebot'}">
+    <xacro:turtlebot_stack>
+      <origin xyz="0 0 0"/>
+    </xacro:turtlebot_stack>
   </xacro:if>
 </robot>
