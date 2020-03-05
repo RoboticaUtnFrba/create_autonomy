@@ -1,102 +1,65 @@
 <?xml version="1.0"?>
-<robot name="sensor_xtion_pro" xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:include filename="$(find ca_description)/urdf/turtlebot_gazebo.urdf.xacro"/>
-  <xacro:include filename="$(find ca_description)/urdf/turtlebot_properties.urdf.xacro"/>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+<xacro:include filename="$(find ca_description)/urdf/sensors/lasers/sim_3d_sensor.xacro"/>
+
+<xacro:macro name="asus_xtion_pro" params="name:=xtion_pro parent:=base_link *origin">
+
+  <xacro:property name="parent_link"        value="${parent}"/>
+  <xacro:property name="link_name"          value="${name}_link"/>
+  <xacro:property name="link_rgb"           value="${name}_rgb_frame"/>
+  <xacro:property name="link_rgb_optical"   value="${name}_rgb_optical_frame"/>
+  <xacro:property name="link_depth"         value="${name}_depth_frame"/>
+  <xacro:property name="link_depth_optical" value="${name}_depth_optical_frame"/>
 
   <!-- Xacro properties -->
   <xacro:property name="xtion_pro_depth_rel_rgb_py" value="0.0270" />
   <xacro:property name="xtion_pro_cam_rel_rgb_py"   value="-0.0220" />
 
-  <!-- Parameterised in part by the values in turtlebot_properties.urdf.xacro -->
-  <!-- xtion_pro_cam_py allows for a camera displaced so the depth optical frame aligns with robot center -->
-  <xacro:macro name="sensor_xtion_pro" params="parent xtion_pro_cam_py">
-    <joint name="camera_rgb_joint" type="fixed">
-      <origin xyz="${cam_px} ${xtion_pro_cam_py} ${cam_pz}"
-              rpy="${cam_or} ${cam_op} ${cam_oy}"/>
-      <parent link="${parent}"/>
-      <child link="camera_rgb_frame" />
-    </joint>
-    <link name="camera_rgb_frame"/>
+  <joint name="${name}_rgb_joint" type="fixed">
+    <xacro:insert_block name="origin"/>
+    <parent link="${parent}"/>
+    <child link="${link_rgb}" />
+  </joint>
+  <link name="${link_rgb}"/>
 
-    <joint name="camera_rgb_optical_joint" type="fixed">
-      <origin xyz="0 0 0" rpy="${-M_PI/2} 0 ${-M_PI/2}" />
-      <parent link="camera_rgb_frame" />
-      <child link="camera_rgb_optical_frame" />
-    </joint>
-    <link name="camera_rgb_optical_frame"/>
+  <joint name="${name}_rgb_optical_joint" type="fixed">
+    <origin rpy="${-pi/2} 0 ${-pi/2}" />
+    <parent link="${link_rgb}" />
+    <child link="${link_rgb_optical}" />
+  </joint>
+  <link name="${link_rgb_optical}"/>
 
-    <joint name="camera_joint" type="fixed">
-      <origin xyz="0 ${xtion_pro_cam_rel_rgb_py} 0"
-              rpy="0 0 0"/>
-      <parent link="camera_rgb_frame"/>
-      <child link="camera_link"/>
-    </joint>
-    <link name="camera_link">
-      <visual>
-        <origin xyz="-0.015 0.0035 0.004" rpy="0 0 0"/>
-        <geometry>
-          <mesh filename="package://ca_description/meshes/sensors/xtion_pro_camera.dae"/>
-        </geometry>
-      </visual>
-      <collision>
-        <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
-        <geometry>
-        <box size="0.0730 0.2760 0.0720"/>
+  <joint name="${name}_joint" type="fixed">
+    <origin xyz="0 ${xtion_pro_cam_rel_rgb_py} 0"/>
+    <parent link="${link_rgb}"/>
+    <child link="${link_name}"/>
+  </joint>
+  <link name="${link_name}">
+    <visual>
+      <origin xyz="-0.015 0.0035 0.004"/>
+      <geometry>
+        <mesh filename="package://ca_description/meshes/asus_xtion_pro_live.dae"/>
       </geometry>
-      </collision>
-      <inertial>
-        <mass value="0.170" />
-        <origin xyz="0 0 0" />
-        <inertia ixx="0.001152600" ixy="0.0" ixz="0.0"
-                 iyy="0.000148934" iyz="0.0"
-                 izz="0.001154654" />
-      </inertial>
-    </link>
+    </visual>
+  </link>
 
-    <joint name="camera_depth_joint" type="fixed">
-      <origin xyz="0 ${xtion_pro_depth_rel_rgb_py} 0" rpy="0 0 0" />
-      <parent link="camera_rgb_frame" />
-      <child link="camera_depth_frame" />
-    </joint>
-    <link name="camera_depth_frame"/>
+  <joint name="${name}_depth_joint" type="fixed">
+    <origin xyz="0 ${xtion_pro_depth_rel_rgb_py} 0"/>
+    <parent link="${link_rgb}" />
+    <child link="${link_depth}"/>
+  </joint>
+  <link name="${link_depth}"/>
 
-    <joint name="camera_depth_optical_joint" type="fixed">
-      <origin xyz="0 0 0" rpy="${-M_PI/2} 0 ${-M_PI/2}" />
-      <parent link="camera_depth_frame" />
-      <child link="camera_depth_optical_frame" />
-    </joint>
-    <link name="camera_depth_optical_frame"/>
+  <joint name="${name}_depth_optical_joint" type="fixed">
+    <origin rpy="${-pi/2} 0 ${-pi/2}" />
+    <parent link="${link_depth}" />
+    <child link="${link_depth_optical}" />
+  </joint>
+  <link name="${link_depth_optical}"/>
 
-    <!-- RGBD sensor for simulation, same as Kinect -->
-    <xacro:turtlebot_sim_3dsensor/>
+  <xacro:sim_3d_sensor name="${name}" color="Gazebo/FlatBlack"/>
 
+</xacro:macro>
 
-    <!-- Asus mount -->
-    <joint name="mount_xtion_pro_joint" type="fixed">
-      <origin xyz="-0.1024 0.0 0.272" rpy="0 0 0"/>
-      <parent link="${parent}"/>
-      <child link="mount_xtion_pro_link"/>
-    </joint>
-    <link name="mount_xtion_pro_link">
-      <visual>
-        <origin xyz="0 0 0" rpy="${-M_PI/2} 0 0"/>
-        <geometry>
-          <mesh filename="package://ca_description/meshes/sensors/xtion_pro_stack.dae"/>
-        </geometry>
-      </visual>
-      <collision>
-        <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
-        <geometry>
-        <box size="0.0330 0.2760 0.0120"/>
-      </geometry>
-      </collision>
-      <inertial>
-        <mass value="0.170" />
-        <origin xyz="0 0 0" />
-        <inertia ixx="0.001152600" ixy="0.0" ixz="0.0"
-                 iyy="0.000148934" iyz="0.0"
-                 izz="0.001154654" />
-      </inertial>
-    </link>
-  </xacro:macro>
 </robot>
