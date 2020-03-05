@@ -41,40 +41,13 @@ Block on top of the iRobot Create 2
       <material>Gazebo/Grey</material>
     </gazebo>
 
-    <xacro:include filename="$(find ca_description)/urdf/sensors/lasers/astra.xacro"/>
-    <xacro:include filename="$(find ca_description)/urdf/sensors/lasers/kinect.xacro"/>
-    <xacro:include filename="$(find ca_description)/urdf/sensors/lasers/realsense.xacro"/>
-    <xacro:include filename="$(find ca_description)/urdf/sensors/lasers/rplidar.xacro"/>
-    <xacro:include filename="$(find ca_description)/urdf/sensors/lasers/xtion_pro.xacro"/>
-
+    <!-- Laser -->
     <xacro:property name="laser" default="$(arg laser)"/>
+    <xacro:property name="laser_yaml" value="$(find ca_description)/urdf/sensors/lasers/poses.yaml"/>
+    <xacro:property name="laser_dict" value="${load_yaml(laser_yaml)}"/>
 
-    <!-- TODO: Implement this in a dictionary (along with include file) -->
-    <xacro:if value="${laser == 'astra'}">
-      <xacro:orbbec_astra>
-        <origin xyz="0 0 0.2"/>
-      </xacro:orbbec_astra>
-    </xacro:if>
-    <xacro:if value="${laser == 'kinect'}">
-      <xacro:kinect>
-        <origin xyz="0.025 -0.01 0.22"/>
-      </xacro:kinect>
-    </xacro:if>
-    <xacro:if value="${laser == 'rplidar'}">
-      <xacro:rplidar_a2 parent="${link_name}" visualize="${visualize}">
-        <origin xyz="0 0 0.1"/>
-      </xacro:rplidar_a2>
-    </xacro:if>
-    <xacro:if value="${laser == 'r200'}">
-      <xacro:realsense_r200>
-        <origin xyz="0 0 0.182"/>
-      </xacro:realsense_r200>
-    </xacro:if>
-    <xacro:if value="${laser == 'xtion_pro'}">
-      <xacro:asus_xtion_pro>
-        <origin xyz="0.015 0.018 0.191"/>
-      </xacro:asus_xtion_pro>
-    </xacro:if>
+    <xacro:property name="laser_origin" value="${laser_dict['roomblock'][laser]}"/>
+    <xacro:include filename="$(find ca_description)/urdf/sensors/lasers/${laser}.xacro"/>
 
     <!-- TODO (eborghi): ADD CAMERA CAD? REMOVE CAMERA/USE ANOTHER ONE? -->
     <xacro:camera_sensor name="raspicam" parent="${link_name}"/>

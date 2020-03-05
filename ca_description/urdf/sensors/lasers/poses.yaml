@@ -1,0 +1,12 @@
+roomblock:
+  astra: 0 0 0.2
+  kinect: 0.025 -0.01 0.22
+  r200: 0 0 0.182
+  rplidar: 0 0 0.1
+  xtion_pro: 0.015 0.018 0.191
+turtlebot:
+  astra: 0 0 0
+  kinect: 0 0 0
+  r200: 0 0 0
+  rplidar: 0 0 0
+  xtion_pro: 0 0 0

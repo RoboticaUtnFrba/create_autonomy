@@ -3,61 +3,60 @@
 
 <xacro:include filename="$(find ca_description)/urdf/sensors/lasers/sim_3d_sensor.xacro"/>
 
-<xacro:macro name="kinect" params="name:=kinect parent:=base_link *origin">
+<xacro:property name="name" value="kinect"/>
+<xacro:property name="parent" value="base_link"/>
 
-  <xacro:property name="parent_link"        value="${parent}"/>
-  <xacro:property name="link_name"          value="${name}_link"/>
-  <xacro:property name="link_rgb"           value="${name}_rgb_frame"/>
-  <xacro:property name="link_rgb_optical"   value="${name}_rgb_optical_frame"/>
-  <xacro:property name="link_depth"         value="${name}_depth_frame"/>
-  <xacro:property name="link_depth_optical" value="${name}_depth_optical_frame"/>
+<xacro:property name="parent_link"        value="${parent}"/>
+<xacro:property name="link_name"          value="${name}_link"/>
+<xacro:property name="link_rgb"           value="${name}_rgb_frame"/>
+<xacro:property name="link_rgb_optical"   value="${name}_rgb_optical_frame"/>
+<xacro:property name="link_depth"         value="${name}_depth_frame"/>
+<xacro:property name="link_depth_optical" value="${name}_depth_optical_frame"/>
 
-  <xacro:property name="kinect_cam_py" value="-0.0125"/>
+<xacro:property name="kinect_cam_py" value="-0.0125"/>
 
-  <joint name="camera_rgb_joint" type="fixed">
-    <xacro:insert_block name="origin"/>
-    <parent link="${parent}"/>
-    <child link="${link_rgb}" />
-  </joint>
-  <link name="${link_rgb}"/>
+<joint name="camera_rgb_joint" type="fixed">
+  <origin xyz="${laser_origin}"/>
+  <parent link="${parent}"/>
+  <child link="${link_rgb}" />
+</joint>
+<link name="${link_rgb}"/>
 
-  <joint name="${name}_rgb_optical_joint" type="fixed">
-    <origin rpy="${-pi/2} 0 ${-pi/2}" />
-    <parent link="${link_rgb}" />
-    <child link="${link_rgb_optical}" />
-  </joint>
-  <link name="${link_rgb_optical}"/>
+<joint name="${name}_rgb_optical_joint" type="fixed">
+  <origin rpy="${-pi/2} 0 ${-pi/2}" />
+  <parent link="${link_rgb}" />
+  <child link="${link_rgb_optical}" />
+</joint>
+<link name="${link_rgb_optical}"/>
 
-  <joint name="camera_joint" type="fixed">
-    <origin xyz="-0.031 ${-kinect_cam_py} -0.016"/>
-    <parent link="${link_rgb}"/>
-    <child link="${link_name}"/>
-  </joint>
-  <link name="${link_name}">
-    <visual>
-      <origin rpy="0 0 ${pi/2}"/>
-      <geometry>
-        <mesh filename="package://ca_description/meshes/kinect.dae"/>
-      </geometry>
-    </visual>
-  </link>
+<joint name="camera_joint" type="fixed">
+  <origin xyz="-0.031 ${-kinect_cam_py} -0.016"/>
+  <parent link="${link_rgb}"/>
+  <child link="${link_name}"/>
+</joint>
+<link name="${link_name}">
+  <visual>
+    <origin rpy="0 0 ${pi/2}"/>
+    <geometry>
+      <mesh filename="package://ca_description/meshes/kinect.dae"/>
+    </geometry>
+  </visual>
+</link>
 
-	<joint name="${name}_depth_joint" type="fixed">
-	  <origin xyz="0 ${2 * -kinect_cam_py} 0"/>
-	  <parent link="${link_rgb}" />
-	  <child link="${link_depth}" />
-	</joint>
-	<link name="${link_depth}"/>
+<joint name="${name}_depth_joint" type="fixed">
+  <origin xyz="0 ${2 * -kinect_cam_py} 0"/>
+  <parent link="${link_rgb}" />
+  <child link="${link_depth}" />
+</joint>
+<link name="${link_depth}"/>
 
-	<joint name="${name}_depth_optical_joint" type="fixed">
-	  <origin rpy="${-pi/2} 0 ${-pi/2}" />
-	  <parent link="${link_depth}" />
-	  <child link="${link_depth_optical}"/>
-	</joint>
-	<link name="${link_depth_optical}"/>
+<joint name="${name}_depth_optical_joint" type="fixed">
+  <origin rpy="${-pi/2} 0 ${-pi/2}" />
+  <parent link="${link_depth}" />
+  <child link="${link_depth_optical}"/>
+</joint>
+<link name="${link_depth_optical}"/>
 
-	<xacro:sim_3d_sensor name="${name}" color="Gazebo/FlatBlack"/>
-
-</xacro:macro>
+<xacro:sim_3d_sensor name="${name}" color="Gazebo/FlatBlack"/>
 
 </robot>
