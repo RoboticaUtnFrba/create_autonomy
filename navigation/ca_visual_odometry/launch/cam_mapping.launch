@@ -11,9 +11,14 @@
       value="package://ca_visual_odometry/config/ost.yaml"/>
     <arg unless="$(arg calibrated)" name="config_file" value=""/>
 
-    <node pkg="gscam" type="gscam" name="$(arg cam_name)">
-        <param name="camera_name" value="$(arg cam_name)"/>
-        <remap from="camera/image_raw" to="$(arg cam_topic)"/>
-        <param name="camera_info_url" value="$(arg config_file)"/>
+    <!-- TODO (@eborghi10): Fix
+         "Camera calibration file /home/create/.ros/camera_info/raspicam.yaml not found."
+         When calibrated=false
+      -->
+    <node pkg="gscam" type="gscam" name="$(arg cam_name)" ns="create1">
+      <param name="camera_name" value="$(arg cam_name)"/>
+      <remap from="camera/image_raw" to="$(arg cam_topic)"/>
+      <param name="camera_info_url" value="$(arg config_file)"/>
+      <param name="frame_id"    value="create1_tf/raspicam_link"/> <!-- _optical -->
     </node>
 </launch>

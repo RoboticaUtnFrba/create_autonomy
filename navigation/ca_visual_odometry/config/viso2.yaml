@@ -1,7 +1,7 @@
-odom_frame_id: "/odom"
-base_link_frame_id: "/base_link"
-sensor_frame_id: "/raspicam_link_optical"
-publish_tf: false
+# odom_frame_id: "/odom"
+# base_link_frame_id: "/base_link"
+# sensor_frame_id: "/raspicam_link_optical"
+publish_tf: false  # TODO (@eborghi10): Enable
 invert_tf: false
 
 # Matcher params
@@ -14,7 +14,8 @@ outlier_disp_tolerance: 5
 outlier_flow_tolerance: 5
 multi_stage: 1
 half_resolution: 1
-refinement: 1
+refinement: 2
+ref_frame_change_method: 2
 
 # Bucketing params
 max_features: 2
