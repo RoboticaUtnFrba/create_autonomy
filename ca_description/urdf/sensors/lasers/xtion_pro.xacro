@@ -3,63 +3,63 @@
 
 <xacro:include filename="$(find ca_description)/urdf/sensors/lasers/sim_3d_sensor.xacro"/>
 
-<xacro:macro name="asus_xtion_pro" params="name:=xtion_pro parent:=base_link *origin">
+<!-- Orbbec Astra RGBD Camera -->
+<xacro:property name="name" value="xtion_pro"/>
+<xacro:property name="parent" value="base_link"/>
 
-  <xacro:property name="parent_link"        value="${parent}"/>
-  <xacro:property name="link_name"          value="${name}_link"/>
-  <xacro:property name="link_rgb"           value="${name}_rgb_frame"/>
-  <xacro:property name="link_rgb_optical"   value="${name}_rgb_optical_frame"/>
-  <xacro:property name="link_depth"         value="${name}_depth_frame"/>
-  <xacro:property name="link_depth_optical" value="${name}_depth_optical_frame"/>
+<xacro:property name="parent_link"        value="${parent}"/>
+<xacro:property name="link_name"          value="${name}_link"/>
+<xacro:property name="link_rgb"           value="${name}_rgb_frame"/>
+<xacro:property name="link_rgb_optical"   value="${name}_rgb_optical_frame"/>
+<xacro:property name="link_depth"         value="${name}_depth_frame"/>
+<xacro:property name="link_depth_optical" value="${name}_depth_optical_frame"/>
 
-  <!-- Xacro properties -->
-  <xacro:property name="xtion_pro_depth_rel_rgb_py" value="0.0270" />
-  <xacro:property name="xtion_pro_cam_rel_rgb_py"   value="-0.0220" />
+<!-- Xacro properties -->
+<xacro:property name="xtion_pro_depth_rel_rgb_py" value="0.0270" />
+<xacro:property name="xtion_pro_cam_rel_rgb_py"   value="-0.0220" />
 
-  <joint name="${name}_rgb_joint" type="fixed">
-    <xacro:insert_block name="origin"/>
-    <parent link="${parent}"/>
-    <child link="${link_rgb}" />
-  </joint>
-  <link name="${link_rgb}"/>
+<joint name="${name}_rgb_joint" type="fixed">
+  <origin xyz="${laser_origin}"/>
+  <parent link="${parent}"/>
+  <child link="${link_rgb}" />
+</joint>
+<link name="${link_rgb}"/>
 
-  <joint name="${name}_rgb_optical_joint" type="fixed">
-    <origin rpy="${-pi/2} 0 ${-pi/2}" />
-    <parent link="${link_rgb}" />
-    <child link="${link_rgb_optical}" />
-  </joint>
-  <link name="${link_rgb_optical}"/>
+<joint name="${name}_rgb_optical_joint" type="fixed">
+  <origin rpy="${-pi/2} 0 ${-pi/2}" />
+  <parent link="${link_rgb}" />
+  <child link="${link_rgb_optical}" />
+</joint>
+<link name="${link_rgb_optical}"/>
 
-  <joint name="${name}_joint" type="fixed">
-    <origin xyz="0 ${xtion_pro_cam_rel_rgb_py} 0"/>
-    <parent link="${link_rgb}"/>
-    <child link="${link_name}"/>
-  </joint>
-  <link name="${link_name}">
-    <visual>
-      <origin xyz="-0.015 0.0035 0.004"/>
-      <geometry>
-        <mesh filename="package://ca_description/meshes/asus_xtion_pro_live.dae"/>
-      </geometry>
-    </visual>
-  </link>
+<joint name="${name}_joint" type="fixed">
+  <origin xyz="0 ${xtion_pro_cam_rel_rgb_py} 0"/>
+  <parent link="${link_rgb}"/>
+  <child link="${link_name}"/>
+</joint>
+<link name="${link_name}">
+  <visual>
+    <origin xyz="-0.015 0.0035 0.004"/>
+    <geometry>
+      <mesh filename="package://ca_description/meshes/sensors/asus_xtion_pro_live.dae"/>
+    </geometry>
+  </visual>
+</link>
 
-  <joint name="${name}_depth_joint" type="fixed">
-    <origin xyz="0 ${xtion_pro_depth_rel_rgb_py} 0"/>
-    <parent link="${link_rgb}" />
-    <child link="${link_depth}"/>
-  </joint>
-  <link name="${link_depth}"/>
+<joint name="${name}_depth_joint" type="fixed">
+  <origin xyz="0 ${xtion_pro_depth_rel_rgb_py} 0"/>
+  <parent link="${link_rgb}" />
+  <child link="${link_depth}"/>
+</joint>
+<link name="${link_depth}"/>
 
-  <joint name="${name}_depth_optical_joint" type="fixed">
-    <origin rpy="${-pi/2} 0 ${-pi/2}" />
-    <parent link="${link_depth}" />
-    <child link="${link_depth_optical}" />
-  </joint>
-  <link name="${link_depth_optical}"/>
+<joint name="${name}_depth_optical_joint" type="fixed">
+  <origin rpy="${-pi/2} 0 ${-pi/2}" />
+  <parent link="${link_depth}" />
+  <child link="${link_depth_optical}" />
+</joint>
+<link name="${link_depth_optical}"/>
 
-  <xacro:sim_3d_sensor name="${name}" color="Gazebo/FlatBlack"/>
-
-</xacro:macro>
+<xacro:sim_3d_sensor name="${name}" color="Gazebo/FlatBlack"/>
 
 </robot>

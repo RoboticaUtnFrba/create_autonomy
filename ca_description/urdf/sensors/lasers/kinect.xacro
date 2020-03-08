@@ -38,7 +38,7 @@
   <visual>
     <origin rpy="0 0 ${pi/2}"/>
     <geometry>
-      <mesh filename="package://ca_description/meshes/kinect.dae"/>
+      <mesh filename="package://ca_description/meshes/sensors/kinect.dae"/>
     </geometry>
   </visual>
 </link>

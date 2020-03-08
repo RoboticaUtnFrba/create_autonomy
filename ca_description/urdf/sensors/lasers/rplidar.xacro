@@ -27,7 +27,7 @@
 <link name="${link_name}">
   <visual>
     <geometry>
-      <mesh filename="package://ca_description/meshes/rplidar.dae"/>
+      <mesh filename="package://ca_description/meshes/sensors/rplidar.dae"/>
     </geometry>
   </visual>
 </link>
@@ -40,10 +40,11 @@
 
 <link name="${laser_link}"/>
 
-<gazebo reference="${laser_link}">
-
+<gazebo reference="${link_name}">
   <material>Gazebo/FlatBlack</material>
+</gazebo>
 
+<gazebo reference="${laser_link}">
   <sensor type="ray" name="${name}_sensor">
     <visualize>$(arg visualize)</visualize>
     <update_rate>${rate_hz}</update_rate>
