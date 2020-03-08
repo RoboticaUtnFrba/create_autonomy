@@ -136,7 +136,7 @@
   </library_lights>
   <library_images>
     <image id="_f_pole_jpg">
-      <init_from>./images/2f_pole.jpg</init_from>
+      <init_from>./images/short_pole.jpg</init_from>
     </image>
   </library_images>
   <library_visual_scenes>
