@@ -10,7 +10,7 @@
     * turtlebot
     * roomblock
    -->
-  <arg name="stack" value="$(optenv STACK roomblock)"/>
+  <arg name="stack" value="$(optenv STACK turtlebot)"/>
   <!-- Lasers:
     * astra
     * kinect
