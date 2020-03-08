@@ -97,18 +97,22 @@
   </visual>
 </link>
 
+<!-- Nvidia Jetson Nano -->
 <joint name="nvidia_jetson_nano_joint" type="fixed">
-  <origin xyz="0 0 0.117"/>
-  <parent link="${base_link}"/>
+  <origin xyz="0 0 0.003" rpy="0 0 ${-pi/2}"/>
+  <parent link="plate_bottom_link"/>
   <child link="nvidia_jetson_nano_link"/>
 </joint>
 <link name="nvidia_jetson_nano_link">
   <visual>
     <geometry>
-      <mesh filename="package://ca_description/meshes/nvidia_jetson_nano.dae"/>
+      <mesh filename="package://ca_description/meshes/turtlebot_stack/nvidia_jetson_nano.dae"/>
     </geometry>
   </visual>
 </link>
+<gazebo reference="nvidia_jetson_nano_link">
+  <material>Gazebo/Grey</material>
+</gazebo>
 
 <!-- Laser -->
 <xacro:property name="laser" default="$(arg laser)"/>
