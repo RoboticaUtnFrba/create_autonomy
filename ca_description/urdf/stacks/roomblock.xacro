@@ -3,55 +3,55 @@
 Block on top of the iRobot Create 2
 -->
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:include filename="$(find ca_description)/urdf/common_properties.xacro"/>
-  <xacro:include filename="$(find ca_description)/urdf/sensors/camera_sensor.xacro"/>
 
-  <xacro:macro name="roomblock" params="name:=roomblock parent:=base_link visualize:=false *origin">
+<xacro:include filename="$(find ca_description)/urdf/common_properties.xacro"/>
+<xacro:include filename="$(find ca_description)/urdf/sensors/camera_sensor.xacro"/>
 
-    <xacro:property name="parent_link" value="${parent}"/>
-    <xacro:property name="link_name"   value="${name}_link"/>
+<xacro:property name="name" value="roomblock"/>
+<xacro:property name="parent" value="base_link"/>
 
-    <xacro:property name="mass"        value="0.1"/>
-    <xacro:property name="size_x"      value="0.1"/>
-    <xacro:property name="size_y"      value="0.1"/>
-    <xacro:property name="size_z"      value="0.07"/>
+<xacro:property name="parent_link" value="${parent}"/>
+<xacro:property name="link_name"   value="${name}_link"/>
 
-    <joint name="block_joint" type="fixed">
-      <xacro:insert_block name="origin"/>
-      <parent link="${parent_link}"/>
-      <child link="${link_name}" />
-    </joint>
+<xacro:property name="mass"        value="0.1"/>
+<xacro:property name="size_x"      value="0.1"/>
+<xacro:property name="size_y"      value="0.1"/>
+<xacro:property name="size_z"      value="0.07"/>
 
-    <link name="${link_name}">
-      <visual>
-        <geometry>
-  	       <mesh filename="package://ca_description/meshes/block.dae"/>
-        </geometry>
-        <material name="Grey" />
-      </visual>
-      <xacro:inertial_cuboid_with_pose mass="${mass}"
-                                       x_length="${size_x}"
-                                       y_length="${size_y}"
-                                       z_length="${size_z}">
-        <origin xyz="0 0 ${size_z/2}"/>
-      </xacro:inertial_cuboid_with_pose>
-    </link>
+<joint name="block_joint" type="fixed">
+  <origin xyz="${stack_origin}"/>
+  <parent link="${parent_link}"/>
+  <child link="${link_name}" />
+</joint>
 
-    <gazebo reference="${link_name}">
-      <material>Gazebo/Grey</material>
-    </gazebo>
+<link name="${link_name}">
+  <visual>
+    <geometry>
+        <mesh filename="package://ca_description/meshes/block.dae"/>
+    </geometry>
+    <material name="Grey" />
+  </visual>
+  <xacro:inertial_cuboid_with_pose mass="${mass}"
+                                    x_length="${size_x}"
+                                    y_length="${size_y}"
+                                    z_length="${size_z}">
+    <origin xyz="0 0 ${size_z/2}"/>
+  </xacro:inertial_cuboid_with_pose>
+</link>
 
-    <!-- Laser -->
-    <xacro:property name="laser" default="$(arg laser)"/>
-    <xacro:property name="laser_yaml" value="$(find ca_description)/urdf/sensors/lasers/poses.yaml"/>
-    <xacro:property name="laser_dict" value="${load_yaml(laser_yaml)}"/>
+<gazebo reference="${link_name}">
+  <material>Gazebo/Grey</material>
+</gazebo>
 
-    <xacro:property name="laser_origin" value="${laser_dict['roomblock'][laser]}"/>
-    <xacro:include filename="$(find ca_description)/urdf/sensors/lasers/${laser}.xacro"/>
+<!-- Laser -->
+<xacro:property name="laser" default="$(arg laser)"/>
+<xacro:property name="laser_yaml" value="$(find ca_description)/urdf/sensors/lasers/poses.yaml"/>
+<xacro:property name="laser_dict" value="${load_yaml(laser_yaml)}"/>
 
-    <!-- TODO (eborghi): ADD CAMERA CAD? REMOVE CAMERA/USE ANOTHER ONE? -->
-    <xacro:camera_sensor name="raspicam" parent="${link_name}"/>
+<xacro:property name="laser_origin" value="${laser_dict['roomblock'][laser]}"/>
+<xacro:include filename="$(find ca_description)/urdf/sensors/lasers/${laser}.xacro"/>
 
-  </xacro:macro>
+<!-- TODO (eborghi): ADD CAMERA CAD? REMOVE CAMERA/USE ANOTHER ONE? -->
+<xacro:camera_sensor name="raspicam" parent="${link_name}"/>
 
 </robot>

@@ -16,24 +16,10 @@
     <mesh filename="package://ca_description/meshes/create_2.dae" />
   </xacro:create_base>
 
-  <!-- ##### STACKS ##### -->
-  <!-- TODO: Implement this in a dictionary (along with include file) -->
-
-  <xacro:include filename="$(find ca_description)/urdf/stacks/roomblock.xacro"/>
-  <xacro:include filename="$(find ca_description)/urdf/stacks/turtlebot.xacro"/>
-
+  <!-- Stacks -->
   <xacro:property name="stack" value="$(arg stack)"/>
-
-  <!-- Roomblock -->
-  <xacro:if value="${stack == 'roomblock'}">
-    <xacro:roomblock visualize="$(arg visualize)">
-      <origin xyz="0 0 0.07"/>
-    </xacro:roomblock>
-  </xacro:if>
-  <!-- Turtlebot stack -->
-  <xacro:if value="${stack == 'turtlebot'}">
-    <xacro:turtlebot_stack>
-      <origin xyz="0 0 0"/>
-    </xacro:turtlebot_stack>
-  </xacro:if>
+  <xacro:property name="stack_yaml" value="$(find ca_description)/urdf/stacks/poses.yaml"/>
+  <xacro:property name="stack_dict" value="${load_yaml(stack_yaml)}"/>
+  <xacro:property name="stack_origin" value="${stack_dict[stack]}"/>
+  <xacro:include filename="$(find ca_description)/urdf/stacks/${stack}.xacro"/>
 </robot>

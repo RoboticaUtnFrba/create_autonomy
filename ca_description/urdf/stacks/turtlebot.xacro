@@ -6,97 +6,116 @@
  -->
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <!-- Pole macro -->
-  <xacro:macro name="stack_pole" params="name parent:=base_link *origin *mesh">
-    <xacro:property name="link_name" value="pole_${name}_link"/>
-    <joint name="pole_${name}_joint" type="fixed">
-      <xacro:insert_block name="origin"/>
-      <parent link="${parent}"/>
-      <child link="${link_name}"/>
-    </joint>
-    <link name="${link_name}">
-      <visual>
-        <geometry>
-          <xacro:insert_block name="mesh"/>
-        </geometry>
-      </visual>
-    </link>
-  </xacro:macro>
+<!-- Pole macro -->
+<xacro:macro name="stack_pole" params="name parent:=base_link *origin *mesh">
+  <xacro:property name="link_name" value="pole_${name}_link"/>
+  <joint name="pole_${name}_joint" type="fixed">
+    <xacro:insert_block name="origin"/>
+    <parent link="${parent}"/>
+    <child link="${link_name}"/>
+  </joint>
+  <link name="${link_name}">
+    <visual>
+      <geometry>
+        <xacro:insert_block name="mesh"/>
+      </geometry>
+    </visual>
+  </link>
+</xacro:macro>
 
-  <!--
-    Stack macro - all the components relative transforms are made with respect
-    to the parent link (usually base_link). They could be made relative to each
-    other, but there is no necessary reason to do so.
-  -->
-  <xacro:macro name="turtlebot_stack" params="name:=turtlebot_stack parent:=base_link *origin">
+<!-- turtlebot_stack -->
 
-    <xacro:stack_pole name="short_0">
-      <origin xyz="0.0381 0.1 0.093"/>
-      <mesh filename="package://ca_description/meshes/turtlebot_stack/short_pole.dae"/>
-    </xacro:stack_pole>
-    <xacro:stack_pole name="short_1">
-      <origin xyz="0.0381 -0.1 0.093"/>
-      <mesh filename="package://ca_description/meshes/turtlebot_stack/short_pole.dae"/>
-    </xacro:stack_pole>
-    <xacro:stack_pole name="short_2">
-      <origin xyz="-0.0381 0.1 0.093"/>
-      <mesh filename="package://ca_description/meshes/turtlebot_stack/short_pole.dae"/>
-    </xacro:stack_pole>
-    <xacro:stack_pole name="short_3">
-      <origin xyz="-0.0381 -0.1 0.093"/>
-      <mesh filename="package://ca_description/meshes/turtlebot_stack/short_pole.dae"/>
-    </xacro:stack_pole>
+<xacro:property name="name" value="turtlebot_stack"/>
+<xacro:property name="parent" value="base_link"/>
 
-    <joint name="plate_bottom_joint" type="fixed">
-      <origin xyz="-0.01364 0 0.125"/>
-      <parent link="${parent}"/>
-      <child link="plate_bottom_link"/>
-    </joint>
-    <link name="plate_bottom_link">
-      <visual>
-        <geometry>
-          <mesh filename="package://ca_description/meshes/turtlebot_stack/bottom_plate.dae" scale="0.5 0.7 1"/>
-        </geometry>
-      </visual>
-    </link>
+<xacro:property name="base_link" value="${name}_base_link"/>
 
-    <xacro:stack_pole name="large_0">
-      <origin xyz="0.1 0.098 0.18"/>
-      <mesh filename="package://ca_description/meshes/turtlebot_stack/large_pole.dae"/>
-    </xacro:stack_pole>
-    <xacro:stack_pole name="large_1">
-      <origin xyz="0.1 -0.098 0.18"/>
-      <mesh filename="package://ca_description/meshes/turtlebot_stack/large_pole.dae"/>
-    </xacro:stack_pole>
-    <xacro:stack_pole name="large_2">
-      <origin xyz="-0.1 0.098 0.18"/>
-      <mesh filename="package://ca_description/meshes/turtlebot_stack/large_pole.dae"/>
-    </xacro:stack_pole>
-    <xacro:stack_pole name="large_3">
-      <origin xyz="-0.1 -0.098 0.18"/>
-      <mesh filename="package://ca_description/meshes/turtlebot_stack/large_pole.dae"/>
-    </xacro:stack_pole>
+<joint name="${name}_base_joint" type="fixed">
+  <origin xyz="${stack_origin}"/>
+  <parent link="${parent}"/>
+  <child link="${base_link}"/>
+</joint>
+<link name="${base_link}"/>
 
-    <joint name="plate_upper_joint" type="fixed">
-      <origin xyz="-0.01364 0 0.2"/>
-      <parent link="${parent}"/>
-      <child link="plate_upper_link"/>
-    </joint>
-    <link name="plate_upper_link">
-      <visual>
-        <geometry>
-          <mesh filename="package://ca_description/meshes/turtlebot_stack/upper_plate.dae"/>
-        </geometry>
-      </visual>
-    </link>
+<xacro:stack_pole name="short_0" parent="${base_link}">
+  <origin xyz="0.03 0.08 0"/>
+  <mesh filename="package://ca_description/meshes/turtlebot_stack/short_pole.dae"/>
+</xacro:stack_pole>
+<xacro:stack_pole name="short_1" parent="${base_link}">
+  <origin xyz="0.03 -0.08 0"/>
+  <mesh filename="package://ca_description/meshes/turtlebot_stack/short_pole.dae"/>
+</xacro:stack_pole>
+<xacro:stack_pole name="short_2" parent="${base_link}">
+  <origin xyz="-0.06 0.08 0"/>
+  <mesh filename="package://ca_description/meshes/turtlebot_stack/short_pole.dae"/>
+</xacro:stack_pole>
+<xacro:stack_pole name="short_3" parent="${base_link}">
+  <origin xyz="-0.06 -0.08 0"/>
+  <mesh filename="package://ca_description/meshes/turtlebot_stack/short_pole.dae"/>
+</xacro:stack_pole>
 
-    <!-- Laser -->
-    <xacro:property name="laser" default="$(arg laser)"/>
-    <xacro:property name="laser_yaml" value="$(find ca_description)/urdf/sensors/lasers/poses.yaml"/>
-    <xacro:property name="laser_dict" value="${load_yaml(laser_yaml)}"/>
+<joint name="plate_bottom_joint" type="fixed">
+  <origin xyz="-0.025 0 0.032"/>
+  <parent link="${base_link}"/>
+  <child link="plate_bottom_link"/>
+</joint>
+<link name="plate_bottom_link">
+  <visual>
+    <geometry>
+      <mesh filename="package://ca_description/meshes/turtlebot_stack/bottom_plate.dae" scale="0.5 0.7 1"/>
+    </geometry>
+  </visual>
+</link>
 
-    <xacro:property name="laser_origin" value="${laser_dict['turtlebot'][laser]}"/>
-    <xacro:include filename="$(find ca_description)/urdf/sensors/lasers/${laser}.xacro"/>
+<xacro:stack_pole name="large_0" parent="${base_link}">
+  <origin xyz="0.03 0.08 0.077"/>
+  <mesh filename="package://ca_description/meshes/turtlebot_stack/large_pole.dae"/>
+</xacro:stack_pole>
+<xacro:stack_pole name="large_1" parent="${base_link}">
+  <origin xyz="0.03 -0.08 0.077"/>
+  <mesh filename="package://ca_description/meshes/turtlebot_stack/large_pole.dae"/>
+</xacro:stack_pole>
+<xacro:stack_pole name="large_2" parent="${base_link}">
+  <origin xyz="-0.06 0.08 0.077"/>
+  <mesh filename="package://ca_description/meshes/turtlebot_stack/large_pole.dae"/>
+</xacro:stack_pole>
+<xacro:stack_pole name="large_3" parent="${base_link}">
+  <origin xyz="-0.06 -0.08 0.077"/>
+  <mesh filename="package://ca_description/meshes/turtlebot_stack/large_pole.dae"/>
+</xacro:stack_pole>
 
-  </xacro:macro>
+<joint name="plate_upper_joint" type="fixed">
+  <origin xyz="-0.01364 0 0.117"/>
+  <parent link="${base_link}"/>
+  <child link="plate_upper_link"/>
+</joint>
+<link name="plate_upper_link">
+  <visual>
+    <geometry>
+      <mesh filename="package://ca_description/meshes/turtlebot_stack/upper_plate.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<joint name="nvidia_jetson_nano_joint" type="fixed">
+  <origin xyz="0 0 0.117"/>
+  <parent link="${base_link}"/>
+  <child link="nvidia_jetson_nano_link"/>
+</joint>
+<link name="nvidia_jetson_nano_link">
+  <visual>
+    <geometry>
+      <mesh filename="package://ca_description/meshes/nvidia_jetson_nano.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<!-- Laser -->
+<xacro:property name="laser" default="$(arg laser)"/>
+<xacro:property name="laser_yaml" value="$(find ca_description)/urdf/sensors/lasers/poses.yaml"/>
+<xacro:property name="laser_dict" value="${load_yaml(laser_yaml)}"/>
+
+<xacro:property name="laser_origin" value="${laser_dict['turtlebot'][laser]}"/>
+<xacro:include filename="$(find ca_description)/urdf/sensors/lasers/${laser}.xacro"/>
+
 </robot>
