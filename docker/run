@@ -62,7 +62,7 @@ def run_dev_environment(command, ros="melodic", gazebo="9"):
     ut.run_command(docker_command)
     ut.run_command("xhost -local:root")
 
-def attach_dev_environment(command, ros="melodic", gazebo="9"):
+def attach_dev_environment(command):
     command = 'docker exec -it --user {0}:{0} {1} {2}'.format(ut.get_uid(), IMAGE_NAME, command)
     ut.run_command(command)
 
@@ -86,7 +86,7 @@ def main():
     if not is_running():
         run_dev_environment(args.command, ros=args.ros_version, gazebo=args.gazebo_version)
     else:
-        attach_dev_environment(args.command, ros=args.ros_version, gazebo=args.gazebo_version)
+        attach_dev_environment(args.command)
 
 if __name__ == '__main__':
     main()
