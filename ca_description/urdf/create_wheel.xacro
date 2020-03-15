@@ -12,9 +12,9 @@
 
   <joint name="${name}_joint" type="continuous">
     <xacro:insert_block name="origin"/>
-    <parent link="${parent_link}" />
-    <child link="${link_name}" />
-    <axis xyz="0 1 0" />
+    <parent link="${parent_link}"/>
+    <child link="${link_name}"/>
+    <axis xyz="0 0 1"/>
   </joint>
 
   <link name="${link_name}">
