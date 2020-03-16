@@ -20,18 +20,18 @@
     <!-- The root link base_footprint has an inertia specified in the URDF,
          but KDL does not support a root link with an inertia.
          As a workaround, you can add an extra dummy link to your URDF. -->
-    <joint name="fixed_joint" type="fixed">
+    <!-- <joint name="fixed_joint" type="fixed">
       <parent link="dummy_link"/>
       <child link="base_footprint"/>
     </joint>
-    <link name="dummy_link"/>
+    <link name="dummy_link"/> -->
 
     <link name="base_footprint">
       <xacro:dummy_inertia/>
     </link>
 
     <joint name="base_footprint_joint" type="continuous">
-      <origin xyz="0 0 ${base_offset_z}" rpy="0 0 0" />
+      <origin xyz="0 0 ${base_offset_z}"/>
       <parent link="base_footprint" />
       <child link="base_link" />
       <axis xyz="1 0 0"/>
@@ -41,14 +41,14 @@
       <xacro:inertial_cylinder mass="${base_mass}" radius="${base_diameter/2}" length="${base_height}"/>
 
       <visual>
-        <origin xyz=" 0 0 ${base_link_offset_z}" rpy="0 0 0" />
+        <origin xyz=" 0 0 ${base_link_offset_z}"/>
         <geometry>
           <xacro:insert_block name="mesh" />
         </geometry>
       </visual>
 
       <collision>
-        <origin xyz="0 0 ${base_link_offset_z}" rpy="0 0 0" />
+        <origin xyz="0 0 ${base_link_offset_z}"/>
         <geometry>
           <cylinder length="${base_height}" radius="${base_diameter/2}" />
         </geometry>
