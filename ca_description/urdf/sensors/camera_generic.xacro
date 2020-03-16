@@ -11,7 +11,7 @@
     <link name="${name}_link"/>
 
     <joint name="${name}_optical_joint" type="fixed">
-      <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}" />
+      <origin rpy="${-pi/2} 0 ${-pi/2}" />
       <parent link="${name}_link" />
       <child link="${name}_optical_frame"/>
     </joint>
