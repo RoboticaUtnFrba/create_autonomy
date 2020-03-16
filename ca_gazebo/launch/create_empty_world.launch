@@ -38,7 +38,7 @@
   </include>
 
 	<!-- Visual odometry -->
-	<include file="$(find ca_visual_odometry)/launch/vo_raspicam.launch">
+	<include if="$(optenv VISUAL_ODOMETRY true)" file="$(find ca_visual_odometry)/launch/vo_raspicam.launch">
     <!-- TODO (@eborghi10): Improve this based on ca_bringup? -->
 		<arg name="simulation" value="true"/>
 	</include>
