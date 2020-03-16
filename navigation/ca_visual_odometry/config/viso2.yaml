@@ -23,7 +23,7 @@ bucket_width: 50
 bucket_height: 50
 
 # Mono params
-camera_height: 0.161
+camera_height: 0.23
 camera_pitch: 0.0
 ransac_iters: 2000
 inlier_threshold: 1e-5
