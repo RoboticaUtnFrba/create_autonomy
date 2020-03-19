@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-<xacro:macro name="wall_sensor" params="name:=wall_sensor parent:=base_link visualize:=false *origin">
+<xacro:macro name="wall_sensor" params="name:=wall_sensor parent:=base_link *origin">
 
   <xacro:include filename="$(find ca_description)/urdf/common_properties.xacro"/>
 
@@ -26,7 +26,7 @@
     <sensor type="ray" name="${name}_sensor">
       <always_on>true</always_on>
       <update_rate>${rate_hz}</update_rate>
-      <visualize>${visualize}</visualize>
+      <visualize>$(arg visualize)</visualize>
       <ray>
         <scan>
           <horizontal>

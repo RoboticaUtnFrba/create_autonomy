@@ -10,12 +10,14 @@
   <xacro:include filename="$(find ca_description)/urdf/sensors/cliff_sensors.xacro"/>
   <xacro:include filename="$(find ca_description)/urdf/sensors/omni_sensor.xacro"/>
 
-  <xacro:macro name="create_base" params="wheel_separation wheel_radius wheel_width base_diameter *mesh visualize:=false">
+  <xacro:macro name="create_base" params="wheel_separation wheel_radius wheel_width base_diameter *mesh">
 
     <xacro:property name="base_link_offset_z" value="0.0308"/>
     <xacro:property name="base_offset_z" value="0.017"/>
     <xacro:property name="base_height" value="0.0611632"/>
     <xacro:property name="base_mass" value="2"/>
+
+    <xacro:arg name="visualize" default="false"/>
 
     <!-- The root link base_footprint has an inertia specified in the URDF,
          but KDL does not support a root link with an inertia.
@@ -55,7 +57,7 @@
       </collision>
     </link>
 
-    <xacro:wall_sensor visualize="${visualize}">
+    <xacro:wall_sensor>
       <origin xyz="0.09 -0.12 0.042" rpy="0 0 -1"/>
     </xacro:wall_sensor>
 

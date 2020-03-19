@@ -11,8 +11,7 @@
   <xacro:create_base wheel_separation="${wheel_separation}"
                      base_diameter="${base_diameter}"
                      wheel_width="${wheel_width}"
-                     wheel_radius="${wheel_radius}"
-                     visualize="$(arg visualize)">
+                     wheel_radius="${wheel_radius}">
     <mesh filename="package://ca_description/meshes/create_2.dae" />
   </xacro:create_base>
 
