@@ -12,10 +12,16 @@ RUN echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc
 # Setup keys for ROS
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
 
+# Install bootstrap tools
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    python-rosdep \
+    python-rosinstall
+
 # Install ROS packages
 RUN apt-get update && \
     apt-get install -y \
-    ros-${ROS1_DISTRO}-desktop && \
+    ros-${ROS1_DISTRO}-desktop \
+    && \
     apt-get clean && \
     apt-get autoremove && \
     apt-get autoclean && \
