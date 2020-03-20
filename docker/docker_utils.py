@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 
 """
 Author:     Diego Maldonado (@dmnunez1993)
@@ -30,7 +30,7 @@ def run_command(command):
     subprocess.call(command, shell=True)
 
 def get_repo_root():
-    return subprocess.check_output('git rev-parse --show-toplevel'.split()).strip()
+    return subprocess.check_output('git rev-parse --show-toplevel'.split()).strip().decode()
 
 def get_uid():
     return os.getuid()
