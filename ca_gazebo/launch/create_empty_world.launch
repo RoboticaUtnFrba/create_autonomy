@@ -13,6 +13,7 @@
 		<arg name="paused" value="$(arg paused)"/>
 		<arg name="use_sim_time" value="true"/>
 		<arg name="verbose" value="$(arg debug)"/>
+
 		<arg name="world_name" value="$(find ca_gazebo)/worlds/$(arg env).world"/>
 	</include>
 
@@ -29,6 +30,11 @@
 	<!-- Spawn robot/s -->
 	<include file="$(find ca_gazebo)/launch/spawn_multirobot.launch">
 		<arg name="localization" value="$(arg localization)" />
+	</include>
+
+	<!-- Spawn dock -->
+	<include file="$(find ca_description)/launch/spawn_dock.launch">
+		<arg name="name" value="$(optenv DOCK_NAME dock)" />
 	</include>
 
   <!-- map_server -->

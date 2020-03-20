@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<robot name="dock" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find ca_description)/urdf/common_properties.xacro" />
+  <xacro:macro name="dock" params="width">
+    <link name='back'>
+      <visual name='visual'>
+        <geometry>
+          <box size="${width} ${width/3} ${width * 2/3}"/>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <box size="${width} ${width/3} ${width * 2/3}"/>
+        </geometry>
+      </collision>
+      <xacro:inertial_cuboid_with_pose mass="0.15" x_length="${width}"
+          y_length="${width/3}" z_length="${width * 2/3}" >
+        <origin xyz="0 0 0" />
+      </xacro:inertial_cuboid_with_pose>
+    </link>
+    <link name='link'>
+      <visual name='visual'>
+        <origin xyz="0 ${width/2 - width/6} ${-(width * 2/3)/2}" />
+        <geometry>
+          <box size="${width} ${width} 0.01"/>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <origin xyz="0 ${width/2 - width/6} ${-(width * 2/3)/2}" />
+        <geometry>
+          <box size="${width} ${width} 0.01"/>
+        </geometry>
+      </collision>
+      <xacro:inertial_cuboid_with_pose mass="0.05" x_length="${width}"
+          y_length="${width}" z_length="0.01" >
+        <origin xyz="0 ${width/2 - width/6} ${-(width * 2/3)/2}" />
+      </xacro:inertial_cuboid_with_pose>
+    </link>
+    <joint name='glue' type='fixed'>
+      <parent link="back" />
+      <child link="link" />
+    </joint>
+    <!-- <gazebo>
+      <plugin name="model_pose_publisher_plugin" filename="libmodel_pose_publisher_plugin.so"/>
+    </gazebo> -->
+  </xacro:macro>
+  <xacro:dock width="0.15">
+  </xacro:dock>
+</robot>

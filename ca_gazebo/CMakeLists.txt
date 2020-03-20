@@ -23,6 +23,7 @@ catkin_package(
 	LIBRARIES
 		create_bumper_plugin
 		model_pose_publisher_plugin
+		battery_charger_plugin
 		traffic_light_plugin
 		${trajectory_actor_plugin_name}
 		world_time_publisher
@@ -166,6 +167,10 @@ add_dependencies(model_pose_publisher_plugin ${catkin_EXPORTED_TARGETS})
 target_link_libraries(model_pose_publisher_plugin
 	${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
 
+add_library(battery_charger_plugin src/battery_charger_plugin.cpp)
+target_link_libraries(battery_charger_plugin
+	${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
+
 add_library(traffic_light_plugin src/traffic_light_plugin.cpp)
 add_dependencies(traffic_light_plugin ${catkin_EXPORTED_TARGETS})
 target_link_libraries(traffic_light_plugin
@@ -200,6 +205,7 @@ install(TARGETS
 		create_cliff_plugin
 		create_virtual_wall_plugin
 		model_pose_publisher_plugin
+		battery_charger_plugin
 		traffic_light_plugin
 		virtual_wall_detector
 		world_time_publisher
