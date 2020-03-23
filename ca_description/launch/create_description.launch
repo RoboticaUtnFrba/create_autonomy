@@ -1,16 +1,18 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="model" default="$(find ca_description)/urdf/create_2.xacro"/>
+  <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
+  <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
+  <arg name="tf_prefix" value="$(arg ns)_tf"          doc="Tf prefix"/>
 
-  <arg name="robot_name" default="create"/>
-  <arg name="visualize" default="$(optenv VISUALIZE false)"/>
-  <arg name="tf_prefix" value="$(arg robot_name)_tf"/>
+  <arg name="model" value="$(find ca_description)/urdf/create_2.xacro" doc="Path to Xacro description of the robot"/>
+
+  <arg name="visualize" default="$(optenv VISUALIZE false)" doc="Flag to visualize rays in Gazebo"/>
 
   <!-- Stacks:
     * turtlebot
     * roomblock
    -->
-  <arg name="stack" value="$(optenv STACK turtlebot)"/>
+  <arg name="stack" value="$(optenv STACK turtlebot)" doc="Stack used by the robot. Options are: turtlebot or roomblock"/>
   <!-- Lasers:
     * astra
     * kinect
@@ -18,13 +20,13 @@
     * rplidar
     * xtion_pro
    -->
-  <arg name="laser" value="$(optenv LASER rplidar)"/>
+  <arg name="laser" default="$(optenv LASER rplidar)" doc="Laser for mapping the environment"/>
 
-  <arg name="freq" value="40"/>
+  <arg name="freq" value="40" doc="Broadcasting frequency of robot_description parameter"/>
 
   <!-- Robot description -->
   <arg name="xacro_args" value="visualize:=$(arg visualize)
-                                robot_name:=$(arg robot_name)
+                                robot_name:=$(arg ns)
                                 stack:=$(arg stack)
                                 laser:=$(arg laser)"/>
   <!-- TODO (@eborghi10): Use only 1 robot_description for multiple robots -->

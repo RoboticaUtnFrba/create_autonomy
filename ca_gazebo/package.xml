@@ -11,6 +11,7 @@
   <buildtool_depend>catkin</buildtool_depend>
 
   <build_depend>ca_msgs</build_depend>
+  <build_depend>gazebo</build_depend>
   <build_depend>gazebo_plugins</build_depend>
   <build_depend>gazebo_ros</build_depend>
   <build_depend>roscpp</build_depend>
@@ -20,6 +21,7 @@
 
   <run_depend>ca_description</run_depend>
   <run_depend>ca_msgs</run_depend>
+  <run_depend>gazebo</run_depend>
   <run_depend>gazebo_plugins</run_depend>
   <run_depend>gazebo_ros</run_depend>
   <run_depend>roscpp</run_depend>

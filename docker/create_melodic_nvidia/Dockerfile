@@ -16,4 +16,13 @@ ENV NVIDIA_VISIBLE_DEVICES=all NVIDIA_DRIVER_CAPABILITIES=all
 # https://askubuntu.com/a/22614
 RUN touch ~/.sudo_as_admin_successful
 
+USER root
+# Orbbec Astra
+RUN wget https://github.com/orbbec/ros_astra_camera/blob/master/56-orbbec-usb.rules
+RUN mv 56-orbbec-usb.rules /etc/udev/rules.d/56-orbbec-usb.rules
+# ASUS Xtion
+RUN echo "KERNEL == \"ttyUSB0\", MODE = \"0777\"" >> /etc/udev/rules.d/80-persistent-local-usb.rules
+RUN service udev reload
+RUN service udev restart
+
 USER $USER

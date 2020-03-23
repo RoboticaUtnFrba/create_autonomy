@@ -19,7 +19,6 @@ obstacle_layer:
   }
   scan: {
       data_type: LaserScan,
-      topic: laser/scan,
       marking: true,
       clearing: true,
       obstacle_range: 6.0,

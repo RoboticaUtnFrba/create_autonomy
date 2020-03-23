@@ -1,37 +1,42 @@
 <launch>
   <!-- https://answers.ros.org/question/229489/how-do-i-create-dynamic-launch-files/ -->
   <arg name="nr" default="$(optenv NUM_ROBOTS 1)"/>
-  <arg name="rviz" default="$(optenv RVIZ false)"/>
-  <arg name="localization" default="$(optenv LOCALIZATION none)"/>
+
+  <arg name="env" default="empty" doc="Name of the environment"/>
+  <arg name="localization" default="$(optenv LOCALIZATION none)"
+       doc="Localization type. More options here: https://github.com/RoboticaUtnFrba/create_autonomy/wiki/Launching-options"/>
+
+  <arg name="rviz" default="$(optenv RVIZ false)" doc="Flag to use RViz"/>
+  <arg name="rviz_config" value="$(optenv RVIZ_CONFIG)" doc="RViz configuration file"/>
 
   <!-- Start 1 robot -->
   <group ns="$(eval 'create' + str(arg('nr')))">
     <include file="$(find ca_gazebo)/launch/spawn_create.launch">
-      <arg name="i" value="$(arg nr)"/>
+      <arg name="robot_id" value="$(arg nr)"/>
     </include>
 
     <param name="tf_prefix" value="create$(arg nr)_tf" />
 
     <!-- localization -->
-
     <include if="$(eval str(arg('localization'))!='none')"
-     file="$(find ca_move_base)/launch/navigate.launch">
-      <arg name="robot_name" value="create$(arg nr)"/>
+             file="$(find ca_move_base)/launch/navigate.launch">
+      <arg name="env"          value="$(arg env)"/>
       <arg name="localization" value="$(arg localization)"/>
+      <arg name="robot_id"     value="$(arg nr)"/>
     </include>
 
-
     <!-- RViz -->
-    <arg name="rviz_config" value="$(optenv RVIZ_CONFIG robot_description)"/>
-    <include if="$(arg rviz)" file="$(find ca_tools)/launch/rviz.launch">
+    <include if="$(eval arg('rviz') or arg('rviz_config')!='' )"
+             file="$(find ca_tools)/launch/rviz.launch">
       <arg name="config_file" value="$(arg rviz_config)"/>
     </include>
   </group>
 
   <!-- Recursively spawn more robots -->
   <include file="$(find ca_gazebo)/launch/spawn_multirobot.launch" if="$(eval arg('nr') - 1 > 0)">
-    <arg name="nr" value="$(eval arg('nr') - 1)"/>
-    <arg name="rviz" value="false"/>
-    <arg name="localization" value="$(arg localization)" />
+    <arg name="env"          value="$(arg env)"/>
+    <arg name="localization" value="$(arg localization)"/>
+    <arg name="nr"           value="$(eval arg('nr') - 1)"/>
+    <arg name="rviz"         value="false"/>
   </include>
 </launch>

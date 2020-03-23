@@ -28,5 +28,5 @@ roslaunch ca_driver create_2.launch
 For example, if you would like to disable the robot description and provide a custom configuration file:
 
 ``` bash
-roslaunch ca_driver create_2.launch config:=/abs/path/to/config.yaml desc:=false
+roslaunch ca_driver create_2.launch config:=/abs/path/to/config.yaml
 ```

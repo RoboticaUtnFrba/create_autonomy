@@ -45,11 +45,15 @@ CreateDriver::CreateDriver(ros::NodeHandle& nh, ros::NodeHandle& ph)
 {
   bool create_one;
   std::string robot_model_name;
+  std::string topic_ns;
+
   priv_nh_.param<double>("loop_hz", loop_hz_, 10.0);
   priv_nh_.param<std::string>("dev", dev_, "/dev/ttyUSB0");
   priv_nh_.param<std::string>("robot_model", robot_model_name, "CREATE_2");
   priv_nh_.param<double>("latch_cmd_duration", latch_duration_, 0.2);
   priv_nh_.param<bool>("publish_tf", publish_tf_, true);
+  priv_nh_.param<std::string>("tf_prefix", tf_prefix_, "create_tf");
+  priv_nh_.param<std::string>("namespace", topic_ns, "create");
 
   if (robot_model_name == "ROOMBA_400")
   {
@@ -90,23 +94,22 @@ CreateDriver::CreateDriver(ros::NodeHandle& nh, ros::NodeHandle& ph)
   ROS_INFO("[CREATE] Battery level %.2f %%", (robot_->getBatteryCharge() / robot_->getBatteryCapacity()) * 100.0);
 
   // Set frame_id's
-  const std::string str_base_footprint("base_footprint");
-  mode_msg_.header.frame_id = str_base_footprint;
-  bumper_msg_.header.frame_id = str_base_footprint;
-  cliff_msg_.header.frame_id = str_base_footprint;
-  wheeldrop_msg_.header.frame_id = str_base_footprint;
-  charging_state_msg_.header.frame_id = str_base_footprint;
-  tf_odom_.header.frame_id = "odom";
-  tf_odom_.child_frame_id = str_base_footprint;
-  odom_msg_.header.frame_id = "odom";
-  odom_msg_.child_frame_id = str_base_footprint;
+  mode_msg_.header.frame_id = tf::resolve(tf_prefix_, str_base_footprint_);
+  bumper_msg_.header.frame_id = tf::resolve(tf_prefix_, str_base_footprint_);
+  cliff_msg_.header.frame_id = tf::resolve(tf_prefix_, str_base_footprint_);
+  wheeldrop_msg_.header.frame_id = tf::resolve(tf_prefix_, str_base_footprint_);
+  charging_state_msg_.header.frame_id = tf::resolve(tf_prefix_, str_base_footprint_);
+  tf_odom_.header.frame_id = tf::resolve(tf_prefix_, str_odom_);
+  tf_odom_.child_frame_id = tf::resolve(tf_prefix_, str_base_footprint_);
+  odom_msg_.header.frame_id = tf::resolve(tf_prefix_, str_odom_);
+  odom_msg_.child_frame_id = tf::resolve(tf_prefix_, str_base_footprint_);
   joint_state_msg_.name.resize(2);
   joint_state_msg_.position.resize(2);
   joint_state_msg_.velocity.resize(2);
   joint_state_msg_.effort.resize(2);
-  joint_state_msg_.name[0] = "left_wheel_joint";
-  joint_state_msg_.name[1] = "right_wheel_joint";
-  angle_msg_.header.frame_id = str_base_footprint;
+  joint_state_msg_.name[0] = "wheel_left_joint";
+  joint_state_msg_.name[1] = "wheel_right_joint";
+  angle_msg_.header.frame_id = tf::resolve(tf_prefix_, str_base_footprint_);
 
   // Populate intial covariances
   for (int i = 0; i < 36; i++)
@@ -115,43 +118,46 @@ CreateDriver::CreateDriver(ros::NodeHandle& nh, ros::NodeHandle& ph)
     odom_msg_.twist.covariance[i] = COVARIANCE[i];
   }
 
+  // Initialize NodeHandle for publishers and subscribers
+  topic_nh_.reset(new ros::NodeHandle(topic_ns));
+
   // Setup subscribers
-  cmd_vel_sub_ = nh.subscribe("cmd_vel", 1, &CreateDriver::cmdVelCallback, this);
-  debris_led_sub_ = nh.subscribe("debris_led", 10, &CreateDriver::debrisLEDCallback, this);
-  spot_led_sub_ = nh.subscribe("spot_led", 10, &CreateDriver::spotLEDCallback, this);
-  dock_led_sub_ = nh.subscribe("dock_led", 10, &CreateDriver::dockLEDCallback, this);
-  check_led_sub_ = nh.subscribe("check_led", 10, &CreateDriver::checkLEDCallback, this);
-  power_led_sub_ = nh.subscribe("power_led", 10, &CreateDriver::powerLEDCallback, this);
-  set_ascii_sub_ = nh.subscribe("set_ascii", 10, &CreateDriver::setASCIICallback, this);
-  play_song_sub_ = nh.subscribe("song", 10, &CreateDriver::playSongCallback, this);
-  dock_sub_ = nh.subscribe("dock", 10, &CreateDriver::dockCallback, this);
-  undock_sub_ = nh.subscribe("undock", 10, &CreateDriver::undockCallback, this);
-  main_motor_sub_ = nh.subscribe("main_motor", 10, &CreateDriver::mainMotorCallback, this);
+  cmd_vel_sub_ = topic_nh_->subscribe("cmd_vel", 1, &CreateDriver::cmdVelCallback, this);
+  debris_led_sub_ = topic_nh_->subscribe("debris_led", 10, &CreateDriver::debrisLEDCallback, this);
+  spot_led_sub_ = topic_nh_->subscribe("spot_led", 10, &CreateDriver::spotLEDCallback, this);
+  dock_led_sub_ = topic_nh_->subscribe("dock_led", 10, &CreateDriver::dockLEDCallback, this);
+  check_led_sub_ = topic_nh_->subscribe("check_led", 10, &CreateDriver::checkLEDCallback, this);
+  power_led_sub_ = topic_nh_->subscribe("power_led", 10, &CreateDriver::powerLEDCallback, this);
+  set_ascii_sub_ = topic_nh_->subscribe("set_ascii", 10, &CreateDriver::setASCIICallback, this);
+  play_song_sub_ = topic_nh_->subscribe("song", 10, &CreateDriver::playSongCallback, this);
+  dock_sub_ = topic_nh_->subscribe("dock", 10, &CreateDriver::dockCallback, this);
+  undock_sub_ = topic_nh_->subscribe("undock", 10, &CreateDriver::undockCallback, this);
+  main_motor_sub_ = topic_nh_->subscribe("main_motor", 10, &CreateDriver::mainMotorCallback, this);
 
   // Setup publishers
-  odom_pub_ = nh.advertise<nav_msgs::Odometry>("odom", 30);
-  angle_pub_ = nh.advertise<geometry_msgs::PoseWithCovarianceStamped>("angle", 30);
-  clean_btn_pub_ = nh.advertise<std_msgs::Empty>("clean_button", 30);
-  day_btn_pub_ = nh.advertise<std_msgs::Empty>("day_button", 30);
-  hour_btn_pub_ = nh.advertise<std_msgs::Empty>("hour_button", 30);
-  min_btn_pub_ = nh.advertise<std_msgs::Empty>("minute_button", 30);
-  dock_btn_pub_ = nh.advertise<std_msgs::Empty>("dock_button", 30);
-  spot_btn_pub_ = nh.advertise<std_msgs::Empty>("spot_button", 30);
-  voltage_pub_ = nh.advertise<std_msgs::Float32>("battery/voltage", 30);
-  current_pub_ = nh.advertise<std_msgs::Float32>("battery/current", 30);
-  charge_pub_ = nh.advertise<std_msgs::Float32>("battery/charge", 30);
-  charge_ratio_pub_ = nh.advertise<std_msgs::Float32>("battery/charge_ratio", 30);
-  capacity_pub_ = nh.advertise<std_msgs::Float32>("battery/capacity", 30);
-  temperature_pub_ = nh.advertise<std_msgs::Int16>("battery/temperature", 30);
-  charging_state_pub_ = nh.advertise<ca_msgs::ChargingState>("battery/charging_state", 30);
-  omni_char_pub_ = nh.advertise<std_msgs::UInt16>("ir_omni", 30);
-  mode_pub_ = nh.advertise<ca_msgs::Mode>("mode", 30);
-  bumper_pub_ = nh.advertise<ca_msgs::Bumper>("bumper", 30);
-  cliff_pub_ = nh.advertise<ca_msgs::Cliff>("cliff", 30);
-  wheeldrop_pub_ = nh.advertise<ca_msgs::Wheeldrop>("wheeldrop", 30);
-  wheel_joint_pub_ = nh.advertise<sensor_msgs::JointState>("joint_states", 10);
-  wall_pub_ = nh.advertise<std_msgs::Bool>("wall", 30);
-  // overcurrent_pub_ = nh.advertise<ca_msgs::Overcurrent>("overcurrent", 30);
+  odom_pub_ = topic_nh_->advertise<nav_msgs::Odometry>("odom", 30);
+  angle_pub_ = topic_nh_->advertise<geometry_msgs::PoseWithCovarianceStamped>("angle", 30);
+  clean_btn_pub_ = topic_nh_->advertise<std_msgs::Empty>("clean_button", 30);
+  day_btn_pub_ = topic_nh_->advertise<std_msgs::Empty>("day_button", 30);
+  hour_btn_pub_ = topic_nh_->advertise<std_msgs::Empty>("hour_button", 30);
+  min_btn_pub_ = topic_nh_->advertise<std_msgs::Empty>("minute_button", 30);
+  dock_btn_pub_ = topic_nh_->advertise<std_msgs::Empty>("dock_button", 30);
+  spot_btn_pub_ = topic_nh_->advertise<std_msgs::Empty>("spot_button", 30);
+  voltage_pub_ = topic_nh_->advertise<std_msgs::Float32>("battery/voltage", 30);
+  current_pub_ = topic_nh_->advertise<std_msgs::Float32>("battery/current", 30);
+  charge_pub_ = topic_nh_->advertise<std_msgs::Float32>("battery/charge", 30);
+  charge_ratio_pub_ = topic_nh_->advertise<std_msgs::Float32>("battery/charge_ratio", 30);
+  capacity_pub_ = topic_nh_->advertise<std_msgs::Float32>("battery/capacity", 30);
+  temperature_pub_ = topic_nh_->advertise<std_msgs::Int16>("battery/temperature", 30);
+  charging_state_pub_ = topic_nh_->advertise<ca_msgs::ChargingState>("battery/charging_state", 30);
+  omni_char_pub_ = topic_nh_->advertise<std_msgs::UInt16>("ir_omni", 30);
+  mode_pub_ = topic_nh_->advertise<ca_msgs::Mode>("mode", 30);
+  bumper_pub_ = topic_nh_->advertise<ca_msgs::Bumper>("bumper", 30);
+  cliff_pub_ = topic_nh_->advertise<ca_msgs::Cliff>("cliff", 30);
+  wheeldrop_pub_ = topic_nh_->advertise<ca_msgs::Wheeldrop>("wheeldrop", 30);
+  wheel_joint_pub_ = topic_nh_->advertise<sensor_msgs::JointState>("joint_states", 10);
+  wall_pub_ = topic_nh_->advertise<std_msgs::Bool>("wall", 30);
+  // overcurrent_pub_ = topic_nh_->advertise<ca_msgs::Overcurrent>("overcurrent", 30);
 
   // Setup diagnostics
   diagnostics_.add("Battery Status", this, &CreateDriver::updateBatteryDiagnostics);
@@ -459,7 +465,7 @@ void CreateDriver::publishOdom()
   create::Vel vel = robot_->getVel();
 
   // Populate position info
-  geometry_msgs::Quaternion quat = tf::createQuaternionMsgFromRollPitchYaw(0, 0, pose.yaw);
+  geometry_msgs::Quaternion quat = tf::createQuaternionMsgFromYaw(pose.yaw);
   odom_msg_.header.stamp = ros::Time::now();
   odom_msg_.pose.pose.position.x = pose.x;
   odom_msg_.pose.pose.position.y = pose.y;
@@ -512,25 +518,59 @@ void CreateDriver::publishAngle()
    */
   orientation_ += (robot_->getAngle() * M_PI / 58.33008);
   const float yaw = CreateDriver::normalizeAngle(orientation_);
-  const float yaw_2 = yaw / 2.;
-  angle_msg_.pose.pose.orientation.x = cos(yaw_2);
-  angle_msg_.pose.pose.orientation.w = sin(yaw_2);
+  angle_msg_.pose.pose.orientation = tf::createQuaternionMsgFromYaw(yaw);
   angle_msg_.header.seq += 1;
   angle_msg_.header.stamp = ros::Time::now();
   angle_msg_.pose.covariance[35] = orientation_stddev * orientation_stddev;
   angle_pub_.publish(angle_msg_);
 }
 
+void CreateDriver::publishWheelTf(
+    tf::Transform &tf,
+    const float distance,
+    const std::string frame_id,
+    const tf::Vector3 &dist_to_base)
+{
+  tf.setOrigin(dist_to_base);
+
+  tf::Quaternion q;
+  q.setRPY(-M_PI_2, distance, 0);
+  tf.setRotation(q);
+
+  tf_broadcaster_.sendTransform(
+    tf::StampedTransform(
+      tf, ros::Time::now(),
+      tf::resolve(tf_prefix_, str_base_link_),
+      frame_id));
+}
+
 void CreateDriver::publishJointState()
 {
   // Publish joint states
-  float wheelRadius = model_.getWheelDiameter() / 2.0;
+  const float wheelRadius = model_.getWheelDiameter() / 2.0;
+  const float totalLeftAngDist  = robot_->getLeftWheelTotalDistance() / wheelRadius;
+  const float totalRightAngDist = robot_->getRightWheelTotalDistance() / wheelRadius;
 
   joint_state_msg_.header.stamp = ros::Time::now();
-  joint_state_msg_.position[0] = robot_->getLeftWheelDistance() / wheelRadius;
-  joint_state_msg_.position[1] = robot_->getRightWheelDistance() / wheelRadius;
+  joint_state_msg_.position[0] = totalLeftAngDist;
+  joint_state_msg_.position[1] = totalRightAngDist;
   joint_state_msg_.velocity[0] = robot_->getRequestedLeftWheelVel() / wheelRadius;
   joint_state_msg_.velocity[1] = robot_->getRequestedRightWheelVel() / wheelRadius;
+
+  if (publish_tf_)
+  {
+    publishWheelTf(
+        tf_wheel_left_,
+        totalLeftAngDist,
+        tf::resolve(tf_prefix_, str_wheel_left_link_),
+        tf::Vector3(0, wheels_distance_/2.0, 0));
+    publishWheelTf(
+        tf_wheel_right_,
+        totalRightAngDist,
+        tf::resolve(tf_prefix_, str_wheel_right_link_),
+        tf::Vector3(0, -wheels_distance_/2.0, 0));
+  }
+
   wheel_joint_pub_.publish(joint_state_msg_);
 }
 

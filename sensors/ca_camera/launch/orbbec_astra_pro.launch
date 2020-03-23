@@ -1,0 +1,20 @@
+<launch>
+<!--
+  https://3dclub.orbbec3d.com/t/astra-pro-rgb-camera-calibration-file/761/2
+  http://wiki.ros.org/openni_launch/Tutorials/IntrinsicCalibration
+ -->
+
+  <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
+  <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
+  <arg name="tf_prefix" value="$(arg ns)_tf"          doc="Tf prefix"/>
+
+  <!-- Include official launch file and specify camera_info urls -->
+  <include file="$(find astra_camera)/launch/astrapro.launch">
+    <!-- provide arguments to that launch file -->
+    <arg name="rgb_camera_info_url"   value="package://ca_camera/config/rgb_16111910172.yaml" />
+    <arg name="depth_camera_info_url" value="package://ca_camera/config/depth_16111910172.yaml" />
+
+    <arg name="camera"    value="astra"/>
+    <arg name="tf_prefix" value="$(arg tf_prefix)"/>
+  </include>
+</launch>

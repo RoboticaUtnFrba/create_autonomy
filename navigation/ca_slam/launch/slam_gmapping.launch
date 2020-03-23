@@ -1,5 +1,9 @@
 <launch>
-  <arg name="ns"/>
+  <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
+  <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
+  <arg name="tf_prefix" value="$(arg ns)_tf"          doc="Tf prefix"/>
+
+  <arg name="laser" default="$(optenv LASER rplidar)" doc="Laser for mapping the environment"/>
 
   <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
     <rosparam file="$(find ca_slam)/config/slam_gmapping.yaml" command="load"/>
@@ -7,14 +11,14 @@
     <remap from="map" to="/map" />
     <remap from="map_metadata" to="/map_metadata"/>
 
-    <remap from="scan" to="laser/scan"/>
+    <remap from="scan" to="$(arg laser)/scan"/>
 
-    <param name="odom_frame" value="$(arg ns)_tf/odom"/>
-    <param name="base_frame" value="$(arg ns)_tf/base_footprint"/>
-    <param name="map_frame" value="map"/>
+    <param name="odom_frame" value="$(arg tf_prefix)/odom"/>
+    <param name="base_frame" value="$(arg tf_prefix)/base_footprint"/>
+    <param name="map_frame"  value="map"/>
   </node>
 
   <!-- TODO: This should be fixed editting slam_gmapping -->
   <node pkg="tf" type="static_transform_publisher" name="map_static_tf"
-        args="0 0 0 0 0 0 map $(arg ns)_tf/map 40"/>
+        args="0 0 0 0 0 0 map $(arg tf_prefix)/map 40"/>
 </launch>

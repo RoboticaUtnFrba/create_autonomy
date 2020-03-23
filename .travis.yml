@@ -11,6 +11,7 @@ env:
     - CATKIN_WS=~/catkin_ws
     - CATKIN_WS_SRC=${CATKIN_WS}/src
     - CI_ROS_DISTRO="melodic"
+    - CREATE_AUTONOMY_SRC=${CATKIN_WS_SRC}/create_autonomy
 
 install:
   - sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu `lsb_release -cs` main" > /etc/apt/sources.list.d/ros-latest.list'
@@ -18,26 +19,20 @@ install:
   - wget http://packages.ros.org/ros.key -O - | sudo apt-key add -
   - wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
   - sudo apt-get update -qq
-  - sudo apt-get install -qq -y python-rosdep python-catkin-tools
+  - sudo apt-get install -qq -y python-rosdep python-catkin-tools python3-vcstool wget
   - sudo rosdep init
   - rosdep update
+  # Create workspace
+  #
+  - mkdir -p $CREATE_AUTONOMY_SRC
+  # Clone manual dependencies to $CATKIN_WS_SRC
+  - wget -q https://github.com/${TRAVIS_REPO_SLUG}/blob/${TRAVIS_COMMIT}/rpi.repos
+  - /usr/bin/vcs import $CATKIN_WS_SRC < rpi.repos
+  # Add ONLY the package under integration to the workspace using a symlink
+  - ln -s $TRAVIS_BUILD_DIR $CREATE_AUTONOMY_SRC
   # Use rosdep to install all dependencies (including ROS itself)
-  # - git clone https://github.com/RoboticaUtnFrba/i2c_imu.git $TRAVIS_BUILD_DIR/i2c_imu
-  - git clone https://github.com/RoboticaUtnFrba/libcreate.git $TRAVIS_BUILD_DIR/libcreate
+  - cd $CATKIN_WS
   - rosdep install --from-paths ./ -i -y --rosdistro $CI_ROS_DISTRO
-  # Install and compile RTIMULib2
-  - git clone https://github.com/RoboticaUtnFrba/RTIMULib2.git $TRAVIS_BUILD_DIR/RTIMULib2
-  - cd $TRAVIS_BUILD_DIR/RTIMULib2/Linux && mkdir build && cd build
-  - sudo apt-get install -qq -y libqt4-dev libqt4-opengl-dev
-  - cmake ..
-  - make -j4
-  - sudo make install
-  - sudo ldconfig
-  # Finish installation
-  - source /opt/ros/$CI_ROS_DISTRO/setup.bash
-  - mkdir -p $CATKIN_WS_SRC
-  # Add the package under integration to the workspace using a symlink
-  - ln -s $TRAVIS_BUILD_DIR $CATKIN_WS_SRC
 
 script:
   - source /opt/ros/$CI_ROS_DISTRO/setup.bash
@@ -48,9 +43,9 @@ script:
   - source devel/setup.bash
   # Run tests
   - catkin_make run_tests && catkin_test_results
-  # Lint package files
+  # Lint package files ONLY for create_autonomy
   - sudo apt-get install python-catkin-lint
-  - catkin lint -W2 --strict --explain src/create_autonomy --ignore plugin_missing_install --ignore missing_depend --ignore target_name_collision
+  - catkin lint -W2 --strict --explain $CREATE_AUTONOMY_SRC --ignore plugin_missing_install --ignore target_name_collision
   # Tips
   #
   # C++:

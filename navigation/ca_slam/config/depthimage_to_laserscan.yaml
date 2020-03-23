@@ -1,0 +1,12 @@
+# The number of pixel rows to use to generate the laserscan. For each column, the scan will return the minimum value for those pixels centered vertically in the image.
+# (int, default: 1 pixel)
+scan_height: 10
+# Time between scans (seconds). Typically, 1.0/frame_rate. This value is not easily calculated from consecutive messages, and is thus left to the user to set correctly.
+# (double, default: 1/30.0Hz (0.033s))
+scan_time: 0.033
+# The minimum ranges to return in meters. Ranges less than this will be output as -Inf.
+# (double, default: 0.45m)
+range_min: 0.45
+# The maximum ranges to return in meters. Ranges greater than this will be output as +Inf.
+# (double, default: 10.0m)
+range_max: 10

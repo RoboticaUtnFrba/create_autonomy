@@ -1,5 +1,9 @@
 <launch>
-  <arg name="raspicam_receiver_IP" default=""/>
+  <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
+  <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
+
+  <arg name="raspicam_receiver_IP" default="" doc="Raspicam client IP"/>
+  <arg name="laser" doc="Laser for mapping the environment"/>
 
   <include file="$(find ca_node)/launch/create_2.launch"/>
 
@@ -11,8 +15,12 @@
   <!-- IMU -->
   <!-- <include file="$(find ca_imu)/launch/imu.launch"/> -->
 
-  <!-- TODO: Add sensors:
-  * Intel RealSense R200
-  * RPLidar A2
- -->
+  <!-- Mapping sensors -->
+  <group ns="$(arg ns)">
+    <include if="$(eval arg('laser')=='astra')"     file="$(find ca_camera)/launch/orbbec_astra_pro.launch"/>
+    <include if="$(eval arg('laser')=='kinect')"    file=""/>
+    <include if="$(eval arg('laser')=='r200')"      file=""/>
+    <include if="$(eval arg('laser')=='rplidar')"   file="$(find ca_camera)/launch/rplidar_a2.launch"/>
+    <include if="$(eval arg('laser')=='xtion_pro')" file="$(find ca_camera)/launch/asus_xtion_pro.launch"/>
+  </group>
 </launch>

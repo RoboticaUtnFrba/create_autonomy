@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="config_file" default="robot_description"/>
+  <arg name="config_file" default="$(optenv RVIZ_CONFIG)" doc="RViz configuration file"/>
+
   <node type="rviz" name="rviz" pkg="rviz" required="false"
         args="-d $(find ca_tools)/rviz/$(arg config_file).rviz"/>
 </launch>

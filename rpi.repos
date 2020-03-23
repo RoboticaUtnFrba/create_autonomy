@@ -1,13 +1,25 @@
 repositories:
-  i2c_imu:
+  gscam:
     type: git
-    url: https://github.com/RoboticaUtnFrba/i2c_imu.git
+    url: https://github.com/RoboticaUtnFrba/gscam.git
     version: master
+  # i2c_imu:
+  #   type: git
+  #   url: https://github.com/RoboticaUtnFrba/i2c_imu.git
+  #   version: master
   libcreate:
     type: git
     url: https://github.com/RoboticaUtnFrba/libcreate.git
     version: master
-  RTIMULib2:
+  ros_astra_camera:
     type: git
-    url: https://github.com/RoboticaUtnFrba/RTIMULib2.git
+    url: https://github.com/RoboticaUtnFrba/ros_astra_camera.git
     version: master
+  # RTIMULib2:
+  #   type: git
+  #   url: https://github.com/RoboticaUtnFrba/RTIMULib2.git
+  #   version: master
+  viso2:
+    type: git
+    url: https://github.com/RoboticaUtnFrba/viso2.git
+    version: kinetic

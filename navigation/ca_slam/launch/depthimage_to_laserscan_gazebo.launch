@@ -1,0 +1,18 @@
+<launch>
+  <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
+  <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
+  <arg name="tf_prefix" value="$(arg ns)_tf"          doc="Tf prefix"/>
+
+  <arg name="laser" default="$(optenv LASER rplidar)" doc="Laser for mapping the environment"/>
+
+  <group if="$(eval arg('laser')!='rplidar')">
+    <node pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" name="depthimage_to_laserscan"
+          output="screen" ns="$(arg laser)">
+      <remap from="image" to="depth/image_raw"/>
+      <remap from="camera_info" to="depth/camera_info"/>
+      <remap from="scan" to="scan"/>
+      <rosparam file="$(find ca_slam)/config/depthimage_to_laserscan.yaml" command="load"/>
+      <param name="output_frame_id" type="string" value="$(arg tf_prefix)/$(arg laser)_link"/>
+    </node>
+  </group>
+</launch>

@@ -16,7 +16,7 @@
 <xacro:property name="min_angle_rad" value="${-pi}"/>
 <xacro:property name="max_angle_rad" value="${pi}"/>
 
-<xacro:property name="topic_name"    value="laser/scan"/>
+<xacro:property name="topic_name"    value="${name}/scan"/>
 
 <joint name="${name}_joint" type="fixed">
   <origin xyz="${laser_origin}"/>

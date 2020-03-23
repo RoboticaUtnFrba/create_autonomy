@@ -1,9 +1,12 @@
 <launch>
-  <arg name="robot_id" default="$(optenv ID 1)"/>
-  <arg name="ns"       default="create$(arg robot_id)"/>
+  <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
+  <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
+  <arg name="tf_prefix" value="$(arg ns)_tf"          doc="Tf prefix"/>
 
-  <arg name="pbstream" default="$(optenv PBSTREAM house_map)"/>
-  <arg name="load_state_filename" value="$(find ca_cartographer)/pbstreams/$(arg pbstream).pbstream" />
+  <arg name="laser" default="$(optenv LASER rplidar)" doc="Laser for mapping the environment"/>
+
+  <arg name="env" doc="Name of the environment that is used to load the pbstream map"/>
+  <arg name="load_state_filename" value="$(find ca_cartographer)/pbstream/$(arg env).pbstream"/>
 
   <!-- Runs without namespace -->
   <group ns="/">
@@ -15,8 +18,8 @@
         output="screen">
       <!-- ID needs to be set through environment variable to allow lua script to read it -->
       <env name="ID" value="$(arg robot_id)" />
-      <remap from="scan" to="$(arg ns)/laser/scan" />
-      <remap from="imu" to="$(arg ns)/imu/data" />
+      <remap from="scan" to="$(arg ns)/$(arg laser)/scan" />
+      <remap from="imu"  to="$(arg ns)/imu/data" />
       <remap from="odom" to="$(arg ns)/odom" />
     </node>
 

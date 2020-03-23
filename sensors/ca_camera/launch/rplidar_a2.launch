@@ -1,0 +1,10 @@
+<launch>
+  <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
+  <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
+  <arg name="tf_prefix" value="$(arg ns)_tf"          doc="Tf prefix"/>
+
+  <include file="$(find rplidar_ros)/launch/rplidar.launch">
+    <param name="/rplidarNode/serial_port" value="/dev/ttyUSB1"/>
+    <param name="/rplidarNode/frame_id"    value="$(arg tf_prefix)/laser_link"/>
+  </include>
+</launch>

@@ -1,13 +1,17 @@
 <launch>
-  <arg name="i" default="1"/>
-  <arg name="robot_name" value="create$(arg i)"/>
+  <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
 
   <!-- Create 2 description -->
   <include file="$(find ca_description)/launch/create_description.launch">
-    <arg name="robot_name" value="$(arg robot_name)"/>
+    <arg name="robot_id" value="$(arg robot_id)"/>
   </include>
 
   <!-- Spawn URDF into Gazebo -->
   <node pkg="ca_description" type="robot_spawner.py" name="robot_spawner" output="screen"/>
+
+  <!-- Running Gazebo (non-nodelet) version of depthimage_to_laserscan for 3D cameras -->
+  <include file="$(find ca_slam)/launch/depthimage_to_laserscan_gazebo.launch">
+    <arg name="robot_id" value="$(arg robot_id)"/>
+  </include>
 
 </launch>

@@ -41,9 +41,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <std_msgs/Int16.h>
 #include <std_msgs/UInt8MultiArray.h>
 #include <sensor_msgs/JointState.h>
+#include <geometry_msgs/PoseWithCovarianceStamped.h>
 #include <geometry_msgs/Twist.h>
 #include <geometry_msgs/TransformStamped.h>
-#include <geometry_msgs/PoseWithCovarianceStamped.h>
 #include <nav_msgs/Odometry.h>
 #include <tf/transform_broadcaster.h>
 #include <diagnostic_updater/diagnostic_updater.h>
@@ -110,6 +110,8 @@ private:
   nav_msgs::Odometry odom_msg_;
   geometry_msgs::PoseWithCovarianceStamped angle_msg_;
   geometry_msgs::TransformStamped tf_odom_;
+  tf::StampedTransform tf_wheel_left_;
+  tf::StampedTransform tf_wheel_right_;
   ros::Time last_cmd_vel_time_;
   std_msgs::Empty empty_msg_;
   std_msgs::Float32 float32_msg_;
@@ -127,6 +129,16 @@ private:
   int baud_;
   double latch_duration_;
   bool publish_tf_;
+  std::string tf_prefix_;
+
+  const std::string str_base_footprint_ = "base_footprint";
+  const std::string str_base_link_ = "base_link";
+  const std::string str_odom_ = "odom";
+
+  const std::string str_wheel_left_link_  = "wheel_left_link";
+  const std::string str_wheel_right_link_ = "wheel_right_link";
+
+  const double wheels_distance_ = 0.235;  // [m]
 
   void cmdVelCallback(const geometry_msgs::TwistConstPtr& msg);
   void debrisLEDCallback(const std_msgs::BoolConstPtr& msg);
@@ -158,6 +170,9 @@ private:
   void publishWheeldrop();
   void publishIsWall();
   void publishOvercurrent();
+  // Wheel Tf publisher
+  void publishWheelTf(tf::Transform &tf, const float distance,
+      const std::string frame_id, const tf::Vector3 &dist_to_base);
 
   inline float normalizeAngle(float angle)
   {
@@ -170,6 +185,7 @@ private:
 protected:
   ros::NodeHandle nh_;
   ros::NodeHandle priv_nh_;
+  ros::NodeHandlePtr topic_nh_;
   ros::Subscriber cmd_vel_sub_;
   ros::Subscriber debris_led_sub_;
   ros::Subscriber spot_led_sub_;

@@ -36,11 +36,9 @@ def run_dev_environment(command, ros="melodic", gazebo="9"):
     docker_args.append("--volume {}/ws/devel/:/{}/devel/".format(temp_volume, WS_NAME))
     # VSCode needs HOME to be defined in order to work in the container
     docker_args.append("-e HOME=/home/create")
-    # Copy .bashrc
-    docker_args.append("--volume ~/.bashrc:/home/create/.bashrc")
 
     # USB devices and dialout group for the real robot
-    docker_args.append("--device=\"/dev/ttyUSB*:/dev/ttyUSB*:rwm\"")
+    docker_args.append("--volume=\"/dev/bus:/dev/bus:shared\"")
     docker_args.append("--group-add=dialout")
 
     # To allow installing packages
