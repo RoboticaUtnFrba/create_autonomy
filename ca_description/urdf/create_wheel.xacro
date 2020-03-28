@@ -8,7 +8,7 @@
   <xacro:property name="parent_link" value="${parent}"/>
   <xacro:property name="link_name"   value="${name}_link"/>
 
-  <xacro:property name="mass"        value="0.1"/>
+  <xacro:property name="mass"        value="0.5"/>
 
   <joint name="${name}_joint" type="continuous">
     <xacro:insert_block name="origin"/>
@@ -32,6 +32,16 @@
       </geometry>
     </collision>
   </link>
+
+  <gazebo reference="${link_name}">
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+    <kp>1000000.0</kp>
+    <kd>100.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>1.0</maxVel>
+    <material>Gazebo/Grey</material>
+  </gazebo>
 
 </xacro:macro>
 

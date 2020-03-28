@@ -12,45 +12,37 @@
 
   <xacro:macro name="create_base" params="wheel_separation wheel_radius wheel_width base_diameter *mesh">
 
-    <xacro:property name="base_link_offset_z" value="0.0308"/>
-    <xacro:property name="base_offset_z" value="0.017"/>
-    <xacro:property name="base_height" value="0.0611632"/>
-    <xacro:property name="base_mass" value="2"/>
+    <xacro:property name="caster_radius" value="0.018"/>
+    <xacro:property name="base_offset_z" value="${wheel_radius}"/>
+    <xacro:property name="base_height"   value="0.0611632"/>
+    <xacro:property name="base_mass"     value="2"/>
 
     <xacro:arg name="visualize" default="false"/>
 
-    <!-- The root link base_footprint has an inertia specified in the URDF,
-         but KDL does not support a root link with an inertia.
-         As a workaround, you can add an extra dummy link to your URDF. -->
-    <!-- <joint name="fixed_joint" type="fixed">
-      <parent link="dummy_link"/>
-      <child link="base_footprint"/>
-    </joint>
-    <link name="dummy_link"/> -->
+    <link name="base_footprint"/>
 
-    <link name="base_footprint">
-      <xacro:dummy_inertia/>
-    </link>
-
-    <joint name="base_footprint_joint" type="continuous">
+    <joint name="base_footprint_joint" type="fixed">
       <origin xyz="0 0 ${base_offset_z}"/>
-      <parent link="base_footprint" />
-      <child link="base_link" />
-      <axis xyz="1 0 0"/>
+      <parent link="base_footprint"/>
+      <child link="base_link"/>
     </joint>
 
-    <link name="base_link">
-      <xacro:inertial_cylinder mass="${base_mass}" radius="${base_diameter/2}" length="${base_height}"/>
+    <xacro:property name="base_link_origin" value="0 0 ${base_offset_z - caster_radius}"/>
+
+  <link name="base_link">
+    <xacro:inertial_cylinder_with_pose mass="${base_mass}" radius="${base_diameter/2}" length="${base_height}">
+      <origin xyz="${base_link_origin}"/>
+      </xacro:inertial_cylinder_with_pose>
 
       <visual>
-        <origin xyz=" 0 0 ${base_link_offset_z}"/>
+        <origin xyz="${base_link_origin}"/>
         <geometry>
           <xacro:insert_block name="mesh" />
         </geometry>
       </visual>
 
       <collision>
-        <origin xyz="0 0 ${base_link_offset_z}"/>
+        <origin xyz="${base_link_origin}"/>
         <geometry>
           <cylinder length="${base_height}" radius="${base_diameter/2}" />
         </geometry>
@@ -81,18 +73,20 @@
       <origin xyz="0 -0.04 0.13"/>
     </xacro:imu_sensor>
 
-    <xacro:omni_sensor diameter="0.1">
-      <origin xyz="0.145 0 ${base_link_offset_z}"/>
+    <xacro:omni_sensor>
+      <origin xyz="0.145 0 0.0308"/>
     </xacro:omni_sensor>
 
     <xacro:wheel name="wheel_left" radius="${wheel_radius}" width="${wheel_width}">
-      <origin xyz="0 ${wheel_separation/2} 0.015" rpy="0 ${pi/2} ${pi/2}"/>
+      <origin xyz="0 ${wheel_separation/2} 0" rpy="0 ${pi/2} ${pi/2}"/>
     </xacro:wheel>
     <xacro:wheel name="wheel_right" radius="${wheel_radius}" width="${wheel_width}">
-      <origin xyz="0 ${-wheel_separation/2} 0.015" rpy="0 ${pi/2} ${pi/2}"/>
+      <origin xyz="0 ${-wheel_separation/2} 0" rpy="0 ${pi/2} ${pi/2}"/>
     </xacro:wheel>
-    <xacro:caster_wheel>
-      <origin xyz="0.13 0 0"/>
+
+    <xacro:property name="caster_z" value="${-caster_radius}"/>
+    <xacro:caster_wheel radius="${caster_radius}">
+      <origin xyz="0.13 0 ${caster_z}"/>
     </xacro:caster_wheel>
 
     <!-- Simulation sensors -->

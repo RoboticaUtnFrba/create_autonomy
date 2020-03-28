@@ -1,15 +1,13 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-<xacro:macro name="caster_wheel" params="name:=caster_wheel parent:=base_link *origin">
+<xacro:macro name="caster_wheel" params="name:=caster_wheel parent:=base_link radius *origin">
 
   <xacro:include filename="$(find ca_description)/urdf/common_properties.xacro"/>
 
   <xacro:property name="parent_link" value="${parent}"/>
   <xacro:property name="link_name"   value="${name}_link"/>
-
-  <xacro:property name="radius"      value="0.018"/>
-  <xacro:property name="mass"        value="0.018"/>
+  <xacro:property name="mass"        value="1"/>
 
   <!-- fixed because there's no transmission -->
   <joint name="front_castor_joint" type="fixed">
@@ -35,6 +33,12 @@
   </link>
 
   <gazebo reference="${link_name}">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <kp>1000000.0</kp>
+    <kd>100.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>1.0</maxVel>
     <material>Gazebo/Grey</material>
   </gazebo>
 

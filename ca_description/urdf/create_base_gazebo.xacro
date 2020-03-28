@@ -25,22 +25,21 @@
         <publishWheelTF>true</publishWheelTF>
         <publishOdomTF>true</publishOdomTF>
         <publishWheelJointState>true</publishWheelJointState>
-        <legacyMode>false</legacyMode>
         <odometrySource>world</odometrySource>
-        <publishTf>1</publishTf>
+        <publishTf>true</publishTf>
       </plugin>
 
       <!-- Ground truth -->
       <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
         <alwaysOn>true</alwaysOn>
-        <updateRate>60.0</updateRate>
+        <updateRate>60</updateRate>
         <robotNamespace>create1_tf</robotNamespace>
         <bodyName>base_link</bodyName>
         <topicName>gts</topicName>
         <gaussianNoise>0</gaussianNoise>
         <frameName>map</frameName>
-        <xyzOffsets>0 0 0</xyzOffsets>
-        <rpyOffsets>0 0 0</rpyOffsets>
+        <xyzOffset>0 0 0</xyzOffset>
+        <rpyOffset>0 0 0</rpyOffset>
       </plugin>
     </gazebo>
 
@@ -68,28 +67,6 @@
           <bumperTopicName>bumper</bumperTopicName>
         </plugin>
       </sensor>
-    </gazebo>
-
-    <!-- Wheels -->
-
-    <gazebo reference="wheel_left_link">
-      <mu1>1.0</mu1>
-      <mu2>1.0</mu2>
-      <kp>1000000.0</kp>
-      <kd>100.0</kd>
-      <minDepth>0.001</minDepth>
-      <maxVel>1.0</maxVel>
-      <material>Gazebo/Grey</material>
-    </gazebo>
-
-    <gazebo reference="wheel_right_link">
-      <mu1>1.0</mu1>
-      <mu2>1.0</mu2>
-      <kp>1000000.0</kp>
-      <kd>100.0</kd>
-      <minDepth>0.001</minDepth>
-      <maxVel>1.0</maxVel>
-      <material>Gazebo/Grey</material>
     </gazebo>
 
     <!-- Cliff Publisher detector -->
