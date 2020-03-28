@@ -28,6 +28,10 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /usr/share/doc
 
+# Reduce roslaunch timeout
+RUN sudo sed -i 's/_TIMEOUT_SIGTERM = 2.0/_TIMEOUT_SIGTERM = 0.5/g' /opt/ros/${ROS1_DISTRO}/lib/python2.7/dist-packages/roslaunch/nodeprocess.py
+RUN sudo sed -i 's/_TIMEOUT_SIGINT  = 15.0/_TIMEOUT_SIGINT  = 1.0/g' /opt/ros/${ROS1_DISTRO}/lib/python2.7/dist-packages/roslaunch/nodeprocess.py
+
 # Initialize rosdep
 RUN rosdep init
 
