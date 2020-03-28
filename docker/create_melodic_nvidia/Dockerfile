@@ -12,4 +12,8 @@ COPY --from=nvidia /etc/ld.so.conf.d/glvnd.conf /etc/ld.so.conf.d/glvnd.conf
 
 ENV NVIDIA_VISIBLE_DEVICES=all NVIDIA_DRIVER_CAPABILITIES=all
 
+# Remove sudo message when openning a new terminal
+# https://askubuntu.com/a/22614
+RUN touch ~/.sudo_as_admin_successful
+
 USER $USER
