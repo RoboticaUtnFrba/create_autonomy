@@ -6,9 +6,9 @@
     <!-- We want a single map for multi-robots -->
     <remap from="map" to="/map" />
     <remap from="map_metadata" to="/map_metadata"/>
-    
+
     <remap from="scan" to="laser/scan"/>
-    
+
     <param name="odom_frame" value="$(arg ns)_tf/odom"/>
     <param name="base_frame" value="$(arg ns)_tf/base_footprint"/>
     <param name="map_frame" value="map"/>
