@@ -1,3 +1,0 @@
-<launch>
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find cartographer_ros)/configuration_files/demo_2d.rviz"/>
-</launch>

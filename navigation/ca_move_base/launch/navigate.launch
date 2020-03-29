@@ -19,4 +19,17 @@
     <arg name="ns" value="$(arg robot_name)"/>
   </include>
 
+  <!-- Cartographer Stack -->
+  <!-- Pure Localization -->
+  <include if="$(eval str(arg('localization')) == 'pure_localization')"
+      file="$(find ca_cartographer)/launch/pure_localization.launch">
+    <arg name="ns" value="$(arg robot_name)"/>
+  </include>
+
+  <!-- Cartographer Mapping -->
+  <include if="$(eval str(arg('localization')) == 'cartographer')"
+      file="$(find ca_cartographer)/launch/mapping_cartographer.launch">
+    <arg name="ns" value="$(arg robot_name)"/>
+  </include>
+
 </launch>

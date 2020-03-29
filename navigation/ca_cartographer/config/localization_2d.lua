@@ -5,9 +5,15 @@ options = {
   map_builder = MAP_BUILDER,
   trajectory_builder = TRAJECTORY_BUILDER,
   map_frame = "map",
-  tracking_frame = "create1_tf/imu_link",
-  published_frame = "create1_tf/odom",
-  odom_frame = "create1_tf/odom",
+  tracking_frame = "create" ..                    -- Frame id to track from map
+                   os.getenv("ID") ..
+                   "_tf/imu_link",
+  published_frame = "create" ..                   -- Odom frame to publish if `provide_odom_frame = true`. Even though
+                    os.getenv("ID") ..            -- are not used, all the options' parameter keys are mandatory
+                    "_tf/odom",
+  odom_frame = "create" ..                        -- Frame where publish the odometry to if `provide_odom_frame=true`
+               os.getenv("ID") ..
+               "_tf/odom",
   provide_odom_frame = false,
   publish_frame_projected_to_2d = true,
   use_odometry = true,
@@ -31,7 +37,7 @@ options = {
 MAP_BUILDER.use_trajectory_builder_2d = true
 TRAJECTORY_BUILDER_2D.use_imu_data = false
 
-TRAJECTORY_BUILDER_2D.use_online_correlative_scan_matching = false
+TRAJECTORY_BUILDER_2D.use_online_correlative_scan_matching = true
 TRAJECTORY_BUILDER_2D.real_time_correlative_scan_matcher.linear_search_window = 0.15
 TRAJECTORY_BUILDER_2D.real_time_correlative_scan_matcher.angular_search_window = math.rad(35.)
 
@@ -44,10 +50,13 @@ TRAJECTORY_BUILDER_2D.ceres_scan_matcher.rotation_weight = 300
 
 TRAJECTORY_BUILDER_2D.submaps.grid_options_2d.resolution = 0.035
 TRAJECTORY_BUILDER_2D.submaps.num_range_data = 120
-POSE_GRAPH.optimize_every_n_nodes = 120
 POSE_GRAPH.constraint_builder.min_score = 0.82
 POSE_GRAPH.constraint_builder.sampling_ratio = 1.
 
 POSE_GRAPH.optimization_problem.huber_scale = 1e2
+
+TRAJECTORY_BUILDER.pure_localization = true     -- This makes cartographer to start a new trajectory on top of the
+                                                -- previous witout writing the new data to the actual map
+POSE_GRAPH.optimize_every_n_nodes = 20          -- While doing pure localization, optimization can be done more frequently
 
 return options

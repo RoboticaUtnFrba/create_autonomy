@@ -4,7 +4,7 @@
   <version>0.0.0</version>
   <description>Cartographer launchfiles and configuration for mapping and pure localization</description>
 
-  <maintainer email="emiliano.borghi@gmail.com">Emiliano Borghi</maintainer>
+  <maintainer email="christiannbarcelo@gmail.com">Christian Barcelo</maintainer>
 
   <license>BSD</license>
   <buildtool_depend>catkin</buildtool_depend>

@@ -1,22 +1,22 @@
 <launch>
+  <arg name="robot_id" default="$(optenv ID 1)"/>
+  <arg name="ns"       default="create$(arg robot_id)"/>
 
-  <node name="cartographer_node" pkg="cartographer_ros"
-      type="cartographer_node" args="
-          -configuration_directory $(find ca_cartographer)/config
-          -configuration_basename ca_2d.lua"
-      output="screen">
-    <remap from="scan" to="create1/laser/scan" />
-    <remap from="imu" to="create1/imu/data" />
-    <remap from="odom" to="create1/odom" />
-  </node>
+  <!-- Runs without namespace -->
+  <group ns="/">
+    <node name="cartographer_node" pkg="cartographer_ros"
+        type="cartographer_node" args="
+            -configuration_directory $(find ca_cartographer)/config
+            -configuration_basename mapping_2d.lua"
+        output="screen">
+      <!-- ID needs to be set through environment variable to allow lua script to read it -->
+      <env name="ID" value="$(arg robot_id)" />
+      <remap from="scan" to="$(arg ns)/laser/scan" />
+      <remap from="imu" to="$(arg ns)/imu/data" />
+      <remap from="odom" to="$(arg ns)/odom" />
+    </node>
 
-  <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
-      type="cartographer_occupancy_grid_node" args="-resolution 0.05" />
-
-  <!-- <param name="robot_description" textfile="$(find ca_cartographer)/urdf/create_2.urdf"/>
-  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen">
-    <param name="publish_frequency" type="double" value="10" />
-    <param name="tf_prefix" value="create1_tf" />
-  </node> -->
-
+    <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
+        type="cartographer_occupancy_grid_node" args="-resolution 0.05" />
+  </group>
 </launch>
