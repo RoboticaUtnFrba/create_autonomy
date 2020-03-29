@@ -7,7 +7,12 @@
   <maintainer email="christiannbarcelo@gmail.com">Christian Barcelo</maintainer>
 
   <license>BSD</license>
+
   <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>cartographer_ros</build_depend>
+
+  <exec_depend>cartographer_ros</exec_depend>
 
   <export/>
 </package>

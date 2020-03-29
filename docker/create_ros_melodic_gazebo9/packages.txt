@@ -3,6 +3,7 @@ libgstreamer1.0-dev
 libgstreamer-plugins-base1.0-dev
 libgstreamer-plugins-good1.0-dev
 libudev-dev
+python-catkin-lint
 
 ros-*-amcl
 ros-*-camera-calibration
