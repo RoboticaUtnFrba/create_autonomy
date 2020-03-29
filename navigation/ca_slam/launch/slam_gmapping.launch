@@ -13,4 +13,8 @@
     <param name="base_frame" value="$(arg ns)_tf/base_footprint"/>
     <param name="map_frame" value="map"/>
   </node>
+
+  <!-- TODO: This should be fixed editting slam_gmapping -->
+  <node pkg="tf" type="static_transform_publisher" name="map_static_tf"
+        args="0 0 0 0 0 0 map $(arg ns)_tf/map 40"/>
 </launch>
