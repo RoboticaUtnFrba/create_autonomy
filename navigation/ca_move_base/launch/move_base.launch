@@ -20,7 +20,7 @@
 
     <!-- We want a single map for multi-robots -->
     <remap from="map" to="/map"/>
-    <remap from="/laser/scan" to="$(arg laser)/scan"/>
+    <remap from="/laser/scan" to="/$(arg ns)/$(arg laser)/scan"/>
     <remap from="/mobile_base/sensors/bumper_pointcloud"
            to="mobile_base/sensors/bumper_pointcloud"/>
 
