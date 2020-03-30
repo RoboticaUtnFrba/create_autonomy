@@ -13,16 +13,18 @@
     <arg name="robot_id" value="$(arg robot_id)"/>
   </include>
 
-  <!-- Use depthimage_to_laserscan only if it's not using the rplidar -->
-  <include if="$(eval arg('laser')!='rplidar')" ns="$(arg ns)"
-           file="$(find ca_slam)/launch/depthimage_to_laserscan.launch">
-    <arg name="robot_id"     value="$(arg robot_id)"/>
-  </include>
+  <group ns="$(arg ns)">
+    <!-- Use depthimage_to_laserscan only if it's not using the rplidar -->
+    <include if="$(eval arg('laser')!='rplidar')"
+            file="$(find ca_slam)/launch/depthimage_to_laserscan.launch">
+      <arg name="robot_id"     value="$(arg robot_id)"/>
+    </include>
 
-  <!-- Navigation stack -->
-  <include file="$(find ca_move_base)/launch/navigate.launch">
-    <arg name="env"          value="$(arg env)"/>
-    <arg name="localization" value="$(arg localization)"/>
-    <arg name="robot_id"     value="$(arg robot_id)"/>
-  </include>
+    <!-- Navigation stack -->
+    <include file="$(find ca_move_base)/launch/navigate.launch">
+      <arg name="env"          value="$(arg env)"/>
+      <arg name="localization" value="$(arg localization)"/>
+      <arg name="robot_id"     value="$(arg robot_id)"/>
+    </include>
+  </group>
 </launch>
