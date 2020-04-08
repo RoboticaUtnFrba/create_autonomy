@@ -540,7 +540,7 @@ void CreateDriver::publishWheelTf(
   tf_broadcaster_.sendTransform(
     tf::StampedTransform(
       tf, ros::Time::now(),
-      tf::resolve(tf_prefix_, str_base_link_),
+      tf::resolve(tf_prefix_, str_base_footprint_),
       frame_id));
 }
 
@@ -559,16 +559,17 @@ void CreateDriver::publishJointState()
 
   if (publish_tf_)
   {
+    const float distToBase = model_.getAxleLength();
     publishWheelTf(
         tf_wheel_left_,
         totalLeftAngDist,
         tf::resolve(tf_prefix_, str_wheel_left_link_),
-        tf::Vector3(0, wheels_distance_/2.0, 0));
+        tf::Vector3(0, distToBase/2.0, wheelRadius));
     publishWheelTf(
         tf_wheel_right_,
         totalRightAngDist,
         tf::resolve(tf_prefix_, str_wheel_right_link_),
-        tf::Vector3(0, -wheels_distance_/2.0, 0));
+        tf::Vector3(0, -distToBase/2.0, wheelRadius));
   }
 
   wheel_joint_pub_.publish(joint_state_msg_);

@@ -132,13 +132,10 @@ private:
   std::string tf_prefix_;
 
   const std::string str_base_footprint_ = "base_footprint";
-  const std::string str_base_link_ = "base_link";
   const std::string str_odom_ = "odom";
 
   const std::string str_wheel_left_link_  = "wheel_left_link";
   const std::string str_wheel_right_link_ = "wheel_right_link";
-
-  const double wheels_distance_ = 0.235;  // [m]
 
   void cmdVelCallback(const geometry_msgs::TwistConstPtr& msg);
   void debrisLEDCallback(const std_msgs::BoolConstPtr& msg);

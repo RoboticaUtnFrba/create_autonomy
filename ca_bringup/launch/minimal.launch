@@ -3,7 +3,7 @@
   <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
 
   <arg name="raspicam_receiver_IP" default="" doc="Raspicam client IP"/>
-  <arg name="laser" doc="Laser for mapping the environment"/>
+  <arg name="laser" default="$(optenv LASER)" doc="Laser for mapping the environment"/>
 
   <include file="$(find ca_node)/launch/create_2.launch"/>
 

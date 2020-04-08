@@ -86,10 +86,10 @@
     </xacro:omni_sensor>
 
     <xacro:wheel name="wheel_left" radius="${wheel_radius}" width="${wheel_width}">
-      <origin xyz="0 ${wheel_separation/2} 0" rpy="0 ${pi/2} ${pi/2}"/>
+      <origin xyz="0 ${wheel_separation/2} ${base_offset_z}" rpy="0 ${pi/2} ${pi/2}"/>
     </xacro:wheel>
     <xacro:wheel name="wheel_right" radius="${wheel_radius}" width="${wheel_width}">
-      <origin xyz="0 ${-wheel_separation/2} 0" rpy="0 ${pi/2} ${pi/2}"/>
+      <origin xyz="0 ${-wheel_separation/2} ${base_offset_z}" rpy="0 ${pi/2} ${pi/2}"/>
     </xacro:wheel>
 
     <xacro:property name="caster_z" value="${-caster_radius}"/>
