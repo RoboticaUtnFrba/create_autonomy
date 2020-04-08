@@ -36,4 +36,7 @@
     <param name="publish_frequency" type="double" value="$(arg freq)" />
     <param name="tf_prefix" value="$(arg tf_prefix)" />
   </node>
+  <!-- Static transform for bumper_link to base_link -->
+  <node pkg="tf" type="static_transform_publisher" name="bumper_static_tf"
+        args="0 0 0 0 0 0 $(arg tf_prefix)/base_link $(arg tf_prefix)/bumper_link $(arg freq)"/>
 </launch>

@@ -62,8 +62,8 @@ void CreateBumperPlugin::Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf)
 
   // "publishing contact/collisions to this topic name: " << this->bumper_topic_name_ << std::endl;
   this->bumper_topic_name_ = "bumper_base";
-  if (_sdf->HasElement("bumperTopicName"))
-    this->bumper_topic_name_ = _sdf->Get<std::string>("bumperTopicName");
+  if (_sdf->HasElement("topicName"))
+    this->bumper_topic_name_ = _sdf->Get<std::string>("topicName");
 
   // "transform contact/collisions pose, forces to this body (link) name: " << this->frame_name_ << std::endl;
   if (!_sdf->HasElement("frameName"))
@@ -73,11 +73,6 @@ void CreateBumperPlugin::Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf)
   }
   else
     this->frame_name_ = _sdf->Get<std::string>("frameName");
-
-  this->bumper_event_.header.frame_id = this->frame_name_;
-
-  ROS_INFO("Loaded with values:   robotNamespace = %s, bumperTopicName = %s, frameName = %s",
-           this->robot_namespace_.c_str(), this->bumper_topic_name_.c_str(), this->frame_name_.c_str());
 
   if (!ros::isInitialized())
   {
@@ -92,8 +87,15 @@ void CreateBumperPlugin::Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf)
   std::string prefix;
   this->rosnode_->getParam(std::string("tf_prefix"), prefix);
   this->frame_name_ = tf::resolve(prefix, this->frame_name_);
+  // Set the frame_id into the bumper message
+  this->bumper_event_.header.frame_id = this->frame_name_;
 
-  this->contact_pub_ = this->rosnode_->advertise<ca_msgs::Bumper>(this->bumper_topic_name_, 5);
+  ROS_INFO_STREAM("Bumper plugin: " <<
+                  "robotNamespace = " << this->robot_namespace_ <<
+                  ", topicName = " << this->bumper_topic_name_ <<
+                  ", frameName = " << this->frame_name_);
+
+  this->contact_pub_ = this->rosnode_->advertise<ca_msgs::Bumper>(this->bumper_topic_name_, 1);
 
   this->gts_sub_ = this->rosnode_->subscribe("gts", 1, &CreateBumperPlugin::GtsCb, this);
 

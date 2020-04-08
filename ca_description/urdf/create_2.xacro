@@ -5,7 +5,7 @@
   <xacro:property name="robot_name" value="$(arg robot_name)"/>
 
   <xacro:property name="wheel_separation" value="0.235"/>
-  <xacro:property name="base_diameter" value="0.3485"/>
+  <xacro:property name="base_diameter" value="0.32"/>
   <xacro:property name="wheel_width" value="0.024"/>
   <xacro:property name="wheel_radius" value="0.036"/>
 

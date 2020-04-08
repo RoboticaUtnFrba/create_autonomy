@@ -29,22 +29,30 @@
 
     <xacro:property name="base_link_origin" value="0 0 ${base_offset_z - caster_radius}"/>
 
-  <link name="base_link">
-    <xacro:inertial_cylinder_with_pose mass="${base_mass}" radius="${base_diameter/2}" length="${base_height}">
-      <origin xyz="${base_link_origin}"/>
-      </xacro:inertial_cylinder_with_pose>
-
+    <link name="base_link">
       <visual>
         <origin xyz="${base_link_origin}"/>
         <geometry>
           <xacro:insert_block name="mesh" />
         </geometry>
       </visual>
+    </link>
+
+    <joint name="bumper_joint" type="continuous">
+      <parent link="base_link"/>
+      <child link="bumper_link"/>
+      <axis xyz="0 0 1"/>
+    </joint>
+
+    <link name="bumper_link">
+      <xacro:inertial_cylinder_with_pose mass="${base_mass}" radius="${base_diameter/2}" length="${base_height}">
+        <origin xyz="${base_link_origin}"/>
+      </xacro:inertial_cylinder_with_pose>
 
       <collision>
         <origin xyz="${base_link_origin}"/>
         <geometry>
-          <cylinder length="${base_height}" radius="${base_diameter/2}" />
+          <xacro:insert_block name="mesh" />
         </geometry>
       </collision>
     </link>
