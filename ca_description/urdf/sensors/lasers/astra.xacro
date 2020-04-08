@@ -16,14 +16,14 @@
 <xacro:property name="optical_offset" value="0.01"/>
 
 <joint name="${name}_joint" type="fixed">
-  <origin xyz="${laser_origin}"/>
+  <origin xyz="${laser_origin}" rpy="${pi/2} 0 0"/>
   <parent link="${parent_link}"/>
   <child link="${link_name}"/>
 </joint>
 
 <link name="${link_name}">
   <visual>
-    <origin xyz="-0.01 0 -0.03" rpy="${pi/2} 0 ${pi/2}"/>
+    <origin xyz="-0.01 0 -0.03" rpy="0 0 ${pi/2}"/>
     <geometry>
       <mesh filename="package://ca_description/meshes/sensors/astra.dae"/>
     </geometry>
