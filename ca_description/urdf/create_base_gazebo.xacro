@@ -73,8 +73,9 @@
     <!-- Cliff Publisher detector -->
     <gazebo>
       <plugin name="cliff_msg_publisher" filename="libcliff_msg_publisher.so">
-        <updateRate>10</updateRate>
+        <frameName>base_footprint</frameName>
         <robotNumber>${robot_name}</robotNumber>
+        <updateRate>10</updateRate>
       </plugin>
     </gazebo>
 

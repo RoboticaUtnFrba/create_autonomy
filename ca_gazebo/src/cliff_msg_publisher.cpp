@@ -46,8 +46,8 @@ void GazeboCliffMsgPublisher::Load(physics::ModelPtr _parent, sdf::ElementPtr _s
   this->robot_name_ = _sdf->Get<std::string>("robotNumber");
   if (!_sdf->HasElement("frameName"))
   {
-    ROS_INFO("cliff plugin missing <frameName>, defaults to world");
-    this->frame_name_ = "base_footprint";
+    ROS_INFO("Cliff Msg plugin: missing <frameName>, defaults to world");
+    this->frame_name_ = "world";
   }
   else
   {
@@ -62,7 +62,9 @@ void GazeboCliffMsgPublisher::Load(physics::ModelPtr _parent, sdf::ElementPtr _s
       this->robot_name_ + "/front_left_cliff_sensor/raw/", 1, &GazeboCliffMsgPublisher::FrontLeftCliffCallback, this);
   this->front_right_sub_ = this->nh_.subscribe(
       this->robot_name_ + "/front_right_cliff_sensor/raw/", 1, &GazeboCliffMsgPublisher::FrontRightCliffCallback, this);
-  this->publisher_ = this->nh_.advertise<ca_msgs::Cliff>(this->robot_name_ + "/cliff_msg/", 1);
+
+  const std::string topic_name = tf::resolve(this->robot_name_, "cliff");
+  this->publisher_ = this->nh_.advertise<ca_msgs::Cliff>(topic_name, 1);
   this->update_connection_ = event::Events::ConnectWorldUpdateBegin(
       std::bind(&GazeboCliffMsgPublisher::OnUpdate, this));
   this->prev_update_time_ = ros::Time::now();

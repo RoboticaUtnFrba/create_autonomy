@@ -12,6 +12,7 @@ find_package(catkin REQUIRED
     gazebo_ros
     roscpp
     roslint
+    tf
     tf2
     tf2_ros
 )

@@ -169,6 +169,9 @@ void GazeboRosCliff::OnScan(ConstLaserScanStampedPtr &_msg)
 {
   std_msgs::Bool msg_output;
   msg_output.data = _msg->scan().ranges(0) > this->min_cliff_value;
+  ROS_DEBUG_STREAM(this->parent_ray_sensor_->Name()
+                    << " : [" << _msg->scan().ranges(0)
+                    << " > " << this->min_cliff_value << "]");
   this->pub_queue_->push(msg_output, this->pub_);
 }
 }  // namespace gazebo

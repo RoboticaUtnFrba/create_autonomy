@@ -8,8 +8,9 @@
   <xacro:property name="parent_link"        value="${parent}"/>
   <xacro:property name="link_name"          value="${name}_link"/>
 
-  <xacro:property name="min_range_m"        value="0.01"/>
-  <xacro:property name="max_range_m"        value="0.04"/>
+  <xacro:property name="min_range_cm"       value="0.5"/>
+  <xacro:property name="max_range_cm"       value="5"/>
+  <xacro:property name="resolution_cm"      value="0.1"/>
 
   <xacro:property name="rate_hz"            value="20.0"/>
   <xacro:property name="min_cliff_value_cm" value="3.85"/>
@@ -23,7 +24,7 @@
   <link name="${link_name}" />
 
   <gazebo reference="${link_name}">
-    <sensor type="ray" name="${name}_sensor">
+    <sensor type="ray" name="${name}">
       <always_on>true</always_on>
       <update_rate>${rate_hz}</update_rate>
       <visualize>$(arg visualize)</visualize>
@@ -37,9 +38,9 @@
           </horizontal>
         </scan>
         <range>
-          <min>${min_range_m}</min>
-          <max>${max_range_m}</max>
-          <resolution>0.1</resolution>
+          <min>${min_range_cm*cm_to_meters}</min>
+          <max>${max_range_cm*cm_to_meters}</max>
+          <resolution>${resolution_cm*cm_to_meters}</resolution>
         </range>
       </ray>
       <plugin name="gazebo_ros_${name}" filename="libcreate_cliff_plugin.so">
