@@ -8,7 +8,7 @@
   <xacro:property name="parent_link" value="${parent}"/>
   <xacro:property name="link_name"   value="${name}_link"/>
 
-  <xacro:property name="topic_name"  value="/wall_sensor/scan"/>
+  <xacro:property name="topic_name"  value="wall"/>
 
   <xacro:property name="rate_hz"     value="20.0"/>
   <xacro:property name="min_range_m" value="0.0160"/>
