@@ -1,0 +1,77 @@
+bumper:
+  topic: "/create1/bumper"
+  hz: 20.0
+  hzerror: 1.0
+  test_duration: 5.0
+
+cliff_msg:
+  topic: "/create1/cliff_msg"
+  hz: 10.0
+  hzerror: 1.0
+  test_duration: 5.0
+
+cliff_front_left:
+  topic: "/create1/front_left_cliff_sensor/raw"
+  hz: 20.0
+  hzerror: 1.0
+  test_duration: 5.0
+
+cliff_front_right:
+  topic: "/create1/front_right_cliff_sensor/raw"
+  hz: 20.0
+  hzerror: 1.0
+  test_duration: 5.0
+
+cliff_side_left:
+  topic: "/create1/side_left_cliff_sensor/raw"
+  hz: 20.0
+  hzerror: 1.0
+  test_duration: 5.0
+
+cliff_side_right:
+  topic: "/create1/side_right_cliff_sensor/raw"
+  hz: 20.0
+  hzerror: 1.0
+  test_duration: 5.0
+
+gts:
+  topic: "/create1/gts"
+  hz: 60.0
+  hzerror: 2.0
+  test_duration: 5.0
+
+imu_data:
+  topic: "/create1/imu/data"
+  hz: 30.0
+  hzerror: 1.0
+  test_duration: 5.0
+
+joint_states:
+  topic: "/create1/joint_states"
+  hz: 40.0
+  hzerror: 1.0
+  test_duration: 5.0
+
+odom:
+  topic: "/create1/odom"
+  hz: 40.0
+  hzerror: 1.0
+  test_duration: 5.0
+
+rplidar_scan:
+  topic: "/create1/rplidar/scan"
+  hz: 10.0
+  hzerror: 1.0
+  test_duration: 5.0
+
+virtual_wall:
+  topic: "/create1/virtual_wall"
+  hz: 10.0
+  hzerror: 1.0
+  test_duration: 5.0
+
+wall:
+  topic: "/create1/wall"
+  hz: 20.0
+  hzerror: 1.0
+  test_duration: 5.0
