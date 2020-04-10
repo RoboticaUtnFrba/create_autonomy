@@ -60,6 +60,11 @@ void CreateBumperPlugin::Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf)
   if (_sdf->HasElement("robotNamespace"))
     this->robot_namespace_ = _sdf->Get<std::string>("robotNamespace") + "/";
 
+  double update_rate = 10.0;
+  if (_sdf->HasElement("updateRate"))
+    update_rate = _sdf->Get<double>("updateRate");
+  this->update_period_ = ros::Duration(1.0 / update_rate);
+
   // "publishing contact/collisions to this topic name: " << this->bumper_topic_name_ << std::endl;
   this->bumper_topic_name_ = "bumper_base";
   if (_sdf->HasElement("topicName"))
@@ -103,6 +108,9 @@ void CreateBumperPlugin::Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf)
   // simulation iteration.
   this->update_connection_ = this->bumper_->ConnectUpdated(
                                boost::bind(&CreateBumperPlugin::OnUpdate, this));
+
+  // Update las time
+  this->prev_update_time_ = ros::Time::now();
 
   // Make sure the parent sensor is active.
   this->bumper_->SetActive(true);
@@ -152,47 +160,45 @@ void CreateBumperPlugin::OnUpdate()
   {
     bumper_left_was_pressed_ = true;
     this->bumper_event_.is_left_pressed = ca_msgs::Bumper::PRESSED;
-    PublishBumperMsg();
   }
   else if (!bumper_left_is_pressed_ && bumper_left_was_pressed_)
   {
     bumper_left_was_pressed_ = false;
     this->bumper_event_.is_left_pressed = ca_msgs::Bumper::RELEASED;
-    PublishBumperMsg();
   }
   if (bumper_center_is_pressed_ && !bumper_center_was_pressed_)
   {
     bumper_center_was_pressed_ = true;
     this->bumper_event_.is_left_pressed = ca_msgs::Bumper::PRESSED;
     this->bumper_event_.is_right_pressed = ca_msgs::Bumper::PRESSED;
-    PublishBumperMsg();
   }
   else if (!bumper_center_is_pressed_ && bumper_center_was_pressed_)
   {
     bumper_center_was_pressed_ = false;
     this->bumper_event_.is_left_pressed = ca_msgs::Bumper::RELEASED;
     this->bumper_event_.is_right_pressed = ca_msgs::Bumper::RELEASED;
-    PublishBumperMsg();
   }
   if (bumper_right_is_pressed_ && !bumper_right_was_pressed_)
   {
     bumper_right_was_pressed_ = true;
     this->bumper_event_.is_right_pressed = ca_msgs::Bumper::PRESSED;
-    PublishBumperMsg();
   }
   else if (!bumper_right_is_pressed_ && bumper_right_was_pressed_)
   {
     bumper_right_was_pressed_ = false;
     this->bumper_event_.is_right_pressed = ca_msgs::Bumper::RELEASED;
-    PublishBumperMsg();
   }
-}
 
-void CreateBumperPlugin::PublishBumperMsg()
-{
-  this->bumper_event_.header.seq++;
-  this->bumper_event_.header.stamp = ros::Time::now();
-  this->contact_pub_.publish(this->bumper_event_);
+  const ros::Time now = ros::Time::now();
+  if ((now - this->prev_update_time_) >= this->update_period_)
+  {
+    // Publish bumper message
+    this->bumper_event_.header.seq++;
+    this->bumper_event_.header.stamp = now;
+    this->contact_pub_.publish(this->bumper_event_);
+
+    this->prev_update_time_ = now;
+  }
 }
 
 void CreateBumperPlugin::GtsCb(const nav_msgs::Odometry::ConstPtr& msg)

@@ -79,7 +79,6 @@ private:
   ros::Publisher contact_pub_;
   ros::Subscriber gts_sub_;
   ca_msgs::Bumper bumper_event_;
-  void PublishBumperMsg();
 
   void GtsCb(const nav_msgs::Odometry::ConstPtr& msg);
   double robot_heading_;
@@ -99,6 +98,12 @@ private:
 
   /// \brief for setting ROS namespace
   std::string robot_namespace_;
+
+  /// \brief Update period of the bumper state
+  ros::Duration update_period_;
+
+  /// \brief Last time updated
+  ros::Time prev_update_time_;
 
   // Pointer to the update event connection
   event::ConnectionPtr update_connection_;
