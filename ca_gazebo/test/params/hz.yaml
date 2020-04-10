@@ -4,8 +4,8 @@ bumper:
   hzerror: 1.0
   test_duration: 5.0
 
-cliff_msg:
-  topic: "/create1/cliff_msg"
+cliff:
+  topic: "/create1/cliff"
   hz: 10.0
   hzerror: 1.0
   test_duration: 5.0

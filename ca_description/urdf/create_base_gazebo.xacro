@@ -75,7 +75,8 @@
     <gazebo>
       <plugin name="cliff_msg_publisher" filename="libcliff_msg_publisher.so">
         <frameName>base_footprint</frameName>
-        <robotNumber>${robot_name}</robotNumber>
+        <robotNamespace>${robot_name}</robotNamespace>
+        <topicName>cliff</topicName>
         <updateRate>10</updateRate>
       </plugin>
     </gazebo>

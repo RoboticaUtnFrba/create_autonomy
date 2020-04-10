@@ -8,7 +8,7 @@
   </include>
 
   <test test-name="hztest_bumper" type="hztest" pkg="rostest" name="bumper"/>
-  <test test-name="hztest_cliff_msg" type="hztest" pkg="rostest" name="cliff_msg"/>
+  <test test-name="hztest_cliff" type="hztest" pkg="rostest" name="cliff"/>
   <test test-name="hztest_cliff_front_left" type="hztest" pkg="rostest" name="cliff_front_left"/>
   <test test-name="hztest_cliff_front_right" type="hztest" pkg="rostest" name="cliff_front_right"/>
   <test test-name="hztest_cliff_side_left" type="hztest" pkg="rostest" name="cliff_side_left"/>

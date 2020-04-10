@@ -1,0 +1,5 @@
+<launch>
+    <arg name="ns" default="create1"/>
+
+    <node ns="$(arg ns)" pkg="ca_node" type="state_machine.py" name="$(arg ns)_state_machine"/>
+</launch>

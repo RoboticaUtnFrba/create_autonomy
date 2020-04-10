@@ -34,7 +34,6 @@ GZ_REGISTER_MODEL_PLUGIN(GazeboCliffMsgPublisher)
 
 void GazeboCliffMsgPublisher::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
 {
-  this->update_period_ = 1.0 / (_sdf->Get<double>("updateRate"));
   // Make sure the ROS node for Gazebo has already been initialized
   if (!ros::isInitialized())
   {
@@ -43,17 +42,33 @@ void GazeboCliffMsgPublisher::Load(physics::ModelPtr _parent, sdf::ElementPtr _s
     ros::init(argc, argv, "cliff_msg_publisher");
   }
   // Initialize the ros variables and gazebo variables
-  this->robot_name_ = _sdf->Get<std::string>("robotNumber");
-  if (!_sdf->HasElement("frameName"))
-  {
+  if (!_sdf->HasElement("robotNamespace")) {
+    ROS_INFO("Cliff Msg plugin: missing <robotNamespace>, defaults to create");
+    this->robot_name_ = "create";
+  }
+  else this->robot_name_ = _sdf->Get<std::string>("robotNamespace");
+
+  if (!_sdf->HasElement("frameName")) {
     ROS_INFO("Cliff Msg plugin: missing <frameName>, defaults to world");
     this->frame_name_ = "world";
   }
-  else
-  {
-    this->frame_name_ = _sdf->Get<std::string>("frameName");
+  else this->frame_name_ = _sdf->Get<std::string>("frameName");
+
+  if (!_sdf->HasElement("updateRate")) {
+    ROS_INFO("Cliff Msg plugin: missing <updateRate>, defaults to 10 Hz");
+    this->update_period_ = 1 / 10.0;
   }
+  else this->update_period_ = 1.0 / (_sdf->Get<double>("updateRate"));
+
+  std::string topic_name = "";
+  if (!_sdf->HasElement("topicName")) {
+    ROS_INFO("Cliff Msg plugin: missing <topicName>, defaults to cliff");
+    topic_name = "cliff";
+  }
+  else topic_name = _sdf->Get<std::string>("topicName");
+
   this->msg_.header.frame_id = this->frame_name_;
+
   this->side_left_sub_ = this->nh_.subscribe(
       this->robot_name_ + "/side_left_cliff_sensor/raw/", 1, &GazeboCliffMsgPublisher::SideLeftCliffCallback, this);
   this->side_right_sub_ = this->nh_.subscribe(
@@ -63,8 +78,7 @@ void GazeboCliffMsgPublisher::Load(physics::ModelPtr _parent, sdf::ElementPtr _s
   this->front_right_sub_ = this->nh_.subscribe(
       this->robot_name_ + "/front_right_cliff_sensor/raw/", 1, &GazeboCliffMsgPublisher::FrontRightCliffCallback, this);
 
-  const std::string topic_name = tf::resolve(this->robot_name_, "cliff");
-  this->publisher_ = this->nh_.advertise<ca_msgs::Cliff>(topic_name, 1);
+  this->publisher_ = this->nh_.advertise<ca_msgs::Cliff>(tf::resolve(this->robot_name_, topic_name), 1);
   this->update_connection_ = event::Events::ConnectWorldUpdateBegin(
       std::bind(&GazeboCliffMsgPublisher::OnUpdate, this));
   this->prev_update_time_ = ros::Time::now();

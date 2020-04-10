@@ -129,7 +129,7 @@ def stop_cb():
 def main():
     rospy.init_node('smach_ranking_controller')
     bumper_sub = rospy.Subscriber("bumper", Bumper, bumper_cb)
-    cliff_sub = rospy.Subscriber("cliff_msg", Cliff, cliff_cb)
+    cliff_sub = rospy.Subscriber("cliff", Cliff, cliff_cb)
     virtual_wall_sub = rospy.Subscriber("virtual_wall", Bool, virtual_wall_cb)
     global vel_pub
     vel_pub = rospy.Publisher("cmd_vel", Twist, queue_size=1)
