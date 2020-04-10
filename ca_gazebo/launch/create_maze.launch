@@ -1,5 +1,7 @@
 <!-- https://github.com/tu-darmstadt-ros-pkg/hector_nist_arenas_gazebo -->
 <launch>
+  <arg name="gui" default="$(optenv GUI true)" doc="Start gzclient (Gazebo's GUI)"/>
+
   <param name="create1/amcl/initial_pose_x" value="5"/>
   <param name="create1/amcl/initial_pose_y" value="5"/>
   <param name="create1/amcl/initial_pose_a" value="1.5708"/>
@@ -10,5 +12,6 @@
 
 	<include file="$(find ca_gazebo)/launch/create_empty_world.launch">
     <arg name="env" value="maze"/>
+    <arg name="gui" value="$(arg gui)"/>
 	</include>
 </launch>

@@ -1,0 +1,15 @@
+<launch>
+  <arg name="gui" default="false"/>
+
+  <include file="$(find ca_gazebo)/launch/create_maze.launch">
+    <arg name="gui" value="$(arg gui)"/>
+  </include>
+
+  <include file="$(find ca_node)/launch/state_machine.launch"/>
+
+  <test test-name="publishtest" name="publishtest"
+        type="publish.py" pkg="ca_gazebo"
+        time-limit="100.0"> <!-- time-limit >= timeout_s * number of topics to test -->
+    <param name="timeout_s" value="30.0"/>
+  </test>
+</launch>

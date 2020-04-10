@@ -229,5 +229,7 @@ roslint_cpp()
 
 if(CATKIN_ENABLE_TESTING)
   find_package(rostest REQUIRED)
+  # Tests list
   add_rostest(test/hz.test)
+  add_rostest(test/publish.test)
 endif()
