@@ -66,5 +66,6 @@
   </xacro:macro>
 
   <xacro:property name="cm_to_meters" value="${1./100.}"/>
+  <xacro:property name="mm_to_meters" value="${1./1000.}"/>
 
 </robot>

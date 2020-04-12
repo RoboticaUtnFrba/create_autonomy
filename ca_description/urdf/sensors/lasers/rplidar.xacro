@@ -9,14 +9,22 @@
 <xacro:property name="laser_link"    value="laser_link"/>
 
 <xacro:property name="rate_hz"       value="10"/>
-<xacro:property name="min_range_m"   value="0.15"/>
+<xacro:property name="min_range_cm"  value="15"/>
 <xacro:property name="max_range_m"   value="12.0"/>
-<xacro:property name="samples"       value="720"/>
+<xacro:property name="samples"       value="1000"/>
 <xacro:property name="resolution_mm" value="0.5"/>
 <xacro:property name="min_angle_rad" value="${-pi}"/>
 <xacro:property name="max_angle_rad" value="${pi}"/>
 
 <xacro:property name="topic_name"    value="${name}/scan"/>
+
+<!-- Set GPU values -->
+<xacro:if value="$(arg use_gpu)">
+  <xacro:property name="gpu" value="gpu_"/>
+</xacro:if>
+<xacro:unless value="$(arg use_gpu)">
+  <xacro:property name="gpu" value=""/>
+</xacro:unless>
 
 <joint name="${name}_joint" type="fixed">
   <origin xyz="${laser_origin}"/>
@@ -45,22 +53,22 @@
 </gazebo>
 
 <gazebo reference="${laser_link}">
-  <sensor type="ray" name="${name}_sensor">
+  <sensor type="${gpu}ray" name="${name}_sensor">
     <visualize>$(arg visualize)</visualize>
     <update_rate>${rate_hz}</update_rate>
     <ray>
       <scan>
         <horizontal>
           <samples>${samples}</samples>
-          <resolution>1</resolution>
+          <resolution>10</resolution>
           <min_angle>${min_angle_rad}</min_angle>
           <max_angle>${max_angle_rad}</max_angle>
         </horizontal>
       </scan>
       <range>
-        <min>${min_range_m}</min>
+        <min>${min_range_cm*cm_to_meters}</min>
         <max>${max_range_m}</max>
-        <resolution>${resolution_mm / 1000.0}</resolution>
+        <resolution>${resolution_mm*mm_to_meters}</resolution>
       </range>
       <noise>
         <type>gaussian</type>
@@ -68,7 +76,7 @@
         <stddev>0.01</stddev>
       </noise>
     </ray>
-    <plugin name="gazebo_ros_${name}" filename="libgazebo_ros_laser.so">
+    <plugin name="gazebo_ros_${name}" filename="libgazebo_ros_${gpu}laser.so">
       <topicName>${topic_name}</topicName>
       <frameName>${laser_link}</frameName>
     </plugin>
