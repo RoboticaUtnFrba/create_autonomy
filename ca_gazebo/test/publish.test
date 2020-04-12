@@ -5,6 +5,12 @@
     <arg name="gui" value="$(arg gui)"/>
   </include>
 
+  <!-- Change real-time factor of Gazebo -->
+  <node pkg="ca_gazebo" type="set_properties" name="gazebo_physics_properties" output="screen">
+    <param name="real_time_factor" value="10"/>
+  </node>
+
+  <!-- State machine to move the robot autonomously -->
   <include file="$(find ca_node)/launch/state_machine.launch"/>
 
   <test test-name="publishtest" name="publishtest"

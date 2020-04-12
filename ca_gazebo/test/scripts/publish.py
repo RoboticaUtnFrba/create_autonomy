@@ -9,9 +9,9 @@ from ca_msgs.msg import Bumper, Cliff
 __author__ = 'Emiliano Borghi'
 
 PKG = 'ca_gazebo'
-NAME = 'plugins'
+NAME = 'publish'
 
-class PluginsTesterClass(unittest.TestCase):
+class PublisherTests(unittest.TestCase):
 
   def __init__(self, *args):
     # Init ROS and params
@@ -19,7 +19,7 @@ class PluginsTesterClass(unittest.TestCase):
     self.timeout = rospy.get_param("~timeout_s", default=10.0)
     rospy.loginfo("Timeout set to {} seconds".format(self.timeout))
     # Call TestCase class
-    super(PluginsTesterClass, self).__init__(*args)
+    super(PublisherTests, self).__init__(*args)
 
   def check(self, topic, msg_type, callback):
     self.message_triggered = False
@@ -55,4 +55,4 @@ class PluginsTesterClass(unittest.TestCase):
          msg.is_cliff_front_right or msg.is_cliff_right)
 
 if __name__ == '__main__':
-  rostest.rosrun(PKG, NAME, PluginsTesterClass, sys.argv)
+  rostest.rosrun(PKG, NAME, PublisherTests, sys.argv)
