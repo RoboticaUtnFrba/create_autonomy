@@ -237,4 +237,5 @@ if(CATKIN_ENABLE_TESTING)
   # Tests list
   add_rostest(test/hz.test)
   add_rostest(test/publish.test)
+  add_rostest(test/static.test)
 endif()
