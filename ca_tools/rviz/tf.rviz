@@ -71,6 +71,16 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        battery_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        bumper_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         caster_wheel_link:
           Alpha: 1
           Show Axes: false
@@ -197,6 +207,10 @@ Visualization Manager:
           Value: true
         create1_tf/base_link:
           Value: false
+        create1_tf/battery_link:
+          Value: false
+        create1_tf/bumper_link:
+          Value: false
         create1_tf/caster_wheel_link:
           Value: false
         create1_tf/front_left_cliff_sensor_link:
@@ -253,54 +267,59 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
+        create1_tf/base_footprint:
+          create1_tf/base_link:
+            create1_tf/bumper_link:
+              {}
+            create1_tf/caster_wheel_link:
+              {}
+            create1_tf/front_left_cliff_sensor_link:
+              {}
+            create1_tf/front_right_cliff_sensor_link:
+              {}
+            create1_tf/imu_link:
+              {}
+            create1_tf/omni_sensor_link:
+              {}
+            create1_tf/rplidar_link:
+              create1_tf/laser_link:
+                {}
+            create1_tf/side_left_cliff_sensor_link:
+              {}
+            create1_tf/side_right_cliff_sensor_link:
+              {}
+            create1_tf/turtlebot_stack_base_link:
+              create1_tf/plate_bottom_link:
+                create1_tf/nvidia_jetson_nano_link:
+                  {}
+              create1_tf/plate_upper_link:
+                {}
+              create1_tf/pole_large_0_link:
+                {}
+              create1_tf/pole_large_1_link:
+                {}
+              create1_tf/pole_large_2_link:
+                {}
+              create1_tf/pole_large_3_link:
+                {}
+              create1_tf/pole_short_0_link:
+                {}
+              create1_tf/pole_short_1_link:
+                {}
+              create1_tf/pole_short_2_link:
+                {}
+              create1_tf/pole_short_3_link:
+                {}
+            create1_tf/wall_sensor_link:
+              {}
+          create1_tf/battery_link:
+            {}
+          create1_tf/wheel_left_link:
+            {}
+          create1_tf/wheel_right_link:
+            {}
         create1_tf/odom:
-          create1_tf/base_footprint:
-            create1_tf/base_link:
-              create1_tf/caster_wheel_link:
-                {}
-              create1_tf/front_left_cliff_sensor_link:
-                {}
-              create1_tf/front_right_cliff_sensor_link:
-                {}
-              create1_tf/imu_link:
-                {}
-              create1_tf/omni_sensor_link:
-                {}
-              create1_tf/rplidar_link:
-                create1_tf/laser_link:
-                  {}
-              create1_tf/side_left_cliff_sensor_link:
-                {}
-              create1_tf/side_right_cliff_sensor_link:
-                {}
-              create1_tf/turtlebot_stack_base_link:
-                create1_tf/plate_bottom_link:
-                  create1_tf/nvidia_jetson_nano_link:
-                    {}
-                create1_tf/plate_upper_link:
-                  {}
-                create1_tf/pole_large_0_link:
-                  {}
-                create1_tf/pole_large_1_link:
-                  {}
-                create1_tf/pole_large_2_link:
-                  {}
-                create1_tf/pole_large_3_link:
-                  {}
-                create1_tf/pole_short_0_link:
-                  {}
-                create1_tf/pole_short_1_link:
-                  {}
-                create1_tf/pole_short_2_link:
-                  {}
-                create1_tf/pole_short_3_link:
-                  {}
-              create1_tf/wall_sensor_link:
-                {}
-            create1_tf/wheel_left_link:
-              {}
-            create1_tf/wheel_right_link:
-              {}
+          {}
       Update Interval: 0
       Value: true
   Enabled: true
