@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+<xacro:macro name="battery" params="name:=battery parent:=base_footprint *origin">
+
+  <xacro:include filename="$(find ca_description)/urdf/common_properties.xacro"/>
+
+  <xacro:property name="parent_link" value="${parent}"/>
+  <xacro:property name="link_name"   value="${name}_link"/>
+
+  <xacro:property name="mass"        value="1"/>
+  <xacro:property name="size_x_in"   value="2.2"/>
+  <xacro:property name="size_y_in"   value="5.7"/>
+  <xacro:property name="size_z_in"   value="2.5"/>
+
+  <joint name="${name}_joint" type="fixed">
+    <xacro:insert_block name="origin"/>
+    <parent link="${parent_link}"/>
+    <child link="${link_name}"/>
+  </joint>
+
+  <link name="${link_name}">
+    <xacro:inertial_cuboid mass="${mass}"
+                           x_length="${size_x_in*in_to_m}"
+                           y_length="${size_y_in*in_to_m}"
+                           z_length="${size_z_in*in_to_m}"/>
+    <visual>
+      <geometry>
+        <box size="${size_x_in*in_to_m} ${size_y_in*in_to_m} ${size_z_in*in_to_m}"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <gazebo reference="${link_name}">
+    <material>Gazebo/ZincYellow</material>
+  </gazebo>
+
+</xacro:macro>
+
+</robot>

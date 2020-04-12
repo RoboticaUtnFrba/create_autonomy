@@ -38,15 +38,15 @@
           </horizontal>
         </scan>
         <range>
-          <min>${min_range_cm*cm_to_meters}</min>
-          <max>${max_range_cm*cm_to_meters}</max>
-          <resolution>${resolution_cm*cm_to_meters}</resolution>
+          <min>${min_range_cm*cm_to_m}</min>
+          <max>${max_range_cm*cm_to_m}</max>
+          <resolution>${resolution_cm*cm_to_m}</resolution>
         </range>
       </ray>
       <plugin name="gazebo_ros_${name}" filename="libcreate_cliff_plugin.so">
         <topicName>${name}/raw</topicName>
         <frameName>${link_name}</frameName>
-        <cliffValue>${min_cliff_value_cm*cm_to_meters}</cliffValue>
+        <cliffValue>${min_cliff_value_cm*cm_to_m}</cliffValue>
       </plugin>
     </sensor>
   </gazebo>

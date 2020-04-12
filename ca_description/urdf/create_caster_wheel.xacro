@@ -7,7 +7,7 @@
 
   <xacro:property name="parent_link" value="${parent}"/>
   <xacro:property name="link_name"   value="${name}_link"/>
-  <xacro:property name="mass"        value="1"/>
+  <xacro:property name="mass"        value="0.2"/>
 
   <!-- fixed because there's no transmission -->
   <joint name="front_castor_joint" type="fixed">
