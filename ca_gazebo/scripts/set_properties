@@ -1,0 +1,43 @@
+#!/usr/bin/env python
+import rospy
+
+from gazebo_msgs.srv import GetPhysicsProperties, SetPhysicsProperties
+
+__author__ = 'Emiliano Borghi'
+
+class GazeboPhysicsProperties():
+
+  def __init__(self):
+    try:
+      rospy.init_node("gazebo_physics_properties", log_level=rospy.INFO)
+    except ROSInitException as e:
+      print("ROS node already initialized: {}".format(e))
+    finally:
+      # Get parameters
+      rtf = rospy.get_param('~real_time_factor', 1)
+      if rtf < 0:
+        rtf = 1
+      # Wait for Gazebo services
+      rospy.wait_for_service('gazebo/get_physics_properties')
+      rospy.wait_for_service('gazebo/set_physics_properties')
+      try:
+        # Get current physics properties
+        get_physics_properties_proxy = rospy.ServiceProxy('gazebo/get_physics_properties', GetPhysicsProperties)
+
+        # Changing max_step_size = RTF / time_step
+        rospy.loginfo("Setting RTF={}x".format(rtf))
+        max_step_size = rtf / get_physics_properties_proxy().time_step
+
+        # Set new physics properties
+        set_physics_properties_proxy = rospy.ServiceProxy('gazebo/set_physics_properties', SetPhysicsProperties)
+        set_physics_properties_proxy(
+          get_physics_properties_proxy().time_step,
+          max_step_size,
+          get_physics_properties_proxy().gravity,
+          get_physics_properties_proxy().ode_config
+        )
+      except rospy.ServiceException as e:
+        rospy.logerr("GazeboPhysicsProperties failed: {}".format(e))
+
+if __name__ == '__main__':
+  GazeboPhysicsProperties()
