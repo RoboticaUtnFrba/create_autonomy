@@ -3,18 +3,19 @@
   <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
   <arg name="tf_prefix" value="$(arg ns)_tf"          doc="Tf prefix"/>
 
-  <arg name="laser" default="$(optenv LASER rplidar)" doc="Laser for mapping the environment"/>
+  <arg name="laser" value="$(optenv LASER rplidar)" doc="Laser for mapping the environment"/>
+
+  <arg name="global_planner" value="$(optenv GLOBAL_PLANNER navfn)"/>
+  <arg name="local_planner"  value="$(optenv LOCAL_PLANNER dwa)"/>
 
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
     <rosparam file="$(find ca_move_base)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
     <rosparam file="$(find ca_move_base)/config/global_costmap_params.yaml" command="load" />
-    <!-- <rosparam file="$(find ca_move_base)/config/global_planner_params.yaml" command="load" /> -->
-    <rosparam file="$(find ca_move_base)/config/navfn_global_planner_params.yaml" command="load" />
+    <rosparam file="$(find ca_move_base)/config/$(arg global_planner)_global_planner_params.yaml" command="load" />
 
     <rosparam file="$(find ca_move_base)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
     <rosparam file="$(find ca_move_base)/config/local_costmap_params.yaml" command="load" />
-    <!-- <rosparam file="$(find ca_move_base)/config/base_local_planner_params.yaml" command="load" /> -->
-    <rosparam file="$(find ca_move_base)/config/dwa_local_planner_params.yaml" command="load" />
+    <rosparam file="$(find ca_move_base)/config/$(arg local_planner)_local_planner_params.yaml" command="load" />
 
     <rosparam file="$(find ca_move_base)/config/move_base_params.yaml" command="load" />
 
