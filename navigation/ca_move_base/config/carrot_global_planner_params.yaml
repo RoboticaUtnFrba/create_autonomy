@@ -1,0 +1,5 @@
+base_global_planner: "carrot_planner/CarrotPlanner"
+
+CarrotPlanner:
+  step_size: 0.1
+  min_dist_from_robot: 0.1
