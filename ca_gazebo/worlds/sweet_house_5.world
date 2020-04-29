@@ -124,7 +124,7 @@
           <pose frame=''>0 0 0 1.5708 -0 0</pose>
           <geometry>
             <mesh>
-              <uri>model://sweet_home_3/meshes/SweetHome3DExample5.obj</uri>
+              <uri>model://sweet_home_5/meshes/SweetHome3DExample5.obj</uri>
               <scale>0.01 0.01 0.01</scale>
             </mesh>
           </geometry>
