@@ -4,8 +4,9 @@
 	<arg name="localization" default="$(optenv LOCALIZATION none)"
        doc="Localization type. More options here: https://github.com/RoboticaUtnFrba/create_autonomy/wiki/Launching-options"/>
 
-	<arg name="paused" value="$(optenv PAUSED false)" doc="Start the simulation paused"/>
-	<arg name="debug"  value="$(optenv DEBUG false)" doc="Enable debugging with gdb"/>
+	<arg name="paused"  value="$(optenv PAUSED false)"  doc="Start the simulation paused"/>
+	<arg name="debug"   value="$(optenv DEBUG false)" 	doc="Enable debugging with gdb"/>
+	<arg name="verbose" value="$(optenv VERBOSE false)" doc="Enable verbose output in Gazebo"/>
 
 	<!-- Launch Gazebo world -->
 	<include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -13,7 +14,7 @@
 		<arg name="gui"          value="$(arg gui)" />
 		<arg name="paused"       value="$(arg paused)"/>
 		<arg name="use_sim_time" value="true"/>
-		<arg name="verbose"      value="$(arg debug)"/>
+		<arg name="verbose"      value="$(arg verbose)"/>
 		<arg name="world_name"   value="$(find ca_gazebo)/worlds/$(arg env).world"/>
 	</include>
 
