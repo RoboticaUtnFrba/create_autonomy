@@ -120,6 +120,15 @@
             <layer>1</layer>
           </meta>
         </visual>
+        <collision name='sweet_home_5_collision'>
+          <pose frame=''>0 0 0 1.5708 -0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://sweet_home_3/meshes/SweetHome3DExample5.obj</uri>
+              <scale>0.01 0.01 0.01</scale>
+            </mesh>
+          </geometry>
+        </collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
