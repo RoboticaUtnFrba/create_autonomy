@@ -4,6 +4,7 @@
 <xacro:include filename="$(find ca_description)/urdf/sensors/lasers/sim_3d_sensor.xacro"/>
 
 <!-- Orbbec Astra RGBD Camera -->
+<!-- https://github.com/orbbec/ros_astra_launch/blob/master/launch/includes/astra_frames.launch -->
 <xacro:property name="name" value="astra"/>
 <xacro:property name="parent" value="base_link"/>
 
