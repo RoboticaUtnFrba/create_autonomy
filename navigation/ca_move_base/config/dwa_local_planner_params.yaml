@@ -28,7 +28,7 @@ DWAPlannerROS:
   theta_stopped_vel: 0.4
 
   acc_lim_x: 0.8
-  acc_lim_theta: 2.0
+  acc_lim_theta: 5.0
   acc_lim_y: 0.0      # diff drive robot
 
 # Goal Tolerance Parameters
@@ -37,9 +37,9 @@ DWAPlannerROS:
   # latch_xy_goal_tolerance: false
 
 # Forward Simulation Parameters
-  sim_time: 1.0       # 1.7
-  vx_samples: 6       # 3
-  vy_samples: 1       # diff drive robot, there is only one sample
+  sim_time: 2.0       # 1.7
+  vx_samples: 10       # 3
+  vy_samples: 10       # diff drive robot, there is only one sample
   vtheta_samples: 20  # 20
 
 # Trajectory Scoring Parameters

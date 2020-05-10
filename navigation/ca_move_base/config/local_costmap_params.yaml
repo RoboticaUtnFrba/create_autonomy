@@ -8,7 +8,7 @@ local_costmap:
   rolling_window: true
   width: 5.0
   height: 5.0
-  resolution: 0.025
+  resolution: 0.01
 
   plugins:
     # Order matters!

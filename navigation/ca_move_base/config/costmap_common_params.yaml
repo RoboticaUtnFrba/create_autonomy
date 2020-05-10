@@ -1,12 +1,13 @@
 transform_tolerance: 0.25
-robot_radius: 0.18
+robot_radius: 0.095
 track_unknown_space: true   # true needed for disabling global path planning through unknown space
 raytrace_range: 3.0
+footprint_padding: 0.0
 
 inflation_layer:
   enabled: true
-  inflation_radius: 0.2     # max. distance from an obstacle at which costs are incurred for planning paths.
-  cost_scaling_factor:  10  # exponential rate at which the obstacle cost drops off (default: 10)
+  inflation_radius: 0.5     # max. distance from an obstacle at which costs are incurred for planning paths.
+  cost_scaling_factor:  12  # exponential rate at which the obstacle cost drops off (default: 10)
   inflate_unknown: true
 
 obstacle_layer:

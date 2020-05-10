@@ -9,10 +9,10 @@ global_costmap:
   # Map management parameters
   width: 30.0
   height: 30.0
-  resolution: 0.05
+  resolution: 0.01
 
   plugins:
     # Order matters!
     - {name: static_layer,    type: "costmap_2d::StaticLayer" }
-    - {name: obstacle_layer,  type: "costmap_2d::VoxelLayer"}
+    - {name: obstacle_layer,  type: "costmap_2d::ObstacleLayer"}
     - {name: inflation_layer, type: "costmap_2d::InflationLayer" }
