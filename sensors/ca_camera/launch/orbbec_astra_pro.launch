@@ -14,7 +14,9 @@
     <arg name="rgb_camera_info_url"   value="package://ca_camera/config/rgb_16111910172.yaml" />
     <arg name="depth_camera_info_url" value="package://ca_camera/config/depth_16111910172.yaml" />
 
-    <arg name="camera"    value="astra"/>
-    <arg name="tf_prefix" value="$(arg tf_prefix)"/>
+    <arg name="camera"     value="astra"/>
+    <arg name="tf_prefix"  value="$(arg tf_prefix)"/>
+    <!-- robot_description will publish tf -->
+    <arg name="publish_tf" value="false"/>
   </include>
 </launch>
