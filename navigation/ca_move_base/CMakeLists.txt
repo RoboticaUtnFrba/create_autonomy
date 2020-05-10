@@ -8,6 +8,7 @@ find_package(catkin REQUIRED COMPONENTS
   amcl
   move_base
   move_base_msgs
+  octomap_mapping
   roscpp
   tf
 )
