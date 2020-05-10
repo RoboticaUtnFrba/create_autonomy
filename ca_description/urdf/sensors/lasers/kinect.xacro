@@ -13,7 +13,8 @@
 <xacro:property name="link_depth"         value="${name}_depth_frame"/>
 <xacro:property name="link_depth_optical" value="${name}_depth_optical_frame"/>
 
-<xacro:property name="kinect_cam_py" value="-0.0125"/>
+<xacro:property name="kinect_cam_py"    value="-0.0125"/>
+<xacro:property name="optical_rotation" value="${-pi/2} 0 ${-pi/2}"/>
 
 <joint name="camera_rgb_joint" type="fixed">
   <origin xyz="${laser_origin}"/>
@@ -23,7 +24,7 @@
 <link name="${link_rgb}"/>
 
 <joint name="${name}_rgb_optical_joint" type="fixed">
-  <origin rpy="${-pi/2} 0 ${-pi/2}" />
+  <origin rpy="${optical_rotation}" />
   <parent link="${link_rgb}" />
   <child link="${link_rgb_optical}" />
 </joint>
@@ -51,7 +52,7 @@
 <link name="${link_depth}"/>
 
 <joint name="${name}_depth_optical_joint" type="fixed">
-  <origin rpy="${-pi/2} 0 ${-pi/2}" />
+  <origin rpy="${optical_rotation}" />
   <parent link="${link_depth}" />
   <child link="${link_depth_optical}"/>
 </joint>
