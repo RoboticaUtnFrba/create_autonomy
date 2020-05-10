@@ -14,6 +14,7 @@
   <build_depend>amcl</build_depend>
   <build_depend>move_base</build_depend>
   <build_depend>move_base_msgs</build_depend>
+  <build_depend>octomap_mapping</build_depend>
   <build_depend>roscpp</build_depend>
   <build_depend>tf</build_depend>
 
@@ -31,6 +32,7 @@
   <exec_depend>map_server</exec_depend>
   <exec_depend>move_base</exec_depend>
   <exec_depend>move_base_msgs</exec_depend>
+  <exec_depend>octomap_mapping</exec_depend>
   <exec_depend>roscpp</exec_depend>
   <exec_depend>tf</exec_depend>
 
