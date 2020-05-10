@@ -1,0 +1,22 @@
+<launch>
+  <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
+  <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
+  <arg name="tf_prefix" value="$(arg ns)_tf"          doc="Tf prefix"/>
+
+  <arg name="laser"     default="$(optenv LASER rplidar)" doc="Laser for mapping the environment"/>
+  <arg name="freq"      value="40"                        doc="Broadcasting frequency of robot_description parameter"/>
+
+  <!-- Octomap server -->
+  <node pkg="octomap_server" type="octomap_server_node" name="octomap_server">
+    <rosparam file="$(find ca_move_base)/config/octomap_params.yaml" command="load"/>
+    <!-- The robot's base frame in which ground plane detection is performed (if enabled) -->
+    <param name="base_frame_id" value="$(arg tf_prefix)/base_footprint"/>
+		<!-- data source to integrate (PointCloud2) -->
+		<remap from="cloud_in" to="/$(arg ns)/$(arg laser)/depth/points"/>
+    <remap from="projected_map" to="/map"/>
+	</node>
+
+  <!-- Static transform is needed for map -->
+  <node pkg="tf" type="static_transform_publisher" name="map_static_tf"
+        args="0 0 0 0 0 0 /map $(arg tf_prefix)/odom $(arg freq)"/>
+</launch>

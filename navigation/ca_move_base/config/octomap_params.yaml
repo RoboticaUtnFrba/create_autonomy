@@ -1,0 +1,34 @@
+# Static global frame in which the map will be published.
+frame_id: "/map"
+# Resolution in meter for the map when starting with an empty map.
+resolution: 0.05
+# Whether visualization should encode height with different colors
+height_map: true
+# Maximum range in meter for inserting point cloud data when dynamically building a map.
+# Limiting the range to something useful (e.g. 5m) prevents spurious erroneous points far away from the robot.
+sensor_model/max_range: 5
+# Probabilities for hits and misses in the sensor model when dynamically building a map
+sensor_model/hit: 0.7
+sensor_model/miss: 0.4
+# Minimum and maximum probability for clamping when dynamically building a map
+sensor_model/min: 0.12
+sensor_model/max: 0.97
+# True for a static map, false if no initial map is given
+# Whether topics are published latched or only once per change.
+# For maximum performance when building a map (with frequent updates), set to false.
+# When set to true, on every map change all topics and visualizations will be created.
+latch: false
+# Whether the ground plane should be detected and ignored from scan data when dynamically building a map, using pcl::SACMODEL_PERPENDICULAR_PLANE. This clears everything up to the ground, but will not insert the ground as obstacle in the map. If this is enabled, it can be further configured with the ~ground_filter/... parameters.
+filter_ground: true
+# Distance threshold for points (in z direction) to be segmented to the ground plane
+ground_filter/distance: 0.04
+# Angular threshold of the detected plane from the horizontal plane to be detected as ground
+ground_filter/angle: 0.15
+# Distance threshold from z=0 for a plane to be detected as ground (4th coefficient of the plane equation from PCL)
+ground_filter/plane_distance: 0.07
+# Minimum and maximum height of points to consider for insertion in the callback. Any point outside of this intervall will be discarded before running any insertion or ground plane filtering. You can do a rough filtering based on height with this, but if you enable the ground_filter this interval needs to include the ground plane.
+pointcloud_min_z: 0
+pointcloud_max_z: 2
+# Minimum and maximum height of occupied cells to be consider in the final map. This ignores all occupied voxels outside of the interval when sending out visualizations and collision maps, but will not affect the actual octomap representation.
+occupancy_min_z: 0
+occupancy_max_z: 2

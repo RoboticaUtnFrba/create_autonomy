@@ -1,5 +1,7 @@
 <launch>
-  <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
+  <arg name="robot_id"  default="$(optenv ID 1)"        doc="Unique identifier of the robot [1-Inf.)"/>
+  <arg name="laser"     value="$(optenv LASER rplidar)" doc="Laser for mapping the environment"/>
+
   <arg name="localization" doc="Autonomous method for localization/navigation."/>
   <arg name="env"/>
 
@@ -42,5 +44,9 @@
 			     file="$(find ca_move_base)/launch/map_server.launch">
 	  <arg name="env" value="$(arg env)"/>
   </include>
+
+  <!-- Octomap mapping -->
+  <include if="$(eval arg('localization')=='octomap')"
+           file="$(find ca_move_base)/launch/octomap_mapping.launch"/>
 
 </launch>
