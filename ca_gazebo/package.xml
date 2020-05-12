@@ -44,7 +44,7 @@
                                   :${prefix}/models/sweet_home_3d"/>
     <gazebo_ros plugin_path="${prefix}/lib
                             :${prefix}/models/create_autorace/gazebo_traffic_plugin
-                            :${prefix}/src/create_servicesim:
+                            :${prefix}/src/create_servicesim
                             :${prefix}/models/sweet_home_3d"/>
   </export>
 </package>
