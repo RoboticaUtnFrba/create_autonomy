@@ -8,15 +8,19 @@
   <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
   <arg name="tf_prefix" value="$(arg ns)_tf"          doc="Tf prefix"/>
 
+  <arg name="camera"    value="astra"                 doc="Astra camera"/>
+
   <!-- Include official launch file and specify camera_info urls -->
   <include file="$(find astra_camera)/launch/astrapro.launch">
     <!-- provide arguments to that launch file -->
     <arg name="rgb_camera_info_url"   value="package://ca_camera/config/rgb_16111910172.yaml" />
     <arg name="depth_camera_info_url" value="package://ca_camera/config/depth_16111910172.yaml" />
 
-    <arg name="camera"     value="astra"/>
-    <arg name="tf_prefix"  value="$(arg tf_prefix)"/>
+    <arg name="camera"         value="$(arg camera)"/>
+    <arg name="tf_prefix"      value="$(arg tf_prefix)"/>
+    <arg name="rgb_frame_id"   value="$(arg tf_prefix)/$(arg camera)_rgb_optical_frame"/>
+    <arg name="depth_frame_id" value="$(arg tf_prefix)/$(arg camera)_depth_optical_frame"/>
     <!-- robot_description will publish tf -->
-    <arg name="publish_tf" value="false"/>
+    <arg name="publish_tf"     value="false"/>
   </include>
 </launch>
