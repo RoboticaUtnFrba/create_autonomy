@@ -1,0 +1,31 @@
+astra:
+  rgb:
+    xyz: [0, 0, 0]
+    rpy: [0, 0, 0]
+  depth:
+    xyz: [0, 0, 0]
+    rpy: [0, 0, 0]
+
+kinect:
+  rgb:
+    xyz: [0, 0, 0]
+    rpy: [0, 0, 0]
+  depth:
+    xyz: [0, 0, 0]
+    rpy: [0, 0, 0]
+
+r200:
+  rgb:
+    xyz: [0, 0, 0]
+    rpy: [0, 0, 0]
+  depth:
+    xyz: [0, 0, 0]
+    rpy: [0, 0, 0]
+
+xtion_pro:
+  rgb:
+    xyz: [0, 0, 0]
+    rpy: [0, 0, 0]
+  depth:
+    xyz: [0, 0, 0]
+    rpy: [0, 0, 0]

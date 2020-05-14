@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+<!-- Load YAML that stores calibration poses -->
+<xacro:property name="yaml_file" value="$(find ca_description)/urdf/sensors/lasers/calibration.yaml"/>
+<xacro:property name="calib"     value="${load_yaml(yaml_file)}"/>
+
+<xacro:macro name="origin_calibrated" params="camera type">
+  <!-- Get calibrated pose from dictionary -->
+  <xacro:property name="pose" value="${calib[camera][type]}"/>
+  <!-- Position: xyz -->
+  <xacro:property name="x" value="${pose['xyz'][0]}"/>
+  <xacro:property name="y" value="${pose['xyz'][1]}"/>
+  <xacro:property name="z" value="${pose['xyz'][2]}"/>
+  <!-- Orientation: RPY -->
+  <xacro:property name="R" value="${-pi/2 + pose['rpy'][0]}"/>
+  <xacro:property name="P" value="${pose['rpy'][1]}"/>
+  <xacro:property name="Y" value="${-pi/2 + pose['rpy'][2]}"/>
+  <!-- Create origin block -->
+  <origin xyz="${x} ${y} ${z}" rpy="${R} ${P} ${Y}"/>
+</xacro:macro>
+
+</robot>
