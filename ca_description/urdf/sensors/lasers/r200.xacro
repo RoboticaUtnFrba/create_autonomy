@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+<xacro:include filename="$(find ca_description)/urdf/sensors/lasers/calibration.xacro"/>
 <xacro:include filename="$(find ca_description)/urdf/sensors/lasers/sim_3d_sensor.xacro"/>
 
 <xacro:property name="name" value="r200"/>
@@ -13,9 +14,8 @@
 <xacro:property name="link_depth"         value="${name}_depth_frame"/>
 <xacro:property name="link_depth_optical" value="${name}_depth_optical_frame"/>
 
-<xacro:property name="rgb_offset"       value="-0.039895"/>
-<xacro:property name="depth_offset"     value="-0.045395"/>
-<xacro:property name="optical_rotation" value="${-pi/2} 0 ${-pi/2}"/>
+<xacro:property name="rgb_offset"   value="-0.039895"/>
+<xacro:property name="depth_offset" value="-0.045395"/>
 
 <joint name="${name}_joint" type="fixed">
   <origin xyz="${laser_origin}"/>
@@ -32,30 +32,30 @@
 </link>
 
 <joint name="${name}_rgb_joint" type="fixed">
-    <origin xyz="0 ${rgb_offset} 0"/>
-    <parent link="${link_name}"/>
-    <child link="${link_rgb}" />
+  <origin xyz="0 ${rgb_offset} 0"/>
+  <parent link="${link_name}"/>
+  <child link="${link_rgb}" />
 </joint>
 <link name="${link_rgb}"/>
 
 <joint name="${name}_rgb_optical_joint" type="fixed">
-    <origin rpy="${optical_rotation}"/>
-    <parent link="${link_rgb}"/>
-    <child link="${link_rgb_optical}"/>
+  <xacro:origin_calibrated camera="${name}" type="rgb"/>
+  <parent link="${link_rgb}"/>
+  <child link="${link_rgb_optical}"/>
 </joint>
 <link name="${link_rgb_optical}"/>
 
 <joint name="${name}_depth_joint" type="fixed">
-    <origin xyz="0 ${depth_offset} 0"/>
-    <parent link="${link_name}"/>
-    <child link="${link_depth}"/>
+  <origin xyz="0 ${depth_offset} 0"/>
+  <parent link="${link_name}"/>
+  <child link="${link_depth}"/>
 </joint>
 <link name="${link_depth}"/>
 
 <joint name="${name}_depth_optical_joint" type="fixed">
-    <origin rpy="${optical_rotation}"/>
-    <parent link="${link_depth}"/>
-    <child link="${link_depth_optical}"/>
+  <xacro:origin_calibrated camera="${name}" type="depth"/>
+  <parent link="${link_depth}"/>
+  <child link="${link_depth_optical}"/>
 </joint>
 <link name="${link_depth_optical}"/>
 

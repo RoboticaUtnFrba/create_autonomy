@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
+<xacro:include filename="$(find ca_description)/urdf/sensors/lasers/calibration.xacro"/>
 <xacro:include filename="$(find ca_description)/urdf/sensors/lasers/sim_3d_sensor.xacro"/>
 
 <!-- Orbbec Astra RGBD Camera -->
@@ -18,10 +19,9 @@
 
 <!-- This relates the IR sensor to the Xtion base link -->
 <!-- 4.8 cm because sensors are offset to right, from center -->
-<xacro:property name="ir_offset"        value="0.048"/>
+<xacro:property name="ir_offset"  value="0.048"/>
 <!-- The measured distance from RGB lens back to IR lens, approx 2.5cm -->
-<xacro:property name="rgb_offset"       value="-0.025"/>
-<xacro:property name="optical_rotation" value="${-pi/2} 0 ${-pi/2}"/>
+<xacro:property name="rgb_offset" value="-0.025"/>
 
 <joint name="${name}_joint" type="fixed">
   <origin xyz="${laser_origin}"/>
@@ -47,7 +47,7 @@
 
 <!-- Xtion RGB sensor frame -->
 <joint name="${name}_rgb_optical_joint" type="fixed">
-  <origin rpy="${optical_rotation}" />
+  <xacro:origin_calibrated camera="${name}" type="rgb"/>
   <parent link="${link_rgb}" />
   <child link="${link_rgb_optical}" />
 </joint>
@@ -63,7 +63,7 @@
 
 <!-- Xtion IR sensor frame -->
 <joint name="${name}_depth_optical_joint" type="fixed">
-  <origin rpy="${optical_rotation}" />
+  <xacro:origin_calibrated camera="${name}" type="depth"/>
   <parent link="${link_depth}" />
   <child link="${link_depth_optical}" />
 </joint>
