@@ -11,21 +11,41 @@
 <xacro:property name="link_name"          value="${name}_link"/>
 <xacro:property name="link_rgb"           value="${name}_rgb_frame"/>
 <xacro:property name="link_rgb_optical"   value="${name}_rgb_optical_frame"/>
+<xacro:property name="link_ir"            value="${name}_ir_frame"/>
+<xacro:property name="link_ir_optical"    value="${name}_ir_optical_frame"/>
 <xacro:property name="link_depth"         value="${name}_depth_frame"/>
 <xacro:property name="link_depth_optical" value="${name}_depth_optical_frame"/>
 
-<!-- Xacro properties -->
-<xacro:property name="xtion_pro_depth_rel_rgb_py" value="0.0270" />
-<xacro:property name="xtion_pro_cam_rel_rgb_py"   value="-0.0220" />
-<xacro:property name="optical_rotation"           value="${-pi/2} 0 ${-pi/2}"/>
+<!-- This relates the IR sensor to the Xtion base link -->
+<!-- 4.8 cm because sensors are offset to right, from center -->
+<xacro:property name="ir_offset"        value="0.048"/>
+<!-- The measured distance from RGB lens back to IR lens, approx 2.5cm -->
+<xacro:property name="rgb_offset"       value="-0.025"/>
+<xacro:property name="optical_rotation" value="${-pi/2} 0 ${-pi/2}"/>
 
-<joint name="${name}_rgb_joint" type="fixed">
+<joint name="${name}_joint" type="fixed">
   <origin xyz="${laser_origin}"/>
-  <parent link="${parent}"/>
+  <parent link="${parent_link}"/>
+  <child link="${link_name}"/>
+</joint>
+<link name="${link_name}">
+  <visual>
+    <origin xyz="-0.015 0.0035 -0.01"/>
+    <geometry>
+      <mesh filename="package://ca_description/meshes/sensors/asus_xtion_pro_live.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<!-- Xtion RGB sensor physical attachment -->
+<joint name="${name}_rgb_joint" type="fixed">
+  <origin xyz="0 ${rgb_offset} 0"/>
+  <parent link="${link_name}"/>
   <child link="${link_rgb}" />
 </joint>
 <link name="${link_rgb}"/>
 
+<!-- Xtion RGB sensor frame -->
 <joint name="${name}_rgb_optical_joint" type="fixed">
   <origin rpy="${optical_rotation}" />
   <parent link="${link_rgb}" />
@@ -33,27 +53,15 @@
 </joint>
 <link name="${link_rgb_optical}"/>
 
-<joint name="${name}_joint" type="fixed">
-  <origin xyz="0 ${xtion_pro_cam_rel_rgb_py} 0"/>
-  <parent link="${link_rgb}"/>
-  <child link="${link_name}"/>
-</joint>
-<link name="${link_name}">
-  <visual>
-    <origin xyz="-0.015 0.0035 0.004"/>
-    <geometry>
-      <mesh filename="package://ca_description/meshes/sensors/asus_xtion_pro_live.dae"/>
-    </geometry>
-  </visual>
-</link>
-
+<!-- Xtion IR sensor physical attachment -->
 <joint name="${name}_depth_joint" type="fixed">
-  <origin xyz="0 ${xtion_pro_depth_rel_rgb_py} 0"/>
+  <origin xyz="0 ${ir_offset} 0"/>
   <parent link="${link_rgb}" />
   <child link="${link_depth}"/>
 </joint>
 <link name="${link_depth}"/>
 
+<!-- Xtion IR sensor frame -->
 <joint name="${name}_depth_optical_joint" type="fixed">
   <origin rpy="${optical_rotation}" />
   <parent link="${link_depth}" />
