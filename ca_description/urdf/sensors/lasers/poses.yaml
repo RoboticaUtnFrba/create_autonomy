@@ -9,4 +9,4 @@ turtlebot:
   kinect: 0.025 -0.01 0.247
   r200: 0.125 0 0.21
   rplidar: 0 0 0.2
-  xtion_pro: 0.1 0.018 0.22
+  xtion_pro: 0.1 0.018 0.23
