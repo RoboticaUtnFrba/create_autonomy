@@ -27,6 +27,7 @@
 
   <exec_depend>actionlib</exec_depend>
   <exec_depend>amcl</exec_depend>
+  <exec_depend>ca_planning</exec_depend>
   <exec_depend>carrot_planner</exec_depend>
   <exec_depend>dwa_local_planner</exec_depend>
   <exec_depend>map_server</exec_depend>
