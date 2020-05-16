@@ -23,6 +23,10 @@ repositories:
   #   type: git
   #   url: https://github.com/RoboticaUtnFrba/RTIMULib2.git
   #   version: master
+  tbb:
+    type: git
+    url: https://github.com/RoboticaUtnFrba/oneTBB.git
+    version: v2020.2
   viso2:
     type: git
     url: https://github.com/RoboticaUtnFrba/viso2.git
