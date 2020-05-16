@@ -1,0 +1,8 @@
+<!-- We need this file in addition to the code macro to allow the ROS system to automatically discover, load, and reason about plugins. -->
+<library path="lib/libcuckoo_search_planner">
+  <class name="cuckoo_search_planner/CuckooSearchPlanner"
+         type="cuckoo_search_planner::CuckooSearchPlanner"
+         base_class_type="nav_core::BaseGlobalPlanner">
+    <description>This is a global planner based on a metaheuristic Cuckoo Search algorithm.</description>
+  </class>
+</library>
