@@ -14,6 +14,7 @@
 #include <vector>
 #include <random>
 #include <exception>
+#include <stdexcept>
 #include <algorithm>
 #include <fstream>
 #include <iomanip>

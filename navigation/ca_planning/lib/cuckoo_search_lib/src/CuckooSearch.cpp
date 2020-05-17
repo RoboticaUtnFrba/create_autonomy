@@ -8,11 +8,11 @@ CuckooSearch::CuckooSearch(ObjectiveFunction func, unsigned amount_of_nests, Ste
 {
 	if (m_use_lazy_cuckoo)
 	{
-		m_cuckoo = new LazyCuckoo(m_objective_function);
+		m_cuckoo.reset(new LazyCuckoo(m_objective_function));
 	}
 	else
 	{
-		m_cuckoo = new Cuckoo(m_objective_function);
+		m_cuckoo.reset(new Cuckoo(m_objective_function));
 	}
 	if (m_step.GetMinStep().size() == 1 || m_step.GetMaxStep().size() == 1)
 	{
@@ -21,11 +21,7 @@ CuckooSearch::CuckooSearch(ObjectiveFunction func, unsigned amount_of_nests, Ste
 	}
 };
 
-CuckooSearch::~CuckooSearch()
-{
-	//ERROR: Can't delete pointer
-	//delete m_cuckoo;
-};
+CuckooSearch::~CuckooSearch() {};
 
 std::valarray<double> CuckooSearch::FindMax()
 {
@@ -61,15 +57,13 @@ std::valarray<double> CuckooSearch::FindMin(Lambda lambda, Step step, double pro
 
 void CuckooSearch::UseLazyCuckoo()
 {
-	delete m_cuckoo;
-	m_cuckoo = new LazyCuckoo(m_objective_function);
+	m_cuckoo.reset(new LazyCuckoo(m_objective_function));
 	m_use_lazy_cuckoo = true;
 };
 
 void CuckooSearch::UseStandartCuckoo()
 {
-	delete m_cuckoo;
-	m_cuckoo = new Cuckoo(m_objective_function);
+	m_cuckoo.reset(new Cuckoo(m_objective_function));
 	m_use_lazy_cuckoo = false;
 };
 
@@ -130,9 +124,7 @@ void CuckooSearch::AbandonNests()
 {
 	if (m_abandon_probability < 0 || m_abandon_probability > 1)
 	{
-		const std::string ex("Abandon probability must be in range [0, 1]\n");
-		std::cout << ex << std::endl;
-		// throw std::exception(ex);
+		throw std::runtime_error("Abandon probability must be in range [0, 1]\n");
 	}
 	unsigned int rnd_index = static_cast<unsigned int>(m_amount_of_nests - m_abandon_probability * (rand() / double(RAND_MAX + 1.0)) * m_amount_of_nests);
 

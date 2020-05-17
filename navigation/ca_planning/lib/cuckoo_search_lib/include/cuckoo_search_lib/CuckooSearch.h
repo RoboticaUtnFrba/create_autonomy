@@ -34,6 +34,7 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include <exception>
 
 #include <tbb/parallel_for.h>
 #include <tbb/critical_section.h>
@@ -127,7 +128,7 @@ protected:
 	unsigned int m_amount_of_nests;
 	SetOfNests m_nests;
 	Nest m_best_ever;
-	Cuckoo* m_cuckoo;
+	std::shared_ptr<Cuckoo> m_cuckoo;
 	ObjectiveFunction m_objective_function;
 	StopCritearian m_stop_criterian;
 	CompareFitness m_cmp_fitness;
@@ -140,7 +141,7 @@ protected:
 	double m_abandon_probability;
 	bool m_use_lazy_cuckoo;
 
-	StatisticsHandler		m_statistics_handler;
+	StatisticsHandler m_statistics_handler;
 
 
 	void GenerateInitialPopulation();
