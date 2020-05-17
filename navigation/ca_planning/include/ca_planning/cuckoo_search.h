@@ -33,13 +33,13 @@ class CuckooSearchPlanner
 private:
   bool initialized_;
   costmap_2d::Costmap2DROS* costmap_ros_;
-  // costmap_2d::Costmap2D* costmap_;
-  // double step_size_, min_dist_from_robot_;
-  // base_local_planner::WorldModel* world_model_; ///< @brief The world model that the controller will use
   boost::shared_ptr<CuckooSearch> cs_planner_;
   boost::mutex mutex_;
   ros::Publisher plan_pub_;
+  // Cuckoo Search specific
   static double distance(std::valarray<double> va);
+  static bool stopCriterian();
+  ObjectiveFunction of;
 public:
   CuckooSearchPlanner();
   // Used to initialize the costmap, that is the map that will be used for planning (costmap_ros), and the name of the planner (name).

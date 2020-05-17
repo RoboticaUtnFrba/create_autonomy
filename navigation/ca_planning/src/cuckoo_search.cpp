@@ -23,16 +23,27 @@ void CuckooSearchPlanner::initialize(std::string name, costmap_2d::Costmap2DROS*
     costmap_ros_ = costmap_ros;
     // initialize other planner parameters
     ros::NodeHandle private_nh("~/" + name);
-    // step_size_ = costmap_->getResolution();
-    // world_model_ = new base_local_planner::CostmapModel(*costmap_);
     plan_pub_ = private_nh.advertise<nav_msgs::Path>("plan", 1);
 
     // Define objective function
     std::function<double(std::valarray<double>)> function = CuckooSearchPlanner::distance;
-    unsigned int dimensions;
-    Bounds bounds;
-    ObjectiveFunction of(function, dimensions, bounds, "Cuckoo Search Planner");
-    cs_planner_ = boost::make_shared<CuckooSearch>(of);
+    unsigned int dimensions(2);
+    of.ChangeFunction(function);
+    of.SetDimensions(dimensions);
+    of.SetName("Cuckoo Search Planner");
+    // Stop criterian
+    StopCritearian stop_criterian = CuckooSearchPlanner::stopCriterian;
+    // Other params
+    unsigned amount_of_nests = 32;
+    Step step = 1.0;
+    Lambda lambda = {0.3, 1.99};
+    double prob = 0.25;
+    unsigned max_generations = 10000;
+    bool use_lazy_cuckoo = false;
+    // Initialize Cuckoo Search planner
+    cs_planner_ = boost::make_shared<CuckooSearch>(of,
+        amount_of_nests, step, lambda, prob,
+        max_generations, stop_criterian, use_lazy_cuckoo);
 
     this->initialized_ = true;
   }
@@ -49,6 +60,11 @@ double CuckooSearchPlanner::distance(std::valarray<double> va)
 }
 
 
+bool CuckooSearchPlanner::stopCriterian() {
+  return true;
+}
+
+
 bool CuckooSearchPlanner::makePlan(const geometry_msgs::PoseStamped& start,
                                    const geometry_msgs::PoseStamped& goal,
                                    std::vector<geometry_msgs::PoseStamped>& plan ) {
@@ -62,9 +78,14 @@ bool CuckooSearchPlanner::makePlan(const geometry_msgs::PoseStamped& start,
   // Clear the plan, just in case
   plan.clear();
 
+  costmap_2d::Costmap2D* costmap = costmap_ros_->getCostmap();
+
   ROS_DEBUG("Got a start: %.2f, %.2f, and a goal: %.2f, %.2f", start.pose.position.x, start.pose.position.y, goal.pose.position.x, goal.pose.position.y);
 
-  // costmap_ = costmap_ros_->getCostmap();
+  Bounds bounds;
+  bounds.lower_bound = 0.0;
+  bounds.upper_bound = costmap->getSizeInMetersX();
+  of.SetBounds(bounds);
 
   // The final plan will be stored here
   // This plan will be automatically published through the plugin as a topic.
