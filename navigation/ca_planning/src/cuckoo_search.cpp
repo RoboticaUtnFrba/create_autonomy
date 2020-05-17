@@ -8,7 +8,6 @@ PLUGINLIB_EXPORT_CLASS(cuckoo_search_planner::CuckooSearchPlanner, nav_core::Bas
 namespace cuckoo_search_planner
 {
 
-
 CuckooSearchPlanner::CuckooSearchPlanner ()
     : costmap_ros_(NULL), initialized_(false) {}
 
@@ -43,6 +42,13 @@ bool CuckooSearchPlanner::makePlan(const geometry_msgs::PoseStamped& start,
     return false;
   }
   ROS_DEBUG("Got a start: %.2f, %.2f, and a goal: %.2f, %.2f", start.pose.position.x, start.pose.position.y, goal.pose.position.x, goal.pose.position.y);
+
+  // Define objective function
+  std::function<double(std::valarray<double>)> function;
+  unsigned int dimensions;
+  Bounds bounds;
+  ObjectiveFunction of(function, dimensions, bounds, "Cuckoo Search Planner");
+  boost::shared_ptr<CuckooSearch> cs = boost::make_shared<CuckooSearch>(of);
 
   plan.clear();
   costmap_ = costmap_ros_->getCostmap();

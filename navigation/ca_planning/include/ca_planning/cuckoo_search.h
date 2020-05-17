@@ -16,7 +16,10 @@
 #include <base_local_planner/world_model.h>
 #include <base_local_planner/costmap_model.h>
 
-#include <cuckoo_search_lib/CuckooSearch.h>
+#include <boost/make_shared.hpp>
+
+#include "cuckoo_search_lib/FunctionHelper.h"
+#include "cuckoo_search_lib/CuckooSearch.h"
 
 
 namespace cuckoo_search_planner
