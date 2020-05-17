@@ -1,4 +1,6 @@
-#include "Nest.h"
+#include "cuckoo_search_lib/Nest.h"
+
+#include <iostream>
 
 
 Nest::Nest(const ObjectiveFunction& func, double lambda)
@@ -79,8 +81,11 @@ bool Nest::operator>=(const Nest& rs) const
 
 void Nest::SetLambda(double lambda)
 {
-	if ((lambda <= 0.1) || (lambda >= 2))
-		throw std::exception("Lambda must be in range [0.1, 1.99]\n");
+	if ((lambda <= 0.1) || (lambda >= 2)) {
+		const std::string ex("Lambda must be in range [0.1, 1.99]\n");
+		// throw std::exception(ex);
+		std::cout << ex << std::endl;
+	}
 	m_lambda = lambda;
 };
 
@@ -91,8 +96,11 @@ void Nest::SetAlpha(double alpha)
 
 void Nest::SetAlpha(const std::valarray<double>& alpha)
 {
-	if (std::find_if(std::begin(alpha), std::end(alpha), [](double elem) {return (elem <= 0.0); }) != std::end(alpha))
-		throw std::exception("Alpha must be more than 0\n");
+	if (std::find_if(std::begin(alpha), std::end(alpha), [](double elem) {return (elem <= 0.0); }) != std::end(alpha)) {
+		const std::string ex("Alpha must be more than 0\n");
+		// throw std::exception(ex);
+		std::cout << ex << std::endl;
+	}
 	m_alpha = alpha;
 };
 

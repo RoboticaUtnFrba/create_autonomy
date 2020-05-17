@@ -1,4 +1,4 @@
-#include "Cuckoo.h"
+#include "cuckoo_search_lib/Cuckoo.h"
 
 //Standard fly
 Nest Cuckoo::MakeFlight(const Nest& nest)

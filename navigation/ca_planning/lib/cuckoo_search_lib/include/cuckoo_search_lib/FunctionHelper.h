@@ -44,9 +44,9 @@ public:
 
 private:
 	std::function<double(std::valarray<double>)>	m_function;
-	unsigned int									m_dimensions;
-	std::vector<Bounds>								m_bounds;
-	std::string										m_function_name;
+	unsigned int m_dimensions;
+	std::vector<Bounds> m_bounds;
+	std::string 	m_function_name;
 };
 
 #endif // !FUNCTION_HELPER

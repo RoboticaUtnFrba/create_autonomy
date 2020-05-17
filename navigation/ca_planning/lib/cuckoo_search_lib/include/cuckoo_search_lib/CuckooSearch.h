@@ -11,7 +11,7 @@
 		delta = (a(min) / a(max))^(1 / k), where k - maximum number of iterations, t - current iteration.
 
 		b) variable lambda which depends on current cuckoo position - cuckoos with better
-		fitness have max lambda and can explore solution more precisly.
+		fitness have max lambda and can explore solution more precisely.
 		Lambda calculates for formula:
 		lambda(i) = lambda(max) - (i * (lambda(max) - lambda(min))) / (m - 1), where
 		lambda(i) - is lambda for i-cuckoo, i - cuckoo position, m - amount of nests.
@@ -91,7 +91,7 @@ class CuckooSearch
 {
 public:
 	CuckooSearch(ObjectiveFunction func, unsigned amount_of_nests = 32, Step step = 1.0, Lambda lambda = {0.3, 1.99}, double prob = 0.25,
-		unsigned max_generations = 10000, StopCritearian stop_crierian = []() {return true; }, bool use_lazy_cuckoo = false);
+		unsigned max_generations = 10000, StopCritearian stop_criterian = []() {return true; }, bool use_lazy_cuckoo = false);
 	~CuckooSearch();
 
 	std::valarray<double> FindMax();
@@ -124,21 +124,21 @@ public:
 	void UseStandartCuckoo();
 
 protected:
-	unsigned int			m_amount_of_nests;
-	SetOfNests				m_nests;
-	Nest					m_best_ever;
-	Cuckoo*					m_cuckoo;
-	ObjectiveFunction		m_objective_function;
-	StopCritearian			m_stop_criterian;
-	CompareFitness			m_cmp_fitness;
-	unsigned int			m_max_generations;
-	unsigned int			m_current_generation;
+	unsigned int m_amount_of_nests;
+	SetOfNests m_nests;
+	Nest m_best_ever;
+	Cuckoo* m_cuckoo;
+	ObjectiveFunction m_objective_function;
+	StopCritearian m_stop_criterian;
+	CompareFitness m_cmp_fitness;
+	unsigned int m_max_generations;
+	unsigned int m_current_generation;
 
-	Lambda					m_lambda;
-	Step					m_step;
+	Lambda m_lambda;
+	Step m_step;
 	std::valarray<double>	m_delta_step;
-	double					m_abandon_probability;
-	bool					m_use_lazy_cuckoo;
+	double m_abandon_probability;
+	bool m_use_lazy_cuckoo;
 
 	StatisticsHandler		m_statistics_handler;
 

@@ -1,10 +1,10 @@
-#include "CuckooSearch.h"
+#include "cuckoo_search_lib/CuckooSearch.h"
 
 
 CuckooSearch::CuckooSearch(ObjectiveFunction func, unsigned amount_of_nests, Step step, Lambda lambda, double prob,
-	unsigned max_generations, StopCritearian stop_crierian, bool use_lazy_cuckoo) :
+	unsigned max_generations, StopCritearian stop_criterian, bool use_lazy_cuckoo) :
 	m_objective_function(func), m_amount_of_nests(amount_of_nests), m_step(step), m_lambda(lambda), m_abandon_probability(prob),
-	m_max_generations(max_generations), m_stop_criterian(stop_crierian), m_use_lazy_cuckoo(use_lazy_cuckoo)
+	m_max_generations(max_generations), m_stop_criterian(stop_criterian), m_use_lazy_cuckoo(use_lazy_cuckoo)
 {
 	if (m_use_lazy_cuckoo)
 	{
