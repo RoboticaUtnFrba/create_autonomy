@@ -20,13 +20,20 @@ CuckooSearchPlanner::CuckooSearchPlanner(std::string name, costmap_2d::Costmap2D
 
 void CuckooSearchPlanner::initialize(std::string name, costmap_2d::Costmap2DROS* costmap_ros) {
   if(!this->initialized_) {
-    costmap_ros_ = costmap_ros; //initialize the costmap_ros_ attribute to the parameter.
-    costmap_ = costmap_ros_->getCostmap(); //get the costmap_ from costmap_ros_
+    costmap_ros_ = costmap_ros;
     // initialize other planner parameters
     ros::NodeHandle private_nh("~/" + name);
-    private_nh.param("step_size", step_size_, costmap_->getResolution());
-    private_nh.param("min_dist_from_robot", min_dist_from_robot_, 0.10);
-    world_model_ = new base_local_planner::CostmapModel(*costmap_);
+    // step_size_ = costmap_->getResolution();
+    // world_model_ = new base_local_planner::CostmapModel(*costmap_);
+    plan_pub_ = private_nh.advertise<nav_msgs::Path>("plan", 1);
+
+    // Define objective function
+    std::function<double(std::valarray<double>)> function = CuckooSearchPlanner::distance;
+    unsigned int dimensions;
+    Bounds bounds;
+    ObjectiveFunction of(function, dimensions, bounds, "Cuckoo Search Planner");
+    cs_planner_ = boost::make_shared<CuckooSearch>(of);
+
     this->initialized_ = true;
   }
   else
@@ -34,24 +41,30 @@ void CuckooSearchPlanner::initialize(std::string name, costmap_2d::Costmap2DROS*
 }
 
 
+double CuckooSearchPlanner::distance(std::valarray<double> va)
+{
+  const double begin(*std::begin(va));
+  const double end(*std::end(va));
+  return std::sqrt(std::pow(end - begin, 2));
+}
+
+
 bool CuckooSearchPlanner::makePlan(const geometry_msgs::PoseStamped& start,
                                    const geometry_msgs::PoseStamped& goal,
                                    std::vector<geometry_msgs::PoseStamped>& plan ) {
+  // Don't plan simultaneously
+  boost::mutex::scoped_lock lock(mutex_);
+
   if(!this->initialized_){
     ROS_ERROR("The planner has not been initialized, please call initialize() to use the planner");
     return false;
   }
+  // Clear the plan, just in case
+  plan.clear();
+
   ROS_DEBUG("Got a start: %.2f, %.2f, and a goal: %.2f, %.2f", start.pose.position.x, start.pose.position.y, goal.pose.position.x, goal.pose.position.y);
 
-  // Define objective function
-  std::function<double(std::valarray<double>)> function;
-  unsigned int dimensions;
-  Bounds bounds;
-  ObjectiveFunction of(function, dimensions, bounds, "Cuckoo Search Planner");
-  boost::shared_ptr<CuckooSearch> cs = boost::make_shared<CuckooSearch>(of);
-
-  plan.clear();
-  costmap_ = costmap_ros_->getCostmap();
+  // costmap_ = costmap_ros_->getCostmap();
 
   // The final plan will be stored here
   // This plan will be automatically published through the plugin as a topic.
