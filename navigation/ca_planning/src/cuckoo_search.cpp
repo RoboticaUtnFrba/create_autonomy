@@ -87,6 +87,8 @@ bool CuckooSearchPlanner::makePlan(const geometry_msgs::PoseStamped& start,
   bounds.upper_bound = costmap->getSizeInMetersX();
   of.SetBounds(bounds);
 
+  std::valarray<double> res = cs_planner_->FindMin();
+
   // The final plan will be stored here
   // This plan will be automatically published through the plugin as a topic.
   plan.push_back(start);
