@@ -61,7 +61,7 @@ void CuckooSearch::UseLazyCuckoo()
 	m_use_lazy_cuckoo = true;
 };
 
-void CuckooSearch::UseStandartCuckoo()
+void CuckooSearch::UseStandardCuckoo()
 {
 	m_cuckoo.reset(new Cuckoo(m_objective_function));
 	m_use_lazy_cuckoo = false;

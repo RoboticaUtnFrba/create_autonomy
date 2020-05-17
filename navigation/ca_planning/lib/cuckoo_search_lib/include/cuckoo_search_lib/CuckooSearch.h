@@ -122,7 +122,7 @@ public:
 	inline void SetMaxGenerations(unsigned int generations) { m_max_generations = generations; };
 
 	void UseLazyCuckoo();
-	void UseStandartCuckoo();
+	void UseStandardCuckoo();
 
 protected:
 	unsigned int m_amount_of_nests;
