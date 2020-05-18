@@ -24,6 +24,9 @@
     <!-- <remap from="/mobile_base/sensors/bumper_pointcloud"
            to="mobile_base/sensors/bumper_pointcloud"/> -->
 
+    <remap from="odom" to="/$(arg ns)/odom_combined"/>
+    <remap from="cmd_vel" to="/$(arg ns)/cmd_vel"/>
+
     <!-- Remap frames for specific robots -->
     <param name="local_costmap/robot_base_frame" value="$(arg tf_prefix)/base_footprint"/>
     <param name="local_costmap/global_frame" value="$(arg tf_prefix)/odom"/>

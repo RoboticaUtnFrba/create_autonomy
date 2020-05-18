@@ -1,0 +1,10 @@
+pose0: /angle
+pose0_config: [false, false, true,
+              false, false, false,
+              false, false, false,
+              false, false, false,
+              false, false, false]
+pose0_queue_size: 5
+pose0_nodelay: true
+pose0_differential: true
+pose0_relative: false

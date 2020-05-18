@@ -1,6 +1,8 @@
 <launch>
-  <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
-	<arg name="enable_ros_control" value="$(optenv ROS_CONTROL false)" doc="Enable ros_control"/>
+  <arg name="robot_id"  default="$(optenv ID 1)" doc="Unique identifier of the robot [1-Inf.)"/>
+  <arg name="enable_ros_control" value="$(optenv ROS_CONTROL false)" doc="Enable ros_control"/>
+
+  <param name="tf_prefix" value="create$(arg robot_id)_tf" />
 
   <!-- Create 2 description -->
   <include file="$(find ca_description)/launch/create_description.launch">

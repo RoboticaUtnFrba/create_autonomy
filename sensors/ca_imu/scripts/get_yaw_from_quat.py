@@ -9,9 +9,9 @@ class ImuConverter(object):
 
     def __init__(self):
         rospy.init_node("imu_converter", log_level=rospy.INFO)
-        self.sub = rospy.Subscriber("/imu/data", Imu, self.__imu_cb__)
+        self.sub = rospy.Subscriber("/imu/data_raw", Imu, self.__imu_cb__)
         rospy.spin()
-    
+
     def __imu_cb__(self, msg):
         q = msg.orientation
         q_arr = [q.x, q.y, q.z, q.w]

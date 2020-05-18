@@ -22,8 +22,8 @@ __date__ = "October 15th, 2018"
 
 class SquareMove(object):
     """
-    This class is an abstract class to control a square trajectory on the turtleBot.
-    It mainly declare and subscribe to ROS topics in an elegant way.
+    This class is an abstract class to control a square trajectory on the robot.
+    It mainly declares and subscribes to ROS topics in an elegant way.
     """
 
     def __init__(self):
@@ -58,19 +58,19 @@ class SquareMove(object):
     def stop_robot(self):
 
         # Get the initial time
-        self.t_init = time.time()
+        self.t_init = rospy.get_time()
 
         # We publish for a second to be sure the robot receive the message
-        while time.time() - self.t_init < 1 and not rospy.is_shutdown():
+        while rospy.get_time() - self.t_init < 1 and not rospy.is_shutdown():
 
             self.vel_ros_pub(Twist())
-            time.sleep(self.pub_rate)
+            rospy.sleep(self.pub_rate)
 
     def move(self):
         """ To be surcharged in the inheriting class"""
 
         while not rospy.is_shutdown():
-            time.sleep(1)
+            rospy.sleep(1)
 
     def __odom_ros_sub(self, msg):
 
@@ -84,12 +84,10 @@ class SquareMove(object):
 class SquareMoveVel(SquareMove):
     """
     This class implements a open-loop square trajectory based on velocity control. HOWTO:
-     - Start the roscore (on the computer or the robot, depending on your configuration)
-            $ roscore
-     - Start the sensors on the turtlebot:
-            $ roslaunch turtlebot3_bringup turtlebot3_robot.launch
+     - Start the sensors on the robot:
+            $ roslaunch ca_bringup minimal.launch
      - Start this node on your computer:
-            $ python move_square vel
+            $ roslaunch ca_tools move_square.launch args:=vel
     """
 
     def __init__(self, dir):
@@ -100,53 +98,51 @@ class SquareMoveVel(SquareMove):
     def go_forward(self, duration, speed):
 
         # Get the initial time
-        self.t_init = time.time()
+        self.t_init = rospy.get_time()
 
         # Set the velocity forward and wait (do it in a while loop to keep publishing the velocity)
-        while time.time() - self.t_init < duration and not rospy.is_shutdown():
+        while rospy.get_time() - self.t_init < duration and not rospy.is_shutdown():
 
             msg = Twist()
             msg.linear.x = speed
             msg.angular.z = 0
             self.vel_ros_pub(msg)
-            time.sleep(self.pub_rate)
+            rospy.sleep(self.pub_rate)
 
     def turn(self, duration, ang_speed):
 
         # Get the initial time
-        self.t_init = time.time()
+        self.t_init = rospy.get_time()
 
         # Set the velocity forward and wait 2 sec (do it in a while loop to keep publishing the velocity)
-        while time.time() - self.t_init < duration and not rospy.is_shutdown():
+        while rospy.get_time() - self.t_init < duration and not rospy.is_shutdown():
 
             msg = Twist()
             msg.linear.x = 0
             msg.angular.z = ang_speed
             self.vel_ros_pub(msg)
-            time.sleep(self.pub_rate)
+            rospy.sleep(self.pub_rate)
 
     def move(self):
 
-        self.go_forward(2, 0.33)
-        self.turn(self.dir*3.5, 0.33)
-        self.go_forward(2, 0.33)
-        self.turn(self.dir*3.5, 0.33)
-        self.go_forward(2, 0.33)
-        self.turn(self.dir*3.5, 0.33)
-        self.go_forward(2, 0.33)
+        self.go_forward(4, 0.25)
+        self.turn(self.dir*3.5, 0.4488)
+        self.go_forward(4, 0.25)
+        self.turn(self.dir*3.5, 0.4488)
+        self.go_forward(4, 0.25)
+        self.turn(self.dir*3.5, 0.4488)
+        self.go_forward(4, 0.25)
         self.stop_robot()
 
 
 class SquareMoveOdom(SquareMove):
     """
     This class implements a semi closed-loop square trajectory based on relative position control,
-    where only odometry is used. HOWTO:
-     - Start the roscore (on the computer or the robot, depending on your configuration)
-            $ roscore
-     - Start the sensors on the turtlebot:
-            $ roslaunch turtlebot3_bringup turtlebot3_robot.launch
+    where only wheel odometry is used. HOWTO:
+     - Start the sensors on the robot:
+            $ roslaunch ca_bringup minimal.launch
      - Start this node on your computer:
-            $ python move_square odom
+            $ roslaunch ca_tools move_square.launch args:=odom
     """
 
     def __init__(self):
@@ -184,9 +180,15 @@ class SquareMoveOdom(SquareMove):
             msg.linear.x = speed
             msg.angular.z = 0
             self.vel_ros_pub(msg)
-            time.sleep(self.pub_rate)
+            rospy.sleep(self.pub_rate)
 
         rospy.loginfo("\n")
+
+    def get_angle_diff(self, a1, a2):
+
+        # Wraps the angle difference
+        diff = a1  -a2
+        return math.atan2(math.sin(diff), math.cos(diff))
 
     def turn_of(self, a, ang_speed=0.4):
 
@@ -195,14 +197,14 @@ class SquareMoveOdom(SquareMove):
         print (a_init)
 
         # Set the angular velocity forward until angle is reached
-        while (self.get_z_rotation(self.odom_pose.orientation) - a_init) \
+        while (self.get_angle_diff(self.get_z_rotation(self.odom_pose.orientation), a_init)) \
                 < a and not rospy.is_shutdown():
 
             msg = Twist()
             msg.angular.z = ang_speed
             msg.linear.x = 0
             self.vel_ros_pub(msg)
-            time.sleep(self.pub_rate)
+            rospy.sleep(self.pub_rate)
 
         rospy.loginfo("\n")
 
@@ -210,16 +212,16 @@ class SquareMoveOdom(SquareMove):
 
         # Wait that our python program has received its first messages
         while self.odom_pose is None and not rospy.is_shutdown():
-            time.sleep(0.1)
+            rospy.sleep(0.1)
 
         # Implement main instructions
-        self.move_of(0.33)
-        self.turn_of(math.pi/4)
-        self.move_of(0.33)
-        self.turn_of(math.pi/4)
-        self.move_of(0.33)
-        self.turn_of(math.pi/4)
-        self.move_of(0.33)
+        self.move_of(1.0)
+        self.turn_of(math.pi/2.)
+        self.move_of(1.0)
+        self.turn_of(math.pi/2.)
+        self.move_of(1.0)
+        self.turn_of(math.pi/2.)
+        self.move_of(1.0)
         self.stop_robot()
 
 

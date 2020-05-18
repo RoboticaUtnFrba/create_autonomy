@@ -20,4 +20,4 @@ latch_cmd_duration: 0.2
 loop_hz: 30.0
 
 # Whether to publish the transform between odom_frame and base_frame
-publish_tf: true
+publish_tf: false

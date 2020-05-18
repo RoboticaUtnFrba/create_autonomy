@@ -14,9 +14,13 @@
       <arg name="robot_id" value="$(arg nr)"/>
     </include>
 
-    <param name="tf_prefix" value="create$(arg nr)_tf" />
+    <!-- TODO: REMOVE THIS PARAMETER OR SET IT IN THE MAIN LAUNCH? -->
+    <!-- <param name="tf_prefix" value="create$(arg nr)_tf" /> -->
 
-    <!-- localization -->
+    <!-- Localization -->
+    <include file="$(find ca_localization)/launch/localize.launch"/>
+
+    <!-- Navigation -->
     <include if="$(eval str(arg('localization'))!='none')"
              file="$(find ca_move_base)/launch/navigate.launch">
       <arg name="env"          value="$(arg env)"/>

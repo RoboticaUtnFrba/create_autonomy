@@ -4,6 +4,7 @@
 
     <gazebo>
       <xacro:arg name="enable_ros_control" default="False"/>
+
       <!-- Diff-drive controller -->
       <xacro:unless value="$(arg enable_ros_control)">
         <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
@@ -21,12 +22,12 @@
           <odometryFrame>odom</odometryFrame>
           <robotBaseFrame>base_footprint</robotBaseFrame>
           <publishWheelTF>true</publishWheelTF>
-          <publishOdomTF>true</publishOdomTF>
+          <publishOdomTF>false</publishOdomTF>
           <publishWheelJointState>true</publishWheelJointState>
-          <odometrySource>world</odometrySource>
+          <odometrySource>encoder</odometrySource>
           <publishTf>true</publishTf>
         </plugin>
-    </xacro:unless>
+      </xacro:unless>
 
       <!-- ros_control plugin -->
       <xacro:if value="$(arg enable_ros_control)">
@@ -36,6 +37,7 @@
         <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
       </plugin>
       </xacro:if>
+
       <!-- Ground truth -->
       <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
         <alwaysOn>true</alwaysOn>

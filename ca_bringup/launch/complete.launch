@@ -20,6 +20,9 @@
       <arg name="robot_id"     value="$(arg robot_id)"/>
     </include>
 
+    <!-- Localization node -->
+  <include file="$(find ca_localization)/launch/localize.launch"/>
+
     <!-- Navigation stack -->
     <include file="$(find ca_move_base)/launch/navigate.launch">
       <arg name="env"          value="$(arg env)"/>
