@@ -397,7 +397,7 @@ bool FollowActorPlugin::OnFollow(const ignition::msgs::StringMsg &_req,
     ignition::msgs::Boolean &_res)
 {
   _res.set_data(false);
-  
+
   // Get target model
   auto targetName = _req.data();
 
@@ -464,4 +464,5 @@ bool FollowActorPlugin::OnDriftRosService(
 {
   _res.drift = true;
   this->dataPtr->driftFlag = true;
+  return true;
 }

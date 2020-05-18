@@ -5,6 +5,10 @@ project(ca_gazebo)
 
 add_compile_options(-std=c++11)
 
+## By adding -Wall and -Werror, the compiler does not ignore warnings anymore,
+## enforcing cleaner code.
+add_definitions(-Wall -Werror)
+
 find_package(gazebo 9 REQUIRED)
 
 find_package(catkin REQUIRED
