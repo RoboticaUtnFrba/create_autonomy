@@ -38,12 +38,18 @@ RUN rosdep init
 RUN pip install --upgrade pip
 
 USER $USER
+
+# Automatically source ROS workspace
+ENV WS_DIR "/create_ws"
 RUN echo ". /opt/ros/${ROS1_DISTRO}/setup.bash" >> /home/${USER}/.bashrc
+ENV CATKIN_SETUP_BASH "${WS_DIR}/devel/setup.bash"
+RUN echo '[[ -f ${CATKIN_SETUP_BASH} ]] && . ${CATKIN_SETUP_BASH}' >> /home/${USER}/.bashrc
+
 USER root
 
 # Workspace
-RUN mkdir -p /create_ws/src/ && \
-    chown -R $USER /create_ws
+RUN mkdir -p ${WS_DIR}/src/ && \
+    chown -R $USER ${WS_DIR}
 USER $USER
-WORKDIR /create_ws/
+WORKDIR ${WS_DIR}
 RUN rosdep update

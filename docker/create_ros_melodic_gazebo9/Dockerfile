@@ -24,5 +24,3 @@ RUN apt-get update && \
     xargs -a packages.txt apt-get install -y
 
 USER $USER
-
-RUN echo "source /create_ws/devel/setup.bash" >> /home/${USER}/.bashrc
