@@ -7,7 +7,7 @@ options = {
   map_frame = "map",
   tracking_frame = "create" ..                    -- Frame id to track from map
                    os.getenv("ID") ..
-                   "_tf/imu_link",
+                   "_tf/base_footprint",
   published_frame = "create" ..                   -- Odom frame to publish if `provide_odom_frame = true`. Even though
                     os.getenv("ID") ..            -- are not used, all the options' parameter keys are mandatory
                     "_tf/odom",
