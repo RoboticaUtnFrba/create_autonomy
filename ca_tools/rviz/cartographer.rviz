@@ -317,7 +317,7 @@ Visualization Manager:
       Name: Current View
       Near Clip Distance: 0.009999999776482582
       Scale: 127.88433074951172
-      Target Frame: <Fixed Frame>
+      Target Frame: /create1_tf/base_footprint
       Value: TopDownOrtho (rviz)
       X: 0
       Y: 0
