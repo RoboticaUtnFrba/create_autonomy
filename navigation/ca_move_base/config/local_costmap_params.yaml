@@ -6,8 +6,8 @@ local_costmap:
 
   # Map management parameters
   rolling_window: true
-  width: 5.0
-  height: 5.0
+  width: 3.0
+  height: 3.0
   resolution: 0.01
 
   plugins:
