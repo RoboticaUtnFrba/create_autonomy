@@ -12,6 +12,8 @@ This package wraps the C++ library [libcreate][libcreate], which uses iRobot's [
 ## Build status
 
 ![Build Status](https://api.travis-ci.org/RoboticaUtnFrba/create_autonomy.svg?branch=kinetic-devel)
+[![GitHub issues](https://img.shields.io/github/issues-raw/RoboticaUtnFrba/create_autonomy)](https://github.com/RoboticaUtnFrba/create_autonomy/issues)
+[![GitHub](https://img.shields.io/github/license/RoboticaUtnFrba/create_autonomy)](https://github.com/RoboticaUtnFrba/create_autonomy/blob/kinetic-devel/LICENSE)
 
 ## [Features](docs/FEATURES.md)
 
