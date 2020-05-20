@@ -1,0 +1,30 @@
+<?xml version='1.0'?>
+<sdf version='1.6'>
+<model name='warehouse'>
+  <pose frame=''>0 0 -0.029 0 -0 0</pose>
+  <link name='warehouse_link'>
+    <pose frame=''>0 0 0 1.5708 -0 0</pose>
+    <visual name='warehouse_visual'>
+      <geometry>
+        <mesh>
+          <uri>model://warehouse/DHP_B27_test_v12.obj</uri>
+        </mesh>
+      </geometry>
+      <meta>
+        <layer>1</layer>
+      </meta>
+    </visual>
+    <collision name='warehouse_collision'>
+      <geometry>
+        <mesh>
+          <uri>model://warehouse/DHP_B27_test_v12.obj</uri>
+        </mesh>
+      </geometry>
+    </collision>
+    <self_collide>0</self_collide>
+    <enable_wind>0</enable_wind>
+    <kinematic>0</kinematic>
+  </link>
+  <static>1</static>
+</model>
+</sdf>
