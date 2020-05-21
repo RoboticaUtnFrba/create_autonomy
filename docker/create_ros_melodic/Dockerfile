@@ -43,7 +43,7 @@ USER $USER
 ENV WS_DIR "/create_ws"
 RUN echo ". /opt/ros/${ROS1_DISTRO}/setup.bash" >> /home/${USER}/.bashrc
 ENV CATKIN_SETUP_BASH "${WS_DIR}/devel/setup.bash"
-RUN echo '[[ -f ${CATKIN_SETUP_BASH} ]] && . ${CATKIN_SETUP_BASH}' >> /home/${USER}/.bashrc
+RUN echo "[[ -f ${CATKIN_SETUP_BASH} ]] && . ${CATKIN_SETUP_BASH}" >> /home/${USER}/.bashrc
 
 USER root
 
