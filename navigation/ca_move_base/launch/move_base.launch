@@ -5,7 +5,8 @@
   <arg name="global_planner" value="$(optenv GLOBAL_PLANNER gbp)"/>
   <arg name="local_planner"  value="$(optenv LOCAL_PLANNER teb)"/>
 
-  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+  <node pkg="move_base" type="move_base" name="move_base"
+        respawn="false" output="screen">
     <rosparam file="$(find ca_move_base)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
     <rosparam file="$(find ca_move_base)/config/global_costmap_params.yaml" command="load" />
     <rosparam file="$(find ca_move_base)/config/$(arg global_planner)_global_planner_params.yaml" command="load" />
