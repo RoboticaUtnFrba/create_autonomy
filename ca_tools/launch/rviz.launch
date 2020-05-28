@@ -6,7 +6,8 @@
   <arg name="config_file" default="$(optenv RVIZ_CONFIG)" doc="RViz configuration file"/>
 
   <node type="rviz" name="rviz" pkg="rviz" required="false"
-        args="-d $(find ca_tools)/rviz/$(arg config_file).rviz">
+        args="-d $(find ca_tools)/rviz/$(arg config_file).rviz
+              -s $(find ca_tools)/rviz/utn_logo.png">
     <remap from="/move_base_simple/goal" to="/$(arg ns)/move_base_simple/goal"/>
   </node>
 </launch>
