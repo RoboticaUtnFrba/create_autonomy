@@ -14,10 +14,11 @@ IMAGE_NAME = "robotica_utn_frba"
 WS_NAME    = "create_ws"
 
 def run_dev_environment(command, ros="melodic", gazebo="9"):
-    user = ut.get_user()
+    user_host = ut.get_user()
+    user_docker = "create"
     docker_args = []
     dockerfile  = "create_ros_{}_gazebo{}".format(ros, gazebo)
-    temp_volume = "/home/{}/.{}".format(user, IMAGE_NAME)
+    temp_volume = "/home/{}/.{}".format(user_host, IMAGE_NAME)
 
     docker_args.append("-it")
     docker_args.append("--rm")
@@ -29,13 +30,13 @@ def run_dev_environment(command, ros="melodic", gazebo="9"):
     docker_args.append("--network=\"host\"")
     docker_args.append("--user {0}:{0}".format(ut.get_uid()))
     # Keep user settings
-    docker_args.append("--volume {}/user/:/home/{}/".format(temp_volume, user))
+    docker_args.append("--volume {}/.gazebo/:/home/{}/.gazebo/".format(temp_volume, user_docker))
     # Mount workspace
     docker_args.append("--volume {}:/{}/src".format(os.path.dirname(ut.get_repo_root()), WS_NAME))
     docker_args.append("--volume {}/ws/build/:/{}/build/".format(temp_volume, WS_NAME))
     docker_args.append("--volume {}/ws/devel/:/{}/devel/".format(temp_volume, WS_NAME))
     # VSCode needs HOME to be defined in order to work in the container
-    docker_args.append("-e HOME=/home/create")
+    docker_args.append("-e HOME=/home/{}".format(user_docker))
 
     # USB devices and dialout group for the real robot
     docker_args.append("--volume=\"/dev/bus:/dev/bus:shared\"")
@@ -56,7 +57,7 @@ def run_dev_environment(command, ros="melodic", gazebo="9"):
     docker_args = ' '.join(docker_args)
     docker_command = "docker run {} {} {}".format(docker_args, dockerfile, command)
 
-    ut.create_directory("{}/user/".format(temp_volume))
+    ut.create_directory("{}/.gazebo/".format(temp_volume))
     ut.create_directory("{}/ws/build/".format(temp_volume))
     ut.create_directory("{}/ws/devel/".format(temp_volume))
 
