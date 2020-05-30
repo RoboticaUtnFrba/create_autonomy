@@ -39,5 +39,7 @@ def get_user():
     return os.getlogin()
 
 def create_directory(directory):
+    # Check existance before creating the directory
+    if (os.path.isdir(directory)): return
     run_command("mkdir -p {}".format(directory))
     run_command("sudo chown {0}:{0} {1}".format(get_user(), directory))
