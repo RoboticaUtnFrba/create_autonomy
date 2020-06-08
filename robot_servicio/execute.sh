@@ -1,0 +1,1 @@
+GUI=false LOCALIZATION=amcl RVIZ_CONFIG=localization LASER=rplidar roslaunch robot_servicio ejecutable.launch

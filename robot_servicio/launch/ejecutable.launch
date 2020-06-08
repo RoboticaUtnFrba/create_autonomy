@@ -1,0 +1,9 @@
+<launch>
+  <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
+  <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
+  
+  <node name="move" pkg="robot_servicio" type="move.py" ns="$(arg ns)" />
+  <node name="send_goals" pkg="robot_servicio" type="send_goals.py" ns="$(arg ns)" />
+
+  <include file="$(find ca_gazebo)/launch/create_restaurant.launch"/>
+</launch>
