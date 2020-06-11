@@ -3,10 +3,8 @@
   <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
   <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
 
-  <arg name="config_file" default="$(optenv RVIZ_CONFIG)" doc="RViz configuration file"/>
-
   <node type="rviz" name="rviz" pkg="rviz" required="false"
-        args="-d $(find ca_tools)/rviz/$(arg config_file).rviz
+        args="-d $(find ca_tools)/rviz/config.rviz
               -s $(find ca_tools)/rviz/utn_logo.png">
     <remap from="/move_base_simple/goal" to="/$(arg ns)/move_base_simple/goal"/>
   </node>

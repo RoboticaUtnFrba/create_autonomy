@@ -7,7 +7,6 @@
        doc="Localization type. More options here: https://github.com/RoboticaUtnFrba/create_autonomy/wiki/Launching-options"/>
 
   <arg name="rviz" default="$(optenv RVIZ false)" doc="Flag to use RViz"/>
-  <arg name="rviz_config" value="$(optenv RVIZ_CONFIG)" doc="RViz configuration file"/>
 
   <!-- Start 1 robot -->
   <group ns="$(eval 'create' + str(arg('nr')))">
@@ -26,10 +25,7 @@
     </include>
 
     <!-- RViz -->
-    <include if="$(eval arg('rviz') or arg('rviz_config')!='' )"
-             file="$(find ca_tools)/launch/rviz.launch">
-      <arg name="config_file" value="$(arg rviz_config)"/>
-    </include>
+    <include if="$(arg rviz)" file="$(find ca_tools)/launch/rviz.launch"/>
   </group>
 
   <!-- Recursively spawn more robots -->
