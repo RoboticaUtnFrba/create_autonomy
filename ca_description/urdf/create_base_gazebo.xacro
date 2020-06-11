@@ -37,7 +37,7 @@
         <bodyName>base_link</bodyName>
         <topicName>gts</topicName>
         <gaussianNoise>0</gaussianNoise>
-        <frameName>map</frameName>
+        <frameName>/map</frameName>
         <xyzOffset>0 0 0</xyzOffset>
         <rpyOffset>0 0 0</rpyOffset>
       </plugin>
