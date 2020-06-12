@@ -13,9 +13,16 @@
   <!-- State machine to move the robot autonomously -->
   <include file="$(find ca_node)/launch/state_machine.launch"/>
 
-  <test test-name="publishtest" name="publishtest"
+  <!-- time-limit >= timeout_s * number of topics to test -->
+  <!-- <test test-name="publishtest" name="publishtest"
         type="publish.py" pkg="ca_gazebo"
-        time-limit="100.0"> <!-- time-limit >= timeout_s * number of topics to test -->
+        time-limit="100.0">
     <param name="timeout_s" value="30.0"/>
+  </test> -->
+
+  <test test-name="tf_checker" name="tf_test"
+        type="tf_checker.py" pkg="ca_gazebo"
+        time-limit="10.0">
+    <rosparam command="load" file="$(find ca_gazebo)/test/params/tf.yaml"/>
   </test>
 </launch>

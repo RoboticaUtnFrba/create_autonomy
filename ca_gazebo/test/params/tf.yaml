@@ -1,0 +1,13 @@
+odom: [
+  base_footprint
+]
+base_footprint: [
+  "base_link",
+  "wheel_left_link",
+  "wheel_right_link"
+]
+base_link: [
+  "imu_link",
+  "rplidar_link"
+]
+
