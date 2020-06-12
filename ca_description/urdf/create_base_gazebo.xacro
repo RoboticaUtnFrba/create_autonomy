@@ -2,22 +2,18 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:macro name="sim_create_base">
 
-    <xacro:property name="diffdrive_update_rate" value="40"/>
-    <xacro:property name="wheel_torque" value="0.5"/>
-    <xacro:property name="wheel_accel" value="0.5"/>
-
     <gazebo>
       <!-- Diff-drive controller -->
       <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
         <alwaysOn>true</alwaysOn>
         <rosDebugLevel>na</rosDebugLevel>
-        <updateRate>${diffdrive_update_rate}</updateRate>
+        <updateRate>30</updateRate>
         <leftJoint>wheel_left_joint</leftJoint>
         <rightJoint>wheel_right_joint</rightJoint>
         <wheelSeparation>${wheel_separation}</wheelSeparation>
         <wheelDiameter>${wheel_radius * 2}</wheelDiameter>
-        <wheelTorque>${wheel_torque}</wheelTorque>
-        <wheelAcceleration>${wheel_accel}</wheelAcceleration>
+        <wheelTorque>0.5</wheelTorque>
+        <wheelAcceleration>0.5</wheelAcceleration>
         <commandTopic>cmd_vel</commandTopic>
         <odometryTopic>odom</odometryTopic>
         <odometryFrame>odom</odometryFrame>

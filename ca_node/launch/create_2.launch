@@ -4,19 +4,15 @@
   <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
   <arg name="tf_prefix" value="$(arg ns)_tf"          doc="Tf prefix"/>
 
-  <arg name="config" default="$(find ca_driver)/config/default.yaml"
-                     doc="Absolute path to a configuration file (YAML)"/>
+  <param name="tf_prefix" value="$(arg tf_prefix)"/>
 
   <node name="ca_driver" pkg="ca_driver" type="ca_driver" output="screen" required="true">
-    <rosparam command="load" file="$(arg config)" />
-
-    <param name="namespace"   value="$(arg ns)"/>
-    <param name="robot_model" value="CREATE_2" />
-    <param name="tf_prefix"   value="$(arg tf_prefix)"/>
+    <rosparam command="load" file="$(find ca_driver)/config/default.yaml"/>
+    <param name="namespace" value="$(arg ns)"/>
   </node>
 
   <!-- Robot description -->
   <include ns="$(arg ns)" file="$(find ca_description)/launch/create_description.launch">
-    <arg name="robot_id"  value="$(arg robot_id)"/>
+    <arg name="robot_id" value="$(arg robot_id)"/>
   </include>
 </launch>

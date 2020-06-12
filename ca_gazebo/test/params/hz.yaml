@@ -48,13 +48,13 @@ imu_data:
 
 joint_states:
   topic: "/create1/joint_states"
-  hz: 40.0
+  hz: 30.0
   hzerror: 1.0
   test_duration: 5.0
 
 odom:
   topic: "/create1/odom"
-  hz: 40.0
+  hz: 30.0
   hzerror: 1.0
   test_duration: 5.0
 

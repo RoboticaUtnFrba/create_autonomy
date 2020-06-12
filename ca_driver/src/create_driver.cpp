@@ -52,8 +52,9 @@ CreateDriver::CreateDriver(ros::NodeHandle& nh, ros::NodeHandle& ph)
   priv_nh_.param<std::string>("robot_model", robot_model_name, "CREATE_2");
   priv_nh_.param<double>("latch_cmd_duration", latch_duration_, 0.2);
   priv_nh_.param<bool>("publish_tf", publish_tf_, true);
-  priv_nh_.param<std::string>("tf_prefix", tf_prefix_, "create_tf");
   priv_nh_.param<std::string>("namespace", topic_ns, "create");
+
+  nh_.param<std::string>("tf_prefix", tf_prefix_, "create_tf");
 
   if (robot_model_name == "ROOMBA_400")
   {
