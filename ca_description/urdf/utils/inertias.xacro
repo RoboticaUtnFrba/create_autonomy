@@ -65,7 +65,4 @@
     </inertial>
   </xacro:macro>
 
-  <xacro:property name="cm_to_m" value="${1./100.}"/>
-  <xacro:property name="in_to_m" value="0.0254"/>
-
 </robot>
