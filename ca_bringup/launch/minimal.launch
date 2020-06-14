@@ -2,21 +2,29 @@
   <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
   <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
 
-  <arg name="raspicam_receiver_IP" default="" doc="Raspicam client IP"/>
-  <arg name="laser" default="$(optenv LASER)" doc="Laser for mapping the environment"/>
+  <arg name="raspicam_receiver_IP" default=""         doc="Raspicam client IP"/>
+  <arg name="laser" default="$(optenv LASER)"         doc="Laser for mapping the environment"/>
+
+  <arg name="rviz" default="$(optenv RVIZ false)"     doc="Flag to use RViz"/>
+  <arg name="imu"  default="$(optenv IMU true)"       doc="Flag to use the IMU MPU9255"/>
 
   <include file="$(find ca_node)/launch/create_2.launch"/>
 
+  <!-- RViz -->
+  <!-- TODO: HAVE A PLACE IN COMMON WITH GAZEBO -->
+  <include if="$(arg rviz)" file="$(find ca_tools)/launch/rviz.launch"/>
+
   <!-- raspicam -->
-  <include if="$(eval arg('raspicam_receiver_IP') != '')" file="$(find ca_visual_odometry)/launch/raspicam_stream.launch">
+  <!-- <include if="$(eval arg('raspicam_receiver_IP') != '')"
+           file="$(find ca_visual_odometry)/launch/raspicam_stream.launch">
     <arg name="IP" value="$(arg raspicam_receiver_IP)"/>
-  </include>
+  </include> -->
 
-  <!-- IMU -->
-  <!-- <include file="$(find ca_imu)/launch/imu.launch"/> -->
-
-  <!-- Mapping sensors -->
   <group ns="$(arg ns)">
+    <!-- IMU -->
+    <include if="$(arg imu)" file="$(find ca_imu)/launch/mpu9255.launch"/>
+
+    <!-- Mapping sensors -->
     <include if="$(eval arg('laser')=='astra')"     file="$(find ca_camera)/launch/orbbec_astra_pro.launch"/>
     <include if="$(eval arg('laser')=='kinect')"    file=""/>
     <include if="$(eval arg('laser')=='r200')"      file=""/>
