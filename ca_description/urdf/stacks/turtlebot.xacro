@@ -124,7 +124,7 @@
 </gazebo>
 
 <!-- MPU9255 -->
-<xacro:imu_sensor name="mpu9255" parent="plate_upper_link">
+<xacro:imu_sensor name="imu" parent="plate_upper_link">
   <origin xyz="0.03 -0.15 ${plate_height + 0.002}" rpy="0 ${3*deg_to_rad} 0"/>
   <mesh filename="package://ca_description/meshes/sensors/mpu9255.stl" scale="0.001 0.001 0.001"/>
 </xacro:imu_sensor>
