@@ -4,7 +4,7 @@ Block on top of the iRobot Create 2
 -->
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-<xacro:include filename="$(find ca_description)/urdf/common_properties.xacro"/>
+<xacro:include filename="$(find ca_description)/urdf/utils/inertias.xacro"/>
 <xacro:include filename="$(find ca_description)/urdf/sensors/camera_sensor.xacro"/>
 
 <xacro:property name="name" value="roomblock"/>

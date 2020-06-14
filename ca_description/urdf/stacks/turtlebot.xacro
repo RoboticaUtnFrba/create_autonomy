@@ -6,8 +6,10 @@
  -->
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
+<xacro:include filename="$(find ca_description)/urdf/utils/conversions.xacro"/>
+
 <!-- Pole macro -->
-<xacro:macro name="stack_pole" params="name parent:=base_link *origin *mesh">
+<xacro:macro name="stack_pole" params="name parent:=base_link length *origin">
   <xacro:property name="link_name" value="pole_${name}_link"/>
   <joint name="pole_${name}_joint" type="fixed">
     <xacro:insert_block name="origin"/>
@@ -17,10 +19,14 @@
   <link name="${link_name}">
     <visual>
       <geometry>
-        <xacro:insert_block name="mesh"/>
+        <cylinder radius="0.006" length="${length}"/>
       </geometry>
+      <material name="silver"/>
     </visual>
   </link>
+  <gazebo reference="${link_name}">
+    <material>Gazebo/Grey</material>
+  </gazebo>
 </xacro:macro>
 
 <!-- turtlebot_stack -->
@@ -37,25 +43,26 @@
 </joint>
 <link name="${base_link}"/>
 
-<xacro:stack_pole name="short_0" parent="${base_link}">
-  <origin xyz="0.03 0.08 0"/>
-  <mesh filename="package://ca_description/meshes/turtlebot_stack/short_pole.dae"/>
+<xacro:property name="short_pole_length" value="0.06"/>
+
+<xacro:stack_pole name="short_0" parent="${base_link}" length="${short_pole_length}">
+  <origin xyz="0.03 0.08 ${short_pole_length/2.}"/>
 </xacro:stack_pole>
-<xacro:stack_pole name="short_1" parent="${base_link}">
-  <origin xyz="0.03 -0.08 0"/>
-  <mesh filename="package://ca_description/meshes/turtlebot_stack/short_pole.dae"/>
+<xacro:stack_pole name="short_1" parent="${base_link}" length="${short_pole_length}">
+  <origin xyz="0.03 -0.08 ${short_pole_length/2.}"/>
 </xacro:stack_pole>
-<xacro:stack_pole name="short_2" parent="${base_link}">
-  <origin xyz="-0.06 0.08 0"/>
-  <mesh filename="package://ca_description/meshes/turtlebot_stack/short_pole.dae"/>
+<xacro:stack_pole name="short_2" parent="${base_link}" length="${short_pole_length}">
+  <origin xyz="-0.06 0.08 ${short_pole_length/2.}"/>
 </xacro:stack_pole>
-<xacro:stack_pole name="short_3" parent="${base_link}">
-  <origin xyz="-0.06 -0.08 0"/>
-  <mesh filename="package://ca_description/meshes/turtlebot_stack/short_pole.dae"/>
+<xacro:stack_pole name="short_3" parent="${base_link}" length="${short_pole_length}">
+  <origin xyz="-0.06 -0.08 ${short_pole_length/2.}"/>
 </xacro:stack_pole>
 
+<xacro:property name="plate_height"   value="0.002"/>
+<xacro:property name="plate_bottom_z" value="${short_pole_length + plate_height}"/>
+
 <joint name="plate_bottom_joint" type="fixed">
-  <origin xyz="-0.025 0 0.032"/>
+  <origin xyz="-0.025 0 ${plate_bottom_z}"/>
   <parent link="${base_link}"/>
   <child link="plate_bottom_link"/>
 </joint>
@@ -67,25 +74,26 @@
   </visual>
 </link>
 
-<xacro:stack_pole name="large_0" parent="${base_link}">
-  <origin xyz="0.03 0.08 0.077"/>
-  <mesh filename="package://ca_description/meshes/turtlebot_stack/large_pole.dae"/>
+<xacro:property name="large_pole_length" value="0.087"/>
+<xacro:property name="large_pole_z"      value="${plate_bottom_z + plate_height + large_pole_length/2.}"/>
+
+<xacro:stack_pole name="large_0" parent="${base_link}" length="${large_pole_length}">
+  <origin xyz="0.03 0.08 ${large_pole_z}"/>
 </xacro:stack_pole>
-<xacro:stack_pole name="large_1" parent="${base_link}">
-  <origin xyz="0.03 -0.08 0.077"/>
-  <mesh filename="package://ca_description/meshes/turtlebot_stack/large_pole.dae"/>
+<xacro:stack_pole name="large_1" parent="${base_link}" length="${large_pole_length}">
+  <origin xyz="0.03 -0.08 ${large_pole_z}"/>
 </xacro:stack_pole>
-<xacro:stack_pole name="large_2" parent="${base_link}">
-  <origin xyz="-0.06 0.08 0.077"/>
-  <mesh filename="package://ca_description/meshes/turtlebot_stack/large_pole.dae"/>
+<xacro:stack_pole name="large_2" parent="${base_link}" length="${large_pole_length}">
+  <origin xyz="-0.06 0.08 ${large_pole_z}"/>
 </xacro:stack_pole>
-<xacro:stack_pole name="large_3" parent="${base_link}">
-  <origin xyz="-0.06 -0.08 0.077"/>
-  <mesh filename="package://ca_description/meshes/turtlebot_stack/large_pole.dae"/>
+<xacro:stack_pole name="large_3" parent="${base_link}" length="${large_pole_length}">
+  <origin xyz="-0.06 -0.08 ${large_pole_z}"/>
 </xacro:stack_pole>
 
+<xacro:property name="plate_upper_z" value="${plate_bottom_z + large_pole_length + plate_height}"/>
+
 <joint name="plate_upper_joint" type="fixed">
-  <origin xyz="-0.01364 0 0.117"/>
+  <origin xyz="-0.01364 0 ${plate_upper_z}"/>
   <parent link="${base_link}"/>
   <child link="plate_upper_link"/>
 </joint>
@@ -94,12 +102,13 @@
     <geometry>
       <mesh filename="package://ca_description/meshes/turtlebot_stack/upper_plate.dae"/>
     </geometry>
+    <material name="silver"/>
   </visual>
 </link>
 
 <!-- Nvidia Jetson Nano -->
 <joint name="nvidia_jetson_nano_joint" type="fixed">
-  <origin xyz="0 0 0.003" rpy="0 0 ${-pi/2}"/>
+  <origin xyz="-0.015 -0.025 ${plate_height}" rpy="0 0 ${-pi/2}"/>
   <parent link="plate_bottom_link"/>
   <child link="nvidia_jetson_nano_link"/>
 </joint>
@@ -113,6 +122,12 @@
 <gazebo reference="nvidia_jetson_nano_link">
   <material>Gazebo/Grey</material>
 </gazebo>
+
+<!-- MPU9255 -->
+<xacro:imu_sensor name="mpu9255" parent="plate_upper_link">
+  <origin xyz="0.03 -0.15 ${plate_height + 0.002}" rpy="0 ${3*deg_to_rad} 0"/>
+  <mesh filename="package://ca_description/meshes/sensors/mpu9255.stl" scale="0.001 0.001 0.001"/>
+</xacro:imu_sensor>
 
 <!-- Laser -->
 <xacro:property name="laser" default="$(arg laser)"/>

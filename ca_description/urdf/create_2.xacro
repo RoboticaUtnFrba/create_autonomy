@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <robot name="create_2" xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:include filename="$(find ca_description)/urdf/create_base.xacro"/>
+  <xacro:include filename="$(find ca_description)/urdf/utils/materials.xacro"/>
 
   <xacro:property name="robot_name" value="$(arg robot_name)"/>
 
