@@ -1,33 +1,35 @@
 # IMU (MPU9255 9 DOF)
 
-Interfacing Raspberry Pi with MPU9255:
+Interfacing **Nvidia Jetson Nano** with **MPU9255**:
 
-![Connection between RPi and MPU9255](media/wiring.png)
+> VCC --> 5V
+> GND --> GND
+> SCL --> PIN 5
+> SDA --> PIN 3
+
+## Setup
+
+```bash
+sudo usermod -aG i2c $USER
+
+$ sudo i2cdetect -y -r 1
+0x68
+```
 
 ## Installation
 
-### [RTIMULib2](https://github.com/RoboticaUtnFrba/RTIMULib2)
+### [RTIMULib](https://github.com/RoboticaUtnFrba/RTIMULib)
 
-Go to the RTIMULib2 directory and compile it:
+RTIMULib is automatically installed when the repository is compiled using the script located in `ca_imu/scripts/install_rtimulib.sh`.
 
-```
-$ cd Linux
-$ mkdir build
-$ cd build
-$ cmake ..
-$ make -j4
-$ sudo make install
-$ sudo ldconfig
-```
-
-## [Calibrate IMU](https://github.com/RoboticaUtnFrba/RTIMULib2/blob/master/Calibration.pdf)
+## [Calibrate IMU](https://github.com/RoboticaUtnFrba/RTIMULib/blob/master/Calibration.pdf)
 
 The normal process is to run the magnetometer min/max option followed by the magnetometer ellipsoid fit option followed finally by the accelerometer min/max option.
 
-The resulting RTIMULib.ini can then be used by any other RTIMULib application.
+The resulting `RTIMULib.ini` can then be used by any other RTIMULib application.
 
-```sh
-$ RTIMULibCal
+```bash
+RTIMULibCal
 ```
 
 ### Calibrating the magnetometer
@@ -38,16 +40,8 @@ $ RTIMULibCal
 
 [This video](https://www.youtube.com/watch?v=CnLtzwCbVc4) shows how the calibration process of the accelerometer has to be made.
 
-## [i2c_imu ROS package](https://github.com/RoboticaUtnFrba/i2c_imu)
-
-```
-$ cd catkin_ws/src
-$ git clone git@github.com:RoboticaUtnFrba/i2c_imu.git
-```
-
 ### Running
 
-```
-$ roslaunch ca_imu imu.launch
-$ rviz
+```bash
+roslaunch ca_imu mpu9255.launch
 ```

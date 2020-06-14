@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<launch>
+	<arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
+  <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
+	<arg name="tf_prefix" value="$(arg ns)_tf"          doc="Tf prefix"/>
+
+	<node name="i2c_imu_node" pkg="i2c_imu" type="i2c_imu_node" output="screen" required="true">
+			<rosparam file="$(find ca_imu)/config/mpu9255.yaml" command="load"/>
+
+			<param name="imu_frame" value="/$(arg tf_prefix)/imu_link" />
+	</node>
+
+</launch>

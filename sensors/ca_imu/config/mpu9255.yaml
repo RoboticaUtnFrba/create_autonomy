@@ -1,4 +1,8 @@
-# https://github.com/RoboticaUtnFrba/RTIMULib2/blob/master/RTIMULib/IMUDrivers/RTIMUDefs.h
+magnetic_declination: 0.0
+publish_magnetometer: true
+publish_euler: true
+
+# https://github.com/RoboticaUtnFrba/RTIMULib/blob/master/RTIMULib/IMUDrivers/RTIMUDefs.h
 # AUTODISCOVER             0                   // audodiscover the IMU
 # NULL                     1                   // if no physical hardware
 # MPU9150                  2                   // InvenSense MPU9150
@@ -13,12 +17,11 @@
 # MPU9255                  11                  // InvenSense MPU9255
 
 imu_type: 11
-frame_id: imu_link
 
-# Usually 1 for Raspberry Pi
+# IMU connection to Nvidia Jetson Nano
 i2c_bus: 1
 # 0x68 = 104 (base 10)
-i2c_slave_address: 104 
+i2c_slave_address: 104
 
 # RTFUSION_TYPE_NULL                  0                   // just a dummy to keep things happy if not needed
 # RTFUSION_TYPE_KALMANSTATE4          1                   // kalman state is the quaternion pose
@@ -51,16 +54,15 @@ fusion_type: 2
 # RTIMU_XWEST_YDOWN               23
 axis_rotation: 0
 
-# TODO: PUT THE DEFAULT VALUES IN THE DATASHEET
 mpu9255:
   #Sample Rates
   # Default: 40
   compass_sample_rate: 40
   # Default: 80
-  gyro_accel_sample_rate: 80
-  
+  gyro_accel_sample_rate: 50
+
   # Accel
-  
+
   # MPU9255_ACCEL_LPF_1130      0x08                    // 1130Hz, 0.75mS delay
   # MPU9255_ACCEL_LPF_460       0x00                    // 460Hz, 1.94mS delay
   # MPU9255_ACCEL_LPF_184       0x01                    // 184Hz, 5.80mS delay
@@ -69,18 +71,18 @@ mpu9255:
   # MPU9255_ACCEL_LPF_20        0x04                    // 20Hz, 19.80mS delay
   # MPU9255_ACCEL_LPF_10        0x05                    // 10Hz, 35.70mS delay
   # MPU9255_ACCEL_LPF_5         0x06                    // 5Hz, 66.96mS delay
-  
+
   # Default: MPU9255_ACCEL_LPF_41
   accel_low_pass_filter: 3
-  
+
   # MPU9255_ACCELFSR_2          0                       // +/- 2g
   # MPU9255_ACCELFSR_4          8                       // +/- 4g
   # MPU9255_ACCELFSR_8          0x10                    // +/- 8g
   # MPU9255_ACCELFSR_16         0x18                    // +/- 16g
-  
+
   # Default: MPU9255_ACCELFSR_8
   accel_full_scale_range: 16
-  
+
   # Gyro
 
   # MPU9255_GYRO_LPF_8800       0x11                    // 8800Hz, 0.64mS delay
@@ -103,15 +105,3 @@ mpu9255:
 
   # Default: MPU9255_GYROFSR_1000
   gyro_full_scale_range: 16
-
-# Calibration
-calib:
-  compass_min: [-28.451460, -42.645390, -38.086895]
-  compass_max: [68.179794, 48.143326, 57.744003]
-  
-  accel_min: [ -1.004789, -1.014467, -1.015889 ]
-  accel_max: [ 0.995606, 1.002416, 0.996524 ]
-
-magnetic_declination: 0.0
-publish_magnetometer: false
-publish_euler: false
