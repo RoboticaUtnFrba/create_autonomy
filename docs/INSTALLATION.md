@@ -25,21 +25,9 @@ sudo apt-get install -y python-rosdep python-catkin-tools
     git clone https://github.com/RoboticaUtnFrba/create_autonomy.git
     ```
 
-3. Compile RTIMULib2
-
-    ```bash
-    cd ~/create_ws/src/RTIMULib2/Linux && mkdir build && cd build
-    sudo apt-get install -y libqt4-dev
-    cmake ..
-    make -j4
-    sudo make install
-    sudo ldconfig
-    ```
-
-4. Install dependencies
+3. Install dependencies
 
     ``` bash
-    sudo apt-get install -y gstreamer1.0-tools libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-good1.0-dev
     cd ~/create_ws
     sudo apt install -y python3-vcstool
     vcs import src < src/create_autonomy/<DEVICE>.repos
@@ -47,21 +35,7 @@ sudo apt-get install -y python-rosdep python-catkin-tools
     rosdep install --from-paths src -i
     ```
 
-5. Build
-
-    5.1. Build RTIMULib2 for Raspberry Pi
-
-    ``` bash
-    cd ~/create_ws/src/RTIMULib2/Linux
-    mkdir build
-    cd build
-    cmake ..
-    make -j4
-    sudo make install
-    sudo ldconfig
-    ```
-
-    5.2. Build workspace
+4. Build workspace
 
     ``` bash
     cd ~/create_ws
