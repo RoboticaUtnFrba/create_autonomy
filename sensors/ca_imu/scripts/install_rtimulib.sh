@@ -13,7 +13,7 @@ sudo apt-get install -y libqt4-dev
 # Build and install RTIMULib
 mkdir -p ${RTIMULib_BUILD}
 cd ${RTIMULib_BUILD}
-cmake ..
+cmake -DBUILD_GL=OFF ..
 make -j4
 sudo make install
 sudo ldconfig

@@ -19,7 +19,7 @@ install:
   - wget http://packages.ros.org/ros.key -O - | sudo apt-key add -
   - wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
   - sudo apt-get update -qq
-  - sudo apt-get install -qq -y libqt4-dev libqt5opengl5-dev python-catkin-tools python-rosdep python3-vcstool wget
+  - sudo apt-get install -qq -y libqt4-dev python-catkin-tools python-rosdep python3-vcstool wget
   - sudo rosdep init
   - rosdep update
   # Create workspace
