@@ -57,7 +57,7 @@ axis_rotation: 0
 mpu9255:
   #Sample Rates
   # Default: 40
-  compass_sample_rate: 40
+  compass_sample_rate: 25
   # Default: 80
   gyro_accel_sample_rate: 50
 
