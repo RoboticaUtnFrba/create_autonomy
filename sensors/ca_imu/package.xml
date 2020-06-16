@@ -11,6 +11,8 @@
   <buildtool_depend>catkin</buildtool_depend>
 
   <build_depend>i2c_imu</build_depend>
+  <build_depend>imu_filter_madgwick</build_depend>
+  <build_depend>imu_transformer</build_depend>
   <build_depend>rospy</build_depend>
   <build_depend>sensor_msgs</build_depend>
   <build_depend>tf</build_depend>
@@ -20,6 +22,8 @@
   <build_export_depend>tf</build_export_depend>
 
   <exec_depend>i2c_imu</exec_depend>
+  <exec_depend>imu_filter_madgwick</exec_depend>
+  <exec_depend>imu_transformer</exec_depend>
   <exec_depend>rospy</exec_depend>
   <exec_depend>sensor_msgs</exec_depend>
   <exec_depend>tf</exec_depend>

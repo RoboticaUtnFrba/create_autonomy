@@ -1,0 +1,36 @@
+# Not Dynamically Reconfigurable Parameters
+
+# The world frame with respect to which the orientation is indicated (see REP-145). For historic reasons, the old default is "nwu" (North-West-Up). New deployments should use "enu". Valid values: "nwu", "enu", "ned".
+world_frame: "ned" #"enu"
+# Whether to use the magnetic field data in the data fusion.
+use_mag: true
+# If set to true, subscribe to the /imu/mag topic as a sensor_msgs/MagneticField; if set to false (deprecated), use geometry_msgs/Vector3Stamped.
+use_magnetic_field_msg: true
+
+# Whether to publish a TF transform that represents the orientation of the IMU, using the frame specified in fixed_frame as the parent frame and the frame given in the input imu message as the child frame.
+publish_tf: false
+# If set to true, publish transforms from imu_frame to fixed frame instead of the other way around.
+reverse_tf: false
+# The dt to use; if 0.0 (default), compute dt dynamically from message headers.
+constant_dt: 0.0
+# If set to true, publish a couple of debug topics.
+publish_debug_topics: true
+# If set to true, don't publish a filtered orientation. Instead, publish the stateless estimate of the orientation based on the latest accelerometer (and optionally magnetometer) readings alone. Useful for debugging.
+stateless: false
+# If set to true, subtract the gravity vector from the acceleration field in the published IMU message.
+remove_gravity_vector: false
+
+# Dynamically Reconfigurable Parameters
+
+# Gain of the filter. Higher values lead to faster convergence but more noise. Lower values lead to slower convergence but smoother signal. Range: 0.0 to 1.0
+gain: 0.1
+# Gyro drift gain (approx. rad/s). Range: -1.0 to 1.0
+zeta: 0.0
+# Magnetometer bias (hard iron correction), x component. Range: -10.0 to 10.0
+mag_bias_x: 0.0
+# Magnetometer bias (hard iron correction), y component. Range: -10.0 to 10.0
+mag_bias_y: 0.0
+# Magnetometer bias (hard iron correction), z component. Range: -10.0 to 10.0
+mag_bias_z: 0.0
+# Standard deviation of the orientation estimate. Range: 0.0 to 1.0
+orientation_stddev: 0.05

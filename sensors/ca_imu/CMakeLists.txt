@@ -15,6 +15,8 @@ find_library(RTIMULib libRTIMULib.so)
 
 find_package(catkin REQUIRED COMPONENTS
   i2c_imu
+  imu_filter_madgwick
+  imu_transformer
   rospy
   sensor_msgs
   tf
