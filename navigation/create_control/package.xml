@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>create_control</name>
+  <version>0.0.0</version>
+  <description>Create control pkg, intended for using with Create2</description>
+
+  <maintainer email="serraramiro@ekumenlabs.com">Ramiro Serra</maintainer>
+  <license>BSD</license>
+
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>libcreate</depend>
+  <depend>controller_manager</depend>
+  <depend>diff_drive_controller</depend>
+  <depend>joint_state_controller</depend>
+  <depend>robot_state_publisher</depend>
+
+
+
+  <export>
+  </export>
+</package>

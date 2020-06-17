@@ -1,0 +1,17 @@
+<launch>
+  <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
+  <arg name="ns" value="create$(arg robot_id)"/>
+
+  <!-- Robot description -->
+  <include file="$(find ca_description)/launch/create_description.launch" ns="$(arg ns)">
+    <arg name="robot_id" value="$(arg robot_id)"/>
+  </include>
+
+  <!-- Ros control hardware interface-->
+  <include file="$(find create_control)/launch/create_control_hardware.launch" ns="$(arg ns)"/>
+
+  <!-- Ros control -->
+  <include file="$(find create_control)/launch/create_control.launch" ns="$(arg ns)"/>
+
+
+</launch>

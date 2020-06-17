@@ -7,6 +7,7 @@
   <arg name="model" value="$(find ca_description)/urdf/create_2.xacro" doc="Path to Xacro description of the robot"/>
 
   <arg name="visualize" default="$(optenv VISUALIZE false)" doc="Flag to visualize rays in Gazebo"/>
+  <arg name="enable_ros_control" default="$(optenv ROS_CONTROL False)" doc="Flag to use ros_control Gazebo plugin"/>
 
   <!-- Stacks:
     * turtlebot
@@ -28,7 +29,8 @@
   <arg name="xacro_args" value="visualize:=$(arg visualize)
                                 robot_name:=$(arg ns)
                                 stack:=$(arg stack)
-                                laser:=$(arg laser)"/>
+                                laser:=$(arg laser)
+                                enable_ros_control:=$(arg enable_ros_control)"/>
   <!-- TODO (@eborghi10): Use only 1 robot_description for multiple robots -->
   <param name="robot_description" command="$(find xacro)/xacro $(arg model) $(arg xacro_args)"/>
   <!-- Robot state publisher-->

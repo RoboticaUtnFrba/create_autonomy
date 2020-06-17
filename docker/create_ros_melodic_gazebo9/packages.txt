@@ -15,6 +15,7 @@ ros-*-camera-calibration
 ros-*-carrot-planner
 ros-*-controller-manager
 ros-*-depthimage-to-laserscan
+ros-*-diff-drive-controller
 ros-*-dwa-local-planner
 ros-*-ecl-threads
 ros-*-gazebo-ros-control
@@ -27,12 +28,14 @@ ros-*-imu-tools
 ros-*-iris-lama
 ros-*-iris-lama-ros
 ros-*-joint-limits-interface
+ros-*-joint-state-controller
 ros-*-joy
 ros-*-joy-teleop
 ros-*-libuvc
 ros-*-map-server
 ros-*-mbf-costmap-core
 ros-*-mbf-msgs
+ros-*-topic-tools
 ros-*-move-base
 ros-*-move-base-flex
 ros-*-openni2-camera

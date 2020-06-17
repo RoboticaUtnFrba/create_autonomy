@@ -1,0 +1,9 @@
+<launch>
+  <!-- Load robot's hw interface -->
+  <node name="robot_hw_interface" pkg="create_control" type="create_control_node"
+   output="screen">
+    <rosparam command="load" file="$(find ca_driver)/config/default.yaml"/>
+    <param name="rate" value="100"/> <!-- controller loop rate -->
+  </node>
+</launch>
+

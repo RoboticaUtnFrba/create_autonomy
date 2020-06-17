@@ -3,28 +3,39 @@
   <xacro:macro name="sim_create_base">
 
     <gazebo>
+      <xacro:arg name="enable_ros_control" default="False"/>
       <!-- Diff-drive controller -->
-      <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
-        <alwaysOn>true</alwaysOn>
-        <rosDebugLevel>na</rosDebugLevel>
-        <updateRate>30</updateRate>
-        <leftJoint>wheel_left_joint</leftJoint>
-        <rightJoint>wheel_right_joint</rightJoint>
-        <wheelSeparation>${wheel_separation}</wheelSeparation>
-        <wheelDiameter>${wheel_radius * 2}</wheelDiameter>
-        <wheelTorque>0.5</wheelTorque>
-        <wheelAcceleration>0.5</wheelAcceleration>
-        <commandTopic>cmd_vel</commandTopic>
-        <odometryTopic>odom</odometryTopic>
-        <odometryFrame>odom</odometryFrame>
-        <robotBaseFrame>base_footprint</robotBaseFrame>
-        <publishWheelTF>true</publishWheelTF>
-        <publishOdomTF>true</publishOdomTF>
-        <publishWheelJointState>true</publishWheelJointState>
-        <odometrySource>world</odometrySource>
-        <publishTf>true</publishTf>
-      </plugin>
+      <xacro:unless value="$(arg enable_ros_control)">
+        <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
+          <alwaysOn>true</alwaysOn>
+          <rosDebugLevel>na</rosDebugLevel>
+          <updateRate>30</updateRate>
+          <leftJoint>wheel_left_joint</leftJoint>
+          <rightJoint>wheel_right_joint</rightJoint>
+          <wheelSeparation>${wheel_separation}</wheelSeparation>
+          <wheelDiameter>${wheel_radius * 2}</wheelDiameter>
+          <wheelTorque>0.5</wheelTorque>
+          <wheelAcceleration>0.5</wheelAcceleration>
+          <commandTopic>cmd_vel</commandTopic>
+          <odometryTopic>odom</odometryTopic>
+          <odometryFrame>odom</odometryFrame>
+          <robotBaseFrame>base_footprint</robotBaseFrame>
+          <publishWheelTF>true</publishWheelTF>
+          <publishOdomTF>true</publishOdomTF>
+          <publishWheelJointState>true</publishWheelJointState>
+          <odometrySource>world</odometrySource>
+          <publishTf>true</publishTf>
+        </plugin>
+    </xacro:unless>
 
+      <!-- ros_control plugin -->
+      <xacro:if value="$(arg enable_ros_control)">
+      <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+        <robotNamespace>${robot_name}</robotNamespace>
+        <robotParam>robot_description</robotParam>
+        <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+      </plugin>
+      </xacro:if>
       <!-- Ground truth -->
       <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
         <alwaysOn>true</alwaysOn>

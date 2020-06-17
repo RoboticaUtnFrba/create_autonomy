@@ -1,5 +1,6 @@
 <launch>
   <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
+	<arg name="enable_ros_control" value="$(optenv ROS_CONTROL false)" doc="Enable ros_control"/>
 
   <!-- Create 2 description -->
   <include file="$(find ca_description)/launch/create_description.launch">
@@ -13,5 +14,7 @@
   <include file="$(find ca_slam)/launch/depthimage_to_laserscan_gazebo.launch">
     <arg name="robot_id" value="$(arg robot_id)"/>
   </include>
+
+	<include file="$(find create_control)/launch/create_control.launch" if="$(arg enable_ros_control)"/>
 
 </launch>

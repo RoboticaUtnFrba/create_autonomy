@@ -1,14 +1,15 @@
 <launch>
   <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
   <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
-
+  <arg name="ros_control" default="$(optenv ROS_CONTROL False)" doc="Use ros_control"/>
   <arg name="raspicam_receiver_IP" default=""         doc="Raspicam client IP"/>
   <arg name="laser" default="$(optenv LASER)"         doc="Laser for mapping the environment"/>
 
   <arg name="rviz" default="$(optenv RVIZ false)"     doc="Flag to use RViz"/>
   <arg name="imu"  default="$(optenv IMU true)"       doc="Flag to use the IMU MPU9255"/>
 
-  <include file="$(find ca_node)/launch/create_2.launch"/>
+  <include file="$(find ca_node)/launch/create_2.launch" unless="$(arg ros_control)"/>
+  <include file="$(find ca_bringup)/launch/minimal_ros_control.launch" if="$(arg ros_control)"/>
 
   <!-- RViz -->
   <!-- TODO: HAVE A PLACE IN COMMON WITH GAZEBO -->
