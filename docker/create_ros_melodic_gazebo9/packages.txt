@@ -22,7 +22,6 @@ ros-*-gazebo-ros-pkgs
 ros-*-hardware-interface
 ros-*-image-proc
 ros-*-imu-tools
-ros-*-imu-transformer
 ros-*-joint-limits-interface
 ros-*-joy
 ros-*-joy-teleop

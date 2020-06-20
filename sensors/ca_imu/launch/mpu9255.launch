@@ -4,13 +4,6 @@
   <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
 	<arg name="tf_prefix" value="$(arg ns)_tf"          doc="Tf prefix"/>
 
-	<node name="imu_transformer" pkg="imu_transformer" type="imu_transformer_node" output="screen">
-		<param name="target_frame" value="$(arg tf_prefix)/imu_link"/>
-
-		<remap from="imu_in/data" to="data"/>
-		<remap from="imu_in/mag"  to="mag"/>
-	</node>
-
 	<node name="imu_filter_madgwick" pkg="imu_filter_madgwick" type="imu_filter_node" output="screen">
 		<rosparam file="$(find ca_imu)/config/madgwick_filter.yaml" command="load"/>
 
