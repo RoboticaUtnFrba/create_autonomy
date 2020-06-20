@@ -31,5 +31,3 @@ This package wraps the C++ library [libcreate][libcreate], which uses iRobot's [
 
 [libcreate]:  https://github.com/RoboticaUtnFrba/libcreate
 [oi_spec]:  https://www.adafruit.com/datasheets/create_2_Open_Interface_Spec.pdf
-
-TODO: REMOVE PASSWORD DURING COMPILATION!

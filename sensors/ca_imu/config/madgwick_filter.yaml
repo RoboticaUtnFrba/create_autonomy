@@ -1,7 +1,7 @@
 # Not Dynamically Reconfigurable Parameters
 
 # The world frame with respect to which the orientation is indicated (see REP-145). For historic reasons, the old default is "nwu" (North-West-Up). New deployments should use "enu". Valid values: "nwu", "enu", "ned".
-world_frame: "ned" #"enu"
+world_frame: "enu"
 # Whether to use the magnetic field data in the data fusion.
 use_mag: true
 # If set to true, subscribe to the /imu/mag topic as a sensor_msgs/MagneticField; if set to false (deprecated), use geometry_msgs/Vector3Stamped.
