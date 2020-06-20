@@ -7,6 +7,7 @@
 
   <xacro:property name="parent_link" value="${parent}"/>
   <xacro:property name="link_name" value="${name}_link"/>
+  <xacro:property name="chip_name" value="${name}_chip_link"/>
 
   <joint name="${name}_joint" type="fixed">
     <xacro:insert_block name="origin" />
@@ -23,13 +24,25 @@
     </visual>
   </link>
 
+  <gazebo reference="${link_name}">
+    <material>Gazebo/BlueGlow</material>
+  </gazebo>
+
+  <joint name="${name}_chip_joint" type="fixed">
+    <origin rpy="${pi} 0 0"/>
+    <parent link="${link_name}" />
+    <child link="${chip_name}" />
+  </joint>
+
+  <link name="${chip_name}"/>
+
   <gazebo>
     <plugin name="${name}" filename="libgazebo_ros_imu.so">
       <alwaysOn>true</alwaysOn>
       <updateRate>30</updateRate>
       <robotNamespace>create1</robotNamespace>
-      <bodyName>${link_name}</bodyName>
-      <frameName>create1_tf/${link_name}</frameName>
+      <bodyName>${chip_name}</bodyName>
+      <frameName>create1_tf/${chip_name}</frameName>
       <topicName>${name}/data</topicName>
       <serviceName>${name}/is_calibrated</serviceName>
       <gaussianNoise>${0.0017*0.0017}</gaussianNoise>

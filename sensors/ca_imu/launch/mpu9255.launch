@@ -23,7 +23,7 @@
 	<node name="i2c_imu_node" pkg="i2c_imu" type="i2c_imu_node" output="screen" required="true">
 			<rosparam file="$(find ca_imu)/config/mpu9255.yaml" command="load"/>
 
-			<param name="frame_id" value="$(arg tf_prefix)/imu_link"/>
+			<param name="frame_id" value="$(arg tf_prefix)/imu_chip_link"/>
 	</node>
 
 </launch>
