@@ -3,7 +3,6 @@
 # Set RTIMULib paths
 RTIMULib_PATH="/home/${USER}/RTIMULib"
 RTIMULib_BUILD="${RTIMULib_PATH}/Linux/build"
-RTIMULib_INSTALL="${RTIMULib_PATH}/Linux/install"
 
 # Clone repo in RTIMULib_PATH
 mkdir -p ${RTIMULib_PATH}
@@ -16,8 +15,7 @@ BUILD_GL=""
 # Build and install RTIMULib
 mkdir -p ${RTIMULib_BUILD}
 cd ${RTIMULib_BUILD}
-cmake ${BUILD_GL} -DCMAKE_INSTALL_PREFIX=${RTIMULib_INSTALL} ..
+cmake ${BUILD_GL} ..
 make -j4
-make install
-ldconfig
-export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${RTIMULib_INSTALL}"
+sudo make install
+sudo ldconfig

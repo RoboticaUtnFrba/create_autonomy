@@ -3,15 +3,7 @@ project(ca_imu)
 
 add_compile_options(-std=c++11)
 
-# Automatically install RTIMULib
-
-message(STATUS "Installing RTIMULib...")
-
-execute_process(COMMAND scripts/install_rtimulib.sh
-                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
-
-find_library(RTIMULib libRTIMULib.so)
-
+find_library(RTIMULib libRTIMULib.so REQUIRED)
 
 find_package(catkin REQUIRED COMPONENTS
   i2c_imu
