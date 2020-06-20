@@ -34,7 +34,7 @@
       <robotNamespace>create1</robotNamespace>
       <bodyName>${link_name}</bodyName>
       <frameName>create1_tf/${link_name}</frameName>
-      <topicName>${name}/data</topicName>
+      <topicName>${name}/imu/data</topicName>
       <serviceName>${name}/is_calibrated</serviceName>
       <gaussianNoise>${0.0017*0.0017}</gaussianNoise>
       <xyzOffsets>0 0 0</xyzOffsets>

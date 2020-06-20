@@ -24,6 +24,11 @@
 			<!-- TODO: IMPROVE PATH? -->
 			<param name="settings_directory" type="str" value="/home/create1"/>
 			<param name="frame_id" value="$(arg tf_prefix)/imu_link"/>
+
+			<rosparam file="$(find ca_imu)/config/mpu9255.yaml" command="load"/>
+
+			<remap from="data" to="imu/data_raw"/>
+			<remap from="mag" to="imu/mag"/>
 	</node>
 
 </launch>
