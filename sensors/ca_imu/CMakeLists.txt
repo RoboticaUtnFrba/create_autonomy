@@ -10,7 +10,7 @@ if(RTIMULib-NOTFOUND)
     "
     You must install RTIMULib:
 
-    ./create_autonomy/sensors/ca_imu/scripts/install_rtimulib.sh
+    . ${PROJECT_SOURCE_DIR}/scripts/install_rtimulib.sh
     "
   )
 endif()
