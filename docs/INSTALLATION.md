@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-* [ROS](http://wiki.ros.org/ROS/Installation) _Kinetic_ or _Melodic_
+* [ROS](http://wiki.ros.org/ROS/Installation) _Melodic_
 * [Gazebo 9](http://gazebosim.org/tutorials?cat=install&tut=install_ubuntu&ver=9.0#Alternativeinstallation:step-by-step) or higher
 * Ubuntu packages: `python-rosdep`, `python-catkin-tools`
 
@@ -26,6 +26,15 @@ sudo apt-get install -y python-rosdep python-catkin-tools
     ```
 
 3. Install dependencies
+
+    I. Install RTIMULib
+
+    ```bash
+    cd ~/create_ws
+    ./src/create_autonomy/sensors/ca_imu/scripts/install_rtimulib.sh
+    ```
+
+    II. Install other dependencies
 
     ``` bash
     cd ~/create_ws
