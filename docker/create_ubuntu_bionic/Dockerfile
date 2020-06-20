@@ -19,6 +19,7 @@ RUN apt-get update && \
     build-essential \
     curl \
     git \
+    libqt4-dev \
     mesa-utils \
     pkg-config \
     python-vcstools \

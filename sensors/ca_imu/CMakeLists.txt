@@ -5,6 +5,16 @@ add_compile_options(-std=c++11)
 
 find_library(RTIMULib libRTIMULib.so REQUIRED)
 
+if(RTIMULib-NOTFOUND)
+  message(FATAL_ERROR
+    "
+    You must install RTIMULib:
+
+    ./create_autonomy/sensors/ca_imu/scripts/install_rtimulib.sh
+    "
+  )
+endif()
+
 find_package(catkin REQUIRED COMPONENTS
   i2c_imu
   imu_filter_madgwick
