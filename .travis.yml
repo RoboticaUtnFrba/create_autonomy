@@ -21,7 +21,7 @@ install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq -y libqt4-dev python-catkin-tools python-rosdep python3-vcstool wget
   # Install RTIMULib
-  - source ${CREATE_AUTONOMY_SRC}/sensors/ca_imu/scripts/install_rtimulib.sh
+  - source ${TRAVIS_BUILD_DIR}/sensors/ca_imu/scripts/install_rtimulib.sh
   # Install dependencies
   - sudo rosdep init
   - rosdep update
