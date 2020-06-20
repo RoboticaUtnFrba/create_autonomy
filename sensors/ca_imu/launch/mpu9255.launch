@@ -15,9 +15,6 @@
 		<rosparam file="$(find ca_imu)/config/madgwick_filter.yaml" command="load"/>
 
 		<param name="fixed_frame" value="$(arg tf_prefix)/imu_link"/>
-
-		<remap from="imu/data_raw" to="data"/>
-		<remap from="imu/mag" 		 to="mag"/>
 	</node>
 
 	<node name="i2c_imu_node" pkg="i2c_imu" type="i2c_imu_node" output="screen" required="true">
