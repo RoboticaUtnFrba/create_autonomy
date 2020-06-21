@@ -17,22 +17,23 @@ find_package(catkin REQUIRED
     tf2_ros
 )
 
-set(trajectory_actor_plugin_name TrajectoryActorPlugin)
+set(SERVICESIM_PLUGIN_LIST
+  AttachModelPlugin
+  CollisionActorPlugin
+  FollowActorPlugin
+  TrajectoryActorPlugin
+  VicinityPlugin
+)
 
-###################################
-## catkin specific configuration ##
-###################################
-
-catkin_package(
-	INCLUDE_DIRS include
-	LIBRARIES
-		create_bumper_plugin
-		model_pose_publisher_plugin
-		traffic_light_plugin
-		${trajectory_actor_plugin_name}
-		world_time_publisher
-  CATKIN_DEPENDS
-    ca_msgs
+set(PLUGIN_LIST
+  cliff_msg_publisher
+  create_bumper_plugin
+  create_cliff_plugin
+  create_virtual_wall_plugin
+  model_pose_publisher_plugin
+  traffic_light_plugin
+  virtual_wall_detector
+  world_time_publisher
 )
 
 ###########
@@ -45,150 +46,55 @@ include_directories(
 	${GAZEBO_INCLUDE_DIRS}
 )
 
-#############################
-## Trajectory Actor plugin ##
-#############################
+########################
+## ServiceSim plugins ##
+########################
 
-# Create the libTrajectoryActorPlugin.so library.
-add_library(${trajectory_actor_plugin_name} SHARED
-  src/servicesim/TrajectoryActorPlugin.cc
-)
-target_link_libraries(${trajectory_actor_plugin_name}
-  ${GAZEBO_LIBRARIES}
-  ${catkin_LIBRARIES}
-)
-install(TARGETS ${trajectory_actor_plugin_name}
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
-)
+foreach(PLUGIN ${SERVICESIM_PLUGIN_LIST})
+  catkin_package(
+    INCLUDE_DIRS include
+    LIBRARIES ${PLUGIN}
+    CATKIN_DEPENDS ca_msgs
+  )
 
-#############################
-## Follow Actor plugin ##
-#############################
+  add_library(${PLUGIN} SHARED src/servicesim/${PLUGIN}.cc)
 
-# Create the libFollowActorPlugin.so library.
-set(follow_actor_plugin_name FollowActorPlugin)
-add_library(${follow_actor_plugin_name} SHARED
-  src/servicesim/FollowActorPlugin.cc
-)
-add_dependencies(${follow_actor_plugin_name}
-  ${catkin_EXPORTED_TARGETS}
-)
-target_link_libraries(${follow_actor_plugin_name}
-  ${GAZEBO_LIBRARIES}
-  ${roscpp_LIBRARIES}
-  ${catkin_LIBRARIES}
-)
-install(TARGETS ${follow_actor_plugin_name}
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
-)
+  add_dependencies(${PLUGIN} ${catkin_EXPORTED_TARGETS})
 
-#############################
-## Collision Actor plugin ##
-#############################
+  target_link_libraries(${PLUGIN}
+    ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
 
-# Create the libCollisionActorPlugin.so library.
-set(collision_actor_plugin_name CollisionActorPlugin)
-add_library(${collision_actor_plugin_name} SHARED
-  src/servicesim/CollisionActorPlugin.cc
-)
-target_link_libraries(${collision_actor_plugin_name}
-  ${GAZEBO_LIBRARIES}
-  ${roscpp_LIBRARIES}
-)
-install(TARGETS ${collision_actor_plugin_name}
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
-)
-
-#############################
-## Attach Model plugin ##
-#############################
-
-# Create the libAttachModelPlugin.so library.
-set(attach_model_plugin_name AttachModelPlugin)
-add_library(${attach_model_plugin_name} SHARED
-  src/servicesim/AttachModelPlugin.cc
-)
-target_link_libraries(${attach_model_plugin_name}
-  ${GAZEBO_LIBRARIES}
-  ${roscpp_LIBRARIES}
-)
-install(TARGETS ${attach_model_plugin_name}
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
-)
-
-#############################
-###### Vicinity plugin ######
-#############################
-
-# Create the libVicinityPlugin.so library.
-set(vicinity_plugin_name VicinityPlugin)
-add_library(${vicinity_plugin_name} SHARED
-  src/servicesim/VicinityPlugin.cc
-)
-add_dependencies(${vicinity_plugin_name}
-  ${catkin_EXPORTED_TARGETS}
-)
-target_link_libraries(${vicinity_plugin_name}
-  ${GAZEBO_LIBRARIES}
-  ${catkin_LIBRARIES}
-)
-install(TARGETS ${vicinity_plugin_name}
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
-)
+  install(TARGETS ${PLUGIN}
+    ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+    LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+    RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
+  )
+endforeach()
 
 ###################################
 ###### iRobot Create plugins ######
 ###################################
 
-add_library(cliff_msg_publisher src/cliff_msg_publisher.cpp)
-add_dependencies(cliff_msg_publisher ${catkin_EXPORTED_TARGETS})
-target_link_libraries(cliff_msg_publisher
-	${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
+foreach(PLUGIN ${PLUGIN_LIST})
+  catkin_package(
+    INCLUDE_DIRS include
+    LIBRARIES ${PLUGIN}
+    CATKIN_DEPENDS ca_msgs
+  )
 
-add_library(create_bumper_plugin src/create_bumper_plugin.cpp)
-add_dependencies(create_bumper_plugin ${catkin_EXPORTED_TARGETS})
-target_link_libraries(create_bumper_plugin
-	${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
+  add_library(${PLUGIN} src/${PLUGIN}.cpp)
 
-add_library(create_cliff_plugin src/create_cliff_plugin.cpp)
-add_dependencies(create_cliff_plugin ${catkin_EXPORTED_TARGETS})
-target_link_libraries(create_cliff_plugin
-	${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
+  add_dependencies(${PLUGIN} ${catkin_EXPORTED_TARGETS})
 
-add_library(create_virtual_wall_plugin src/create_virtual_wall_plugin.cpp)
-add_dependencies(create_virtual_wall_plugin ${catkin_EXPORTED_TARGETS})
-target_link_libraries(create_virtual_wall_plugin
-	${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
+  target_link_libraries(${PLUGIN}
+    ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
 
-add_library(model_pose_publisher_plugin src/model_pose_publisher_plugin.cpp)
-add_dependencies(model_pose_publisher_plugin ${catkin_EXPORTED_TARGETS})
-target_link_libraries(model_pose_publisher_plugin
-	${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
-
-add_library(traffic_light_plugin src/traffic_light_plugin.cpp)
-add_dependencies(traffic_light_plugin ${catkin_EXPORTED_TARGETS})
-target_link_libraries(traffic_light_plugin
-	${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
-
-add_library(virtual_wall_detector src/virtual_wall_detector.cpp)
-add_dependencies(virtual_wall_detector ${catkin_EXPORTED_TARGETS})
-target_link_libraries(virtual_wall_detector
-	${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
-
-add_library(world_time_publisher src/world_time_publisher.cpp)
-add_dependencies(world_time_publisher ${catkin_EXPORTED_TARGETS})
-target_link_libraries(world_time_publisher
-	${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
+  install(TARGETS ${TARGET}
+    ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+    LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+  )
+endforeach()
 
 #############
 ## Install ##
@@ -204,20 +110,6 @@ install(DIRECTORY
 
 install(DIRECTORY include/${PROJECT_NAME}/
         DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-)
-
-install(TARGETS
-		cliff_msg_publisher
-		create_bumper_plugin
-		create_cliff_plugin
-		create_virtual_wall_plugin
-		model_pose_publisher_plugin
-		traffic_light_plugin
-		virtual_wall_detector
-		world_time_publisher
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
 install(DIRECTORY scripts
