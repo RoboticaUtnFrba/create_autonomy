@@ -1,3 +1,4 @@
+#catkin_lint: ignore plugin_missing_install
 cmake_minimum_required(VERSION 2.8.3)
 project(ca_safety_controller)
 

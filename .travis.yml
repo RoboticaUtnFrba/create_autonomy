@@ -49,7 +49,7 @@ script:
   - catkin_make run_tests -j1 && catkin_test_results
   # Lint package files ONLY for create_autonomy
   - sudo apt-get install -y python-catkin-lint
-  - catkin lint -W2 --strict --explain $CREATE_AUTONOMY_SRC --ignore plugin_missing_install --ignore target_name_collision
+  - catkin lint -W2 --strict --explain $CREATE_AUTONOMY_SRC
   # Tips
   #
   # C++:

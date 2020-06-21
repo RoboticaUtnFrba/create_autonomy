@@ -1,3 +1,4 @@
+#catkin_lint: ignore plugin_missing_install
 cmake_minimum_required(VERSION 2.8.3)
 project(ca_node)
 
@@ -14,7 +15,7 @@ find_package(Boost REQUIRED system thread)
 
 catkin_package(
   LIBRARIES ${PROJECT_NAME}let ca_driver
-  CATKIN_DEPENDS 
+  CATKIN_DEPENDS
     ca_description
     ca_msgs
     ecl_threads
