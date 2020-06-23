@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+
+<!-- NOTE:
+1. Maps created with Hector SLAM break with the create's odom shift:
+For the gazebo house environment, the maps created with Hector SLAM
+place the (0, 0) at the start position of the robot and not at Gazebo's
+(0,0). This will break when applying odom's shift for the create, as
+it will push the robot out of the map.
+
+2. If you launch hector mapping without geotiff, you can save the
+map using the map server:
+
+rosrun map_server map_saver -f my_map
+-->
+
+<launch>
+  <!-- Create and robot number identifiers -->
+  <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
+  <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
+  <arg name="tf_prefix" value="$(arg ns)_tf"          doc="Tf prefix"/>
+
+  <arg name="tf_map_scanmatch_transform_frame_name" default="scanmatcher_frame"/>
+  <arg name="base_frame" default="$(arg tf_prefix)/base_link"/>
+  <arg name="odom_frame" default="$(arg tf_prefix)/odom"/>
+  <arg name="pub_map_odom_transform" default="true"/>
+  <arg name="scan_subscriber_queue_size" default="5"/>
+  <arg name="scan_topic" default="rplidar/scan"/>
+  <arg name="map_size" default="520"/>
+
+  <node pkg="hector_mapping" type="hector_mapping" name="hector_mapping" output="screen">
+    <rosparam file="$(find ca_hector)/config/hector_mapping.yaml" command="load"/>
+
+    <!-- Frame names -->
+    <param name="map_frame" value="map" />
+    <param name="base_frame" value="$(arg base_frame)" />
+    <param name="odom_frame" value="$(arg odom_frame)" />
+
+    <!-- Tf use -->
+    <param name="use_tf_scan_transformation" value="true"/>
+    <param name="use_tf_pose_start_estimate" value="false"/>
+    <param name="pub_map_odom_transform" value="$(arg pub_map_odom_transform)"/>
+
+    <!-- Map size / start point -->
+    <param name="map_size" value="$(arg map_size)"/>
+
+    <!-- Advertising config -->
+    <param name="scan_subscriber_queue_size" value="$(arg scan_subscriber_queue_size)"/>
+    <param name="scan_topic" value="$(arg scan_topic)"/>
+
+    <remap from="/$(arg ns)/map" to="/map" />
+    <remap from="/$(arg ns)/map_metadata" to="/map_metadata"/>
+
+    <!-- Debug parameters -->
+    <!--
+      <param name="output_timing" value="false"/>
+      <param name="pub_drawings" value="true"/>
+      <param name="pub_debug_output" value="true"/>
+    -->
+    <param name="tf_map_scanmatch_transform_frame_name" value="$(arg tf_map_scanmatch_transform_frame_name)" />
+  </node>
+
+</launch>
+
+
