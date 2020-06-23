@@ -1,0 +1,28 @@
+# Global planner parameters
+
+# For full documentation of parameters used by this planner, please check
+# http://wiki.ros.org/global_planner
+
+GlobalPlanner:
+  # Specifies whether or not to allow the planner to create plans that
+  # traverse unknown space
+  allow_unknown: false
+
+  # Tolerance on the goal point for the planner. The planner will attempt
+  # to create a plan that is as close to the specified goal as possible
+  # but no further than default_tolerance away.
+  default_tolerance: 0.0
+
+  # Flag to indicate whether the planner should use Dijkstra's algorithm.
+  # Otherwise, A*.
+  use_dijkstra: true
+
+  # Use the quadratic approximation of the potential or a simple calculation
+  use_quadratic: false
+
+  # If true, create a path that follows the grid boundaries. Otherwise,
+  # use a gradient descent method.
+  use_grid_path: false
+
+  # Exactly mirror the behavior of navfn.
+  old_navfn_behaviour: false
