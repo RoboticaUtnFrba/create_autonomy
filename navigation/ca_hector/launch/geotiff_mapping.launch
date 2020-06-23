@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<!-- Helper launchfile to store the map created with Hector SLAM in
+tif format.
+To save the map at any point of execution, you need to run:
+
+rostopic pub <ns>/syscommand std_msgs/String "savegeotiff"
+
+where ns is create + robot number (e.g. create1)
+-->
+
+<launch>
+  <!-- Path where the geotiff file will be stored -->
+  <arg name="geotiff_map_file_path" default="$(find ca_hector)/maps"/> -->
+
+  <include file="$(find ca_hector)/launch/default_mapping.launch"/>
+
+  <!-- Launch the geotiff mapper -->
+  <include file="$(find ca_hector)/launch/geotiff_mapper.launch">
+    <arg name="trajectory_source_frame_name" value="scanmatcher_frame"/>
+    <arg name="map_file_path" value="$(arg geotiff_map_file_path)"/>
+  </include>
+</launch>
