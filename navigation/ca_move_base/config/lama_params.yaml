@@ -1,0 +1,23 @@
+# Parameters for LAMA - Localization and Mapping package
+
+# For a full documentation of the parameters used by this package, please check
+# https://github.com/iris-ua/iris_lama_ros
+
+# Initial x position
+initial_pos_x: -3 # Match the create's odom offset
+# Initial y position
+initial_pos_y: 4  # Match the create's odom offset
+# Initial rotation (or angle)
+initial_pos_a: 0
+
+# Traveled distance to accumulate before updating (meters)
+d_thresh: 0.001 # Faster update to avoid tf extrapolation errors
+# Angular motion to accumulate before updating
+a_thresh: 0.2
+# Maximum distance to use in the dynamic Euclidean distance map
+l2_max: 0.5
+# Scan matching optimization strategy, GaussNewton ("gn") or Levenberg Marquard ("lm")
+strategy: "gn"
+# Length of a patch (cells)
+patch_size: 32
+

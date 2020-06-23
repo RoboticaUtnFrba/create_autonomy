@@ -1,0 +1,21 @@
+<launch>
+  <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
+  <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
+  <arg name="tf_prefix" value="$(arg ns)_tf"          doc="Tf prefix"/>
+
+  <arg name="laser" default="$(optenv LASER rplidar)" doc="Laser for mapping the environment"/>
+
+  <node pkg="iris_lama_ros" type="loc2d_ros" name="loc2d_ros" output="screen">
+    <rosparam file="$(find ca_move_base)/config/lama_params.yaml" command="load"/>
+    <!-- We want a single map for multi-robots -->
+    <remap from="map" to="/map" />
+
+    <remap from="scan" to="$(arg laser)/scan"/>
+
+    <param name="odom_frame_id" value="$(arg tf_prefix)/odom"/>
+    <param name="base_frame_id" value="$(arg tf_prefix)/base_link"/>
+    <param name="global_frame_id" value="map"/>
+    <param name="scan_topic" value="$(arg laser)/scan"/>
+  </node>
+
+</launch>
