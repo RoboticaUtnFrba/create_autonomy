@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>ca_hector</name>
+  <version>0.0.0</version>
+
+  <description>Hector SLAM launchfiles and configuration for mapping</description>
+
+  <maintainer email="florr.grosso@gmail.com">Florencia Grosso</maintainer>
+
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>hector_geotiff</build_depend>
+  <build_depend>hector_mapping</build_depend>
+
+  <exec_depend>hector_geotiff</exec_depend>
+  <exec_depend>hector_mapping</exec_depend>
+
+  <export/>
+</package>
