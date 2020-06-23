@@ -1,3 +1,8 @@
+# Parameters for Hector SLAM - Mapping package
+
+# For a full documentation of the parameters used by this package, please check
+# http://wiki.ros.org/hector_mapping
+
 # Tf use
 use_tf_scan_transformation: true
 use_tf_pose_start_estimate: false
