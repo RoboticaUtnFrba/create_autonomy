@@ -1,0 +1,17 @@
+# Move Base Flex - Plugin for recovery behaviors
+
+recovery_behaviors:
+  # Details: http://wiki.ros.org/rotate_recovery
+  - name: 'rotate_recovery'
+    type: 'rotate_recovery/RotateRecovery'
+  # Details: http://wiki.ros.org/clear_costmap_recovery
+  - name: 'clear_costmap'
+    type: 'clear_costmap_recovery/ClearCostmapRecovery'
+  # Details: https://github.com/uos/mbf_tools/tree/master/moveback_recovery
+  - name: 'moveback_recovery'
+    type: 'moveback_recovery/MoveBackRecovery'
+
+moveback_recovery:
+  linear_vel_back: -0.1 # default -0.3
+  step_back_length: 0.3  # default 1.0
+  step_back_timeout: 5.0 # default 15.0
