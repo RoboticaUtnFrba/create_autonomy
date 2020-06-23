@@ -19,6 +19,7 @@ ros-*-dwa-local-planner
 ros-*-ecl-threads
 ros-*-gazebo-ros-control
 ros-*-gazebo-ros-pkgs
+ros-*-global-planner
 ros-*-hardware-interface
 ros-*-image-proc
 ros-*-imu-tools
@@ -29,6 +30,7 @@ ros-*-libuvc
 ros-*-map-server
 ros-*-mbf-costmap-core
 ros-*-mbf-msgs
+ros-*-moveback-recovery
 ros-*-move-base
 ros-*-move-base-flex
 ros-*-openni2-camera
