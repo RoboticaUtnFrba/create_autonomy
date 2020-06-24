@@ -6,6 +6,8 @@ add_compile_options(-std=c++11)
 find_package(catkin REQUIRED COMPONENTS
   actionlib
   amcl
+  iris_lama
+  iris_lama_ros
   move_base
   move_base_msgs
   octomap_server
