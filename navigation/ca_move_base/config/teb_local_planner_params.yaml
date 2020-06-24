@@ -1,4 +1,10 @@
+# Move base
 base_local_planner: "teb_local_planner/TebLocalPlannerROS"
+
+# Move base flex
+controllers:
+  - name: 'TebLocalPlannerROS'
+    type: 'teb_local_planner/TebLocalPlannerROS'
 
 # Reference: http://wiki.ros.org/teb_local_planner
 TebLocalPlannerROS:

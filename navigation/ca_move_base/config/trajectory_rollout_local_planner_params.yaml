@@ -1,4 +1,10 @@
+# Move base
 base_local_planner: "base_local_planner/TrajectoryPlannerROS"
+
+# Move base flex
+controllers:
+  - name: 'TrajectoryPlannerROS'
+    type: 'base_local_planner/TrajectoryPlannerROS'
 
 TrajectoryPlannerROS:
 

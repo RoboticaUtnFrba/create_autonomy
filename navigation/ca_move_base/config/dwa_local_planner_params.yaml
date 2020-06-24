@@ -4,7 +4,14 @@
 # specified in the nav_core package.
 #
 # http://wiki.ros.org/nav_core#BaseLocalPlanner
+
+# Move base
 base_local_planner: "dwa_local_planner/DWAPlannerROS"
+
+# Move base flex
+controllers:
+  - name: 'DWAPlannerROS'
+    type: 'dwa_local_planner/DWAPlannerROS'
 
 DWAPlannerROS:
 

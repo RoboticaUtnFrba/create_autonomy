@@ -3,6 +3,14 @@
 # For full documentation of parameters used by this planner, please check
 # http://wiki.ros.org/global_planner
 
+# Move base
+base_local_planner: "global_planner/GlobalPlanner"
+
+# Move base flex
+planners:
+  - name: 'GlobalPlanner'
+    type: 'global_planner/GlobalPlanner'
+
 GlobalPlanner:
   # Specifies whether or not to allow the planner to create plans that
   # traverse unknown space

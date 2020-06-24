@@ -4,7 +4,15 @@
 # specified in the nav_core package.
 #
 # http://wiki.ros.org/nav_core#BaseGlobalPlanner
-base_global_planner: "SBPLLatticePlanner"
+
+# Move base
+base_local_planner: "SBPLLatticePlanner"
+
+# Move base flex
+controllers:
+  - name: 'SBPLLatticePlanner'
+    type: 'SBPLLatticePlanner'
+
 SBPLLatticePlanner:
   environment_type: XYThetaLattice
   planner_type: "ARAPlanner"

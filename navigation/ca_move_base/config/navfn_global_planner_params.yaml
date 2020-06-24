@@ -4,7 +4,14 @@
 # specified in the nav_core package.
 #
 # http://wiki.ros.org/nav_core#BaseGlobalPlanner
-base_global_planner: "navfn/NavfnROS"
+
+# Move base
+base_local_planner: "navfn/NavfnROS"
+
+# Move base flex
+planners:
+  - name: 'NavfnROS'
+    type: 'navfn/NavfnROS'
 
 NavfnROS:
   # Publish potential for rviz as pointcloud2, not really helpful, default false

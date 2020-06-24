@@ -1,4 +1,10 @@
-base_global_planner: "carrot_planner/CarrotPlanner"
+# Move base
+base_local_planner: "carrot_planner/CarrotPlanner"
+
+# Move base flex
+planners:
+  - name: 'CarrotPlanner'
+    type: 'carrot_planner/CarrotPlanner'
 
 CarrotPlanner:
   step_size: 0.1
