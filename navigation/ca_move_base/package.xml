@@ -35,7 +35,6 @@
   <exec_depend>mbf_costmap_nav</exec_depend>
   <exec_depend>move_base</exec_depend>
   <exec_depend>move_base_msgs</exec_depend>
-  <exec_depend>moveback_recovery</exec_depend>
   <exec_depend>octomap_server</exec_depend>
   <exec_depend>roscpp</exec_depend>
   <exec_depend>rotate_recovery</exec_depend>

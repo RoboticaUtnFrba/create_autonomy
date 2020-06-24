@@ -30,7 +30,6 @@ ros-*-libuvc
 ros-*-map-server
 ros-*-mbf-costmap-core
 ros-*-mbf-msgs
-ros-*-moveback-recovery
 ros-*-move-base
 ros-*-move-base-flex
 ros-*-openni2-camera
