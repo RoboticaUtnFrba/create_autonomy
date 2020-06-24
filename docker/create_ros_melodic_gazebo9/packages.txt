@@ -24,6 +24,8 @@ ros-*-hardware-interface
 ros-*-image-proc
 ros-*-imu-filter-madgwick
 ros-*-imu-tools
+ros-*-iris-lama
+ros-*-iris-lama-ros
 ros-*-joint-limits-interface
 ros-*-joy
 ros-*-joy-teleop
