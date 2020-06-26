@@ -1,0 +1,16 @@
+<launch>
+  <!--
+    Arguments to the move_square.py node:
+      - "vel [ left | right ]"
+      - "odom"
+      - "odom_imu"
+   -->
+  <arg name="args"/>
+
+  <arg name="robot_id" default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
+  <arg name="ns"       value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
+
+  <node pkg="ca_tools" type="move_square.py" name="move_square"
+        output="screen" ns="$(arg ns)"
+        args="$(arg args)"/>
+</launch>

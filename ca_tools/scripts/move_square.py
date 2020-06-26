@@ -30,8 +30,8 @@ class SquareMove(object):
 
         # Declare ROS subscribers and publishers
         self.node_name = "square_move"
-        self.odom_sub_name = "/create1/odom"
-        self.vel_pub_name = "/create1/cmd_vel"
+        self.odom_sub_name = "odom"
+        self.vel_pub_name = "cmd_vel"
         self.vel_pub = None
         self.odometry_sub = None
 
@@ -64,8 +64,6 @@ class SquareMove(object):
 
             self.vel_ros_pub(Twist())
             time.sleep(self.pub_rate)
-
-        sys.exit("The process has been interrupted by the user!")
 
     def move(self):
         """ To be surcharged in the inheriting class"""
@@ -243,7 +241,7 @@ class SquareMoveOdomIMU(SquareMoveOdom):
         # The functions are the same as in the previous example except for the odometry name that is now filtered
         # in a, Extended Kalman Filter (EKF) with the IMU values thanks to the node robot_pose_ekf
         super(SquareMoveOdomIMU, self).__init__()
-        self.odom_sub_name = "/create1/odom_combined"
+        self.odom_sub_name = "odom_combined"
 
 
 if __name__ == '__main__':
