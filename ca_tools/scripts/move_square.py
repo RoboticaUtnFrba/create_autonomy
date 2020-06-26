@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import math
-import rospy as ros
+import rospy
 import sys
 import time
 
@@ -45,14 +45,14 @@ class SquareMove(object):
     def start_ros(self):
 
         # Create a ROS node with a name for our program
-        ros.init_node(self.node_name, log_level=ros.INFO)
+        rospy.init_node(self.node_name, log_level=rospy.INFO)
 
         # Define a callback to stop the robot when we interrupt the program (CTRL-C)
-        ros.on_shutdown(self.stop_robot)
+        rospy.on_shutdown(self.stop_robot)
 
         # Create the Subscribers and Publishers
-        self.odometry_sub = ros.Subscriber(self.odom_sub_name, Odometry, callback=self.__odom_ros_sub, queue_size=self.queue_size)
-        self.vel_pub = ros.Publisher(self.vel_pub_name, Twist, queue_size=self.queue_size)
+        self.odometry_sub = rospy.Subscriber(self.odom_sub_name, Odometry, callback=self.__odom_ros_sub, queue_size=self.queue_size)
+        self.vel_pub = rospy.Publisher(self.vel_pub_name, Twist, queue_size=self.queue_size)
 
     def stop_robot(self):
 
@@ -60,7 +60,7 @@ class SquareMove(object):
         self.t_init = time.time()
 
         # We publish for a second to be sure the robot receive the message
-        while time.time() - self.t_init < 1 and not ros.is_shutdown():
+        while time.time() - self.t_init < 1 and not rospy.is_shutdown():
 
             self.vel_ros_pub(Twist())
             time.sleep(self.pub_rate)
@@ -68,7 +68,7 @@ class SquareMove(object):
     def move(self):
         """ To be surcharged in the inheriting class"""
 
-        while not ros.is_shutdown():
+        while not rospy.is_shutdown():
             time.sleep(1)
 
     def __odom_ros_sub(self, msg):
@@ -102,7 +102,7 @@ class SquareMoveVel(SquareMove):
         self.t_init = time.time()
 
         # Set the velocity forward and wait (do it in a while loop to keep publishing the velocity)
-        while time.time() - self.t_init < duration and not ros.is_shutdown():
+        while time.time() - self.t_init < duration and not rospy.is_shutdown():
 
             msg = Twist()
             msg.linear.x = speed
@@ -116,7 +116,7 @@ class SquareMoveVel(SquareMove):
         self.t_init = time.time()
 
         # Set the velocity forward and wait 2 sec (do it in a while loop to keep publishing the velocity)
-        while time.time() - self.t_init < duration and not ros.is_shutdown():
+        while time.time() - self.t_init < duration and not rospy.is_shutdown():
 
             msg = Twist()
             msg.linear.x = 0
@@ -168,7 +168,7 @@ class SquareMoveOdom(SquareMove):
 
         # Set the velocity forward until distance is reached
         while math.sqrt((self.odom_pose.position.x - x_init)**2 + \
-             (self.odom_pose.position.y - y_init)**2) < d and not ros.is_shutdown():
+             (self.odom_pose.position.y - y_init)**2) < d and not rospy.is_shutdown():
 
             sys.stdout.write("\r [MOVE] The robot has moved of {:.2f}".format(math.sqrt((self.odom_pose.position.x - x_init)**2 + \
             (self.odom_pose.position.y - y_init)**2)) +  "m over " + str(d) + "m")
@@ -189,7 +189,7 @@ class SquareMoveOdom(SquareMove):
         print (a_init)
 
         # Set the angular velocity forward until angle is reached
-        while (self.get_z_rotation(self.odom_pose.orientation) - a_init) < a and not ros.is_shutdown():
+        while (self.get_z_rotation(self.odom_pose.orientation) - a_init) < a and not rospy.is_shutdown():
 
             # sys.stdout.write("\r [TURN] The robot has turned of {:.2f}".format(self.get_z_rotation(self.odom_pose.orientation) - \
             #     a_init) + "rad over {:.2f}".format(a) + "rad")
@@ -207,7 +207,7 @@ class SquareMoveOdom(SquareMove):
     def move(self):
 
         # Wait that our python program has received its first messages
-        while self.odom_pose is None and not ros.is_shutdown():
+        while self.odom_pose is None and not rospy.is_shutdown():
             time.sleep(0.1)
 
         # Implement main instructions
