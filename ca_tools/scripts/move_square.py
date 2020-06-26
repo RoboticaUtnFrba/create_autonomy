@@ -51,7 +51,8 @@ class SquareMove(object):
         rospy.on_shutdown(self.stop_robot)
 
         # Create the Subscribers and Publishers
-        self.odometry_sub = rospy.Subscriber(self.odom_sub_name, Odometry, callback=self.__odom_ros_sub, queue_size=self.queue_size)
+        self.odometry_sub = rospy.Subscriber(
+            self.odom_sub_name, Odometry, callback=self.__odom_ros_sub, queue_size=self.queue_size)
         self.vel_pub = rospy.Publisher(self.vel_pub_name, Twist, queue_size=self.queue_size)
 
     def stop_robot(self):
@@ -112,7 +113,7 @@ class SquareMoveVel(SquareMove):
 
     def turn(self, duration, ang_speed):
 
-         # Get the initial time
+        # Get the initial time
         self.t_init = time.time()
 
         # Set the velocity forward and wait 2 sec (do it in a while loop to keep publishing the velocity)
@@ -150,7 +151,6 @@ class SquareMoveOdom(SquareMove):
 
     def __init__(self):
 
-
         super(SquareMoveOdom, self).__init__()
 
         self.pub_rate = 0.1
@@ -167,11 +167,17 @@ class SquareMoveOdom(SquareMove):
         y_init = self.odom_pose.position.y
 
         # Set the velocity forward until distance is reached
-        while math.sqrt((self.odom_pose.position.x - x_init)**2 + \
-             (self.odom_pose.position.y - y_init)**2) < d and not rospy.is_shutdown():
+        while math.sqrt(
+            (self.odom_pose.position.x - x_init)**2 +
+            (self.odom_pose.position.y - y_init)**2) \
+                < d and not rospy.is_shutdown():
 
-            sys.stdout.write("\r [MOVE] The robot has moved of {:.2f}".format(math.sqrt((self.odom_pose.position.x - x_init)**2 + \
-            (self.odom_pose.position.y - y_init)**2)) +  "m over " + str(d) + "m")
+            rospy.loginfo(
+                "\r [MOVE] The robot has moved of {:.2f}".format(
+                    math.sqrt(
+                        (self.odom_pose.position.x - x_init)**2 +
+                        (self.odom_pose.position.y - y_init)**2)) +
+                "m over " + str(d) + "m")
             sys.stdout.flush()
 
             msg = Twist()
@@ -180,7 +186,7 @@ class SquareMoveOdom(SquareMove):
             self.vel_ros_pub(msg)
             time.sleep(self.pub_rate)
 
-        sys.stdout.write("\n")
+        rospy.loginfo("\n")
 
     def turn_of(self, a, ang_speed=0.4):
 
@@ -189,12 +195,8 @@ class SquareMoveOdom(SquareMove):
         print (a_init)
 
         # Set the angular velocity forward until angle is reached
-        while (self.get_z_rotation(self.odom_pose.orientation) - a_init) < a and not rospy.is_shutdown():
-
-            # sys.stdout.write("\r [TURN] The robot has turned of {:.2f}".format(self.get_z_rotation(self.odom_pose.orientation) - \
-            #     a_init) + "rad over {:.2f}".format(a) + "rad")
-            # sys.stdout.flush()
-            # print (self.get_z_rotation(self.odom_pose.orientation) - a_init)
+        while (self.get_z_rotation(self.odom_pose.orientation) - a_init) \
+                < a and not rospy.is_shutdown():
 
             msg = Twist()
             msg.angular.z = ang_speed
@@ -202,7 +204,7 @@ class SquareMoveOdom(SquareMove):
             self.vel_ros_pub(msg)
             time.sleep(self.pub_rate)
 
-        sys.stdout.write("\n")
+        rospy.loginfo("\n")
 
     def move(self):
 
@@ -236,7 +238,6 @@ class SquareMoveOdomIMU(SquareMoveOdom):
     """
 
     def __init__(self):
-
 
         # The functions are the same as in the previous example except for the odometry name that is now filtered
         # in a, Extended Kalman Filter (EKF) with the IMU values thanks to the node robot_pose_ekf
