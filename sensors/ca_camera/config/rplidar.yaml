@@ -4,5 +4,5 @@
 
 serial_port: "/dev/rplidar"
 serial_baudrate: 115200
-inverted: True
+inverted: False
 angle_compensate: True
