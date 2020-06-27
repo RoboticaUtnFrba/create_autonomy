@@ -2,7 +2,7 @@
 robot_model: "CREATE_2"
 
 # The device path for the robot
-dev: "/dev/ttyUSB0"
+dev: "/dev/roomba"
 
 # Baud rate. Passing this parameter overwrites the inferred value based on the robot_model
 baud: 115200
