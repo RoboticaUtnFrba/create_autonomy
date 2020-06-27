@@ -1,3 +1,5 @@
+rate_hz: 30.0
+
 publish_magnetometer: true
 
 publish_euler: true
