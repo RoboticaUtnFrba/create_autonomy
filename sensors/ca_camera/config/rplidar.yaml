@@ -1,0 +1,8 @@
+# RPLidar A2
+#
+# http://wiki.ros.org/rplidar#Parameters
+
+serial_port: "/dev/rplidar"
+serial_baudrate: 115200
+inverted: True
+angle_compensate: True
