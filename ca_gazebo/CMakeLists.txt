@@ -129,7 +129,11 @@ roslint_cpp()
 if(CATKIN_ENABLE_TESTING)
   find_package(rostest REQUIRED)
   # Tests list
-  add_rostest(test/hz.test)
-  add_rostest(test/publish.test)
-  add_rostest(test/static.test)
+  foreach(TEST
+    hz
+    publish
+    static
+  )
+    add_rostest(test/${TEST}.test)
+  endforeach()
 endif()
