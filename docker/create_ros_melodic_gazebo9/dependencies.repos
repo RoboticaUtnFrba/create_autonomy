@@ -18,7 +18,7 @@ repositories:
   libcreate:
     type: git
     url: https://github.com/RoboticaUtnFrba/libcreate.git
-    version: master
+    version: eborghi/install_issues
   octomap_mapping:
     type: git
     url: https://github.com/RoboticaUtnFrba/octomap_mapping.git
