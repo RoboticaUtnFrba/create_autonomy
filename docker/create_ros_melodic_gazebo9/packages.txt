@@ -21,6 +21,7 @@ ros-*-gazebo-ros-control
 ros-*-gazebo-ros-pkgs
 ros-*-hardware-interface
 ros-*-image-proc
+ros-*-imu-filter-madgwick
 ros-*-imu-tools
 ros-*-joint-limits-interface
 ros-*-joy
