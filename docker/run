@@ -38,9 +38,9 @@ def run_dev_environment(command, ros="melodic", gazebo="9"):
     # VSCode needs HOME to be defined in order to work in the container
     docker_args.append("-e HOME=/home/{}".format(user_docker))
 
-    # USB devices and dialout group for the real robot
-    docker_args.append("--volume=\"/dev/bus:/dev/bus:shared\"")
-    docker_args.append("--group-add=dialout")
+    # USB devices for the real robot
+    docker_args.append(ut.mount_resource("/dev/roomba"))
+    docker_args.append(ut.mount_resource("/dev/rplidar"))
 
     # To allow installing packages
     docker_args.append("--group-add=sudo")

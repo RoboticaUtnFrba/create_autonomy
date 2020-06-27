@@ -43,3 +43,9 @@ def create_directory(directory):
     if (os.path.isdir(directory)): return
     run_command("mkdir -p {}".format(directory))
     run_command("sudo chown {0}:{0} {1}".format(get_user(), directory))
+
+def mount_resource(device):
+    # Mount hardware resource if it exists in the host
+    if os.path.exists(device):
+        return "--volume=\"{0}:{0}:shared\"".format(device)
+    return ""
