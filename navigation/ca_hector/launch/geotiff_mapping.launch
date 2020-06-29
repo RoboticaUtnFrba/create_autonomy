@@ -9,9 +9,13 @@ roslaunch ca_hector geotiff_map_saver.launch
 
 <launch>
 
+  <arg name="env" doc="Name of the environment that is used to create the map"/>
+
   <include file="$(find ca_hector)/launch/default_mapping.launch"/>
 
   <!-- Launch the geotiff mapper -->
-  <include file="$(find ca_hector)/launch/geotiff_mapper.launch"/>
+  <include file="$(find ca_hector)/launch/geotiff_mapper.launch">
+    <arg name="map_file_base_name" value="$(arg env)"/>
+  </include>
 
 </launch>

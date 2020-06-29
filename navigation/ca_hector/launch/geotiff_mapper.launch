@@ -7,6 +7,8 @@ https://github.com/tu-darmstadt-ros-pkg/hector_slam/blob/melodic-devel/hector_ge
 
 <launch>
 
+  <arg name="map_file_base_name" doc="The base name given to the generated geotiff file"/>
+
   <node pkg="hector_trajectory_server" type="hector_trajectory_server" name="hector_trajectory_server" output="screen">
     <rosparam file="$(find ca_hector)/config/hector_trajectory_server.yaml" command="load"/>
   </node>
@@ -15,6 +17,7 @@ https://github.com/tu-darmstadt-ros-pkg/hector_slam/blob/melodic-devel/hector_ge
     <rosparam file="$(find ca_hector)/config/hector_geotiff.yaml" command="load"/>
     <!-- Path where the geotiff file will be stored -->
     <param name="map_file_path" value="$(find ca_hector)/maps"/>
+    <param name="map_file_base_name" value="$(arg map_file_base_name)"/>
 
     <remap from="map" to="dynamic_map" />
   </node>

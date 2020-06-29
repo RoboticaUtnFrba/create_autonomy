@@ -57,6 +57,7 @@
   <!-- Hector SLAM + geotiff -->
   <include if="$(eval arg('localization')=='hector_geotiff')"
            file="$(find ca_hector)/launch/geotiff_mapping.launch">
+    <arg name="env"      value="$(arg env)"/>
   </include>
 
 </launch>
