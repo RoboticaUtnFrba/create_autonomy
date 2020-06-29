@@ -5,7 +5,7 @@
 
   <arg name="laser" default="$(optenv LASER rplidar)" doc="Laser for mapping the environment"/>
 
-  <node pkg="iris_lama_ros" type="loc2d_ros" name="loc2d_ros" output="screen">
+  <node pkg="iris_lama_ros" type="loc2d_ros" name="lama" output="screen">
     <rosparam file="$(find ca_move_base)/config/lama_params.yaml" command="load"/>
     <!-- We want a single map for multi-robots -->
     <remap from="map" to="/map" />
