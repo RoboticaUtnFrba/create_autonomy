@@ -5,7 +5,7 @@
 
   <arg name="laser" value="$(optenv LASER rplidar)" doc="Laser for mapping the environment"/>
 
-  <arg name="global_planner" value="$(optenv GLOBAL_PLANNER navfn)"/>
+  <arg name="global_planner" value="$(optenv GLOBAL_PLANNER gbp)"/>
   <arg name="local_planner"  value="$(optenv LOCAL_PLANNER teb)"/>
 
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
@@ -20,17 +20,14 @@
 
     <!-- We want a single map for multi-robots -->
     <remap from="map" to="/map"/>
-    <remap from="scan" to="/$(arg ns)/$(arg laser)/scan"/>
+    <remap from="scan" to="$(arg laser)/scan"/>
     <!-- <remap from="/mobile_base/sensors/bumper_pointcloud"
            to="mobile_base/sensors/bumper_pointcloud"/> -->
-
-    <remap from="odom" to="/$(arg ns)/odom"/>
-    <remap from="cmd_vel" to="/$(arg ns)/cmd_vel"/>
 
     <!-- Remap frames for specific robots -->
     <param name="local_costmap/robot_base_frame" value="$(arg tf_prefix)/base_footprint"/>
     <param name="local_costmap/global_frame" value="$(arg tf_prefix)/odom"/>
-    <param name="local_costmap/obstacle_layer/scan/sensor_frame" value="$(arg tf_prefix)/$(arg laser)_link"/>
+    <param name="local_costmap/obstacle_layer/scan/sensor_frame" value="$(arg tf_prefix)/laser_link"/>
     <param name="local_costmap/obstacle_layer/scan/topic"  value="/$(arg ns)/$(arg laser)/scan"/>
 
     <param name="global_costmap/robot_base_frame" value="$(arg tf_prefix)/base_footprint"/>
