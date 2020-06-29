@@ -3,9 +3,9 @@
   <param name="create1/amcl/initial_pose_y" value="4"/>
   <param name="create1/amcl/initial_pose_a" value="0"/>
 
-  <param name="create1/loc2d_ros/initial_pos_x" value="-3"/>
-  <param name="create1/loc2d_ros/initial_pos_y" value="4"/>
-  <param name="create1/loc2d_ros/initial_pos_a" value="0"/>
+  <param name="create1/lama/initial_pos_x" value="-3"/>
+  <param name="create1/lama/initial_pos_y" value="4"/>
+  <param name="create1/lama/initial_pos_a" value="0"/>
 
   <param name="create2/amcl/initial_pose_x" value="5"/>
   <param name="create2/amcl/initial_pose_y" value="1"/>
