@@ -49,8 +49,8 @@
   <include if="$(eval arg('localization')=='octomap')"
            file="$(find ca_move_base)/launch/octomap_mapping.launch"/>
 
-  <!-- Hector SLAM + map server -->
-  <include if="$(eval arg('localization')=='hector')"
+  <!-- Hector SLAM -->
+  <include if="$(eval arg('localization')=='hector_mapping')"
            file="$(find ca_hector)/launch/default_mapping.launch">
   </include>
 

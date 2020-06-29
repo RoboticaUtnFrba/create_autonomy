@@ -1,0 +1,18 @@
+# Parameters for Hector Geotiff
+
+# For a full documentation of the parameters used by this package, please check
+# http://wiki.ros.org/hector_geotiff
+
+# The base name given to the generated geotiff file. The current time is
+# appended to this base name when the map is saved.
+map_file_base_name: "hector_slam_map" # default: "GeoTiffMap"
+
+# The period in seconds for automatically saving geotiff files periodically.
+# If set to 0.0, automatic saving is disabled.
+geotiff_save_period: 0
+
+# Pluggins that should be loaded for the node.
+plugins: "hector_geotiff_plugins/TrajectoryMapWriter"
+
+draw_background_checkerboard: true
+draw_free_space_grid: true

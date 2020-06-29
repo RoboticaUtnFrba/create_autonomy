@@ -1,0 +1,16 @@
+# Parameters for Hector Trajectory Server
+
+# For a full documentation of the parameters used by this package, please check
+# http://wiki.ros.org/hector_trajectory_server
+
+# The name of the tf target frame
+target_frame_name: "/map"
+
+# The name of the tf source frame
+source_frame_name: "scanmatcher_frame"
+
+# The update rate [Hz] for the saved trajectory
+trajectory_update_rate: 4.0
+
+# The publish rate [Hz] for the trajectory published on the "trajectory" topic
+trajectory_publish_rate: 0.25

@@ -3,15 +3,20 @@
 # For a full documentation of the parameters used by this package, please check
 # http://wiki.ros.org/hector_mapping
 
+# Frame names
+map_frame: "map"
+
 # Tf use
 use_tf_scan_transformation: true
 use_tf_pose_start_estimate: false
+pub_map_odom_transform: true
 
 # Map size / start point
 map_resolution: 0.050
-map_start_x: 0.53
-map_start_y: 0.46
+map_start_x: 0.50
+map_start_y: 0.50
 map_multi_res_levels: 2
+map_size: 520
 
 # Map update parameters
 update_factor_free: 0.4
@@ -23,3 +28,11 @@ laser_z_max_value: 1.0
 
 # Advertising config
 advertise_map_service: true
+scan_subscriber_queue_size: 5
+
+tf_map_scanmatch_transform_frame_name: "scanmatcher_frame"
+
+# Debug parameters
+# output_timing: false
+# pub_drawings: true
+# param name: true
