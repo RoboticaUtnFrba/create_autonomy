@@ -20,7 +20,6 @@ ros-*-ecl-threads
 ros-*-gazebo-ros-control
 ros-*-gazebo-ros-pkgs
 ros-*-hardware-interface
-ros-*-hector-slam
 ros-*-image-proc
 ros-*-imu-tools
 ros-*-joint-limits-interface

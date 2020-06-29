@@ -3,6 +3,10 @@ repositories:
     type: git
     url: https://github.com/RoboticaUtnFrba/gscam.git
     version: master
+  hector_slam:
+    type: git
+    url: https://github.com/RoboticaUtnFrba/hector_slam.git
+    version: melodic-devel
   i2c_imu:
     type: git
     url: https://github.com/RoboticaUtnFrba/i2c_imu.git
