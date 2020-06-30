@@ -11,6 +11,9 @@ use_tf_scan_transformation: true
 use_tf_pose_start_estimate: false
 pub_map_odom_transform: true
 
+# Time offset for pose updates
+transform_tolerance: 1.0 # 1.0 enables mapping while moving around with move_base
+
 # Map size / start point
 map_resolution: 0.050
 map_start_x: 0.50
