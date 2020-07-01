@@ -37,7 +37,8 @@ options = {
   odometry_sampling_ratio = 1.,
   imu_sampling_ratio = 1.,
   fixed_frame_pose_sampling_ratio = 1.,
-  landmarks_sampling_ratio = 1.
+  landmarks_sampling_ratio = 1.,
+  use_pose_extrapolator = true,
 }
 
 MAP_BUILDER.use_trajectory_builder_2d = true
@@ -47,8 +48,8 @@ TRAJECTORY_BUILDER_2D.use_online_correlative_scan_matching = true     -- Use Cer
 TRAJECTORY_BUILDER_2D.real_time_correlative_scan_matcher.linear_search_window = 0.15
 TRAJECTORY_BUILDER_2D.real_time_correlative_scan_matcher.angular_search_window = math.rad(35.)
 
-TRAJECTORY_BUILDER_2D.min_range = 0.1
-TRAJECTORY_BUILDER_2D.max_range = 4.0
+TRAJECTORY_BUILDER_2D.min_range = 0.15
+TRAJECTORY_BUILDER_2D.max_range = 12.0
 TRAJECTORY_BUILDER_2D.missing_data_ray_length = 2.0
 
 TRAJECTORY_BUILDER_2D.ceres_scan_matcher.translation_weight = 70

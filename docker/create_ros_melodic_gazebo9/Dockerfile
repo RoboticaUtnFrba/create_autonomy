@@ -24,3 +24,20 @@ RUN apt-get update && \
     xargs -a packages.txt apt-get install -y
 
 USER $USER
+# Install custom cartographer
+ENV CARTO_WS="/home/${USER}/catkin_ws"
+RUN mkdir ${CARTO_WS}
+WORKDIR ${CARTO_WS}
+RUN wstool init src && \
+    wstool merge -t src \
+        https://raw.githubusercontent.com/BarceloChristian/cartographer_ros/ros_maps/cartographer_ros.rosinstall && \
+    wstool update -t src
+RUN src/cartographer/scripts/install_proto3.sh --local
+RUN rosdep install --from-paths src --ignore-src --rosdistro=${ROS_DISTRO} -y -r --os=ubuntu:bionic
+# Change again to root in order to install in /opt
+USER root
+RUN /bin/bash -c "source /opt/ros/melodic/setup.bash && \
+    catkin_make_isolated --install --use-ninja --install-space /opt/ros/melodic"
+RUN rm -rf ${CARTO_WS}
+
+USER $USER
