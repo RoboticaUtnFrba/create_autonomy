@@ -187,7 +187,7 @@ class SquareMoveOdom(SquareMove):
     def get_angle_diff(self, a1, a2):
 
         # Wraps the angle difference
-        diff = a1  -a2
+        diff = a1 - a2
         return math.atan2(math.sin(diff), math.cos(diff))
 
     def turn_of(self, a, ang_speed=0.4):
