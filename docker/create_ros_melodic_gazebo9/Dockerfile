@@ -30,14 +30,15 @@ RUN mkdir ${CARTO_WS}
 WORKDIR ${CARTO_WS}
 RUN wstool init src && \
     wstool merge -t src \
-        https://raw.githubusercontent.com/BarceloChristian/cartographer_ros/ros_maps/cartographer_ros.rosinstall && \
+        https://raw.githubusercontent.com/RoboticaUtnFrba/cartographer_ros/master/cartographer_ros.rosinstall && \
     wstool update -t src
 RUN src/cartographer/scripts/install_proto3.sh --local
-RUN rosdep install --from-paths src --ignore-src --rosdistro=${ROS_DISTRO} -y -r --os=ubuntu:bionic
+RUN src/cartographer/scripts/install_abseil.sh
+RUN rosdep install --from-paths src --ignore-src --rosdistro=${ROS1_DISTRO} -y -r --os=ubuntu:bionic
 # Change again to root in order to install in /opt
 USER root
-RUN /bin/bash -c "source /opt/ros/melodic/setup.bash && \
-    catkin_make_isolated --install --use-ninja --install-space /opt/ros/melodic"
+RUN /bin/bash -c "source /opt/ros/${ROS1_DISTRO}/setup.bash && \
+    catkin_make_isolated --install --use-ninja --install-space /opt/ros/${ROS1_DISTRO}"
 RUN rm -rf ${CARTO_WS}
 
 USER $USER

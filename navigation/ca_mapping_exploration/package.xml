@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>mapping_exploration</name>
+  <name>ca_mapping_exploration</name>
   <version>0.0.0</version>
   <description>Exploratory mapping software based on frontiers</description>
   <maintainer email="christianbarcelo@ekumenlabs.com">Christian Barcelo</maintainer>

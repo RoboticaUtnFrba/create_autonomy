@@ -1,0 +1,18 @@
+robot_base_frame: "base_link"
+move_base_topic: "move_base"
+costmap_topic: "/map"
+costmap_updates_topic: "/map_updates"
+# Frontiers visualization
+visualize: true
+# Refresh frontier goals rate
+planner_frequency: 0.33
+# Timeout to consider a frontier unreachable
+progress_timeout: 30. #s
+# Scale to weigh frontiers based on distance
+potential_scale: 3.0
+orientation_scale: 0.0
+# Scale to weigh frontiers based on its size
+gain_scale: 0.0
+transform_tolerance: 0.5
+# Minimum frontier size
+min_frontier_size: 0.8

@@ -8,6 +8,7 @@ ninja-build
 python-catkin-lint
 python-rosdep
 python-wstool
+stow
 
 ros-*-amcl
 ros-*-camera-calibration
