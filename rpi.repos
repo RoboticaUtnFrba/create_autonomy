@@ -1,4 +1,8 @@
 repositories:
+  explore_lite:
+    type: git
+    url: https://github.com/RoboticaUtnFrba/m-explore.git
+    version: master
   gscam:
     type: git
     url: https://github.com/RoboticaUtnFrba/gscam.git

@@ -24,6 +24,7 @@ RUN apt-get update && \
     xargs -a packages.txt apt-get install -y
 
 USER $USER
+
 # Install custom cartographer
 ENV CARTO_WS="/home/${USER}/catkin_ws"
 RUN mkdir ${CARTO_WS}

@@ -1,13 +1,11 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>ca_mapping_exploration</name>
-  <version>0.0.0</version>
-  <description>Exploratory mapping software based on frontiers</description>
-  <maintainer email="christianbarcelo@ekumenlabs.com">Christian Barcelo</maintainer>
-  <license>BSD</license>
-
-  <buildtool_depend>catkin</buildtool_depend>
-
-  <export>
-  </export>
+    <name>ca_mapping_exploration</name>
+    <version>0.0.0</version>
+    <description>Exploratory mapping software based on frontiers</description>
+    <maintainer email="christianbarcelo@ekumenlabs.com">Christian Barcelo</maintainer>
+    <license>BSD</license>
+    <buildtool_depend>catkin</buildtool_depend>
+    <exec_depend>explore_lite</exec_depend>
+    <export></export>
 </package>
