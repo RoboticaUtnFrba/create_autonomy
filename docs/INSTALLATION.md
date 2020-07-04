@@ -23,6 +23,7 @@ sudo apt-get install -y python-rosdep python-catkin-tools
     ``` bash
     cd ~/create_ws/src
     git clone https://github.com/RoboticaUtnFrba/create_autonomy.git
+    git clone https://github.com/RoboticaUtnFrba/libcreate.git
     ```
 
 3. Install dependencies
@@ -39,9 +40,9 @@ sudo apt-get install -y python-rosdep python-catkin-tools
     ``` bash
     cd ~/create_ws
     sudo apt install -y python3-vcstool
-    vcs import src < src/create_autonomy/<DEVICE>.repos
+    vcs import src < src/create_autonomy/dependencies.repos
     rosdep update
-    rosdep install --from-paths src -i
+    rosdep install --from-paths src -yi
     ```
 
 4. Build workspace
