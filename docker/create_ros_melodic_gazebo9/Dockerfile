@@ -24,19 +24,6 @@ RUN apt-get update && \
     xargs -a packages.txt apt-get install -y
 RUN rm packages.txt
 
-# Install dependencies with vcs
-# http://wiki.ros.org/catkin/Tutorials/using_a_workspace#Installing_Packages
-ENV DEPS_WS=/deps_ws
-RUN mkdir -p ${DEPS_WS}/src
-WORKDIR ${DEPS_WS}/src
-COPY dependencies.repos ${DEPS_WS}/src/dependencies.repos
-RUN vcs import . < dependencies.repos
-WORKDIR ${DEPS_WS}
-RUN /bin/bash -c ". /opt/ros/melodic/setup.bash; \
-        catkin_make -DCMAKE_INSTALL_PREFIX=/opt/ros/melodic; \
-        cd build; make install"
-RUN rm -r ${DEPS_WS}
-
 USER $USER
 
 # Install custom cartographer
@@ -55,5 +42,18 @@ USER root
 RUN /bin/bash -c "source /opt/ros/${ROS1_DISTRO}/setup.bash && \
     catkin_make_isolated --install --use-ninja --install-space /opt/ros/${ROS1_DISTRO}"
 RUN rm -rf ${CARTO_WS}
+
+# Install dependencies with vcs
+# http://wiki.ros.org/catkin/Tutorials/using_a_workspace#Installing_Packages
+ENV DEPS_WS=/deps_ws
+RUN mkdir -p ${DEPS_WS}/src
+WORKDIR ${DEPS_WS}/src
+COPY dependencies.repos ${DEPS_WS}/src/dependencies.repos
+RUN vcs import . < dependencies.repos
+WORKDIR ${DEPS_WS}
+RUN /bin/bash -c ". /opt/ros/${ROS1_DISTRO}/setup.bash; \
+        catkin_make -DCMAKE_INSTALL_PREFIX=/opt/ros/${ROS1_DISTRO}; \
+        cd build; make install"
+RUN rm -r ${DEPS_WS}
 
 USER $USER
