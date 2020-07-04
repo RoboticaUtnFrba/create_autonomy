@@ -58,6 +58,7 @@ sudo apt-get install -y python-rosdep python-catkin-tools
 
     ``` bash
     sudo usermod -a -G dialout $USER
+    source ~/create_ws/src/create_autonomy/ca_bringup/scripts/udev/create_rules.sh
     ```
 
 2. Logout and login for permission to take effect
