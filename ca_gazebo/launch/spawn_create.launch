@@ -1,8 +1,11 @@
 <launch>
-  <arg name="robot_id"  default="$(optenv ID 1)" doc="Unique identifier of the robot [1-Inf.)"/>
-  <arg name="enable_ros_control" value="$(optenv ROS_CONTROL false)" doc="Enable ros_control"/>
+  <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
+  <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
+  <arg name="tf_prefix" value="$(arg ns)_tf"          doc="Tf prefix"/>
 
-  <param name="tf_prefix" value="create$(arg robot_id)_tf" />
+  <arg name="enable_ros_control" value="$(optenv ROS_CONTROL false)" doc="Enable ros_control"/>
+  <arg name="use_nodelets"       default="$(optenv NODELET true)"
+			 doc="Use nodelets: http://wiki.ros.org/nodelet" />
 
   <!-- Create 2 description -->
   <include file="$(find ca_description)/launch/create_description.launch">
@@ -17,6 +20,10 @@
     <arg name="robot_id" value="$(arg robot_id)"/>
   </include>
 
+  <!-- ros_control -->
 	<include file="$(find create_control)/launch/create_control.launch" if="$(arg enable_ros_control)"/>
+
+  <!-- Nodelet manager -->
+	<node pkg="nodelet" type="nodelet" name="nodelet_manager"  args="manager"/>
 
 </launch>

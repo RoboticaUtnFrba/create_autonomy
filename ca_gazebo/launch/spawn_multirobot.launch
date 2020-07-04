@@ -1,6 +1,7 @@
 <launch>
   <!-- https://answers.ros.org/question/229489/how-do-i-create-dynamic-launch-files/ -->
-  <arg name="nr" default="$(optenv NUM_ROBOTS 1)"/>
+  <arg name="nr" default="$(optenv NUM_ROBOTS 1)" doc="Unique identifier of the robot [1-Inf.)"/>
+  <arg name="ns" value="create$(arg nr)"          doc="Namespace of the robot. By default: create1"/>
 
   <arg name="env" default="empty" doc="Name of the environment"/>
   <arg name="localization" default="$(optenv LOCALIZATION none)"
@@ -9,13 +10,10 @@
   <arg name="rviz" default="$(optenv RVIZ false)" doc="Flag to use RViz"/>
 
   <!-- Start 1 robot -->
-  <group ns="$(eval 'create' + str(arg('nr')))">
+  <group ns="$(arg ns)">
     <include file="$(find ca_gazebo)/launch/spawn_create.launch">
       <arg name="robot_id" value="$(arg nr)"/>
     </include>
-
-    <!-- TODO: REMOVE THIS PARAMETER OR SET IT IN THE MAIN LAUNCH? -->
-    <!-- <param name="tf_prefix" value="create$(arg nr)_tf" /> -->
 
     <!-- Localization -->
     <include file="$(find ca_localization)/launch/localize.launch"/>
