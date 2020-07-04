@@ -379,7 +379,7 @@ void CreateDriver::updateBatteryDiagnostics(diagnostic_updater::DiagnosticStatus
 
 void CreateDriver::updateSafetyDiagnostics(diagnostic_updater::DiagnosticStatusWrapper &stat)
 {
-  const bool is_wheeldrop = robot_->isLeftWheel() || robot_->isRightWheel();
+  const bool is_wheeldrop = robot_->isLeftWheeldrop() || robot_->isRightWheeldrop();
   const bool is_cliff = robot_->isCliffLeft() ||
                         robot_->isCliffFrontLeft() ||
                         robot_->isCliffFrontRight() ||
@@ -732,8 +732,8 @@ void CreateDriver::publishCliffInfo()
 void CreateDriver::publishWheeldrop()
 {
   wheeldrop_msg_.header.stamp = ros::Time::now();
-  wheeldrop_msg_.is_left_dropped = robot_->isLeftWheel();
-  wheeldrop_msg_.is_right_dropped = robot_->isRightWheel();
+  wheeldrop_msg_.is_left_dropped = robot_->isLeftWheeldrop();
+  wheeldrop_msg_.is_right_dropped = robot_->isRightWheeldrop();
 
   wheeldrop_pub_.publish(wheeldrop_msg_);
 }
