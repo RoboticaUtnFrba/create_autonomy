@@ -7,16 +7,13 @@
   <maintainer email="serraramiro@ekumenlabs.com">Ramiro Serra</maintainer>
   <license>BSD</license>
 
-
   <buildtool_depend>catkin</buildtool_depend>
-  <depend>libcreate</depend>
+
   <depend>controller_manager</depend>
   <depend>diff_drive_controller</depend>
   <depend>joint_state_controller</depend>
+  <depend>libcreate</depend>
   <depend>robot_state_publisher</depend>
+  <depend>topic_tools</depend>
 
-
-
-  <export>
-  </export>
 </package>

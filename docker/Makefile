@@ -14,7 +14,8 @@ create_ros_melodic: create_ubuntu_bionic
 
 .PHONY: create_ros_melodic_gazebo9
 create_ros_melodic_gazebo9: create_ros_melodic
-	docker build ${DOCKER_ARGS} -t create_ros_melodic_gazebo9 create_ros_melodic_gazebo9
+	# Move context to create_autonomy root directory so it can read dependencies
+	docker build ${DOCKER_ARGS} -t create_ros_melodic_gazebo9 -f create_ros_melodic_gazebo9/Dockerfile ..
 
 .PHONY: create_melodic_nvidia
 create_melodic_nvidia: create_ros_melodic_gazebo9

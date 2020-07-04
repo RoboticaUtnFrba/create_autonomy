@@ -10,6 +10,7 @@ find_package(catkin REQUIRED COMPONENTS
   joint_state_controller
   libcreate
   robot_state_publisher
+  topic_tools
 )
 
 catkin_package(

@@ -37,29 +37,13 @@ RUN rosdep init
 
 RUN pip install --upgrade pip
 
-USER $USER
+USER root
 
 # Automatically source ROS workspace
 ENV WS_DIR "/create_ws"
 RUN echo ". /opt/ros/${ROS1_DISTRO}/setup.bash" >> /home/${USER}/.bashrc
 ENV CATKIN_SETUP_BASH "${WS_DIR}/devel/setup.bash"
 RUN echo "[[ -f ${CATKIN_SETUP_BASH} ]] && . ${CATKIN_SETUP_BASH}" >> /home/${USER}/.bashrc
-
-# Install RTIMULib
-ENV RTIMULib_PATH="/home/${USER}/RTIMULib"
-ENV RTIMULib_BUILD="${RTIMULib_PATH}/Linux/build"
-# Clone repo in RTIMULib_PATH
-RUN mkdir -p ${RTIMULib_PATH}
-RUN git clone https://github.com/RoboticaUtnFrba/RTIMULib.git ${RTIMULib_PATH}
-WORKDIR ${RTIMULib_PATH}
-# Build and install RTIMULib
-RUN mkdir -p ${RTIMULib_BUILD}
-WORKDIR ${RTIMULib_BUILD}
-RUN cmake -DBUILD_GL=OFF ..
-RUN make -j4
-USER root
-RUN make install
-RUN ldconfig
 
 # Workspace
 RUN mkdir -p ${WS_DIR}/src/ && \
