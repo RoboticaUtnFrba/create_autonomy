@@ -1,10 +1,10 @@
 <launch>
   <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
-  <arg name="ns" value="create$(arg robot_id)"/>
+  <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
   <arg name="tf_prefix" value="$(arg ns)_tf"          doc="Tf prefix"/>
 
   <!-- Load controller configuration from YAML file to parameter server -->
-  <rosparam file="$(find create_control)/config/create_2_control.yaml" command="load"/>
+  <rosparam file="$(find ca_control)/config/create_2_control.yaml" command="load"/>
 
   <!-- need to be set separatedly, since they depend on the robot id, and that cannot be parametrized
   in the yaml file.-->

@@ -1,0 +1,15 @@
+<launch>
+  <arg name="robot_id" default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
+  <arg name="ns"       value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
+
+  <group ns="$(arg ns)">
+    <!-- Load robot's hw interface -->
+    <node name="create_hw_interface" pkg="ca_control" type="create_hw_interface" output="screen">
+      <rosparam command="load" file="$(find ca_driver)/config/default.yaml"/>
+      <param name="rate" value="30"/>
+    </node>
+
+    <!-- Ros control -->
+    <include file="$(find ca_control)/launch/create_control.launch" ns="$(arg ns)"/>
+  </group>
+</launch>

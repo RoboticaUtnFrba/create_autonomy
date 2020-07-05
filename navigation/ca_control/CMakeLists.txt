@@ -1,20 +1,23 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(create_control)
+project(ca_control)
 
-## Find catkin macros and libraries
-## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
-## is used, also find other catkin packages
+add_compile_options(-std=c++11)
+
 find_package(catkin REQUIRED COMPONENTS
   controller_manager
   diff_drive_controller
   joint_state_controller
   libcreate
   robot_state_publisher
+  roslint
   topic_tools
 )
 
 catkin_package(
-  LIBRARIES ${PROJECT_NAME}
+  INCLUDE_DIRS
+    include
+  LIBRARIES
+    libcreate
   CATKIN_DEPENDS
     controller_manager
     diff_drive_controller
@@ -35,12 +38,13 @@ include_directories(
 )
 
 
-add_executable(${PROJECT_NAME}_node src/${PROJECT_NAME}/${PROJECT_NAME}_node.cpp)
+add_executable(create_hw_interface src/create_hw_interface.cpp)
 
-add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(create_hw_interface ${catkin_EXPORTED_TARGETS})
 
-target_link_libraries(${PROJECT_NAME}_node
+target_link_libraries(create_hw_interface
   ${catkin_LIBRARIES}
+  ${libcreate_LIBRARIES}
 )
 
 #############
@@ -50,7 +54,9 @@ target_link_libraries(${PROJECT_NAME}_node
 
 # Mark executables for installation
 # See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
-install(TARGETS ${PROJECT_NAME}_node
+install(TARGETS create_hw_interface
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
@@ -67,3 +73,10 @@ install(DIRECTORY launch
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
   USE_SOURCE_PERMISSIONS
 )
+
+#############
+## Testing ##
+#############
+
+# set(ROSLINT_CPP_OPTS "--filter=-build/c++11")
+roslint_cpp()

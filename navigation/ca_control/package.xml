@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>create_control</name>
+  <name>ca_control</name>
   <version>0.0.0</version>
   <description>Create control pkg, intended for using with Create2</description>
 
@@ -15,5 +15,7 @@
   <depend>libcreate</depend>
   <depend>robot_state_publisher</depend>
   <depend>topic_tools</depend>
+
+  <test_depend>roslint</test_depend>
 
 </package>
