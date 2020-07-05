@@ -2,10 +2,6 @@
 	<arg name="env" default="empty"              doc="Name of the environment"/>
 	<arg name="gui" default="$(optenv GUI true)" doc="Start gzclient (Gazebo's GUI)"/>
 
-	<arg name="localization" default="$(optenv LOCALIZATION none)"
-       doc="Localization type. More options here:
-            https://github.com/RoboticaUtnFrba/create_autonomy/wiki/Launching-options"/>
-
 	<arg name="paused"  value="$(optenv PAUSED false)"  doc="Start the simulation paused"/>
 	<arg name="debug"   value="$(optenv DEBUG false)" 	doc="Enable debugging with gdb"/>
 	<arg name="verbose" value="$(optenv VERBOSE false)" doc="Enable verbose output in Gazebo"/>
@@ -32,7 +28,6 @@
 	<!-- Spawn robot/s -->
 	<include file="$(find ca_gazebo)/launch/spawn_multirobot.launch">
     <arg name="env"          value="$(arg env)"/>
-		<arg name="localization" value="$(arg localization)" />
 	</include>
 
 </launch>

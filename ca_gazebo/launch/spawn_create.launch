@@ -2,10 +2,15 @@
   <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
   <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
   <arg name="tf_prefix" value="$(arg ns)_tf"          doc="Tf prefix"/>
+  <arg name="env"       default="empty"               doc="Name of the environment"/>
 
   <arg name="enable_ros_control" value="$(optenv ROS_CONTROL false)" doc="Enable ros_control"/>
-  <arg name="use_nodelets"       default="$(optenv NODELET true)"
+  <arg name="use_nodelets" default="$(optenv NODELET true)"
 			 doc="Use nodelets: http://wiki.ros.org/nodelet" />
+  <arg name="localization" default="$(optenv LOCALIZATION none)"
+       doc="Localization type. More options here: https://github.com/RoboticaUtnFrba/create_autonomy/wiki/Launching-options"/>
+
+  <param name="tf_prefix" value="$(arg tf_prefix)"/>
 
   <!-- Create 2 description -->
   <include file="$(find ca_description)/launch/create_description.launch">
@@ -24,6 +29,17 @@
 	<include file="$(find ca_control)/launch/control_common.launch" if="$(arg enable_ros_control)"/>
 
   <!-- Nodelet manager -->
-	<node pkg="nodelet" type="nodelet" name="nodelet_manager"  args="manager"/>
+	<node pkg="nodelet" type="nodelet" name="nodelet_manager"  args="manager" if="$(arg use_nodelets)"/>
+
+  <!-- Localization -->
+  <include file="$(find ca_localization)/launch/localize.launch"/>
+
+  <!-- Navigation -->
+  <include if="$(eval str(arg('localization'))!='none')"
+           file="$(find ca_move_base)/launch/navigate.launch">
+    <arg name="env"          value="$(arg env)"/>
+    <arg name="localization" value="$(arg localization)"/>
+    <arg name="robot_id"     value="$(arg nr)"/>
+  </include>
 
 </launch>

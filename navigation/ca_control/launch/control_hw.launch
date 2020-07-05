@@ -10,6 +10,6 @@
     </node>
 
     <!-- Ros control -->
-    <include file="$(find ca_control)/launch/create_control.launch" ns="$(arg ns)"/>
+    <include file="$(find ca_control)/launch/control_common.launch"/>
   </group>
 </launch>

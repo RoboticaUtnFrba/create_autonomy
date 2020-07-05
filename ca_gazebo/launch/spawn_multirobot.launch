@@ -3,10 +3,7 @@
   <arg name="nr" default="$(optenv NUM_ROBOTS 1)" doc="Unique identifier of the robot [1-Inf.)"/>
   <arg name="ns" value="create$(arg nr)"          doc="Namespace of the robot. By default: create1"/>
 
-  <arg name="env" default="empty" doc="Name of the environment"/>
-  <arg name="localization" default="$(optenv LOCALIZATION none)"
-       doc="Localization type. More options here: https://github.com/RoboticaUtnFrba/create_autonomy/wiki/Launching-options"/>
-
+  <arg name="env"  default="empty"                doc="Name of the environment"/>
   <arg name="rviz" default="$(optenv RVIZ false)" doc="Flag to use RViz"/>
 
   <!-- Start 1 robot -->
@@ -15,26 +12,14 @@
       <arg name="robot_id" value="$(arg nr)"/>
     </include>
 
-    <!-- Localization -->
-    <include file="$(find ca_localization)/launch/localize.launch"/>
-
-    <!-- Navigation -->
-    <include if="$(eval str(arg('localization'))!='none')"
-             file="$(find ca_move_base)/launch/navigate.launch">
-      <arg name="env"          value="$(arg env)"/>
-      <arg name="localization" value="$(arg localization)"/>
-      <arg name="robot_id"     value="$(arg nr)"/>
-    </include>
-
     <!-- RViz -->
     <include if="$(arg rviz)" file="$(find ca_tools)/launch/rviz.launch"/>
   </group>
 
   <!-- Recursively spawn more robots -->
   <include file="$(find ca_gazebo)/launch/spawn_multirobot.launch" if="$(eval arg('nr') - 1 > 0)">
-    <arg name="env"          value="$(arg env)"/>
-    <arg name="localization" value="$(arg localization)"/>
-    <arg name="nr"           value="$(eval arg('nr') - 1)"/>
-    <arg name="rviz"         value="false"/>
+    <arg name="env"  value="$(arg env)"/>
+    <arg name="nr"   value="$(eval arg('nr') - 1)"/>
+    <arg name="rviz" value="false"/>
   </include>
 </launch>

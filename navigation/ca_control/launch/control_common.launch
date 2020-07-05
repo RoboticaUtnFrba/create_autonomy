@@ -8,8 +8,8 @@
 
   <!-- need to be set separatedly, since they depend on the robot id, and that cannot be parametrized
   in the yaml file.-->
-  <param name="mobile_base_controller/odom_frame_id" value="/$(arg tf_prefix)/odom"/>
-  <param name="mobile_base_controller/base_frame_id" value="/$(arg tf_prefix)/base_footprint"/>
+  <param name="mobile_base_controller/odom_frame_id" value="$(arg tf_prefix)/odom"/>
+  <param name="mobile_base_controller/base_frame_id" value="$(arg tf_prefix)/base_footprint"/>
 
   <!-- load the controller -->
   <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
