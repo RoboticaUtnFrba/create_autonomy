@@ -23,10 +23,6 @@ repositories:
     type: git
     url: https://github.com/RoboticaUtnFrba/ros_astra_camera.git
     version: master
-  scan_tools:
-    type: git
-    url: https://github.com/RoboticaUtnFrba/scan_tools.git
-    version: melodic-devel
   viso2:
     type: git
     url: https://github.com/RoboticaUtnFrba/viso2.git

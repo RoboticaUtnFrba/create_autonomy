@@ -13,11 +13,7 @@
 	<node name="i2c_imu_node" pkg="i2c_imu" type="i2c_imu_node" output="screen" required="true">
 
 			<param name="settings_directory" type="str" value="$(find ca_imu)/config"/>
-
-			<!-- TODO: MOVE create1.ini TO DIRECTORY -->
-
 			<param name="settings_filename"  type="str" value="$(arg ns)"/>
-
 			<param name="frame_id" value="$(arg tf_prefix)/imu_link"/>
 
 			<rosparam file="$(find ca_imu)/config/mpu9255.yaml" command="load"/>

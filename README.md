@@ -31,17 +31,3 @@ This package wraps the C++ library [libcreate][libcreate], which uses iRobot's [
 
 [libcreate]:  https://github.com/RoboticaUtnFrba/libcreate
 [oi_spec]:  https://www.adafruit.com/datasheets/create_2_Open_Interface_Spec.pdf
-
-##############################
-
-source src/create_autonomy/ca_bringup/scripts/robot_network_config.sh
-LASER=rplidar RVIZ_CONFIG=localization roslaunch ca_bringup complete.launch
-
-LOCALIZATION=amcl LASER=rplidar RVIZ_CONFIG=navigation GUI=false roslaunch ca_gazebo create_house.launch
-
-http://wiki.ros.org/rviz_imu_plugin
-https://roverrobotics.com/blogs/guides/fusing-imu-encoders-with-ros-robot-localization
-https://answers.ros.org/question/271566/robot_localization-enhance-local-positioning-with-imu/
-http://docs.ros.org/melodic/api/robot_localization/html/configuring_robot_localization.html
-https://kapernikov.com/the-ros-robot_localization-package/
-https://github.com/methylDragon/ros-sensor-fusion-tutorial/blob/master/01%20-%20ROS%20and%20Sensor%20Fusion%20Tutorial.md
