@@ -2,15 +2,9 @@
 <launch>
   <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
   <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
-  <arg name="tf_prefix" value="$(arg ns)_tf"          doc="Tf prefix"/>
 
   <node name="ca_driver" pkg="ca_driver" type="ca_driver" output="screen">
     <rosparam command="load" file="$(find ca_driver)/config/default.yaml"/>
     <param name="namespace" value="$(arg ns)"/>
   </node>
-
-  <!-- Robot description -->
-  <include ns="$(arg ns)" file="$(find ca_description)/launch/create_description.launch">
-    <arg name="robot_id" value="$(arg robot_id)"/>
-  </include>
 </launch>

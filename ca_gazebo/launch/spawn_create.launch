@@ -21,7 +21,7 @@
   </include>
 
   <!-- ros_control -->
-	<include file="$(find create_control)/launch/create_control.launch" if="$(arg enable_ros_control)"/>
+	<include file="$(find ca_control)/launch/control_common.launch" if="$(arg enable_ros_control)"/>
 
   <!-- Nodelet manager -->
 	<node pkg="nodelet" type="nodelet" name="nodelet_manager"  args="manager"/>

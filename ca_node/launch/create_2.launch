@@ -12,9 +12,4 @@
     <param name="namespace"  value="$(arg ns)"/>
     <param name="tf_prefix"  value="$(arg tf_prefix)"/>
   </node>
-
-  <!-- Robot description -->
-  <include ns="$(arg ns)" file="$(find ca_description)/launch/create_description.launch">
-    <arg name="robot_id" value="$(arg robot_id)"/>
-  </include>
 </launch>
