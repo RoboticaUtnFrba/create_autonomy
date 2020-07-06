@@ -38,11 +38,9 @@ include_directories(
 )
 
 
-add_executable(create_hw_interface src/create_hw_interface.cpp)
-
-add_dependencies(create_hw_interface ${catkin_EXPORTED_TARGETS})
-
-target_link_libraries(create_hw_interface
+add_executable(${PROJECT_NAME}_node src/create_hw_interface.cpp)
+add_dependencies(${PROJECT_NAME}_node ${catkin_EXPORTED_TARGETS})
+target_link_libraries(${PROJECT_NAME}_node
   ${catkin_LIBRARIES}
   ${libcreate_LIBRARIES}
 )
@@ -54,7 +52,7 @@ target_link_libraries(create_hw_interface
 
 # Mark executables for installation
 # See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
-install(TARGETS create_hw_interface
+install(TARGETS ${PROJECT_NAME}_node
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -69,9 +67,10 @@ install(DIRECTORY include/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
 )
 
-install(DIRECTORY launch
+install(DIRECTORY
+    config
+    launch
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-  USE_SOURCE_PERMISSIONS
 )
 
 #############

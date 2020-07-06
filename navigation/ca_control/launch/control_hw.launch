@@ -4,7 +4,7 @@
 
   <group ns="$(arg ns)">
     <!-- Load robot's hw interface -->
-    <node name="create_hw_interface" pkg="ca_control" type="create_hw_interface" output="screen">
+    <node name="create_hw_interface" pkg="ca_control" type="ca_control_node" output="screen">
       <rosparam command="load" file="$(find ca_driver)/config/default.yaml"/>
       <param name="rate" value="30"/>
     </node>
