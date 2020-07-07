@@ -5,15 +5,12 @@ options = {
   map_builder = MAP_BUILDER,
   trajectory_builder = TRAJECTORY_BUILDER,
   map_frame = "map",
-  tracking_frame = "create" ..                    -- Frame id to track from map
-                   os.getenv("ID") ..
-                   "_tf/base_footprint",
-  published_frame = "create" ..                   -- Odom frame to publish if `provide_odom_frame = true`. Even though
-                    os.getenv("ID") ..            -- are not used, all the options' parameter keys are mandatory
-                    "_tf/odom",
-  odom_frame = "create" ..                        -- Frame where publish the odometry to if `provide_odom_frame=true`
-               os.getenv("ID") ..
-               "_tf/odom",
+  tracking_frame  = os.getenv("tf_prefix") ..     -- Frame id to track from map
+                    "/imu_link",
+  published_frame = os.getenv("tf_prefix") ..     -- Odom frame to publish if `provide_odom_frame = true`. Even though
+                    "/odom",                      -- are not used, all the options' parameter keys are mandatory
+  odom_frame =      os.getenv("tf_prefix") ..     -- Frame where publish the odometry to if `provide_odom_frame=true`
+                    "/odom",
   provide_odom_frame = false,
   publish_frame_projected_to_2d = true,
   use_odometry = true,
@@ -35,7 +32,7 @@ options = {
 }
 
 MAP_BUILDER.use_trajectory_builder_2d = true
-TRAJECTORY_BUILDER_2D.use_imu_data = false
+TRAJECTORY_BUILDER_2D.use_imu_data = true
 
 TRAJECTORY_BUILDER_2D.use_online_correlative_scan_matching = true
 TRAJECTORY_BUILDER_2D.real_time_correlative_scan_matcher.linear_search_window = 0.15
