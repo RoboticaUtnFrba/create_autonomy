@@ -39,7 +39,7 @@
            file="$(find ca_move_base)/launch/navigate.launch">
     <arg name="env"          value="$(arg env)"/>
     <arg name="localization" value="$(arg localization)"/>
-    <arg name="robot_id"     value="$(arg nr)"/>
+    <arg name="robot_id"     value="$(arg robot_id)"/>
   </include>
 
 </launch>

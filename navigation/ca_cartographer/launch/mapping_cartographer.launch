@@ -5,22 +5,21 @@
 
   <arg name="laser" default="$(optenv LASER rplidar)" doc="Laser for mapping the environment"/>
 
-  <!-- Runs without namespace -->
-  <group ns="/">
-    <node name="cartographer_node" pkg="cartographer_ros"
-        type="cartographer_node" args="
-            -configuration_directory $(find ca_cartographer)/config
-            -configuration_basename mapping_2d.lua
-            -transform_tolerance 0.15">
-      <!-- ID needs to be set through environment variable to allow lua script to read it -->
-      <env name="ID" value="$(arg robot_id)" />
-      <remap from="scan" to="$(arg ns)/$(arg laser)/scan" />
-      <remap from="imu"  to="$(arg ns)/imu/data" />
-      <remap from="odom" to="$(arg ns)/odom" />
-    </node>
+  <node name="cartographer_node" pkg="cartographer_ros" type="cartographer_node"
+        args="-configuration_directory $(find ca_cartographer)/config
+              -configuration_basename mapping_2d.lua
+              -transform_tolerance 0.15">
 
-    <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
-        type="cartographer_occupancy_grid_node" args="-resolution 0.05
-                                                      --publish_ros_map"/>
-  </group>
+    <env name="tf_prefix" value="$(arg tf_prefix)"/>
+
+    <remap from="scan" to="$(arg laser)/scan" />
+    <remap from="imu"  to="imu/data" />
+    <remap from="odom" to="odom_combined" />
+  </node>
+
+  <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros" type="cartographer_occupancy_grid_node"
+        args="-resolution 0.05
+              --publish_ros_map">
+    <remap from="map" to="/map" />
+  </node>
 </launch>
