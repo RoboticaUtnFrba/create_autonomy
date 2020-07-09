@@ -9,6 +9,7 @@
   <!-- Start 1 robot -->
   <group ns="$(arg ns)">
     <include file="$(find ca_gazebo)/launch/spawn_create.launch">
+      <arg name="env"      value="$(arg env)"/>
       <arg name="robot_id" value="$(arg nr)"/>
     </include>
 
