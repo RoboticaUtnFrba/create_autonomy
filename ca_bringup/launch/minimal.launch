@@ -14,9 +14,6 @@
 
   <param name="tf_prefix" value="create$(arg robot_id)_tf" />
 
-  <!-- Nodelet manager -->
-  <node pkg="nodelet" type="nodelet" name="nodelet_manager" args="manager" if="$(arg use_nodelets)"/>
-
   <!-- Controllers -->
   <include file="$(find ca_node)/launch/create_2.launch"      unless="$(arg ros_control)"/>
   <include file="$(find ca_control)/launch/control_hw.launch" if="$(arg ros_control)"/>
@@ -36,6 +33,9 @@
     <include file="$(find ca_description)/launch/create_description.launch">
       <arg name="robot_id" value="$(arg robot_id)"/>
     </include>
+
+    <!-- Nodelet manager -->
+    <node pkg="nodelet" type="nodelet" name="nodelet_manager" args="manager" if="$(arg use_nodelets)"/>
 
     <!-- IMU -->
     <include if="$(arg imu)" file="$(find ca_imu)/launch/mpu9255.launch"/>
