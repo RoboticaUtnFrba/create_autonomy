@@ -2,8 +2,6 @@
   <arg name="use_nodelets"    default="$(optenv NODELET true)" doc="Use nodelets: http://wiki.ros.org/nodelet" />
   <arg name="nodelet_manager" value="nodelet_manager" />
 
-  <remap from="set_pose" to="amcl_pose"/>
-
   <node unless="$(arg use_nodelets)"
         pkg="robot_localization" type="ekf_localization_node"
         name="ekf_se" clear_params="true" output="screen">

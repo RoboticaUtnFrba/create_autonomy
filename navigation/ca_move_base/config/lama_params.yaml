@@ -14,3 +14,4 @@ strategy: "gn"
 # Length of a patch (cells)
 patch_size: 32
 
+transform_tolerance: 0.2

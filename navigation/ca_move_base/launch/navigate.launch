@@ -3,7 +3,7 @@
   <arg name="laser"     value="$(optenv LASER rplidar)" doc="Laser for mapping the environment"/>
 
   <arg name="localization" doc="Autonomous method for localization/navigation."/>
-  <arg name="navigation" value="$(optenv NAVIGATION move_base)" doc="Navigation framework to use"/>
+  <arg name="navigation" value="$(optenv NAVIGATION mbf)" doc="Navigation framework to use"/>
   <arg name="env"/>
 
   <!-- Bumper to point cloud -->

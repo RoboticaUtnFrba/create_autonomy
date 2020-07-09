@@ -17,7 +17,7 @@
 
     <remap from="scan" to="$(arg laser)/scan" />
     <remap from="imu"  to="imu/data" />
-    <remap from="odom" to="odom" />
+    <remap from="odom" to="odom_combined" />
   </node>
 
   <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"

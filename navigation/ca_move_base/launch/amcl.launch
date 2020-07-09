@@ -15,7 +15,6 @@
 
     <param name="odom_frame_id" value="$(arg tf_prefix)/odom"/>
     <param name="base_frame_id" value="$(arg tf_prefix)/base_footprint"/>
-    <param name="global_frame_id" value="map"/>
   </node>
 
 </launch>

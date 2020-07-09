@@ -10,7 +10,7 @@
         <plugin name="differential_drive_controller" filename="libcreate_diff_drive.so">
           <alwaysOn>true</alwaysOn>
           <rosDebugLevel>na</rosDebugLevel>
-          <updateRate>30</updateRate>
+          <updateRate>40</updateRate>
           <leftJoint>wheel_left_joint</leftJoint>
           <rightJoint>wheel_right_joint</rightJoint>
           <wheelSeparation>${wheel_separation}</wheelSeparation>

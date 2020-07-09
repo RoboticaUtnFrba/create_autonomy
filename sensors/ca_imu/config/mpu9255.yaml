@@ -1,4 +1,4 @@
-rate_hz: 30.0
+rate_hz: 40.0
 
 publish_magnetometer: true
 

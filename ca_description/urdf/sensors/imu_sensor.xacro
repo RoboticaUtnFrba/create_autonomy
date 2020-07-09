@@ -30,7 +30,7 @@
   <gazebo>
     <plugin name="${name}" filename="libgazebo_ros_imu.so">
       <alwaysOn>true</alwaysOn>
-      <updateRate>30</updateRate>
+      <updateRate>40</updateRate>
       <robotNamespace>create1</robotNamespace>
       <bodyName>${link_name}</bodyName>
       <frameName>create1_tf/${link_name}</frameName>
