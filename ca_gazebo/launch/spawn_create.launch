@@ -29,7 +29,7 @@
 	<include file="$(find ca_control)/launch/control_common.launch" if="$(arg enable_ros_control)"/>
 
   <!-- Nodelet manager -->
-	<node pkg="nodelet" type="nodelet" name="nodelet_manager"  args="manager" if="$(arg use_nodelets)"/>
+	<node pkg="nodelet" type="nodelet" name="nodelet_manager" args="manager" if="$(arg use_nodelets)"/>
 
   <!-- Localization -->
   <include file="$(find ca_localization)/launch/localize.launch"/>
