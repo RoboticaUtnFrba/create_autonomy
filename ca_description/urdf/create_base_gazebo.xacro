@@ -7,7 +7,7 @@
 
       <!-- Diff-drive controller -->
       <xacro:unless value="$(arg enable_ros_control)">
-        <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
+        <plugin name="differential_drive_controller" filename="libcreate_diff_drive.so">
           <alwaysOn>true</alwaysOn>
           <rosDebugLevel>na</rosDebugLevel>
           <updateRate>30</updateRate>
@@ -21,7 +21,7 @@
           <odometryTopic>odom</odometryTopic>
           <odometryFrame>odom</odometryFrame>
           <robotBaseFrame>base_footprint</robotBaseFrame>
-          <publishWheelTF>true</publishWheelTF>
+          <publishWheelTF>false</publishWheelTF>
           <publishOdomTF>false</publishOdomTF>
           <publishWheelJointState>true</publishWheelJointState>
           <odometrySource>encoder</odometrySource>

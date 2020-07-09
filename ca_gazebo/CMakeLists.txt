@@ -35,6 +35,7 @@ set(PLUGIN_LIST
   cliff_msg_publisher
   create_bumper_plugin
   create_cliff_plugin
+  create_diff_drive
   create_virtual_wall_plugin
   model_pose_publisher_plugin
   traffic_light_plugin
