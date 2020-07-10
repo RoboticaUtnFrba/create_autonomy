@@ -39,6 +39,7 @@ RUN pip install --upgrade pip
 
 USER $USER
 RUN echo ". /opt/ros/${ROS1_DISTRO}/setup.bash" >> /home/${USER}/.bashrc
+RUN echo ". /create_ws/src/create_autonomy/ca_bringup/scripts/robot_network_config.sh" >> /home/${USER}/.bashrc
 USER root
 
 # Workspace
