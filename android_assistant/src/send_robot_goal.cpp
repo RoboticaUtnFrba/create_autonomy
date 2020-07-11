@@ -77,22 +77,22 @@ void onFeedbackCallback(
 }
 
 int main(int argc, char** argv) {
+  std::string base_topic = argv[1];
   ros::init(argc, argv, NODE_NAME);
   ros::NodeHandle n;
   MoveBaseClient ac("create1/move_base", true);
 
-  ros::Subscriber sub_goal =
-      n.subscribe("assistant_goal", 1000, onNewGoalCallback);
+  ros::Subscriber sub_goal = n.subscribe(base_topic, 1000, onNewGoalCallback);
   ros::Subscriber sub_result =
       n.subscribe("create1/move_base/result", 1000, onResultCallback);
   ros::Subscriber sub_feedback =
       n.subscribe("create1/move_base/feedback", 1000, onFeedbackCallback);
   ros::Subscriber sub_cancel =
-      n.subscribe("assistant_goal_cancel", 1000, onCancelGoalCallback);
+      n.subscribe(base_topic + "_cancel", 1000, onCancelGoalCallback);
   ros::Publisher pub_distance =
-      n.advertise<std_msgs::Float32>("assistant_goal_distance", 1000);
+      n.advertise<std_msgs::Float32>(base_topic + "_distance", 1000);
   ros::Publisher pub_result =
-      n.advertise<std_msgs::String>("assistant_goal_result", 1000);
+      n.advertise<std_msgs::String>(base_topic + "_result", 1000);
   ros::Publisher pub_cancel =
       n.advertise<actionlib_msgs::GoalID>("create1/move_base/cancel", 1000);
 
