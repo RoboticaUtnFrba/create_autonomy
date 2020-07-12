@@ -30,6 +30,7 @@ std_msgs::Float32 distance;
 std_msgs::String result;
 actionlib_msgs::GoalID cancel_msg;
 
+// Called when a new goal is received.
 void onNewGoalCallback(const geometry_msgs::Vector3::ConstPtr& msg) {
   if (node_state != STATE_AWAIT_GOAL) {
     return;
@@ -41,12 +42,14 @@ void onNewGoalCallback(const geometry_msgs::Vector3::ConstPtr& msg) {
   node_state = STATE_PUBLISH_GOAL;
 }
 
+// Called when a goal is canceled.
 void onCancelGoalCallback(const std_msgs::Float32::ConstPtr& msg) {
   if (msg->data == 0 && node_state == STATE_GET_RESULT) {
     node_state = STATE_CANCEL;
   }
 }
 
+// Called when move base has a result.
 void onResultCallback(
     const move_base_msgs::MoveBaseActionResult::ConstPtr& msg) {
   switch (msg->status.status) {
@@ -69,6 +72,7 @@ void onResultCallback(
   node_state = STATE_PUBLISH_RESULT;
 }
 
+// Called on every feedback message from move base.
 void onFeedbackCallback(
     const move_base_msgs::MoveBaseActionFeedback::ConstPtr& msg) {
   float deltaX = goal.x - msg->feedback.base_position.pose.position.x;
@@ -80,22 +84,36 @@ int main(int argc, char** argv) {
   std::string base_topic = argv[1];
   ros::init(argc, argv, NODE_NAME);
   ros::NodeHandle n;
-  MoveBaseClient ac("create1/move_base", true);
+  MoveBaseClient ac("move_base", true);
 
+  // Subscribes to goal messages.
   ros::Subscriber sub_goal = n.subscribe(base_topic, 1000, onNewGoalCallback);
+
+  // Subscribes to move base result messages.
   ros::Subscriber sub_result =
-      n.subscribe("create1/move_base/result", 1000, onResultCallback);
+      n.subscribe("move_base/result", 1000, onResultCallback);
+
+  // Subscribes to move base feedback messages.
   ros::Subscriber sub_feedback =
-      n.subscribe("create1/move_base/feedback", 1000, onFeedbackCallback);
+      n.subscribe("move_base/feedback", 1000, onFeedbackCallback);
+
+  // Subscribes to cancel-goal messages.
   ros::Subscriber sub_cancel =
       n.subscribe(base_topic + "_cancel", 1000, onCancelGoalCallback);
+
+  // Publishes the remaining distance to the goal in meters.
   ros::Publisher pub_distance =
       n.advertise<std_msgs::Float32>(base_topic + "_distance", 1000);
+
+  // Publishes the action restult.
   ros::Publisher pub_result =
       n.advertise<std_msgs::String>(base_topic + "_result", 1000);
-  ros::Publisher pub_cancel =
-      n.advertise<actionlib_msgs::GoalID>("create1/move_base/cancel", 1000);
 
+  // Publishes cancel-goal messages.
+  ros::Publisher pub_cancel =
+      n.advertise<actionlib_msgs::GoalID>("move_base/cancel", 1000);
+
+  // Wait for move base action server.
   while (!ac.waitForServer(ros::Duration(5.0))) {
     ROS_INFO("Waiting for the move_base action server...");
   }
@@ -106,6 +124,7 @@ int main(int argc, char** argv) {
 
   while (ros::ok()) {
     switch (node_state) {
+      // Publishes the goal to the move base server.
       case STATE_PUBLISH_GOAL: {
         move_base_msgs::MoveBaseGoal move_base_goal;
         move_base_goal.target_pose.header.frame_id = "map";
@@ -125,11 +144,13 @@ int main(int argc, char** argv) {
         node_state = STATE_GET_RESULT;
         break;
       }
+      // Publishes the goal result.
       case STATE_PUBLISH_RESULT: {
         pub_result.publish(result);
         node_state = STATE_AWAIT_GOAL;
         break;
       }
+      // Publishes a cancel message to move base.
       case STATE_CANCEL: {
         pub_cancel.publish(cancel_msg);
         node_state = STATE_AWAIT_GOAL;
