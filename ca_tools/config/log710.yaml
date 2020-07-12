@@ -5,7 +5,7 @@ teleop:
   piloting:
     type: topic
     message_type: "geometry_msgs/Twist"
-    topic_name: cmd_vel
+    topic_name: cmd_vel/joy
     deadman_buttons: [7]
     axis_mappings:
       -

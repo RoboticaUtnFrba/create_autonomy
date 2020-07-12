@@ -1,0 +1,13 @@
+hz: 10
+
+turbo:
+  steps: 4
+
+  linear_forward_min: 0.05
+  linear_forward_max: 0.33
+
+  linear_backward_min: 0.03
+  linear_backward_max: 0.1
+
+  angular_min: 0.3
+  angular_max: 0.7

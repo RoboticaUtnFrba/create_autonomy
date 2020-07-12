@@ -2,11 +2,10 @@
 <launch>
   <arg name="joy_dev" default="/dev/input/js0" />
   <arg name="joy_config" default="xbox360" />
-  <arg name="teleop_config" default="$(find ca_tools)/config/$(arg joy_config).yaml" />
   <arg name="id" default="$(optenv ID 1)"/>
 
   <group ns="$(eval 'create' + str(arg('id')))" if="$(eval str(arg('id')).isdigit() and (arg('id') > 0))">
-    <rosparam file="$(arg teleop_config)" command="load" />
+    <rosparam file="$(find ca_tools)/config/$(arg joy_config).yaml" command="load" />
 
     <node pkg="joy" type="joy_node" name="joy_node">
       <param name="dev" value="$(arg joy_dev)" />
