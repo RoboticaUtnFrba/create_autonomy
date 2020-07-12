@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>ca_vel_mux</name>
+  <version>0.1.0</version>
+  <description>A velocity multiplexer package</description>
+
+  <maintainer email="eborghiorue@frba.utn.edu.ar">Emiliano Borghi</maintainer>
+
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>yocs_cmd_vel_mux</build_depend>
+
+  <build_export_depend>yocs_cmd_vel_mux</build_export_depend>
+
+  <exec_depend>yocs_cmd_vel_mux</exec_depend>
+
+</package>
