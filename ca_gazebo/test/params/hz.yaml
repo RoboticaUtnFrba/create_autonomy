@@ -42,19 +42,25 @@ gts:
 
 imu_data:
   topic: "/create1/imu/data"
-  hz: 30.0
+  hz: 40.0
   hzerror: 1.0
   test_duration: 5.0
 
 joint_states:
   topic: "/create1/joint_states"
-  hz: 30.0
+  hz: 40.0
   hzerror: 1.0
   test_duration: 5.0
 
 odom:
   topic: "/create1/odom"
-  hz: 30.0
+  hz: 40.0
+  hzerror: 1.0
+  test_duration: 5.0
+
+odom_combined:
+  topic: "/create1/odom_combined"
+  hz: 10.0
   hzerror: 1.0
   test_duration: 5.0
 
