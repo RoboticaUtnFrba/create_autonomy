@@ -1,5 +1,7 @@
 global_costmap:
 
+  global_frame: "map"
+
   # Rate parameters
   update_frequency: 1.0
   publish_frequency: 0.5
@@ -10,6 +12,9 @@ global_costmap:
   width: 30.0
   height: 30.0
   resolution: 0.01
+
+  static_layer:
+    map_topic: "/map"
 
   plugins:
     # Order matters!

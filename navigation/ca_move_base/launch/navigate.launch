@@ -19,7 +19,7 @@
   <include file="$(find ca_safety_controller)/launch/standalone.launch"/>
 
   <!-- Velocity multiplexer -->
-  <include file="$(find ca_vel_mux)/launch/mux.launch"/>
+  <include file="$(find ca_vel_mux)/launch/yocs_mux.launch"/>
 
   <!-- move_base -->
   <include if="$(eval arg('navigation')=='move_base')"

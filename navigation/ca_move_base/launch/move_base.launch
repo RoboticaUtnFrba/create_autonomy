@@ -5,6 +5,10 @@
   <arg name="global_planner" value="$(optenv GLOBAL_PLANNER gbp)"/>
   <arg name="local_planner"  value="$(optenv LOCAL_PLANNER teb)"/>
 
+  <arg name="laser_topic"  value="$(arg laser)/scan"/>
+  <arg name="odom_topic"    value="odom_combined"/>
+  <arg name="cmd_vel_topic" value="cmd_vel/nav"/>
+
   <!-- XTerm for gdb -->
   <arg name="backtrace"       default="$(optenv BACKTRACE false)" doc="Enable backtrace with gdb"/>
   <arg name="xterm_font"      value="-fs 13 -fa monaco -bg black"/>
@@ -14,8 +18,14 @@
   <arg unless="$(arg backtrace)" name="gdb" value=""                 />
   <arg     if="$(arg backtrace)" name="gdb" value="$(arg xterm_cmd)" />
 
+  <!-- move_base node -->
   <node pkg="move_base" type="move_base" name="move_base"
         respawn="false" output="screen" launch-prefix="$(arg gdb)">
+
+    <arg name="robot_frame"  value="$(arg tf_prefix)/base_footprint"/>
+    <arg name="odom_frame"   value="$(arg tf_prefix)/odom"/>
+    <arg name="laser_frame" value="$(arg tf_prefix)/laser_link"/>
+
     <rosparam file="$(find ca_move_base)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
     <rosparam file="$(find ca_move_base)/config/global_costmap_params.yaml" command="load" />
     <rosparam file="$(find ca_move_base)/config/$(arg global_planner)_global_planner_params.yaml" command="load" />
@@ -26,26 +36,24 @@
     <rosparam file="$(find ca_move_base)/config/move_base_params.yaml" command="load" />
 
     <remap from="map"     to="/map"/>
-    <remap from="scan"    to="$(arg laser)/scan"/>
-    <remap from="odom"    to="odom_combined"/>
-    <remap from="cmd_vel" to="cmd_vel"/>
+    <remap from="scan"    to="$(arg laser_topic)"/>
+    <remap from="odom"    to="$(arg odom_topic)"/>
+    <remap from="cmd_vel" to="$(arg cmd_vel_topic)"/>
     <!-- <remap from="/mobile_base/sensors/bumper_pointcloud"
            to="mobile_base/sensors/bumper_pointcloud"/> -->
 
     <!-- Remap frames for specific robots -->
-    <param name="local_costmap/robot_base_frame" value="$(arg ns)/base_footprint"/>
-    <param name="local_costmap/global_frame" value="$(arg ns)/odom"/>
-    <param name="local_costmap/obstacle_layer/scan/sensor_frame" value="$(arg ns)/laser_link"/>
-    <param name="local_costmap/obstacle_layer/scan/topic"  value="/$(arg ns)/$(arg laser)/scan"/>
+    <param name="local_costmap/robot_base_frame" value="$(arg robot_frame)"/>
+    <param name="local_costmap/global_frame" value="$(arg odom_frame)"/>
+    <param name="local_costmap/obstacle_layer/scan/sensor_frame" value="$(arg laser_frame)"/>
+    <param name="local_costmap/obstacle_layer/scan/topic"  value="$(arg laser_topic)"/>
 
-    <param name="global_costmap/robot_base_frame" value="$(arg ns)/base_footprint"/>
-    <param name="global_costmap/global_frame" value="map"/>
-    <param name="global_costmap/static_layer/map_topic"  value="/map"/>
-    <param name="global_costmap/obstacle_layer/scan/sensor_frame" value="$(arg ns)/$(arg laser)_link"/>
-    <param name="global_costmap/obstacle_layer/scan/topic" value="/$(arg ns)/$(arg laser)/scan"/>
+    <param name="global_costmap/robot_base_frame" value="$(arg robot_frame)"/>
+    <param name="global_costmap/obstacle_layer/scan/sensor_frame" value="$(arg laser_frame)"/>
+    <param name="global_costmap/obstacle_layer/scan/topic" value="$(arg laser_topic)"/>
 
     <param name="SBPLLatticePlanner/primitive_filename" value="$(find ca_move_base)/config/matlab/turtle.mprim" />
-    <param name="DWAPlannerROS/global_frame_id"  value="$(arg ns)/odom"/>
+    <param name="DWAPlannerROS/global_frame_id"  value="$(arg odom_frame)"/>
   </node>
 
 </launch>
