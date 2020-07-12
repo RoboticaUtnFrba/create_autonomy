@@ -7,7 +7,8 @@
 
   <node name="cartographer_node" pkg="cartographer_ros" type="cartographer_node"
         args="-configuration_directory $(find ca_cartographer)/config
-              -configuration_basename mapping_2d.lua">
+              -configuration_basename mapping_2d.lua
+              -transform_tolerance 0.15">
 
     <env name="tf_prefix" value="$(arg tf_prefix)"/>
 
@@ -17,7 +18,8 @@
   </node>
 
   <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros" type="cartographer_occupancy_grid_node"
-        args="-resolution 0.05">
+        args="-resolution 0.05
+              --publish_ros_map">
     <remap from="map" to="/map" />
   </node>
 </launch>
