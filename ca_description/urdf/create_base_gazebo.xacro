@@ -17,7 +17,7 @@
           <wheelDiameter>${wheel_radius * 2}</wheelDiameter>
           <wheelTorque>0.5</wheelTorque>
           <wheelAcceleration>0.5</wheelAcceleration>
-          <commandTopic>cmd_vel</commandTopic>
+          <commandTopic>cmd_vel/out</commandTopic>
           <odometryTopic>odom</odometryTopic>
           <odometryFrame>odom</odometryFrame>
           <robotBaseFrame>base_footprint</robotBaseFrame>
