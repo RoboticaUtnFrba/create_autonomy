@@ -74,3 +74,13 @@
     a. `ca_imu`
 
     IMU driver for [MPU9255](https://store.invensense.com/products/detail/MPU9255-InvenSense-Inc/520231/).
+
+14. `android_assistant`
+    The "android_asssitant" package allows to control the robot through an [Android application](https://github.com/adevitturi/ROS_Voice_Commands_App), by the use of voice commands. The node serves as an interface between the app and move base.
+    To run the node in the package to communicate with the app, use:
+
+    ```
+    roslaunch android_assistant send_goal.launch base_topic:=goal_assistant
+    ```
+
+    Where "base_topic" should be the same topic set up in the application's Settings page. In this case, "goal_assistant" is the default topic.
