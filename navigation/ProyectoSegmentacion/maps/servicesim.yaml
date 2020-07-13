@@ -1,0 +1,6 @@
+image: servicesim.png
+resolution: 0.05
+origin: [-30.0,-30.0,0.0]
+occupied_thresh: 0.7
+free_thresh: 0.1
+negate: 0

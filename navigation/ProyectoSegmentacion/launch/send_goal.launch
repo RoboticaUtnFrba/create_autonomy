@@ -1,0 +1,12 @@
+<launch>
+  <arg name="x" doc="X coordinate of the destination goal [m]."/>
+  <arg name="y" doc="Y coordinate of the destination goal [m]."/>
+  <arg name="Y" doc="Yaw angle of the destination goal [degrees]."/>
+
+  <arg name="robot_id" default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
+  <arg name="ns"       value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1."/>
+
+  <node pkg="ProyectoSegmentacion" type="send_goal" name="navigation_goals"
+        ns="$(arg ns)" 
+        args="$(arg x) $(arg y) $(arg Y)"/>
+</launch>
