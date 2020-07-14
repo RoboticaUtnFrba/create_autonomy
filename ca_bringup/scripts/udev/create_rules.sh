@@ -38,7 +38,7 @@ echo "remap the device serial port(ttyUSBX) to /dev/roomba"
 echo "roomba usb connection as /dev/roomba, check it using the command: ls -l /dev | grep ttyUSB"
 echo "start copy roomba.rules to /etc/udev/rules.d/"
 echo "roomba.rules"
-sudo cp `rospack find ca_bringup`/scripts/roomba.rules /etc/udev/rules.d
+sudo cp `rospack find ca_bringup`/scripts/rules/roomba.rules /etc/udev/rules.d
 
 echo "remap the device serial port(ttyUSBX) to  rplidar"
 echo "rplidar usb connection as /dev/rplidar, check it using the command: ls -l /dev | grep ttyUSB"
