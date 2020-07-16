@@ -1,4 +1,5 @@
 <launch>
+  <!-- Create safety controller -->
   <node pkg="nodelet" type="nodelet" name="ca_safety_controller" output="screen"
         args="load ca_safety_controller/SafetyControllerNodelet nodelet_manager">
     <remap from="ca_safety_controller/enable"    to="enable"/>
@@ -8,5 +9,17 @@
     <remap from="ca_safety_controller/bumper"    to="bumper"/>
     <remap from="ca_safety_controller/cliff"     to="cliff"/>
     <remap from="ca_safety_controller/wheeldrop" to="wheeldrop"/>
+  </node>
+
+  <!-- Velocity Smoother -->
+  <node pkg="nodelet" type="nodelet" name="navigation_velocity_smoother"
+        args="load yocs_velocity_smoother/VelocitySmootherNodelet nodelet_manager">
+
+    <rosparam file="$(find ca_safety_controller)/config/smoother.yaml" command="load"/>
+
+    <remap from="navigation_velocity_smoother/smooth_cmd_vel" to="cmd_vel/smooth"/>
+    <!-- Robot velocity feedbacks; use the default base configuration -->
+    <remap from="navigation_velocity_smoother/odometry" to="odom"/>
+    <remap from="navigation_velocity_smoother/robot_cmd_vel" to="cmd_vel/nav"/>
   </node>
 </launch>

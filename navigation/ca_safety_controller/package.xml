@@ -28,6 +28,8 @@
   <depend>std_msgs</depend>
   <depend>yocs_controllers</depend>
 
+  <exec_depend>yocs_velocity_smoother</exec_depend>
+
   <test_depend>roslint</test_depend>
 
   <export>

@@ -34,3 +34,5 @@ ros-*-smach-viewer
 ros-*-teb-local-planner
 ros-*-topic-tools
 ros-*-yocs-controllers
+ros-*-yocs-cmd-vel-mux
+ros-*-yocs-velocity-smoother

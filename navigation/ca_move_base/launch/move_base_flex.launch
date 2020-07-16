@@ -11,7 +11,7 @@
 
   <arg name="laser_topic"   value="$(arg laser)/scan"/>
   <arg name="odom_topic"    value="odom_combined"/>
-  <arg name="cmd_vel_topic" value="cmd_vel/nav"/>
+  <arg name="cmd_vel_topic" value="cmd_vel/out"/>
 
   <node pkg="mbf_costmap_nav" type="mbf_costmap_nav" respawn="false" name="move_base_flex" output="screen">
 
