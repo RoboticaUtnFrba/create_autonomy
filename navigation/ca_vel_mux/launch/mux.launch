@@ -1,5 +1,5 @@
 <launch>
-  <arg name="config_file" value="$(find ca_vel_mux)/config/yocs.yaml"/>
+  <arg name="config_file" value="$(find ca_vel_mux)/config/mux.yaml"/>
 
   <node pkg="nodelet" type="nodelet" name="yocs_cmd_vel_mux"
         args="load yocs_cmd_vel_mux/CmdVelMuxNodelet nodelet_manager">
