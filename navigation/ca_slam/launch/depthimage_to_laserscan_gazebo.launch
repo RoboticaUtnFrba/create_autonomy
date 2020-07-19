@@ -3,10 +3,17 @@
   <arg name="laser" default="$(optenv LASER rplidar)" doc="Laser for mapping the environment"/>
 
   <group if="$(eval arg('laser')!='rplidar')">
+    <!--
+      depthimage_to_laserscan uses lazy subscribing and will not subscribe to
+      image or camera_info until there is a subscriber for scan.
+      -->
     <node pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" name="depthimage_to_laserscan"
           output="screen" ns="$(arg laser)">
-      <remap from="image" to="depth/image_raw"/>
-      <remap from="camera_info" to="depth/camera_info"/>
+    <!-- <node pkg="nodelet" type="nodelet" name="depthimage_to_laserscan"
+          output="screen" ns="$(arg laser)"
+          args="load depthimage_to_laserscan/DepthImageToLaserScanNodelet nodelet_manager"> -->
+      <remap from="image" to="depth_registered/image_raw"/>
+      <remap from="camera_info" to="depth_registered/camera_info"/>
       <remap from="scan" to="scan"/>
       <rosparam file="$(find ca_slam)/config/depthimage_to_laserscan.yaml" command="load"/>
       <param name="output_frame_id" type="string" value="$(arg ns)/$(arg laser)_link"/>
