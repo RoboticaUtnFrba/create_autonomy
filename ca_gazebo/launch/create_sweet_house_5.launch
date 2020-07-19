@@ -1,6 +1,6 @@
 <launch>
-  <param name="create1/amcl/initial_pose_x" value="0.8"/>
-  <param name="create1/amcl/initial_pose_y" value="4"/>
+  <param name="create1/amcl/initial_pose_x" value="0"/>
+  <param name="create1/amcl/initial_pose_y" value="0"/>
   <param name="create1/amcl/initial_pose_a" value="0"/>
 
   <param name="create2/amcl/initial_pose_x" value="3"/>
