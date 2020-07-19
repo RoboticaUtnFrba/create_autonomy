@@ -95,7 +95,16 @@
   <!-- Hector SLAM + geotiff -->
   <include if="$(eval arg('localization')=='hector_geotiff')"
            file="$(find ca_hector)/launch/geotiff_mapping.launch">
-    <arg name="env"      value="$(arg env)"/>
+    <arg name="env" value="$(arg env)"/>
+  </include>
+
+  <!-- RTAB-Map -->
+  <include if="$(eval arg('localization')=='rtab')"
+           file="$(find ca_slam)/launch/rtab.launch">
+    <arg name="ns"            value="$(arg ns)"/>
+    <arg name="rgbd_odometry" value="false"/>
+    <arg name="rtabmapviz"    value="false"/>
+    <arg name="localization"  value="false"/>
   </include>
 
 </launch>

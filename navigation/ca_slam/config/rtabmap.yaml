@@ -1,0 +1,39 @@
+database_path: "rtabmap.db"
+
+subscribe_depth: true
+subscribe_scan: true
+map_negative_poses_ignored: true
+
+# When sending goals on /rtabmap/goal topic, use actionlib to communicate with move_base
+use_action_for_goal: true
+
+# RTAB-Map's parameters: do "rosrun rtabmap rtabmap (double-dash)params" to see the list of available parameters.
+RGBD:
+  # Local loop closure detection (using estimated position) with locations in WM
+  ProximityBySpace: true
+  # Set to false to generate map correction between /map and /odom
+  OptimizeFromGraphEnd: false
+  # Update map only if the robot is moving
+  AngularUpdate: 0.1
+  # Update map only if the robot is moving
+  LinearUpdate: 0.1
+  ProximityPathMaxNeighbors: 0
+Kp:
+  MaxDepth: 4.0
+Reg:
+  # Loop closure transformation: 0=Visual, 1=ICP, 2=Visual+ICP
+  Strategy: 0
+  Force3DoF: true
+Icp:
+  CorrespondenceRatio: 0.3
+Vis:
+  # 3D visual words minimum inliers to accept loop closure
+  MinInliers: 15
+  # 3D visual words correspondence distance
+  InlierDistance: 0.1
+Rtabmap:
+  TimeThr: 0
+Mem:
+  RehearsalSimilarity: 0.30
+GridGlobal:
+  MinSize: 20
