@@ -27,6 +27,7 @@ ros-*-realsense2-camera
 ros-*-realsense2-description
 ros-*-robot-localization
 ros-*-rplidar-ros
+ros-*-rtabmap-ros
 ros-*-sbpl-lattice-planner
 ros-*-slam-gmapping
 ros-*-smach-viewer
