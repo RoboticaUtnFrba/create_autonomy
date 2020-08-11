@@ -1,7 +1,10 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-<xacro:macro name="battery" params="name:=battery parent:=base_footprint *origin">
+<xacro:macro name="battery_sensor"
+             params="name:=battery parent:=base_footprint
+                     voltage capacity_ah charge_current discharge_current
+                     *origin">
 
   <xacro:include filename="$(find ca_description)/urdf/utils/inertias.xacro"/>
   <xacro:include filename="$(find ca_description)/urdf/utils/conversions.xacro"/>
@@ -14,10 +17,12 @@
   <xacro:property name="size_y_in"   value="5.7"/>
   <xacro:property name="size_z_in"   value="2.5"/>
 
-  <joint name="${name}_joint" type="fixed">
+  <joint name="${name}_joint" type="revolute">
     <xacro:insert_block name="origin"/>
     <parent link="${parent_link}"/>
     <child link="${link_name}"/>
+    <axis xyz="1 0 0"/>
+    <limit upper="0" lower="0" effort="0" velocity="0" />
   </joint>
 
   <link name="${link_name}">
@@ -34,6 +39,31 @@
 
   <gazebo reference="${link_name}">
     <material>Gazebo/ZincYellow</material>
+
+    <battery name="${name}">
+      <voltage>${voltage}</voltage>
+    </battery>
+  </gazebo>
+
+  <gazebo>
+    <plugin name="battery_discharge" filename="libbattery_discharge.so">
+      <ros_node>${name}</ros_node>
+      <link_name>${link_name}</link_name>
+      <battery_name>${name}</battery_name>
+      <constant_coef>${voltage}</constant_coef>
+      <linear_coef>${-voltage/4}</linear_coef>
+      <initial_charge>${capacity_ah}</initial_charge>
+      <capacity>${capacity_ah}</capacity>
+      <resistance>0.061523</resistance>
+      <smooth_current_tau>1.9499</smooth_current_tau>
+      <charge_rate>${charge_current}</charge_rate>
+    </plugin>
+
+    <plugin name="battery_consumer" filename="libbattery_consumer.so">
+      <link_name>${link_name}</link_name>
+      <battery_name>${name}</battery_name>
+      <power_load>${discharge_current * voltage}</power_load>
+    </plugin>
   </gazebo>
 
 </xacro:macro>
