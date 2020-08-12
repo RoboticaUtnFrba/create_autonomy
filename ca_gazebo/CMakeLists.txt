@@ -13,6 +13,7 @@ find_package(gazebo 9 REQUIRED)
 
 find_package(catkin REQUIRED
   COMPONENTS
+    brass_gazebo_battery
     ca_msgs
     gazebo_plugins
     gazebo_ros
