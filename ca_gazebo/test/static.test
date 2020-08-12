@@ -7,7 +7,7 @@
 
   <!-- Change real-time factor of Gazebo -->
   <node pkg="ca_gazebo" type="set_properties" name="gazebo_physics_properties" output="screen">
-    <param name="real_time_factor" value="10"/>
+    <param name="real_time_factor" value="5"/>
   </node>
 
   <test test-name="static_test" name="static_test"
