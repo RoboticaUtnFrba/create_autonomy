@@ -42,11 +42,11 @@ class StaticRobotTest(unittest.TestCase):
     self.assertLessEqual(
       diff.item(0),
       self.position_error,
-      msg="The robot is not static. Left wheel has moved {} rad/s".format(str(diff.item(0))))
+      msg="The robot is not static. Left wheel has moved {} rad".format(str(diff.item(0))))
     self.assertLessEqual(
       diff.item(1),
       self.position_error,
-      msg="The robot is not static. Right wheel has moved {} rad/s".format(str(diff.item(1))))
+      msg="The robot is not static. Right wheel has moved {} rad".format(str(diff.item(1))))
 
   def joint_state_cb(self, msg):
     if self.initial_position is None:
