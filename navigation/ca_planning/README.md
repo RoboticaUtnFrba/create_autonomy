@@ -47,7 +47,7 @@ export BACKTRACE=true
 Run the simulation:
 
 ```bash
-GUI=false VERBOSE=true GLOBAL_PLANNER=jps RVIZ=true LOCALIZATION=amcl roslaunch ca_gazebo create_house.launch
+GUI=false VERBOSE=true RVIZ=true LOCALIZATION=amcl roslaunch ca_gazebo create_house.launch
 ```
 
 Add a breakpoint (Shift + Insert to paste the following code):
@@ -57,3 +57,10 @@ break /create_ws/src/create_autonomy/navigation/ca_planning/src/jps_ros.cpp:180
 ```
 
 Cheat sheet: https://darkdust.net/files/GDB%20Cheat%20Sheet.pdf
+Costmap: https://github.com/stonier/cost_map/blob/devel/README.md
+
+## Testing
+
+```bash
+rosrun ca_planning test_distance_map_planner_2d `rospack find ca_planning`/test/data/corridor.yaml
+```
