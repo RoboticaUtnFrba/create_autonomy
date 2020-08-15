@@ -91,6 +91,8 @@ namespace jps {
 
       bool makePlanService(nav_msgs::GetPlan::Request& req, nav_msgs::GetPlan::Response& resp);
 
+      void poseCallback(const geometry_msgs::PoseStamped::ConstPtr& goal);
+
     protected:
 
       /**
@@ -98,13 +100,17 @@ namespace jps {
        */
       // <<< TODO: Use smart pointer!!! >>>
       costmap_2d::Costmap2D* costmap_;
+      costmap_2d::Costmap2DROS* costmap_ros_;
+
       std::shared_ptr<JPS::OccMapUtil> map_util_;
       std::shared_ptr<JPSPlanner2D> jps_planner_;
       std::shared_ptr<DMPlanner2D> dmp_planner_;
+
       ros::Publisher plan_pub_;
       ros::Publisher global_map_pub_;
       ros::Publisher raw_path_pub_;
       ros::Publisher dmp_path_pub_;
+      ros::Subscriber pose_sub_;
       bool initialized_;
 
     private:
@@ -116,7 +122,6 @@ namespace jps {
       boost::mutex mutex_;
       ros::ServiceServer make_plan_srv_;
       std::string global_frame_;
-      bool solution_found_ = false;
       nav_msgs::OccupancyGrid og;
   };
 };

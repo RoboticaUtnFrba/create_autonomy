@@ -1,5 +1,5 @@
 <!-- We need this file in addition to the code macro to allow the ROS system to automatically discover, load, and reason about plugins. -->
-<library path="lib/libjps">
+<library path="lib/libjps_planner">
   <class name="jps/JumpPointSearchROS"
          type="jps::JumpPointSearchROS"
          base_class_type="nav_core::BaseGlobalPlanner">

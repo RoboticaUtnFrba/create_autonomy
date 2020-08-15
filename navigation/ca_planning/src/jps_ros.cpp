@@ -1,4 +1,5 @@
 #include <ca_planning/jps_ros.h>
+#include <ca_planning/jps_basis/data_utils.h>
 
 #include <pluginlib/class_list_macros.h>
 #include <costmap_2d/cost_values.h>
@@ -59,13 +60,55 @@ namespace jps {
       raw_path_pub_ = pnh->advertise<nav_msgs::Path>("raw_path", 1);
       dmp_path_pub_ = pnh->advertise<nav_msgs::Path>("dmp_path", 1);
 
-      jps_planner_ = std::make_shared<JPSPlanner2D>(debug_);
-      dmp_planner_ = std::make_shared<DMPlanner2D>(debug_);
-      dmp_planner_->setPotentialRadius(Vec2f(3.0, 3.0)); // Set 2D potential field radius
-      dmp_planner_->setSearchRadius(Vec2f(3.0, 3.0));    // Set the valid search region around given path
-      dmp_planner_->setPotentialMapRange(Vec2f(3.0, 3.0));
+      pose_sub_ = pnh->subscribe<geometry_msgs::PoseStamped>("goal", 1, &JumpPointSearchROS::poseCallback, this);
 
       map_util_ = std::make_shared<JPS::OccMapUtil>();
+
+      ///////////////////////////////////////////////
+
+      const Vec2f map_origin(costmap_->getOriginX(), costmap_->getOriginY());
+      const Vec2i map_dimension(costmap_->getSizeInCellsX(), costmap_->getSizeInCellsY());
+      const int32_t dimension(costmap_->getSizeInCellsX() * costmap_->getSizeInCellsY());
+
+      unsigned char* map_array = costmap_->getCharMap();
+      const int map_size = sizeof(map_array) / sizeof(map_array[0]);
+      JPS::Tmap map_data;
+      map_data.reserve(dimension);
+      std::copy(map_array, map_array+map_size, std::back_inserter(map_data));
+
+      const decimal_t map_resolution = costmap_->getResolution();
+
+      map_util_->setMap(
+          map_origin,     // origin position
+          map_dimension,  // number of cells in each dimension
+          map_data,       // map resolution
+          map_resolution);
+
+      // Fill occupancy grid for global costmap
+      initializeOccupancyGrid();
+      for(int row=0;row<map_dimension(0);row++) {
+        for(int col=0;col<map_dimension(1);col++) {
+          const int cost = costmap_->getCost(col,row);
+          og.data[row*map_dimension(0)+col]=cost;
+        }
+      }
+      global_map_pub_.publish(og);
+
+      if(debug_) map_util_->info();
+
+      ///////////////////////////////////////////////
+
+      // Set up JPS planner
+      jps_planner_ = std::make_shared<JPSPlanner2D>(debug_);
+      jps_planner_->setMapUtil(map_util_);  // Set collision checking function
+      jps_planner_->updateMap();
+
+      dmp_planner_ = std::make_shared<DMPlanner2D>(debug_);
+      // Set 2D potential field radius
+      dmp_planner_->setPotentialRadius(Vec2f(3.0, 3.0));
+      // Set the valid search region around given path
+      dmp_planner_->setSearchRadius(Vec2f(3.0, 3.0));
+      dmp_planner_->setPotentialMapRange(Vec2f(3.0, 3.0));
 
       make_plan_srv_ =  pnh->advertiseService("make_plan", &JumpPointSearchROS::makePlanService, this);
 
@@ -76,6 +119,7 @@ namespace jps {
   }
 
   void JumpPointSearchROS::initialize(std::string name, costmap_2d::Costmap2DROS* costmap_ros) {
+    costmap_ros_ = costmap_ros;
     initialize(name, costmap_ros->getCostmap(), costmap_ros->getGlobalFrameID());
   }
 
@@ -118,8 +162,6 @@ namespace jps {
       return false;
     }
 
-    if(solution_found_) return false;
-
     // clear the plan, just in case
     plan.clear();
 
@@ -157,44 +199,7 @@ namespace jps {
     const Vec2f start_m(mx, my);
     const Vec2f start_w(wx, wy);
 
-    ///////////////////////////////////////////////
-
-    const Vec2f map_origin(costmap_->getOriginX(), costmap_->getOriginY());
-    const Vec2i map_dimension(costmap_->getSizeInCellsX(), costmap_->getSizeInCellsY());
-    const int32_t dimension(costmap_->getSizeInCellsX() * costmap_->getSizeInCellsY());
-
-    unsigned char* map_array = costmap_->getCharMap();
-    const int map_size = sizeof(map_array) / sizeof(map_array[0]);
-    JPS::Tmap map_data;
-    map_data.reserve(dimension);
-    std::copy(map_array, map_array+map_size, std::back_inserter(map_data));
-
-    const decimal_t map_resolution = costmap_->getResolution();
-
-    map_util_->setMap(
-        map_origin,     // origin position
-        map_dimension,  // number of cells in each dimension
-        map_data,       // map resolution
-        map_resolution);
-
-    // Fill occupancy grid for global costmap
-    initializeOccupancyGrid();
-    for(int row=0;row<map_dimension(0);row++) {
-      for(int col=0;col<map_dimension(1);col++) {
-        const int cost = costmap_->getCost(col,row);
-        og.data[row*map_dimension(0)+col]=cost;
-      }
-    }
-    global_map_pub_.publish(og);
-
-    ///////////////////////////////////////////////
-
-    if(debug_) map_util_->info();
-
     ////////////////////////////////////////////
-
-    jps_planner_->setMapUtil(map_util_);  // Set collision checking function
-    jps_planner_->updateMap();
 
     int map_start[2];
     map_start[0] = mx;
@@ -219,51 +224,68 @@ namespace jps {
     const Vec2f goal_m(map_goal[0], map_goal[1]);
     const Vec2f goal_w(wx, wy);
 
+    ROS_INFO("[JPS] Planning path from [%f, %f] to [%f, %f]",
+        start_w[0], start_w[1], goal_w[0], goal_w[1]);
+
+    jps_planner_->updateMap();
     bool result = jps_planner_->plan(start_w, goal_w, /*eps*/1, /*use_jps*/true);
 
     if(!result) return false;
 
-    dmp_planner_->setMap(map_util_, start_w);
-
-    ////////////////////////////////////////////
-
-    vec_Vec2f path = jps_planner_->getRawPath();  // Get the planned raw path from JPS
+    // Get the planned raw path from JPS
+    vec_Vec2f path_jps = jps_planner_->getRawPath();
+    ROS_INFO_STREAM("JPS Path Distance: " << total_distance2f(path_jps));
     nav_msgs::Path raw_path;
     raw_path.header.frame_id = global_frame_;
-    const std::size_t raw_path_size = path.size();
+    raw_path.header.stamp = ros::Time::now();
+    const std::size_t raw_path_size = path_jps.size();
+    raw_path.poses.resize(raw_path_size);
     for(int i=0; i<raw_path_size; i++) {
       geometry_msgs::PoseStamped msg;
-      msg.header.frame_id = global_frame_;
-      msg.pose.position.x = path[i](0);
-      msg.pose.position.y = path[i](1);
+      msg.pose.position.x = path_jps[i](0);
+      msg.pose.position.y = path_jps[i](1);
       msg.pose.orientation.w = 1;
-      raw_path.poses.push_back(msg);
+      raw_path.poses[i] = msg;
     }
     raw_path_pub_.publish(raw_path);
 
-    // Compute the path given the jps path
-    dmp_planner_->computePath(start_w, goal_w, path);
-    nav_msgs::Path dmp_path;
-    dmp_path.header.frame_id = global_frame_;
-    const std::size_t dmp_path_size = path.size();
-    for (int i = 0; i < dmp_path_size; i++) {
-      geometry_msgs::PoseStamped msg;
-      msg.header.frame_id = global_frame_;
-      msg.pose.position.x = path[i](0);
-      msg.pose.position.y = path[i](1);
-      msg.pose.orientation.w = 1;
-      dmp_path.poses.push_back(msg);
-    }
-    dmp_path_pub_.publish(dmp_path);
+    ////////////////////////////////////////////
+    // DISABLE DMP BECAUSE IT'S CRASHING SOMETIMES
 
-    const vec_Vec2f path_dist = dmp_planner_->getRawPath();
-    std::transform(path_dist.cbegin(), path_dist.cend(),
+    // Set map util for collision checking, must be called before planning
+    // dmp_planner_->setMap(map_util_, start_w);
+
+    // ROS_INFO("[DMP] Planning path from [%f, %f] to [%f, %f]",
+    //     start_w[0], start_w[1], goal_w[0], goal_w[1]);
+
+    // // Compute the path given the jps path
+    // result = dmp_planner_->computePath(start_w, goal_w, path_jps);
+
+    // if(!result) return false;
+
+    // const vec_Vec2f path_dist = dmp_planner_->getRawPath();
+    // ROS_INFO_STREAM("DMP Path Distance: " << total_distance2f(path_dist));
+    // // Fill plan to be returned
+    // std::transform(path_dist.cbegin(), path_dist.cend(),
+    //   std::back_inserter(plan), [this](const Vec2f& g) {
+    //     geometry_msgs::PoseStamped ps;
+    //     ps.header.stamp = ros::Time::now();
+    //     ps.header.frame_id = global_frame_;
+    //     ps.pose.position.x = g[0];
+    //     ps.pose.position.y = g[1];
+    //     return ps;
+    //   }
+    // );
+
+    // Fill plan to be returned
+    std::transform(path_jps.cbegin(), path_jps.cend(),
       std::back_inserter(plan), [this](const Vec2f& g) {
         geometry_msgs::PoseStamped ps;
         ps.header.stamp = ros::Time::now();
         ps.header.frame_id = global_frame_;
         ps.pose.position.x = g[0];
         ps.pose.position.y = g[1];
+        ps.pose.orientation.w = 1;
         return ps;
       }
     );
@@ -271,9 +293,7 @@ namespace jps {
     //publish the plan for visualization purposes
     publishPlan(plan, 0.0, 1.0, 0.0, 0.0);
 
-    solution_found_ = !plan.empty();
-
-    return solution_found_;
+    return !plan.empty();;
   }
 
   void JumpPointSearchROS::publishPlan(const std::vector<geometry_msgs::PoseStamped>& path,
@@ -318,6 +338,13 @@ namespace jps {
       og.info.width = costmap_->getSizeInCellsX();
       og.info.height = costmap_->getSizeInCellsY();
       og.data.resize(og.info.width * og.info.height);
+  }
+
+  void JumpPointSearchROS::poseCallback(const geometry_msgs::PoseStamped::ConstPtr& goal) {
+      geometry_msgs::PoseStamped global_pose;
+      costmap_ros_->getRobotPose(global_pose);
+      std::vector<geometry_msgs::PoseStamped> path;
+      makePlan(global_pose, *goal, path);
   }
 
 };  // namespace jps
