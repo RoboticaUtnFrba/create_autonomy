@@ -55,6 +55,7 @@ add_library(${PROJECT_NAME}_lib
 )
 add_dependencies(${PROJECT_NAME}_lib ${jps_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(${PROJECT_NAME}_lib ${catkin_LIBRARIES})
+set_target_properties(${PROJECT_NAME}_lib PROPERTIES OUTPUT_NAME jps_planner)
 
 add_executable(${PROJECT_NAME}_node src/jps_node.cpp)
 target_link_libraries(${PROJECT_NAME}_node ${PROJECT_NAME}_lib)
@@ -90,10 +91,6 @@ install(DIRECTORY
 ## Testing ##
 #############
 
-# https://github.com/ros-planning/navigation/blob/melodic-devel/navfn/src/navtest.cpp
-
-## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_ca_planning.cpp)
-# if(TARGET ${PROJECT_NAME}-test)
-#   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
-# endif()
+add_executable(test_distance_map_planner_2d test/test_distance_map_planner_2d.cpp)
+target_link_libraries(test_distance_map_planner_2d ${PROJECT_NAME}_lib ${YAMLCPP_LIBRARIES} ${Boost_LIBRARIES})
+add_test(test_distance_map_planner_2d test_distance_map_planner_2d ${CMAKE_SOURCE_DIR}/test/data/corridor.yaml)
