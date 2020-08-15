@@ -2,7 +2,7 @@
   <arg name="ns"    default="create1"                 doc="Namespace of the robot"/>
   <arg name="laser" default="$(optenv LASER rplidar)" doc="Laser for mapping the environment"/>
 
-  <arg name="global_planner" value="$(optenv GLOBAL_PLANNER gbp)"/>
+  <arg name="global_planner" value="$(optenv GLOBAL_PLANNER jps)"/>
   <arg name="local_planner"  value="$(optenv LOCAL_PLANNER teb)"/>
 
   <!-- XTerm for gdb -->
