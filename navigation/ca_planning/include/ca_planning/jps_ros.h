@@ -10,6 +10,8 @@
 #include <geometry_msgs/Point.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <nav_msgs/GetPlan.h>
+#include <nav_msgs/GridCells.h>
+#include <nav_msgs/OccupancyGrid.h>
 #include <nav_msgs/Path.h>
 
 #include <ca_planning/navfn.h>
@@ -100,16 +102,21 @@ namespace jps {
       std::shared_ptr<JPSPlanner2D> jps_planner_;
       std::shared_ptr<DMPlanner2D> dmp_planner_;
       ros::Publisher plan_pub_;
+      ros::Publisher global_map_pub_;
+      ros::Publisher raw_path_pub_;
+      ros::Publisher dmp_path_pub_;
       bool initialized_;
 
     private:
       void mapToWorld(double mx, double my, double& wx, double& wy);
       void clearRobotCell(const geometry_msgs::PoseStamped& global_pose, unsigned int mx, unsigned int my);
+      void initializeOccupancyGrid();
       double default_tolerance_;
       bool debug_;
       boost::mutex mutex_;
       ros::ServiceServer make_plan_srv_;
       std::string global_frame_;
       bool solution_found_ = false;
+      nav_msgs::OccupancyGrid og;
   };
 };

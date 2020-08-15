@@ -3,13 +3,13 @@ project(ca_planning)
 
 add_compile_options(-std=c++11)
 
-IF(NOT CMAKE_BUILD_TYPE)
-  SET(CMAKE_BUILD_TYPE RelWithDebInfo)
-ENDIF()
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE RelWithDebInfo)
+endif()
 
 set(BUILD_SHARED_LIBS ON)
 
-FIND_PACKAGE(Eigen3 REQUIRED)
+find_package(Eigen3 REQUIRED)
 
 find_package(catkin REQUIRED COMPONENTS
   base_local_planner
@@ -25,14 +25,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## catkin specific configuration ##
 ###################################
 
-set(${JPS_PLUGIN} jps_planner)
-
 catkin_package(
- INCLUDE_DIRS
-    include
- LIBRARIES
-    # jps
-    ${JPS_PLUGIN}
  CATKIN_DEPENDS
     base_local_planner
     costmap_2d
@@ -53,40 +46,43 @@ include_directories(
   ${EIGEN3_INCLUDE_DIRS}
 )
 
-add_library(jps
-    src/graph_search.cpp
+add_library(${PROJECT_NAME}_lib
     src/dmp.cpp
-    src/jps_ros.cpp
+    src/graph_search.cpp
+    src/jps_planner/graph_search.cpp
     src/jps_planner/jps_planner.cpp
-    src/jps_planner/graph_search.cpp)
-# add_library(dmp_lib src/graph_search.cpp src/dmp.cpp)
-# add_library (jps src/jps.cpp src/jps_ros.cpp)
-add_dependencies(jps ${jps_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(jps ${catkin_LIBRARIES})
+    src/jps_ros.cpp
+)
+add_dependencies(${PROJECT_NAME}_lib ${jps_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(${PROJECT_NAME}_lib ${catkin_LIBRARIES})
 
-add_executable(jps_node src/jps_node.cpp)
-target_link_libraries(jps_node jps)
+add_executable(${PROJECT_NAME}_node src/jps_node.cpp)
+target_link_libraries(${PROJECT_NAME}_node ${PROJECT_NAME}_lib)
+set_target_properties(${PROJECT_NAME}_node PROPERTIES OUTPUT_NAME jps_node)
 
 #############
 ## Install ##
 #############
 
-install(TARGETS jps_node
+install(TARGETS
+    ${PROJECT_NAME}_node
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
-install(TARGETS jps
+install(TARGETS
+    ${PROJECT_NAME}_lib
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
 )
 
-install(DIRECTORY include/${PROJECT_NAME}/
+install(DIRECTORY
+    include/${PROJECT_NAME}/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
 )
 
-install(FILES
-  ${JPS_PLUGIN}_plugin.xml
+install(DIRECTORY
+    plugins
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 

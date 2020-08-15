@@ -415,10 +415,8 @@ void DMPlanner<Dim>::setMap(const std::shared_ptr<JPS::MapUtil<Dim>> &map_util,
         coord2(i) = dim(i) - 1;
     }
   }
-  std::cout << "[DMP] BEFORE" << std::endl;
   std::vector<int8_t> map = map_util_->getMap();
   auto distance_map = map;
-  std::cout << "[DMP] AFTER" << std::endl;
   Veci<Dim> n;
   if(Dim == 2) {
     for(n(0) = coord1(0); n(0) < coord2(0); n(0)++) {
@@ -458,7 +456,6 @@ void DMPlanner<Dim>::setMap(const std::shared_ptr<JPS::MapUtil<Dim>> &map_util,
       }
     }
   }
-  std::cout << "[DMP] AFTER++" << std::endl;
   cmap_ = distance_map;
   map_util_->setMap(map_util_->getOrigin(), dim, distance_map, map_util_->getRes());
 }
@@ -562,9 +559,7 @@ bool DMPlanner<Dim>::computePath(const Vecf<Dim>& start, const Vecf<Dim>& goal, 
     std::cout << "potential_radius: " << potential_radius_.transpose() << std::endl;
     std::cout << "potential_map_range: " << potential_map_range_.transpose() << std::endl;
   }
-  std::cout << "[DMP] 0" << std::endl;
   search_region_ = setPath(path, search_radius_, false); // sparse input path
-  std::cout << "[DMP] 1" << std::endl;
   return plan(start, goal, eps_, cweight_);
 }
 

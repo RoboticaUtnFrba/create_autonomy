@@ -5,8 +5,17 @@
   <arg name="global_planner" value="$(optenv GLOBAL_PLANNER gbp)"/>
   <arg name="local_planner"  value="$(optenv LOCAL_PLANNER teb)"/>
 
+  <!-- XTerm for gdb -->
+  <arg name="xterm_font"      value="-fs 13 -fa monaco -bg black"/>
+  <arg name="xterm_clipboard" value="-ls -xrm 'XTerm*selectToClipboard: true'"/>
+  <arg name="xterm_gdb"       value="-e gdb --args"/>
+  <arg name="xterm_cmd" value="xterm $(arg xterm_font) $(arg xterm_clipboard) $(arg xterm_gdb)"/>
+  <arg name="backtrace" default="$(optenv BACKTRACE false)" doc="Enable backtrace with gdb"/>
+  <arg name="gdb"       value="$(arg xterm_cmd)"            if="$(arg backtrace)"/>
+  <arg name="gdb"       value=""                            unless="$(arg backtrace)"/>
+
   <node pkg="move_base" type="move_base" name="move_base"
-        respawn="false" output="screen">
+        respawn="false" output="screen" launch-prefix="$(arg gdb)">
     <rosparam file="$(find ca_move_base)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
     <rosparam file="$(find ca_move_base)/config/global_costmap_params.yaml" command="load" />
     <rosparam file="$(find ca_move_base)/config/$(arg global_planner)_global_planner_params.yaml" command="load" />
