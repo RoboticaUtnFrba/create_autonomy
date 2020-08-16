@@ -95,6 +95,7 @@
     </xacro:caster_wheel>
 
     <xacro:battery_sensor
+        namespace="${robot_name}"
         voltage="14.4"
         capacity_ah="4.5"
         charge_current="0.2"

@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
 <xacro:macro name="battery_sensor"
-             params="name:=battery parent:=base_footprint
+             params="name:=battery parent:=base_footprint namespace:=create
                      voltage capacity_ah charge_current discharge_current
                      *origin">
 
@@ -39,8 +39,6 @@
   <joint name="${name}_dummy_joint" type="continuous">
     <parent link="${parent_link}"/>
     <child link="${dummy_link}"/>
-    <!-- <limit effort="10" velocity="10" /> -->
-    <!-- <dynamics damping="0.1" friction="1000.0"/> -->
   </joint>
 
   <link name="${dummy_link}">
@@ -59,7 +57,7 @@
 
   <gazebo>
     <plugin name="battery_discharge" filename="libbattery_discharge.so">
-      <ros_node>${name}</ros_node>
+      <ros_node>${namespace}</ros_node>
       <link_name>${dummy_link}</link_name>
       <battery_name>${name}</battery_name>
       <constant_coef>${voltage}</constant_coef>
