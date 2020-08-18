@@ -21,6 +21,28 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
 )
 
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(YAMLCPP REQUIRED yaml-cpp)
+
+if(YAMLCPP_FOUND)
+  message(STATUS "Found yaml-cpp.")
+else()
+  message(FATAL_ERROR "Could not find yaml-cpp.")
+endif()
+# FIND_PACKAGE(PkgConfig REQUIRED)
+# PKG_CHECK_MODULES(YAMLCPP REQUIRED yaml-cpp)
+# if(NOT YAMLCPP_FOUND)
+#   # try to use pkg-config
+# 	include(FindPkgConfig)
+# 	IF(PKG_CONFIG_FOUND)
+# 		pkg_check_modules(YAMLCPP QUIET yaml-cpp)
+# 	ENDIF(PKG_CONFIG_FOUND)
+# endif(NOT YAMLCPP_FOUND)
+
+# IF(YAMLCPP_FOUND)
+# 	MESSAGE("-- Found yaml-cpp: ${YAMLCPP_PREFIX} (found version \"${YAMLCPP_VERSION}\")")
+# ENDIF(YAMLCPP_FOUND)
+
 ###################################
 ## catkin specific configuration ##
 ###################################
