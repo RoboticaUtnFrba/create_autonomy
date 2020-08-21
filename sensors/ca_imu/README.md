@@ -7,9 +7,11 @@ Interfacing **Nvidia Jetson Nano** with **MPU9255**:
 > SCL --> PIN 5
 > SDA --> PIN 3
 
-## Setup
+## [Setup](https://elinux.org/Jetson/I2C)
 
 ```bash
+sudo apt-get install -y i2c-tools
+
 sudo usermod -aG i2c $USER
 
 $ sudo i2cdetect -y -r 1
