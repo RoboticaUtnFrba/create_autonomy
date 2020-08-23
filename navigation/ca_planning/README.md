@@ -12,14 +12,10 @@ https://github.com/ros-planning/navigation/blob/melodic-devel/navfn/src/navfn_ro
 
 http://wiki.ros.org/costmap_2d
 
-https://github.com/KumarRobotics/jps3d/compare/master...ICRA2017:reproducible
-
 https://github.com/ros-planning/navigation/issues/147
 
-https://answers.ros.org/question/276935/move_base-make_plan-service-crashes-transport-error/
-
 ```bash
-GUI=false VERBOSE=true GLOBAL_PLANNER=jps RVIZ_CONFIG=navigation LOCALIZATION=amcl roslaunch ca_gazebo create_house.launch
+GUI=false VERBOSE=true RVIZ=true LOCALIZATION=amcl roslaunch ca_gazebo create_house.launch
 ```
 
 ## Backtrace with gdb

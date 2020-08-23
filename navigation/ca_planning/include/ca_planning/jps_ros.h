@@ -14,7 +14,6 @@
 #include <nav_msgs/OccupancyGrid.h>
 #include <nav_msgs/Path.h>
 
-#include <ca_planning/navfn.h>
 #include <ca_planning/dmp.h>
 #include <ca_planning/jps_planner/jps_planner.h>
 
@@ -92,6 +91,8 @@ namespace jps {
       bool makePlanService(nav_msgs::GetPlan::Request& req, nav_msgs::GetPlan::Response& resp);
 
       void poseCallback(const geometry_msgs::PoseStamped::ConstPtr& goal);
+
+      void drawSolution(const Vec2f& start, const Vec2f& goal, const vec_Vec2f& path_jps/*, const vec_Vec2f& path_dist*/);
 
     protected:
 
