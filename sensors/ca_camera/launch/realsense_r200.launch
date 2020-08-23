@@ -1,0 +1,9 @@
+<launch>
+  <node pkg="tf" type="static_transform_publisher" name="r200_tf" args="0 0 0 0 0 0 create1_tf/r200_link r200_link 20"/>
+
+  <include file="$(find realsense_camera)/launch/r200_nodelet_rgbd.launch">
+    <arg name="camera" value="r200"/>
+    <arg name="depth_width" value="640"/>
+    <arg name="depth_height" value="480"/>
+  </include>
+</launch>
