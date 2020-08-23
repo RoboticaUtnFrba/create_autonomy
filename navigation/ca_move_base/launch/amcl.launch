@@ -5,7 +5,7 @@
 
   <arg name="laser" default="$(optenv LASER rplidar)" doc="Laser for mapping the environment"/>
 
-  <node pkg="amcl" type="amcl" name="amcl" output="screen">
+  <node pkg="amcl" type="amcl" name="amcl">
     <rosparam file="$(find ca_move_base)/config/amcl_params.yaml" command="load"/>
     <!-- We want a single map for multi-robots -->
     <remap from="map" to="/map" />

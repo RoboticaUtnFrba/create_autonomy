@@ -5,7 +5,7 @@
 
   <arg name="laser" default="$(optenv LASER rplidar)" doc="Laser for mapping the environment"/>
 
-  <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
+  <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping">
     <rosparam file="$(find ca_slam)/config/slam_gmapping.yaml" command="load"/>
     <!-- We want a single map for multi-robots -->
     <remap from="map" to="/map" />
