@@ -65,7 +65,8 @@
 namespace gazebo
 {
 
-enum {
+enum
+{
     RIGHT,
     LEFT,
 };
@@ -111,10 +112,13 @@ void GazeboRosDiffDrive::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
     joints_[RIGHT]->SetParam("fmax", 0, wheel_torque);
 
     this->publish_tf_ = true;
-    if (!_sdf->HasElement("publishTf")) {
+    if (!_sdf->HasElement("publishTf"))
+    {
       ROS_WARN_NAMED("diff_drive", "GazeboRosDiffDrive Plugin (ns = %s) missing <publishTf>, defaults to %d",
           this->robot_namespace_.c_str(), this->publish_tf_);
-    } else {
+    }
+    else
+    {
       this->publish_tf_ = _sdf->GetElement("publishTf")->Get<bool>();
     }
 
@@ -198,7 +202,8 @@ void GazeboRosDiffDrive::publishWheelJointState()
     joint_state_.name.resize(joints_.size());
     joint_state_.position.resize(joints_.size());
 
-    for ( int i = 0; i < 2; i++ ) {
+    for ( int i = 0; i < 2; i++ )
+    {
         physics::JointPtr joint = joints_[i];
 #if GAZEBO_MAJOR_VERSION >= 8
         double position = joint->Position(0);
@@ -243,7 +248,8 @@ void GazeboRosDiffDrive::UpdateChild()
        and Joint::Reset is called after ModelPlugin::Reset, so we need to set maxForce to wheel_torque other than GazeboRosDiffDrive::Reset
        (this seems to be solved in https://bitbucket.org/osrf/gazebo/commits/ec8801d8683160eccae22c74bf865d59fac81f1e)
     */
-    for ( int i = 0; i < 2; i++ ) {
+    for ( int i = 0; i < 2; i++ )
+    {
       if ( fabs(wheel_torque -joints_[i]->GetParam("fmax", 0)) > 1e-6 )
       {
         joints_[i]->SetParam("fmax", 0, wheel_torque);
@@ -259,7 +265,8 @@ void GazeboRosDiffDrive::UpdateChild()
 #endif
     const double seconds_since_last_update = (current_time - last_update_time_).Double();
 
-    if ( seconds_since_last_update > update_period_ ) {
+    if ( seconds_since_last_update > update_period_ )
+    {
         if (this->publish_tf_) publishOdometry ( seconds_since_last_update );
         if ( publishWheelTF_ ) publishWheelTF();
         if ( publishWheelJointState_ ) publishWheelJointState();
@@ -279,7 +286,9 @@ void GazeboRosDiffDrive::UpdateChild()
             // if max_accel == 0, or target speed is reached
             joints_[LEFT]->SetParam("vel", 0, wheel_speed_[LEFT] / (wheel_diameter_ / 2.0));
             joints_[RIGHT]->SetParam("vel", 0, wheel_speed_[RIGHT] / (wheel_diameter_ / 2.0));
-        } else {
+        }
+        else
+        {
             if (wheel_speed_[LEFT] >= current_speed[LEFT])
                 wheel_speed_instr_[LEFT] += fmin(wheel_speed_[LEFT]-current_speed[LEFT],
                                                   wheel_accel * seconds_since_last_update);
@@ -338,7 +347,8 @@ void GazeboRosDiffDrive::QueueThread()
 {
     static const double timeout = 0.01;
 
-    while (alive_ && gazebo_ros_->node()->ok()) {
+    while (alive_ && gazebo_ros_->node()->ok())
+    {
         queue_.callAvailable(ros::WallDuration(timeout));
     }
 }
@@ -390,10 +400,12 @@ void GazeboRosDiffDrive::UpdateOdometryEncoder()
     odom_.pose.pose.orientation.w = qt.w();
 
     odom_.twist.twist.angular.z = w;
-    if (ssum < 0) {
+    if (ssum < 0)
+    {
         odom_.twist.twist.linear.x = -v;
     }
-    else {
+    else
+    {
         odom_.twist.twist.linear.x = v;
     }
     odom_.twist.twist.linear.y = 0;
@@ -409,7 +421,8 @@ void GazeboRosDiffDrive::publishOdometry(double step_time)
     tf::Quaternion qt(tf::Quaternion::getIdentity());
     tf::Vector3 vt = tf::Vector3();
 
-    if ( odom_source_ == ENCODER ) {
+    if ( odom_source_ == ENCODER )
+    {
         // getting data form encoder integration
         qt = tf::Quaternion(odom_.pose.pose.orientation.x,
                             odom_.pose.pose.orientation.y,
@@ -417,7 +430,8 @@ void GazeboRosDiffDrive::publishOdometry(double step_time)
                             odom_.pose.pose.orientation.w);
         vt = tf::Vector3(odom_.pose.pose.position.x, odom_.pose.pose.position.y, odom_.pose.pose.position.z);
     }
-    if ( odom_source_ == WORLD ) {
+    if ( odom_source_ == WORLD )
+    {
         // getting data from gazebo world
 #if GAZEBO_MAJOR_VERSION >= 8
         ignition::math::Pose3d pose = parent->WorldPose();
@@ -452,7 +466,8 @@ void GazeboRosDiffDrive::publishOdometry(double step_time)
         odom_.twist.twist.linear.y = cosf(yaw) * linear.Y() - sinf(yaw) * linear.X();
     }
 
-    if (publishOdomTF_ == true){
+    if (publishOdomTF_ == true)
+    {
         tf::Transform base_footprint_to_odom(qt, vt);
         transform_broadcaster_->sendTransform(
             tf::StampedTransform(base_footprint_to_odom, current_time,

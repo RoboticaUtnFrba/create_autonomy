@@ -1,5 +1,12 @@
+/**
+ * Software License Agreement (BSD License)
+ *
+ * Copyright (c) 2020, Emiliano Borghi
+ *
+ */
 // C++
 #include <memory>
+#include <string>
 
 // BehaviorTree.CPP
 #include <behaviortree_cpp_v3/bt_factory.h>
@@ -14,13 +21,14 @@
 #include "ca_behavior_tree/conditions/is_battery_level_ok.h"
 
 
-int main(int argc, char **argv) {
-
+int main(int argc, char **argv)
+{
   ros::init(argc, argv, "test_bt");
 
   ros::NodeHandle nh("~");
   std::string xml_filename;
-  if (!nh.getParam("xml_tree", xml_filename)) {
+  if (!nh.getParam("xml_tree", xml_filename))
+  {
     ROS_FATAL_STREAM("XML behavior tree not found : "<< xml_filename);
   }
   ROS_INFO_STREAM("Loading XML : " << xml_filename);
@@ -41,14 +49,16 @@ int main(int argc, char **argv) {
   // This logger publish status changes using ZeroMQ. Used by Groot
   static bool zmq = true;
   std::unique_ptr<BT::PublisherZMQ> publisher_zmq;
-  if (zmq) {
+  if (zmq)
+  {
     publisher_zmq = std::make_unique<BT::PublisherZMQ>(tree);
     zmq = false;
   }
 
   BT::NodeStatus status = BT::NodeStatus::RUNNING;
   // Keep on ticking until you get either a SUCCESS or FAILURE state
-  while (ros::ok() && status == BT::NodeStatus::RUNNING) {
+  while (ros::ok() && status == BT::NodeStatus::RUNNING)
+  {
     // Important to call the subscribers!
     ros::spinOnce();
     status = tree.tickRoot();

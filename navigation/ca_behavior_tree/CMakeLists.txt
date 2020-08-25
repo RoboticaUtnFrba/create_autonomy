@@ -3,12 +3,11 @@ project(ca_behavior_tree)
 
 add_compile_options(-std=c++14)
 
-find_package(behaviortree_cpp_v3 REQUIRED)
+find_package(BehaviorTreeV3)
 
 find_package(catkin REQUIRED COMPONENTS
   actionlib
   actionlib_msgs
-  behaviortree_cpp_v3
   move_base_msgs
   roscpp
   roslint
@@ -19,10 +18,10 @@ catkin_package(
   INCLUDE_DIRS
     include
   LIBRARIES
+    behaviortree_cpp_v3
   CATKIN_DEPENDS
     actionlib
     actionlib_msgs
-    behaviortree_cpp_v3
     move_base_msgs
     roscpp
     std_msgs
@@ -34,12 +33,12 @@ include_directories(
 )
 
 add_executable(${PROJECT_NAME}_node
-  src/main.cpp
   src/actions/movebase_client.cpp
   src/conditions/is_battery_level_ok.cpp
+  src/main.cpp
 )
 add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(${PROJECT_NAME}_node ${BEHAVIOR_TREE_LIBRARY} ${catkin_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_node BT::behaviortree_cpp_v3 ${catkin_LIBRARIES})
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use

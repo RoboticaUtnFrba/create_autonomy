@@ -120,7 +120,7 @@ void VirtualWallSensorPlugin::OnAddEntity()
     }
     ROS_DEBUG_NAMED("virtual_wall_plugin", "model name `%s` doesn't end with a number", name.c_str());
     return false;
-  });
+  });  // NOLINT(whitespace/braces)
   ROS_DEBUG_NAMED("virtual_wall_plugin", "number of create2: %zu", create_2_models_.size());
 }
 

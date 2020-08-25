@@ -1,4 +1,11 @@
-#pragma once
+/**
+ * Software License Agreement (BSD License)
+ *
+ * Copyright (c) 2020, Emiliano Borghi
+ *
+ */
+#ifndef CA_BEHAVIOR_TREE_CONDITIONS_IS_BATTERY_LEVEL_OK_H
+#define CA_BEHAVIOR_TREE_CONDITIONS_IS_BATTERY_LEVEL_OK_H
 
 #include <string>
 
@@ -18,7 +25,9 @@ private:
   ros::Subscriber sub_;
 public:
   IsBatteryLevelOK(const std::string& name, const BT::NodeConfiguration& config);
-  ~IsBatteryLevelOK() {};
+  ~IsBatteryLevelOK();
   BT::NodeStatus tick() override;
   static BT::PortsList providedPorts();
 };
+
+#endif  // CA_BEHAVIOR_TREE_CONDITIONS_IS_BATTERY_LEVEL_OK_H

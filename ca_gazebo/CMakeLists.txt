@@ -129,7 +129,7 @@ install(DIRECTORY scripts
 ## Testing ##
 #############
 
-set(ROSLINT_CPP_OPTS "--filter=-build/c++11, -whitespace/braces")
+set(ROSLINT_CPP_OPTS "--filter=-build/c++11")
 roslint_cpp()
 
 if(CATKIN_ENABLE_TESTING)

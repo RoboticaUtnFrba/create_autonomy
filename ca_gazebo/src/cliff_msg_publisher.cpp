@@ -42,26 +42,30 @@ void GazeboCliffMsgPublisher::Load(physics::ModelPtr _parent, sdf::ElementPtr _s
     ros::init(argc, argv, "cliff_msg_publisher");
   }
   // Initialize the ros variables and gazebo variables
-  if (!_sdf->HasElement("robotNamespace")) {
+  if (!_sdf->HasElement("robotNamespace"))
+  {
     ROS_INFO("Cliff Msg plugin: missing <robotNamespace>, defaults to create");
     this->robot_name_ = "create";
   }
   else this->robot_name_ = _sdf->Get<std::string>("robotNamespace");
 
-  if (!_sdf->HasElement("frameName")) {
+  if (!_sdf->HasElement("frameName"))
+  {
     ROS_INFO("Cliff Msg plugin: missing <frameName>, defaults to world");
     this->frame_name_ = "world";
   }
   else this->frame_name_ = _sdf->Get<std::string>("frameName");
 
-  if (!_sdf->HasElement("updateRate")) {
+  if (!_sdf->HasElement("updateRate"))
+  {
     ROS_INFO("Cliff Msg plugin: missing <updateRate>, defaults to 10 Hz");
     this->update_period_ = 1 / 10.0;
   }
   else this->update_period_ = 1.0 / (_sdf->Get<double>("updateRate"));
 
   std::string topic_name = "";
-  if (!_sdf->HasElement("topicName")) {
+  if (!_sdf->HasElement("topicName"))
+  {
     ROS_INFO("Cliff Msg plugin: missing <topicName>, defaults to cliff");
     topic_name = "cliff";
   }

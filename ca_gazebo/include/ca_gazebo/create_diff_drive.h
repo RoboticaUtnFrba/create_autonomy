@@ -67,8 +67,8 @@
 #include <boost/thread.hpp>
 #include <boost/bind.hpp>
 
-namespace gazebo {
-
+namespace gazebo
+{
 class Joint;
 class Entity;
 

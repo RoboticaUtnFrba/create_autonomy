@@ -1,23 +1,35 @@
+/**
+ * Software License Agreement (BSD License)
+ *
+ * Copyright (c) 2020, Emiliano Borghi
+ *
+ */
+#include <string>
+
 #include "ca_behavior_tree/actions/movebase_client.h"
 
-BT::NodeStatus MoveBase::tick() {
 
+BT::NodeStatus MoveBase::tick()
+{
   std::string robot;
-  if (!getInput<std::string>("robot", robot)) {
+  if (!getInput<std::string>("robot", robot))
+  {
     throw BT::RuntimeError("missing required input [goal]");
   }
 
   robot.append("/move_base");
   MoveBaseClient _client(robot, true);
   // if no server is present, fail after 2 seconds
-  if (!_client.waitForServer(ros::Duration(2.0))) {
+  if (!_client.waitForServer(ros::Duration(2.0)))
+  {
     ROS_ERROR("Can't contact move_base server");
     return BT::NodeStatus::FAILURE;
   }
 
   // Take the goal from the InputPort of the Node
   Pose2D goal;
-  if (!getInput<Pose2D>("goal", goal)) {
+  if (!getInput<Pose2D>("goal", goal))
+  {
     // if I can't get this, there is something wrong with your BT.
     // For this reason throw an exception instead of returning FAILURE
     throw BT::RuntimeError("missing required input [goal]");
@@ -39,18 +51,21 @@ BT::NodeStatus MoveBase::tick() {
 
   _client.sendGoal(msg);
 
-  while (!_aborted && !_client.waitForResult(ros::Duration(0.02))) {
+  while (!_aborted && !_client.waitForResult(ros::Duration(0.02)))
+  {
     // polling at 50 Hz. No big deal in terms of CPU
   }
 
-  if (_aborted) {
+  if (_aborted)
+  {
     // this happens only if method halt() was invoked
-    //_client.cancelAllGoals();
+    // _client.cancelAllGoals();
     ROS_ERROR("MoveBase aborted");
     return BT::NodeStatus::FAILURE;
   }
 
-  if (_client.getState() != actionlib::SimpleClientGoalState::SUCCEEDED) {
+  if (_client.getState() != actionlib::SimpleClientGoalState::SUCCEEDED)
+  {
     ROS_ERROR("MoveBase failed");
     return BT::NodeStatus::FAILURE;
   }

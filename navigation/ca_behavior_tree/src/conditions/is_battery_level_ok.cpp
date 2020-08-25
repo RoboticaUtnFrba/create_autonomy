@@ -1,3 +1,11 @@
+/**
+ * Software License Agreement (BSD License)
+ *
+ * Copyright (c) 2020, Emiliano Borghi
+ *
+ */
+#include <string>
+
 #include <ca_behavior_tree/conditions/is_battery_level_ok.h>
 
 
@@ -7,22 +15,29 @@ IsBatteryLevelOK::IsBatteryLevelOK(const std::string& name, const BT::NodeConfig
   , current_voltage_(14.4)
 {
   std::string topic;
-  if (!getInput<std::string>("topic", topic)) {
+  if (!getInput<std::string>("topic", topic))
+  {
     throw BT::RuntimeError("Missing required input [topic]");
   }
 
   // Battery plugin stops publishing at ~0.105
-  if (!getInput<double>("warning_voltage", warning_voltage_)) {
+  if (!getInput<double>("warning_voltage", warning_voltage_))
+  {
     throw BT::RuntimeError("Missing required input [warning_voltage]");
   }
 
   ros::NodeHandle nh_;
   // Battery voltage subscription
   sub_ = nh_.subscribe<std_msgs::Float64>(topic, 1,
-      [&](std_msgs::Float64::ConstPtr msg) {
+      [this](const std_msgs::Float64::ConstPtr& msg)
+      {
         current_voltage_ = msg->data;
-  });
+      });  // NOLINT(whitespace/braces)
 }
+
+IsBatteryLevelOK::~IsBatteryLevelOK()
+{
+};
 
 BT::NodeStatus IsBatteryLevelOK::tick()
 {
@@ -36,8 +51,9 @@ BT::NodeStatus IsBatteryLevelOK::tick()
 
 BT::PortsList IsBatteryLevelOK::providedPorts()
 {
-  return {
-      BT::InputPort<std::string>("topic"),
-      BT::InputPort<double>("warning_voltage"),
+  return
+  {
+    BT::InputPort<std::string>("topic"),
+    BT::InputPort<double>("warning_voltage"),
   };
 }
