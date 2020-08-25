@@ -2,36 +2,33 @@
 <root main_tree_to_execute="BehaviorTree">
     <!-- ////////// -->
     <BehaviorTree ID="BehaviorTree">
-        <Sequence name="Application">
-            <Parallel name="keep_alive" threshold="">
-                <Condition ID="CheckBattery" name="check_battery"/>
-                <Control ID="BehaviorSelector" is_autonomy="True">
-                    <Sequence>
-                        <Action ID="MoveBaseAction" name="patrol"/>
-                        <Action ID="MoveBaseAction" name="patrol"/>
-                        <Action ID="MoveBaseAction" name="patrol"/>
+        <Fallback>
+            <ReactiveSequence name="Autonomy Sequence">
+                <Condition ID="IsBatteryLevelOK" name="Low Level Battery Check" topic="/battery/battery_voltage" warning_voltage="4"/>
+                <KeepRunningUntilFailure>
+                    <Sequence name="Waypoint Sequence">
+                        <Action ID="MoveBase" goal="-6.432;3.35;0.0" name="Waypoint 1" robot="create1"/>
+                        <Action ID="MoveBase" goal="6.5;-1.0;0.0" name="Waypoint 2" robot="create1"/>
+                        <Action ID="MoveBase" goal="1.0;3.0;-1.5708" name="Waypoint 3" robot="create1"/>
                     </Sequence>
-                    <Action ID="ManualMode" is_autonomy="False"/>
-                </Control>
-            </Parallel>
-            <Sequence name="Docking">
-                <Action ID="MoveBaseAction" name="move_to_docking_station"/>
-                <Action ID="BatteryCharging"/>
-            </Sequence>
-        </Sequence>
+                </KeepRunningUntilFailure>
+            </ReactiveSequence>
+            <Action ID="MoveBase" goal="1.0;-2.0;0.0" name="MoveToChargeStation" robot="create1"/>
+        </Fallback>
     </BehaviorTree>
     <!-- ////////// -->
     <TreeNodesModel>
-        <Action ID="BatteryCharging"/>
-        <Condition ID="BatteryLevel"/>
-        <Control ID="BehaviorSelector">
-            <output_port default="True" name="is_autonomy">True if the robot moves autonomously</output_port>
-        </Control>
-        <Condition ID="CheckBattery"/>
+        <Condition ID="IsBatteryLevelOK">
+            <input_port name="topic">Battery voltage topic</input_port>
+            <input_port default="0.105" name="warning_voltage">Warning voltage level</input_port>
+        </Condition>
         <Action ID="ManualMode">
             <input_port default="False" name="is_autonomy"/>
         </Action>
-        <Action ID="MoveBaseAction"/>
+        <Action ID="MoveBase">
+            <input_port default="0.0;0.0;0.0" name="goal">Goal pose</input_port>
+            <input_port default="create" name="robot">Robot Name</input_port>
+        </Action>
     </TreeNodesModel>
     <!-- ////////// -->
 </root>

@@ -1,12 +1,12 @@
 #include "ca_behavior_tree/actions/movebase_client.h"
 
 BT::NodeStatus MoveBase::tick() {
+
   std::string robot;
   if (!getInput<std::string>("robot", robot)) {
-    // if I can't get this, there is something wrong with your BT.
-    // For this reason throw an exception instead of returning FAILURE
     throw BT::RuntimeError("missing required input [goal]");
   }
+
   robot.append("/move_base");
   MoveBaseClient _client(robot, true);
   // if no server is present, fail after 2 seconds
@@ -24,7 +24,7 @@ BT::NodeStatus MoveBase::tick() {
   }
 
   // Reset this flag
-  _aborted = false;
+  _aborted.store(false);
 
   ROS_INFO("Sending goal %f %f", goal.x, goal.y);
 

@@ -36,7 +36,7 @@ include_directories(
 add_executable(${PROJECT_NAME}_node
   src/main.cpp
   src/actions/movebase_client.cpp
-  src/actions/check_low_battery.cpp
+  src/conditions/is_battery_level_ok.cpp
 )
 add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(${PROJECT_NAME}_node ${BEHAVIOR_TREE_LIBRARY} ${catkin_LIBRARIES})

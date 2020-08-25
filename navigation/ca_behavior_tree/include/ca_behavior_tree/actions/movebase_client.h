@@ -58,10 +58,10 @@ public:
 
     virtual void halt() override
     {
-        _aborted = true;
+        _aborted.store(true);
     }
 
 private:
     typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseClient;
-    bool _aborted;
+    std::atomic_bool _aborted;
 };
