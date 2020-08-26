@@ -29,19 +29,6 @@ if(YAMLCPP_FOUND)
 else()
   message(FATAL_ERROR "Could not find yaml-cpp.")
 endif()
-# FIND_PACKAGE(PkgConfig REQUIRED)
-# PKG_CHECK_MODULES(YAMLCPP REQUIRED yaml-cpp)
-# if(NOT YAMLCPP_FOUND)
-#   # try to use pkg-config
-# 	include(FindPkgConfig)
-# 	IF(PKG_CONFIG_FOUND)
-# 		pkg_check_modules(YAMLCPP QUIET yaml-cpp)
-# 	ENDIF(PKG_CONFIG_FOUND)
-# endif(NOT YAMLCPP_FOUND)
-
-# IF(YAMLCPP_FOUND)
-# 	MESSAGE("-- Found yaml-cpp: ${YAMLCPP_PREFIX} (found version \"${YAMLCPP_VERSION}\")")
-# ENDIF(YAMLCPP_FOUND)
 
 ###################################
 ## catkin specific configuration ##

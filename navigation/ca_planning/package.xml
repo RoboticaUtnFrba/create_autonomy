@@ -3,7 +3,7 @@
   <name>ca_planning</name>
   <version>0.0.0</version>
   <description>Planning package. It includes the following global planners:
-    - jps_planner/JumpPointSearchPlanner
+    - jps_planner/JumpPointSearchROS
   </description>
 
   <maintainer email="emiliano.borghi@gmail.com">Emiliano Borghi</maintainer>

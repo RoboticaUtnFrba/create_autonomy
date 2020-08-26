@@ -287,7 +287,7 @@ namespace JPS {
       // cost defs
       #define COST_UNKNOWN_ROS 255  // 255 is unknown cost
       #define COST_OBS         254  // 254 for forbidden regions
-      #define COST_OBS_ROS     255  // ROS values of 253 are obstacles
+      #define COST_OBS_ROS     253  // ROS values of 253 are obstacles
 
       ///Assume occupied cell has value 100
       int8_t val_occ = COST_OBS_ROS;

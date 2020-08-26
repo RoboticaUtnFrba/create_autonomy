@@ -1,7 +1,14 @@
 base_global_planner: "jps/JumpPointSearchROS"
 
-JumpPointSearchPlanner:
-  # If the goal is in an obstacle, the planer will plan to the nearest point in the radius of default_tolerance, default 0.0
-  # The area is always searched, so could be slow for big values
-  default_tolerance: 0.0
+JumpPointSearchROS:
   debug: false
+  dmp:
+    potential_radius:
+      x: 3.0
+      y: 3.0
+    search_radius:
+      x: 0.5
+      y: 0.5
+    potential_map_range:
+      x: 3.0
+      y: 3.0

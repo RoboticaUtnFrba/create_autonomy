@@ -9,12 +9,6 @@
 
 #include <iterator>
 
-// Testing
-#include <boost/geometry.hpp>
-#include <boost/geometry/geometries/point_xy.hpp>
-#include <boost/geometry/geometries/polygon.hpp>
-#include <cstdio>
-
 
 //register this planner as a BaseGlobalPlanner plugin
 PLUGINLIB_EXPORT_CLASS(jps::JumpPointSearchROS, nav_core::BaseGlobalPlanner)
@@ -52,14 +46,20 @@ namespace jps {
 
       ros::NodeHandlePtr pnh = boost::make_shared<ros::NodeHandle>("~/" + name);
       plan_pub_ = pnh->advertise<nav_msgs::Path>("plan", 1);
-      pnh->param("default_tolerance", default_tolerance_, 0.0);
-      // TODO: This parameter is not working correctly
+
+      // ROS parameters
+      double dmp_potential_radius_x, dmp_potential_radius_y;
+      double dmp_search_radius_x, dmp_search_radius_y;
+      double dmp_potential_map_range_x, dmp_potential_map_range_y;
       pnh->param<bool>("debug", debug_, false);
+      pnh->param<double>("dmp/potential_radius/x", dmp_potential_radius_x, 0.0);
+      pnh->param<double>("dmp/potential_radius/y", dmp_potential_radius_y, 0.0);
+      pnh->param<double>("dmp/search_radius/x", dmp_search_radius_x, 0.0);
+      pnh->param<double>("dmp/search_radius/y", dmp_search_radius_y, 0.0);
+      pnh->param<double>("dmp/potential_map_range/x", dmp_potential_map_range_x, 0.0);
+      pnh->param<double>("dmp/potential_map_range/y", dmp_potential_map_range_y, 0.0);
 
-      global_map_pub_ = pnh->advertise<nav_msgs::OccupancyGrid>("global_map", 1);
-      raw_path_pub_ = pnh->advertise<nav_msgs::Path>("raw_path", 1);
-      dmp_path_pub_ = pnh->advertise<nav_msgs::Path>("dmp_path", 1);
-
+      jps_path_pub_ = pnh->advertise<nav_msgs::Path>("jps_path", 1);
       pose_sub_ = pnh->subscribe<geometry_msgs::PoseStamped>("goal", 1, &JumpPointSearchROS::poseCallback, this);
 
       map_util_ = std::make_shared<JPS::OccMapUtil>();
@@ -71,10 +71,10 @@ namespace jps {
       const int32_t dimension(costmap_->getSizeInCellsX() * costmap_->getSizeInCellsY());
 
       unsigned char* map_array = costmap_->getCharMap();
-      const int map_size = sizeof(map_array) / sizeof(map_array[0]);
       JPS::Tmap map_data;
-      map_data.reserve(dimension);
-      std::copy(map_array, map_array+map_size, std::back_inserter(map_data));
+      map_data.resize(dimension);
+      for(unsigned int i = 0; i < dimension; i++)
+          map_data[i] = map_array[i] > 0 ? 1 : 0;
 
       const decimal_t map_resolution = costmap_->getResolution();
 
@@ -83,9 +83,6 @@ namespace jps {
           map_dimension,  // number of cells in each dimension
           map_data,       // map resolution
           map_resolution);
-
-      // Fill occupancy grid for global costmap
-      initializeOccupancyGrid();
 
       if(debug_) map_util_->info();
 
@@ -98,10 +95,10 @@ namespace jps {
 
       dmp_planner_ = std::make_shared<DMPlanner2D>(debug_);
       // Set 2D potential field radius
-      dmp_planner_->setPotentialRadius(Vec2f(3.0, 3.0));
+      dmp_planner_->setPotentialRadius(Vec2f(dmp_potential_radius_x, dmp_potential_radius_y));
       // Set the valid search region around given path
-      dmp_planner_->setSearchRadius(Vec2f(3.0, 3.0));
-      dmp_planner_->setPotentialMapRange(Vec2f(3.0, 3.0));
+      dmp_planner_->setSearchRadius(Vec2f(dmp_search_radius_x, dmp_search_radius_y));
+      dmp_planner_->setPotentialMapRange(Vec2f(dmp_potential_map_range_x, dmp_potential_map_range_y));
 
       make_plan_srv_ =  pnh->advertiseService("make_plan", &JumpPointSearchROS::makePlanService, this);
 
@@ -144,11 +141,6 @@ namespace jps {
 
   bool JumpPointSearchROS::makePlan(const geometry_msgs::PoseStamped& start,
       const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan) {
-    return makePlan(start, goal, default_tolerance_, plan);
-  }
-
-  bool JumpPointSearchROS::makePlan(const geometry_msgs::PoseStamped& start,
-      const geometry_msgs::PoseStamped& goal, double tolerance, std::vector<geometry_msgs::PoseStamped>& plan) {
     boost::mutex::scoped_lock lock(mutex_);
     if(!initialized_) {
       ROS_ERROR("This planner has not been initialized yet, but it is being used, please call initialize() before use");
@@ -202,10 +194,6 @@ namespace jps {
     wy = goal.pose.position.y;
 
     if(!costmap_->worldToMap(wx, wy, mx, my)) {
-      if(tolerance <= 0.0) {
-        ROS_WARN_THROTTLE(1.0, "The goal sent to the navfn planner is off the global costmap. Planning will always fail to this goal.");
-        return false;
-      }
       mx = 0;
       my = 0;
     }
@@ -217,80 +205,49 @@ namespace jps {
     const Vec2f goal_m(map_goal[0], map_goal[1]);
     const Vec2f goal_w(wx, wy);
 
-    ROS_INFO("[JPS] Planning path from [%f, %f] to [%f, %f]",
+    ROS_DEBUG("[JPS] Planning path from [%f, %f] to [%f, %f]",
         start_w[0], start_w[1], goal_w[0], goal_w[1]);
 
     jps_planner_->updateMap();
-
-    // Publish costmap
-    for(int row=0;row<costmap_->getSizeInCellsX();row++) {
-      for(int col=0;col<costmap_->getSizeInCellsY();col++) {
-        const int cost = costmap_->getCost(col,row);
-        og.data[row*costmap_->getSizeInCellsX()+col]=cost;
-      }
-    }
-    global_map_pub_.publish(og);
 
     bool result = jps_planner_->plan(start_w, goal_w, /*eps*/1, /*use_jps*/true);
 
     if(!result) return false;
 
     // Get the planned raw path from JPS
-    vec_Vec2f path_jps = jps_planner_->getRawPath();
-    ROS_INFO_STREAM("JPS Path Distance: " << total_distance2f(path_jps));
-    nav_msgs::Path raw_path;
-    raw_path.header.frame_id = global_frame_;
-    raw_path.header.stamp = ros::Time::now();
-    const std::size_t raw_path_size = path_jps.size();
-    raw_path.poses.resize(raw_path_size);
-    for(int i=0; i<raw_path_size; i++) {
+    const vec_Vec2f path_jps = jps_planner_->getRawPath();
+    nav_msgs::Path jps_path;
+    jps_path.header.frame_id = global_frame_;
+    jps_path.header.stamp = ros::Time::now();
+    const std::size_t jps_path_size = path_jps.size();
+    jps_path.poses.resize(jps_path_size);
+    for(int i=0; i<jps_path_size; i++) {
       geometry_msgs::PoseStamped msg;
       msg.pose.position.x = path_jps[i](0);
       msg.pose.position.y = path_jps[i](1);
       msg.pose.orientation.w = 1;
-      raw_path.poses[i] = msg;
+      jps_path.poses[i] = msg;
     }
-    raw_path_pub_.publish(raw_path);
-
-    ////////////////////////////////////////////
-    // DISABLE DMP BECAUSE IT'S CRASHING SOMETIMES
+    jps_path_pub_.publish(jps_path);
 
     // Set map util for collision checking, must be called before planning
-    // dmp_planner_->setMap(map_util_, start_w);
-
-    ROS_INFO("[DMP] Planning path from [%f, %f] to [%f, %f]",
-        start_w[0], start_w[1], goal_w[0], goal_w[1]);
+    dmp_planner_->setMap(map_util_, start_w);
 
     // Compute the path given the jps path
-    // result = dmp_planner_->computePath(start_w, goal_w, path_jps);
+    result = dmp_planner_->computePath(start_w, goal_w, path_jps);
 
-    // if(!result) return false;
+    if(!result) return false;
 
-    // const vec_Vec2f path_dist = dmp_planner_->getRawPath();
-    // ROS_INFO_STREAM("DMP Path Distance: " << total_distance2f(path_dist));
-    // // Fill plan to be returned
-    // std::transform(path_dist.cbegin(), path_dist.cend(),
-    //   std::back_inserter(plan), [this](const Vec2f& g) {
-    //     geometry_msgs::PoseStamped ps;
-    //     ps.header.stamp = ros::Time::now();
-    //     ps.header.frame_id = global_frame_;
-    //     ps.pose.position.x = g[0];
-    //     ps.pose.position.y = g[1];
-    //     return ps;
-    //   }
-    // );
-
-    // drawSolution(start_w, goal_w, path_jps/*, path_jps*/);
+    const vec_Vec2f path_dist = dmp_planner_->getRawPath();
 
     // Fill plan to be returned
-    std::transform(path_jps.cbegin(), path_jps.cend(),
+    std::transform(path_dist.cbegin(), path_dist.cend(),
       std::back_inserter(plan), [this](const Vec2f& g) {
         geometry_msgs::PoseStamped ps;
         ps.header.stamp = ros::Time::now();
         ps.header.frame_id = global_frame_;
         ps.pose.position.x = g[0];
         ps.pose.position.y = g[1];
-        ps.pose.orientation.w = 1;
         return ps;
       }
     );
@@ -329,143 +286,11 @@ namespace jps {
     plan_pub_.publish(gui_path);
   }
 
-  /***********************************************************************************************************************
-  nav_msgs::OccupancyGrid initializeOccupancyGrid(int length, double resolution)
-  Initialize an OccupancyGrid of size length*length
-  Returns the initialized OccupancyGrid
-  ***********************************************************************************************************************/
-  void JumpPointSearchROS::initializeOccupancyGrid() {
-      og.info.resolution = costmap_->getResolution();
-      og.header.frame_id = "map";
-      og.info.origin.position.x = costmap_->getOriginX();
-      og.info.origin.position.y = costmap_->getOriginY();
-      og.header.stamp = ros::Time::now();
-      og.info.width = costmap_->getSizeInCellsX();
-      og.info.height = costmap_->getSizeInCellsY();
-      og.data.resize(og.info.width * og.info.height);
-  }
-
   void JumpPointSearchROS::poseCallback(const geometry_msgs::PoseStamped::ConstPtr& goal) {
       geometry_msgs::PoseStamped global_pose;
       costmap_ros_->getRobotPose(global_pose);
       std::vector<geometry_msgs::PoseStamped> path;
       makePlan(global_pose, *goal, path);
-  }
-
-  void JumpPointSearchROS::drawSolution(
-    const Vec2f& start, const Vec2f& goal,
-    const vec_Vec2f& path_jps/*, const vec_Vec2f& path_dist*/) {
-    ROS_INFO(">> DRAWING SOLUTION");
-    // Plot the result in svg image
-    typedef boost::geometry::model::d2::point_xy<double> point_2d;
-    // Declare a stream and an SVG mapper
-    std::ofstream svg("output.svg");
-    boost::geometry::svg_mapper<point_2d> mapper(svg, 1000, 1000);
-
-    // Draw the canvas
-    ROS_INFO(">> DRAWING CANVAS");
-    boost::geometry::model::polygon<point_2d> bound;
-    const Vec2i dim = map_util_->getDim();
-    const Vec2f ori = map_util_->getOrigin();
-    const double res = map_util_->getRes();
-
-    const double origin_x = ori(0);
-    const double origin_y = ori(1);
-    const double range_x = dim(0) * res;
-    const double range_y = dim(1) * res;
-    std::vector<point_2d> points;
-    points.push_back(point_2d(origin_x, origin_y));
-    points.push_back(point_2d(origin_x, origin_y+range_y));
-    points.push_back(point_2d(origin_x+range_x, origin_y+range_y));
-    points.push_back(point_2d(origin_x+range_x, origin_y));
-    points.push_back(point_2d(origin_x, origin_y));
-    boost::geometry::assign_points(bound, points);
-    boost::geometry::correct(bound);
-
-    mapper.add(bound);
-    mapper.map(bound, "fill-opacity:1.0;fill:rgb(255,255,255);stroke:rgb(0,0,0);stroke-width:2"); // White
-
-    // Draw start and goal
-    ROS_INFO(">> DRAWING START AND GOAL");
-    point_2d start_pt, goal_pt;
-    boost::geometry::assign_values(start_pt, start(0), start(1));
-    mapper.add(start_pt);
-    mapper.map(start_pt, "fill-opacity:1.0;fill:rgb(255,0,0);", 10); // Red
-    boost::geometry::assign_values(goal_pt, goal(0), goal(1));
-    mapper.add(goal_pt);
-    mapper.map(goal_pt, "fill-opacity:1.0;fill:rgb(255,0,0);", 10); // Red
-
-
-    // Draw the obstacles
-    // ROS_INFO(">> DRAWING THE OBSTACLES");
-    // // const auto data = dmp_planner_->getMapUtil()->getMap();
-    // const auto data = map_util_->getMap();
-    // for(int x = 0; x < dim(0); x ++) {
-    //   for(int y = 0; y < dim(1); y ++) {
-    //     auto value = data[map_util_->getIndex(Vec2i(x,y))];
-    //     if(value > 0) {
-    //       Vec2f pt = map_util_->intToFloat(Vec2i(x, y));
-    //       decimal_t occ = (decimal_t) value/100;
-    //       point_2d a;
-    //       boost::geometry::assign_values(a, pt(0), pt(1));
-    //       mapper.add(a);
-    //       if(occ < 1)
-    //         mapper.map(a, "fill-opacity:"+std::to_string(occ/2.0) +";fill:rgb(118,215,234);", 1);
-    //       else
-    //         mapper.map(a, "fill-opacity:1.0;fill:rgb(0,0,0);", 1);
-    //     }
-    //   }
-    // }
-
-    // Draw searched region
-    // for (const auto &pt : dmp_planner_->getSearchRegion()) {
-    //   point_2d a;
-    //   boost::geometry::assign_values(a, pt(0), pt(1));
-    //   mapper.add(a);
-    //   mapper.map(a, "fill-opacity:0.2;fill:rgb(100,200,100);", 1); // Green
-    // }
-
-    // Draw the path from JPS
-    ROS_INFO(">> DRAWING JPS PATH");
-    const bool valid_jps = true;
-    if(valid_jps) {
-      vec_Vec2f path = path_jps;
-      boost::geometry::model::linestring<point_2d> line;
-      for(auto pt: path)
-        line.push_back(point_2d(pt(0), pt(1)));
-      mapper.add(line);
-      mapper.map(line, "opacity:0.4;fill:none;stroke:rgb(212,0,0);stroke-width:5"); // Red
-    }
-
-    // Draw the path from DM
-    // const bool valid_dist = false;
-    // if(valid_dist) {
-    //   vec_Vec2f path = path_dist;
-    //   boost::geometry::model::linestring<point_2d> line;
-    //   for(auto pt: path)
-    //     line.push_back(point_2d(pt(0), pt(1)));
-    //   mapper.add(line);
-    //   mapper.map(line, "opacity:0.8;fill:none;stroke:rgb(10,10,250);stroke-width:5"); // Blue
-    // }
-
-    // Write title at the lower right corner on canvas
-    mapper.text(point_2d(origin_x + range_x - 11, origin_y+2.4), "test_distance_map_planner_2d",
-                "fill-opacity:1.0;fill:rgb(10,10,250);");
-
-    mapper.text(point_2d(origin_x + range_x - 13, origin_y+1.8), "Green: ",
-                "fill-opacity:1.0;fill:rgb(100,200,100);");
-    mapper.text(point_2d(origin_x + range_x - 10.5, origin_y+1.8), "search region",
-                "fill-opacity:1.0;fill:rgb(0,0,0);");
-
-    mapper.text(point_2d(origin_x + range_x - 13, origin_y+1.2), "Red: ",
-                "fill-opacity:1.0;fill:rgb(212,0,0);");
-    mapper.text(point_2d(origin_x + range_x - 10.5, origin_y+1.2), "original path",
-                "fill-opacity:1.0;fill:rgb(0,0,0);");
-
-    mapper.text(point_2d(origin_x + range_x - 13, origin_y+0.6), "Blue:",
-                "fill-opacity:1.0;fill:rgb(10,10,250);");
-    mapper.text(point_2d(origin_x + range_x - 10.5, origin_y+0.6), "perturbed path",
-                "fill-opacity:1.0;fill:rgb(0,0,0);");
   }
 
 };  // namespace jps

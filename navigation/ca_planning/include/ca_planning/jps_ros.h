@@ -71,17 +71,6 @@ namespace jps {
           const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan);
 
       /**
-       * @brief Given a goal pose in the world, compute a plan
-       * @param start The start pose
-       * @param goal The goal pose
-       * @param tolerance The tolerance on the goal point for the planner
-       * @param plan The plan... filled by the planner
-       * @return True if a valid plan was found, false otherwise
-       */
-      bool makePlan(const geometry_msgs::PoseStamped& start,
-          const geometry_msgs::PoseStamped& goal, double tolerance, std::vector<geometry_msgs::PoseStamped>& plan);
-
-      /**
        * @brief  Publish a path for visualization purposes
        */
       void publishPlan(const std::vector<geometry_msgs::PoseStamped>& path, double r, double g, double b, double a);
@@ -91,8 +80,6 @@ namespace jps {
       bool makePlanService(nav_msgs::GetPlan::Request& req, nav_msgs::GetPlan::Response& resp);
 
       void poseCallback(const geometry_msgs::PoseStamped::ConstPtr& goal);
-
-      void drawSolution(const Vec2f& start, const Vec2f& goal, const vec_Vec2f& path_jps/*, const vec_Vec2f& path_dist*/);
 
     protected:
 
@@ -108,21 +95,16 @@ namespace jps {
       std::shared_ptr<DMPlanner2D> dmp_planner_;
 
       ros::Publisher plan_pub_;
-      ros::Publisher global_map_pub_;
-      ros::Publisher raw_path_pub_;
-      ros::Publisher dmp_path_pub_;
+      ros::Publisher jps_path_pub_;
       ros::Subscriber pose_sub_;
       bool initialized_;
 
     private:
       void mapToWorld(double mx, double my, double& wx, double& wy);
       void clearRobotCell(const geometry_msgs::PoseStamped& global_pose, unsigned int mx, unsigned int my);
-      void initializeOccupancyGrid();
-      double default_tolerance_;
       bool debug_;
       boost::mutex mutex_;
       ros::ServiceServer make_plan_srv_;
       std::string global_frame_;
-      nav_msgs::OccupancyGrid og;
   };
 };
