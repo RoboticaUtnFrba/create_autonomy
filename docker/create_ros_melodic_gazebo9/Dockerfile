@@ -50,6 +50,11 @@ ENV CI=true
 RUN /bin/bash ${IMU_SCRIPT}
 RUN rm -r ${IMU_SCRIPT}
 
+# Install the latest Intel® RealSense™ SDK 2.0
+RUN apt-key adv --keyserver keys.gnupg.net --recv-key F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE || apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE
+RUN add-apt-repository "deb http://realsense-hw-public.s3.amazonaws.com/Debian/apt-repo $(lsb_release -sc) main" -u
+RUN apt-get install -y librealsense2-dkms librealsense2-utils librealsense2-dev
+
 # Install dependencies with vcs
 # http://wiki.ros.org/catkin/Tutorials/using_a_workspace#Installing_Packages
 ENV DEPS_WS=/deps_ws

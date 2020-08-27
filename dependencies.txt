@@ -22,6 +22,8 @@ ros-*-map-server
 ros-*-move-base
 ros-*-move-base-flex
 ros-*-openni2-launch
+ros-*-realsense2-camera
+ros-*-realsense2-description
 ros-*-robot-localization
 ros-*-rplidar-ros
 ros-*-sbpl-lattice-planner
