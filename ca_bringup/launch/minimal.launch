@@ -42,6 +42,7 @@
 
     <!-- Mapping sensors -->
     <include if="$(eval arg('laser')=='astra')"     file="$(find ca_camera)/launch/orbbec_astra_pro.launch"/>
+    <include if="$(eval arg('laser')=='d435')"      file="$(find ca_camera)/launch/d435.launch"/>
     <include if="$(eval arg('laser')=='kinect')"    file=""/>
     <include if="$(eval arg('laser')=='r200')"      file="$(find ca_camera)/launch/realsense_r200.launch"/>
     <include if="$(eval arg('laser')=='rplidar')"   file="$(find ca_camera)/launch/rplidar_a2.launch"/>

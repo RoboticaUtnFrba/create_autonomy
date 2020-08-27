@@ -41,6 +41,16 @@ def run_dev_environment(command, ros="melodic", gazebo="9"):
     # USB devices for the real robot
     docker_args.append(ut.mount_resource("/dev/roomba"))
     docker_args.append(ut.mount_resource("/dev/rplidar"))
+    docker_args.append(ut.mount_resource("/dev/video0"))
+    docker_args.append(ut.mount_resource("/dev/video1"))
+    docker_args.append(ut.mount_resource("/dev/video2"))
+    docker_args.append(ut.mount_resource("/dev/video3"))
+    docker_args.append(ut.mount_resource("/dev/video4"))
+    docker_args.append(ut.mount_resource("/dev/video5"))
+    docker_args.append(ut.mount_resource("/dev/video6"))
+    docker_args.append(ut.mount_resource("/dev/video7"))
+    docker_args.append(ut.mount_resource("/dev/video8"))
+    docker_args.append(ut.mount_resource("/dev/video9"))
 
     # To allow installing packages
     docker_args.append("--group-add=sudo")

@@ -5,6 +5,7 @@ find_package(catkin REQUIRED COMPONENTS
   astra_camera
   camera_calibration
   openni2_launch
+  realsense2_camera
 	rplidar_ros
 )
 
