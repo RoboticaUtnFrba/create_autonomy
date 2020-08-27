@@ -6,6 +6,14 @@ astra:
     xyz: [0, 0, 0]
     rpy: [0, 0, 0]
 
+d435:
+  rgb:
+    xyz: [0, 0, 0]
+    rpy: [0, 0, 0]
+  depth:
+    xyz: [0, 0, 0]
+    rpy: [0, 0, 0]
+
 kinect:
   rgb:
     xyz: [0, 0, 0]
