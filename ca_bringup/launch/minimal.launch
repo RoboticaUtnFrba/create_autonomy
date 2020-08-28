@@ -12,8 +12,6 @@
   <arg name="rviz"  default="$(optenv RVIZ false)" doc="Flag to use RViz"/>
   <arg name="imu"   default="$(optenv IMU true)"   doc="Flag to use the IMU MPU9255"/>
 
-  <param name="tf_prefix" value="create$(arg robot_id)_tf" />
-
   <!-- Controllers -->
   <include file="$(find ca_node)/launch/create_2.launch"      unless="$(arg ros_control)"/>
   <include file="$(find ca_control)/launch/control_hw.launch" if="$(arg ros_control)"/>
