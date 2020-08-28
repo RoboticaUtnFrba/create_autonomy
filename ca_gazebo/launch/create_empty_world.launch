@@ -16,18 +16,25 @@
 		<arg name="world_name"   value="$(find ca_gazebo)/worlds/$(arg env).world"/>
 	</include>
 
-	<group if="$(eval arg('env')=='empty')">
-			<param name="create1/amcl/initial_pose_x" value="0"/>
-			<param name="create1/amcl/initial_pose_y" value="0"/>
-			<param name="create1/amcl/initial_pose_a" value="0"/>
-			<param name="create2/amcl/initial_pose_x" value="2"/>
-			<param name="create2/amcl/initial_pose_y" value="0"/>
-			<param name="create2/amcl/initial_pose_a" value="1.5708"/>
-	</group>
+	<arg name="pose1_x" default="0"/>
+	<arg name="pose1_y" default="0"/>
+	<arg name="pose1_Y" default="0"/>
+
+	<arg name="pose2_x" default="1"/>
+	<arg name="pose2_y" default="1"/>
+	<arg name="pose2_Y" default="0"/>
 
 	<!-- Spawn robot/s -->
-	<include file="$(find ca_gazebo)/launch/spawn_multirobot.launch">
-    <arg name="env"          value="$(arg env)"/>
+	<include file="$(find ca_gazebo)/launch/include/spawn_multirobot.launch">
+    <arg name="env" value="$(arg env)"/>
+
+		<arg name="pose1_x" default="$(arg pose1_x)"/>
+		<arg name="pose1_y" default="$(arg pose1_y)"/>
+		<arg name="pose1_Y" default="$(arg pose1_Y)"/>
+
+		<arg name="pose2_x" default="$(arg pose2_x)"/>
+		<arg name="pose2_y" default="$(arg pose2_y)"/>
+		<arg name="pose2_Y" default="$(arg pose2_Y)"/>
 	</include>
 
 </launch>

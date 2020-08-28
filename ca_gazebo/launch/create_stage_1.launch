@@ -1,13 +1,13 @@
 <launch>
-  <param name="create1/amcl/initial_pose_x" value="-1"/>
-  <param name="create1/amcl/initial_pose_y" value="1"/>
-  <param name="create1/amcl/initial_pose_a" value="0"/>
-
-  <param name="create2/amcl/initial_pose_x" value="1"/>
-  <param name="create2/amcl/initial_pose_y" value="-1"/>
-  <param name="create2/amcl/initial_pose_a" value="1.5708"/>
-
   <include file="$(find ca_gazebo)/launch/create_empty_world.launch">
     <arg name="env" value="stage_1"/>
+
+    <arg name="pose1_x" value="-1"/>
+    <arg name="pose1_y" value="1"/>
+    <arg name="pose1_Y" value="0"/>
+
+    <arg name="pose2_x" value="1"/>
+    <arg name="pose2_y" value="-1"/>
+    <arg name="pose2_Y" value="1.5708"/>
   </include>
 </launch>
