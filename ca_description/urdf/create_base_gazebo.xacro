@@ -70,7 +70,6 @@
         <contact>
           <collision>bumper_link_collision</collision>
         </contact>
-        <!-- Plugin -->
         <plugin name="create_bumper_controller" filename="libcreate_bumper_plugin.so">
           <frameName>base_footprint</frameName>
           <robotNamespace>${robot_name}</robotNamespace>

@@ -37,6 +37,7 @@ set(PLUGIN_LIST
   create_bumper_plugin
   create_cliff_plugin
   create_diff_drive
+  create_imu_plugin
   create_virtual_wall_plugin
   model_pose_publisher_plugin
   traffic_light_plugin
