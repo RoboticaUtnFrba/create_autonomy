@@ -20,6 +20,8 @@
  * Date: 1 June 2008
  */
 
+#include <string>
+
 #include <ca_gazebo/create_imu_plugin.h>
 
 namespace gazebo
@@ -146,8 +148,8 @@ void GazeboRosCreateIMU::LoadThread()
 
 ////////////////////////////////////////////////////////////////////////////////
 // returns true always, imu is always calibrated in sim
-bool GazeboRosCreateIMU::ServiceCallback(std_srvs::Empty::Request &req,
-                                        std_srvs::Empty::Response &res)
+bool GazeboRosCreateIMU::ServiceCallback(const std_srvs::Empty::Request &req,
+                                         const std_srvs::Empty::Response &res)
 {
   return true;
 }
@@ -310,4 +312,4 @@ void GazeboRosCreateIMU::IMUQueueThread()
     this->imu_queue_.callAvailable(ros::WallDuration(timeout));
   }
 }
-}
+}  // namespace gazebo
