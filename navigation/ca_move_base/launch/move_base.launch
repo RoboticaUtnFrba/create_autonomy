@@ -1,9 +1,6 @@
 <launch>
-  <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
-  <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
-  <arg name="tf_prefix" value="$(arg ns)_tf"          doc="Tf prefix"/>
-
-  <arg name="laser" value="$(optenv LASER rplidar)" doc="Laser for mapping the environment"/>
+  <arg name="ns"    default="create1"                 doc="Namespace of the robot"/>
+  <arg name="laser" default="$(optenv LASER rplidar)" doc="Laser for mapping the environment"/>
 
   <arg name="global_planner" value="$(optenv GLOBAL_PLANNER gbp)"/>
   <arg name="local_planner"  value="$(optenv LOCAL_PLANNER teb)"/>
@@ -18,29 +15,27 @@
     <rosparam file="$(find ca_move_base)/config/$(arg local_planner)_local_planner_params.yaml" command="load" />
     <rosparam file="$(find ca_move_base)/config/move_base_params.yaml" command="load" />
 
-    <!-- We want a single map for multi-robots -->
-    <remap from="map" to="/map"/>
-    <remap from="scan" to="$(arg laser)/scan"/>
+    <remap from="map"     to="/map"/>
+    <remap from="scan"    to="$(arg laser)/scan"/>
+    <remap from="odom"    to="odom_combined"/>
+    <remap from="cmd_vel" to="cmd_vel"/>
     <!-- <remap from="/mobile_base/sensors/bumper_pointcloud"
            to="mobile_base/sensors/bumper_pointcloud"/> -->
 
-    <remap from="odom" to="/$(arg ns)/odom_combined"/>
-    <remap from="cmd_vel" to="/$(arg ns)/cmd_vel"/>
-
     <!-- Remap frames for specific robots -->
-    <param name="local_costmap/robot_base_frame" value="$(arg tf_prefix)/base_footprint"/>
-    <param name="local_costmap/global_frame" value="$(arg tf_prefix)/odom"/>
-    <param name="local_costmap/obstacle_layer/scan/sensor_frame" value="$(arg tf_prefix)/laser_link"/>
+    <param name="local_costmap/robot_base_frame" value="$(arg ns)/base_footprint"/>
+    <param name="local_costmap/global_frame" value="$(arg ns)/odom"/>
+    <param name="local_costmap/obstacle_layer/scan/sensor_frame" value="$(arg ns)/laser_link"/>
     <param name="local_costmap/obstacle_layer/scan/topic"  value="/$(arg ns)/$(arg laser)/scan"/>
 
-    <param name="global_costmap/robot_base_frame" value="$(arg tf_prefix)/base_footprint"/>
+    <param name="global_costmap/robot_base_frame" value="$(arg ns)/base_footprint"/>
     <param name="global_costmap/global_frame" value="map"/>
     <param name="global_costmap/static_layer/map_topic"  value="/map"/>
-    <param name="global_costmap/obstacle_layer/scan/sensor_frame" value="$(arg tf_prefix)/$(arg laser)_link"/>
+    <param name="global_costmap/obstacle_layer/scan/sensor_frame" value="$(arg ns)/$(arg laser)_link"/>
     <param name="global_costmap/obstacle_layer/scan/topic" value="/$(arg ns)/$(arg laser)/scan"/>
 
     <param name="SBPLLatticePlanner/primitive_filename" value="$(find ca_move_base)/config/matlab/turtle.mprim" />
-    <param name="DWAPlannerROS/global_frame_id"  value="$(arg tf_prefix)/odom"/>
+    <param name="DWAPlannerROS/global_frame_id"  value="$(arg ns)/odom"/>
   </node>
 
 </launch>

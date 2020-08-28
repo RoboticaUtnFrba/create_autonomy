@@ -1,32 +1,34 @@
 <launch>
-  <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
-  <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
-  <arg name="tf_prefix" value="$(arg ns)_tf"          doc="Tf prefix"/>
-
+  <arg name="id"    default="$(optenv ID 1)"          doc="Unique identifier of the robot [1-Inf.)"/>
+  <arg name="ns"    value="create$(arg id)"           doc="Namespace of the robot"/>
   <arg name="laser" default="$(optenv LASER rplidar)" doc="Laser for mapping the environment"/>
-  <arg name="env" default="empty" doc="Name of the environment"/>
-	<arg name="localization" default="$(optenv LOCALIZATION none)"
+  <arg name="env"   default="empty"                   doc="Name of the environment"/>
+
+  <arg name="localization" default="$(optenv LOCALIZATION none)"
        doc="Localization type. More options here: https://github.com/RoboticaUtnFrba/create_autonomy/wiki/Launching-options"/>
 
   <include file="$(find ca_bringup)/launch/minimal.launch">
-    <arg name="laser"    value="$(arg laser)"/>
-    <arg name="robot_id" value="$(arg robot_id)"/>
+    <arg name="id"    value="$(arg id)"/>
+    <arg name="laser" value="$(arg laser)"/>
   </include>
 
   <group ns="$(arg ns)">
     <include file="$(find ca_slam)/launch/depthimage_to_laserscan.launch">
-      <arg name="laser"    value="$(arg laser)"/>
-      <arg name="robot_id" value="$(arg robot_id)"/>
+      <arg name="id"    value="$(arg id)"/>
+      <arg name="laser" value="$(arg laser)"/>
     </include>
 
-  <!-- Localization node -->
-  <include file="$(find ca_localization)/launch/localize.launch"/>
+    <!-- Localization node -->
+    <include file="$(find ca_localization)/launch/localize.launch">
+      <arg name="ns" value="$(arg ns)"/>
+    </include>
 
     <!-- Navigation stack -->
     <include file="$(find ca_move_base)/launch/navigate.launch">
       <arg name="env"          value="$(arg env)"/>
+      <arg name="id"           value="$(arg id)"/>
+      <arg name="laser"        value="$(arg laser)"/>
       <arg name="localization" value="$(arg localization)"/>
-      <arg name="robot_id"     value="$(arg robot_id)"/>
     </include>
   </group>
 </launch>

@@ -1,8 +1,5 @@
 <launch>
-  <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
-  <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
-  <arg name="tf_prefix" value="$(arg ns)_tf"          doc="Tf prefix"/>
-
+  <arg name="ns"    default="create1"                 doc="Namespace of the robot"/>
   <arg name="laser" default="$(optenv LASER rplidar)" doc="Laser for mapping the environment"/>
 
   <node name="cartographer_node" pkg="cartographer_ros" type="cartographer_node"
@@ -10,7 +7,7 @@
               -configuration_basename mapping_2d.lua
               -transform_tolerance 0.15">
 
-    <env name="tf_prefix" value="$(arg tf_prefix)"/>
+    <env name="tf_prefix" value="$(arg ns)"/>
 
     <remap from="scan" to="$(arg laser)/scan" />
     <remap from="imu"  to="imu/data" />

@@ -31,7 +31,7 @@ class TfCheckerTests(unittest.TestCase):
     try:
       self.assertRaises(
         self.buffer.lookup_transform(
-          'create1_tf/base_link', 'create1_tf/base_footprint',
+          'create1/base_link', 'create1/base_footprint',
           rospy.Time(), rospy.Duration(5)
         )
       )
@@ -45,7 +45,7 @@ class TfCheckerTests(unittest.TestCase):
     for parent in self.tf_tree:
       for child in self.tf_tree[parent]:
         rospy.loginfo("Checking Tf {} --> {}".format(parent, child))
-        self.check_tree('create1_tf/' + parent, 'create1_tf' + child)
+        self.check_tree('create1/' + parent, 'create1' + child)
 
 if __name__ == '__main__':
   rostest.rosrun(PKG, NAME, TfCheckerTests, sys.argv)

@@ -1,8 +1,5 @@
 <launch>
-  <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
-  <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
-  <arg name="tf_prefix" value="$(arg ns)_tf"          doc="Tf prefix"/>
-
+  <arg name="ns"    default="create1"                 doc="Namespace of the robot"/>
   <arg name="laser" default="$(optenv LASER rplidar)" doc="Laser for mapping the environment"/>
 
   <arg name="env" doc="Name of the environment that is used to load the pbstream map"/>
@@ -13,7 +10,7 @@
               -configuration_basename localization_2d.lua
               -load_state_filename $(arg load_state_filename)">
     <!-- ID needs to be set through environment variable to allow lua script to read it -->
-    <env name="tf_prefix" value="$(arg tf_prefix)" />
+    <env name="ns" value="$(arg ns)" />
 
     <remap from="scan" to="$(arg laser)/scan" />
     <remap from="imu"  to="imu/data" />

@@ -1,4 +1,6 @@
 <launch>
+  <arg name="ns" default="create1" doc="Namespace of the robot"/>
+
   <arg name="use_nodelets"    default="$(optenv NODELET true)" doc="Use nodelets: http://wiki.ros.org/nodelet" />
   <arg name="nodelet_manager" value="nodelet_manager" />
 
@@ -8,6 +10,10 @@
     <rosparam command="load" file="$(find ca_localization)/config/ekf_localization.yaml"/>
     <rosparam command="load" file="$(find ca_localization)/config/ekf_odom.yaml"/>
     <rosparam command="load" file="$(find ca_localization)/config/ekf_imu.yaml"/>
+
+    <param name="odom_frame"      value="$(arg ns)/odom"/>
+    <param name="base_link_frame" value="$(arg ns)/base_footprint"/>
+    <param name="world_frame"     value="$(arg ns)/odom"/>
 
     <remap from="odometry/filtered" to="odom_combined"/>
   </node>
@@ -20,10 +26,10 @@
     <rosparam command="load" file="$(find ca_localization)/config/ekf_odom.yaml"/>
     <rosparam command="load" file="$(find ca_localization)/config/ekf_imu.yaml"/>
 
+    <param name="odom_frame"      value="$(arg ns)/odom"/>
+    <param name="base_link_frame" value="$(arg ns)/base_footprint"/>
+    <param name="world_frame"     value="$(arg ns)/odom"/>
+
     <remap from="odometry/filtered" to="odom_combined"/>
   </node>
-
-  <!-- RViz -->
-  <arg name="rviz" default="false"/>
-  <include if="$(arg rviz)" file="$(find ca_tools)/launch/rviz.launch"/>
 </launch>

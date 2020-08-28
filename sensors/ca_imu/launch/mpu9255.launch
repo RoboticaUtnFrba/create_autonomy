@@ -1,20 +1,18 @@
 <?xml version="1.0"?>
 <launch>
-	<arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
-  <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
-	<arg name="tf_prefix" value="$(arg ns)_tf"          doc="Tf prefix"/>
+  <arg name="ns" default="create1" doc="Namespace of the robot"/>
 
 	<node name="imu_filter_madgwick" pkg="imu_filter_madgwick" type="imu_filter_node" output="screen">
 		<rosparam file="$(find ca_imu)/config/madgwick_filter.yaml" command="load"/>
 
-		<param name="fixed_frame" value="$(arg tf_prefix)/imu_link"/>
+		<param name="fixed_frame" value="$(arg ns)/imu_link"/>
 	</node>
 
 	<node name="i2c_imu_node" pkg="i2c_imu" type="i2c_imu_node" output="screen" required="true">
 
 			<param name="settings_directory" type="str" value="$(find ca_imu)/config"/>
 			<param name="settings_filename"  type="str" value="$(arg ns)"/>
-			<param name="frame_id" value="$(arg tf_prefix)/imu_link"/>
+			<param name="frame_id" value="$(arg ns)/imu_link"/>
 
 			<rosparam file="$(find ca_imu)/config/mpu9255.yaml" command="load"/>
 

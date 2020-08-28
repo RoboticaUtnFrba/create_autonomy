@@ -43,7 +43,7 @@ public:
     int baud;
     priv_nh_.param<std::string>("dev", dev, "/dev/ttyUSB0");
     priv_nh_.param<int>("baud", baud, 115200);
-    priv_nh_.param<std::string>("tf_prefix", tf_prefix_, "create1_tf");
+    priv_nh_.param<std::string>("tf_prefix", tf_prefix_, "");
 
     robot_.reset(new create::Create(model_));
 

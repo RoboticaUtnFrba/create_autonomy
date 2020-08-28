@@ -1,21 +1,20 @@
 <launch>
-  <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
-  <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
+  <arg name="ns" default="create1" doc="Namespace of the robot"/>
 
-  <arg name="env"       default="empty"               doc="Name of the environment"/>
-  <arg name="pose_x"    default="0"                   doc=""/>
-  <arg name="pose_y"    default="0"                   doc=""/>
-  <arg name="pose_Y"    default="0"                   doc=""/>
+  <arg name="env"    default="empty" doc="Name of the environment"/>
+  <arg name="pose_x" default="0"     doc="Pose X"/>
+  <arg name="pose_y" default="0"     doc="Pose Y"/>
+  <arg name="pose_Y" default="0"     doc="Pose Yaw"/>
 
   <arg name="enable_ros_control" value="$(optenv ROS_CONTROL false)" doc="Enable ros_control"/>
   <arg name="use_nodelets" default="$(optenv NODELET true)"
-			 doc="Use nodelets: http://wiki.ros.org/nodelet" />
+       doc="Use nodelets: http://wiki.ros.org/nodelet" />
   <arg name="localization" default="$(optenv LOCALIZATION none)"
        doc="Localization type. More options here: https://github.com/RoboticaUtnFrba/create_autonomy/wiki/Launching-options"/>
 
   <!-- Create 2 description -->
   <include file="$(find ca_description)/launch/create_description.launch">
-    <arg name="robot_id" value="$(arg robot_id)"/>
+    <arg name="ns" value="$(arg ns)"/>
   </include>
 
   <!-- Spawn URDF into Gazebo -->
@@ -25,14 +24,16 @@
 
   <!-- Running Gazebo (non-nodelet) version of depthimage_to_laserscan for 3D cameras -->
   <include file="$(find ca_slam)/launch/depthimage_to_laserscan_gazebo.launch">
-    <arg name="robot_id" value="$(arg robot_id)"/>
+    <arg name="ns" value="$(arg ns)"/>
   </include>
 
   <!-- ros_control -->
-	<include file="$(find ca_control)/launch/control_common.launch" if="$(arg enable_ros_control)"/>
+  <include file="$(find ca_control)/launch/control_common.launch" if="$(arg enable_ros_control)">
+    <arg name="ns" value="$(arg ns)"/>
+  </include>
 
   <!-- Nodelet manager -->
-	<node pkg="nodelet" type="nodelet" name="nodelet_manager" args="manager" if="$(arg use_nodelets)"/>
+  <node pkg="nodelet" type="nodelet" name="nodelet_manager" args="manager" if="$(arg use_nodelets)"/>
 
   <!-- Localization pose -->
   <param name="$(arg localization)/initial_pose_x" value="$(arg pose_x)"/>
@@ -41,7 +42,7 @@
 
   <!-- Localization -->
   <include file="$(find ca_localization)/launch/localize.launch">
-    <arg name="robot_id" value="$(arg robot_id)"/>
+    <arg name="ns" value="$(arg ns)"/>
   </include>
 
   <!-- Navigation -->
@@ -49,7 +50,7 @@
            file="$(find ca_move_base)/launch/navigate.launch">
     <arg name="env"          value="$(arg env)"/>
     <arg name="localization" value="$(arg localization)"/>
-    <arg name="robot_id"     value="$(arg robot_id)"/>
+    <arg name="ns"     value="$(arg ns)"/>
   </include>
 
 </launch>

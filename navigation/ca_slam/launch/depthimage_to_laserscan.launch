@@ -1,18 +1,16 @@
 <launch>
-  <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
-  <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
-  <arg name="tf_prefix" value="$(arg ns)_tf"          doc="Tf prefix"/>
-
+  <arg name="ns"    default="create1"                 doc="Namespace of the robot"/>
   <arg name="laser" default="$(optenv LASER rplidar)" doc="Laser for mapping the environment"/>
 
   <group if="$(eval arg('laser')!='rplidar')">
-    <!-- push depthimage_to_laserscan nodelet into sensor's nodelet manager-->
-    <node pkg="nodelet" type="nodelet" name="depthimage_to_laserscan" output="screen" ns="$(arg laser)" args="load depthimage_to_laserscan/DepthImageToLaserScanNodelet $(arg laser)_nodelet_manager">
-      <remap from="image" to="depth/image_raw"/>
+    <!-- push depthimage_to_laserscan nodelet into nodelet manager-->
+    <node pkg="nodelet" type="nodelet" name="depthimage_to_laserscan" output="screen" ns="$(arg laser)"
+          args="load depthimage_to_laserscan/DepthImageToLaserScanNodelet nodelet_manager">
+      <remap from="image"       to="depth/image_raw"/>
       <remap from="camera_info" to="depth/camera_info"/>
-      <remap from="scan" to="scan"/>
+      <remap from="scan"        to="scan"/>
       <rosparam file="$(find ca_slam)/config/depthimage_to_laserscan.yaml" command="load"/>
-      <param name="output_frame_id" type="string" value="$(arg tf_prefix)/$(arg laser)_link"/>
+      <param name="output_frame_id" type="string" value="$(arg ns)/$(arg laser)_link"/>
     </node>
   </group>
 </launch>

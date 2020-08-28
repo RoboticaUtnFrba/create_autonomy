@@ -1,0 +1,6 @@
+<launch>
+  <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+    <arg name="camera"          value="d435"/>
+    <arg name="publish_odom_tf" value="false"/>
+  </include>
+</launch>

@@ -37,7 +37,3 @@ publish_tf: true
 
 # Whether to publish the acceleration state. Defaults to false if unspecified.
 publish_acceleration: false
-
-odom_frame: odom
-base_link_frame: base_footprint
-world_frame: odom

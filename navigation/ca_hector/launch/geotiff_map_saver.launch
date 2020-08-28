@@ -3,8 +3,8 @@
 <launch>
 
   <!-- Create and robot number identifiers -->
-  <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
-  <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
+  <arg name="id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
+  <arg name="ns"        value="create$(arg id)" doc="Namespace of the robot. By default: create1"/>
 
   <node pkg="rostopic" type="rostopic" name="hector_geotiff_map_saver"
     args="pub $(arg ns)/syscommand std_msgs/String 'savegeotiff'" output="screen"/>

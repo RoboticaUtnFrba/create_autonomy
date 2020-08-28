@@ -7,8 +7,8 @@
    -->
   <arg name="args"/>
 
-  <arg name="robot_id" default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
-  <arg name="ns"       value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
+  <arg name="id" default="$(optenv ID 1)" doc="Unique identifier of the robot [1-Inf.)"/>
+  <arg name="ns" value="create$(arg id)"  doc="Namespace of the robot"/>
 
   <node pkg="ca_tools" type="move_square.py" name="move_square"
         output="screen" ns="$(arg ns)"

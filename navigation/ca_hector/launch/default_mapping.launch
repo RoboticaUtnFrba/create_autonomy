@@ -18,24 +18,21 @@ rosrun map_server map_saver -f my_map
 
 <launch>
   <!-- Create and robot number identifiers -->
-  <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
-  <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
-  <arg name="tf_prefix" value="$(arg ns)_tf"          doc="Tf prefix"/>
-
-  <arg name="laser" value="$(optenv LASER rplidar)" doc="Laser for mapping the environment"/>
+  <arg name="ns"    default="create1"                 doc="Namespace of the robot"/>
+  <arg name="laser" default="$(optenv LASER rplidar)" doc="Laser for mapping the environment"/>
 
   <node pkg="hector_mapping" type="hector_mapping" name="hector_mapping" output="screen">
     <rosparam file="$(find ca_hector)/config/hector_mapping.yaml" command="load"/>
 
     <!-- Frame names -->
-    <param name="base_frame" value="$(arg tf_prefix)/base_link" />
-    <param name="odom_frame" value="$(arg tf_prefix)/odom" />
+    <param name="base_frame" value="$(arg ns)/base_link" />
+    <param name="odom_frame" value="$(arg ns)/odom" />
 
     <!-- Advertising config -->
     <param name="scan_topic" value="$(arg laser)/scan"/>
 
     <!-- Remapping -->
-    <remap from="/$(arg ns)/map" to="/map" />
+    <remap from="/$(arg ns)/map"          to="/map" />
     <remap from="/$(arg ns)/map_metadata" to="/map_metadata"/>
   </node>
 

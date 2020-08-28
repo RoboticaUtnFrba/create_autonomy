@@ -9,10 +9,11 @@
   will probably fail.
  -->
 <launch>
-  <node pkg="nodelet" type="nodelet" name="bumper2pointcloud" args="load ca_bumper2pc/Bumper2PcNodelet nodelet_manager">
+  <node pkg="nodelet" type="nodelet" name="bumper2pointcloud"
+        args="load ca_bumper2pc/Bumper2PcNodelet nodelet_manager">
     <param name="pointcloud_radius" value="0.25"/>
-    <remap from="bumper2pointcloud/pointcloud"   to="mobile_base/sensors/bumper_pointcloud"/>
-    <remap from="bumper2pointcloud/bumper" to="bumper"/>
-    <remap from="bumper2pointcloud/cliff" to="cliff"/>
+    <remap from="bumper2pointcloud/pointcloud" to="mobile_base/sensors/bumper_pointcloud"/>
+    <remap from="bumper2pointcloud/bumper"     to="bumper"/>
+    <remap from="bumper2pointcloud/cliff"      to="cliff"/>
   </node>
 </launch>

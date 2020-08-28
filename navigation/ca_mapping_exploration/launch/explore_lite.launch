@@ -1,8 +1,9 @@
 <launch>
-    <arg name="robot_id" default="$(optenv ID 1)" doc="Unique identifier of the robot [1-Inf.)"/>
-    <arg name="ns" default="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
+  <arg name="id" default="$(optenv ID 1)"  doc="Unique identifier of the robot [1-Inf.)"/>
+  <arg name="ns" default="create$(arg id)" doc="Namespace of the robot. By default: create1."/>
 
-    <node pkg="explore_lite" type="explore" respawn="true" name="explore" output="screen" ns="$(arg ns)">
-        <rosparam command="load" file="$(find ca_mapping_exploration)/config/explore_lite.yaml"/>
-    </node>
+  <node pkg="explore_lite" type="explore" name="explore"
+        output="screen" respawn="true" ns="$(arg ns)">
+    <rosparam command="load" file="$(find ca_mapping_exploration)/config/explore_lite.yaml"/>
+  </node>
 </launch>

@@ -1,6 +1,5 @@
 <launch>
-  <arg name="robot_id" default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
-  <arg name="ns"       value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
+  <arg name="ns" default="create1" doc="Namespace of the robot"/>
 
   <group ns="$(arg ns)">
     <!-- Load robot's hw interface -->
@@ -10,6 +9,8 @@
     </node>
 
     <!-- Ros control -->
-    <include file="$(find ca_control)/launch/control_common.launch"/>
+    <include file="$(find ca_control)/launch/control_common.launch">
+      <arg name="ns" value="$(arg ns)"/>
+    </include>
   </group>
 </launch>

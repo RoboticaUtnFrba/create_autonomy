@@ -1,24 +1,24 @@
 <launch>
-  <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
-  <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
+  <arg name="id" default="$(optenv ID 1)"  doc="Unique identifier of the robot [1-Inf.)"/>
+  <arg name="ns" default="create1"         doc="Namespace of the robot"/>
 
   <arg name="use_nodelets" default="$(optenv NODELET true)"
 			 doc="Use nodelets: http://wiki.ros.org/nodelet" />
 
   <arg name="ros_control" default="$(optenv ROS_CONTROL False)" doc="Use ros_control"/>
-  <arg name="raspicam_receiver_IP" default=""         doc="Raspicam client IP"/>
+  <arg name="raspicam_receiver_IP" default="" doc="Raspicam client IP"/>
 
   <arg name="laser" default="$(optenv LASER)"      doc="Laser for mapping the environment"/>
   <arg name="rviz"  default="$(optenv RVIZ false)" doc="Flag to use RViz"/>
   <arg name="imu"   default="$(optenv IMU true)"   doc="Flag to use the IMU MPU9255"/>
 
   <!-- Controllers -->
-  <include file="$(find ca_node)/launch/create_2.launch"      unless="$(arg ros_control)"/>
-  <include file="$(find ca_control)/launch/control_hw.launch" if="$(arg ros_control)"/>
-
-  <!-- RViz -->
-  <!-- TODO: HAVE A PLACE IN COMMON WITH GAZEBO -->
-  <include if="$(arg rviz)" file="$(find ca_tools)/launch/rviz.launch"/>
+  <include file="$(find ca_node)/launch/create_2.launch" unless="$(arg ros_control)">
+    <arg name="ns" value="$(arg ns)"/>
+  </include>
+  <include file="$(find ca_control)/launch/control_hw.launch" if="$(arg ros_control)">
+    <arg name="ns" value="$(arg ns)"/>
+  </include>
 
   <!-- raspicam -->
   <!-- <include if="$(eval arg('raspicam_receiver_IP') != '')"
@@ -29,21 +29,28 @@
   <group ns="$(arg ns)">
     <!-- Robot description -->
     <include file="$(find ca_description)/launch/create_description.launch">
-      <arg name="robot_id" value="$(arg robot_id)"/>
+      <arg name="ns" value="$(arg ns)"/>
     </include>
+
+    <!-- RViz -->
+    <include if="$(arg rviz)" file="$(find ca_tools)/launch/rviz.launch"/>
 
     <!-- Nodelet manager -->
     <node pkg="nodelet" type="nodelet" name="nodelet_manager" args="manager" if="$(arg use_nodelets)"/>
 
     <!-- IMU -->
-    <include if="$(arg imu)" file="$(find ca_imu)/launch/mpu9255.launch"/>
+    <include if="$(arg imu)" file="$(find ca_imu)/launch/mpu9255.launch">
+      <arg name="ns" value="$(arg ns)"/>
+    </include>
 
     <!-- Mapping sensors -->
     <include if="$(eval arg('laser')=='astra')"     file="$(find ca_camera)/launch/orbbec_astra_pro.launch"/>
-    <include if="$(eval arg('laser')=='d435')"      file="$(find ca_camera)/launch/d435.launch"/>
-    <include if="$(eval arg('laser')=='kinect')"    file=""/>
+    <include if="$(eval arg('laser')=='d435')"      file="$(find ca_camera)/launch/realsense_d435.launch"/>
+    <include if="$(eval arg('laser')=='kinect')"    file="$(find ca_camera)/launch/microsoft_kinect.launch"/>
     <include if="$(eval arg('laser')=='r200')"      file="$(find ca_camera)/launch/realsense_r200.launch"/>
-    <include if="$(eval arg('laser')=='rplidar')"   file="$(find ca_camera)/launch/rplidar_a2.launch"/>
+    <include if="$(eval arg('laser')=='rplidar')"   file="$(find ca_camera)/launch/rplidar_a2.launch">
+      <arg name="ns" value="$(arg ns)"/>
+    </include>
     <include if="$(eval arg('laser')=='xtion_pro')" file="$(find ca_camera)/launch/asus_xtion_pro.launch"/>
   </group>
 </launch>

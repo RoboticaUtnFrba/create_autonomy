@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
-  <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
+  <arg name="ns" default="create1" doc="Namespace of the robot"/>
 
   <node name="ca_driver" pkg="ca_driver" type="ca_driver" output="screen">
     <rosparam command="load" file="$(find ca_driver)/config/default.yaml"/>
-    <param name="namespace" value="$(arg ns)"/>
+    <param name="namespace"  value="$(arg ns)"/>
+    <param name="tf_prefix"  value="$(arg ns)"/>
   </node>
 </launch>

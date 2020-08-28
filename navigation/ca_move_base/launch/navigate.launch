@@ -1,51 +1,39 @@
 <launch>
-  <arg name="robot_id"  default="$(optenv ID 1)"        doc="Unique identifier of the robot [1-Inf.)"/>
-  <arg name="laser"     value="$(optenv LASER rplidar)" doc="Laser for mapping the environment"/>
+  <arg name="ns"    default="create1"                 doc="Namespace of the robot"/>
+  <arg name="laser" default="$(optenv LASER rplidar)" doc="Laser for mapping the environment"/>
 
   <arg name="localization" doc="Autonomous method for localization/navigation."/>
-  <arg name="navigation" value="$(optenv NAVIGATION move_base)" doc="Navigation framework to use"/>
+  <arg name="navigation"   value="$(optenv NAVIGATION move_base)" doc="Navigation framework to use"/>
   <arg name="env"/>
 
   <!-- Bumper to point cloud -->
 	<include file="$(find ca_bumper2pc)/launch/standalone.launch"/>
 
+  <!--
+    #######################
+          NAVIGATION
+    #######################
+    -->
+
   <!-- move_base -->
   <include if="$(eval arg('navigation')=='move_base')"
            file="$(find ca_move_base)/launch/move_base.launch">
-    <arg name="robot_id" value="$(arg robot_id)"/>
+    <arg name="ns"    value="$(arg ns)"/>
+    <arg name="laser" value="$(arg laser)"/>
   </include>
 
   <!-- move_base flex -->
   <include if="$(eval arg('navigation')=='mbf')"
            file="$(find ca_move_base)/launch/move_base_flex.launch">
-    <arg name="robot_id" value="$(arg robot_id)"/>
+    <arg name="ns"    value="$(arg ns)"/>
+    <arg name="laser" value="$(arg laser)"/>
   </include>
 
-	<!-- AMCL -->
-  <include if="$(eval arg('localization')=='amcl')"
-           file="$(find ca_move_base)/launch/amcl.launch">
-    <arg name="robot_id" value="$(arg robot_id)"/>
-  </include>
-
-  <!-- slam_gmapping -->
-  <include if="$(eval arg('localization')=='slam')"
-           file="$(find ca_slam)/launch/slam_gmapping.launch">
-    <arg name="robot_id" value="$(arg robot_id)"/>
-  </include>
-
-  <!-- Cartographer Stack -->
-  <!-- Pure Localization -->
-  <include if="$(eval arg('localization')=='pure_localization')"
-           file="$(find ca_cartographer)/launch/pure_localization.launch">
-    <arg name="env"      value="$(arg env)"/>
-    <arg name="robot_id" value="$(arg robot_id)"/>
-  </include>
-
-  <!-- Cartographer Mapping -->
-  <include if="$(eval arg('localization')=='cartographer')"
-           file="$(find ca_cartographer)/launch/mapping_cartographer.launch">
-    <arg name="robot_id" value="$(arg robot_id)"/>
-  </include>
+  <!--
+    #######################
+          LOCALIZATION
+    #######################
+    -->
 
   <!-- map_server for localization -->
   <include if="$(eval arg('localization')=='amcl' or arg('localization')=='lama')"
@@ -53,10 +41,51 @@
     <arg name="env" value="$(arg env)"/>
   </include>
 
+	<!-- AMCL -->
+  <include if="$(eval arg('localization')=='amcl')"
+           file="$(find ca_move_base)/launch/amcl.launch">
+    <arg name="ns"    value="$(arg ns)"/>
+    <arg name="laser" value="$(arg laser)"/>
+  </include>
+
+  <!-- Cartographer Stack -->
+  <!-- Pure Localization -->
+  <include if="$(eval arg('localization')=='pure_localization')"
+           file="$(find ca_cartographer)/launch/pure_localization.launch">
+    <arg name="env" value="$(arg env)"/>
+    <arg name="ns"  value="$(arg ns)"/>
+  </include>
+
+  <!-- LAMA -->
+  <include if="$(eval arg('localization')=='lama')"
+           file="$(find ca_move_base)/launch/lama.launch">
+    <arg name="ns"    value="$(arg ns)"/>
+    <arg name="laser" value="$(arg laser)"/>
+  </include>
+
+  <!--
+    #######################
+            MAPPING
+    #######################
+    -->
+
+  <!-- Cartographer Mapping -->
+  <include if="$(eval arg('localization')=='cartographer')"
+           file="$(find ca_cartographer)/launch/mapping_cartographer.launch">
+    <arg name="ns"    value="$(arg ns)"/>
+    <arg name="laser" value="$(arg laser)"/>
+  </include>
+
+  <!-- slam_gmapping -->
+  <include if="$(eval arg('localization')=='slam')"
+           file="$(find ca_slam)/launch/slam_gmapping.launch">
+    <arg name="ns"    value="$(arg ns)"/>
+    <arg name="laser" value="$(arg laser)"/>
+  </include>
+
   <!-- Octomap mapping -->
   <include if="$(eval arg('localization')=='octomap')"
            file="$(find ca_move_base)/launch/octomap_mapping.launch"/>
-
 
   <!-- Hector SLAM -->
   <include if="$(eval arg('localization')=='hector_mapping')"
@@ -67,12 +96,6 @@
   <include if="$(eval arg('localization')=='hector_geotiff')"
            file="$(find ca_hector)/launch/geotiff_mapping.launch">
     <arg name="env"      value="$(arg env)"/>
-  </include>
-
-  <!-- LAMA -->
-  <include if="$(eval arg('localization')=='lama')"
-           file="$(find ca_move_base)/launch/lama.launch">
-    <arg name="robot_id" value="$(arg robot_id)"/>
   </include>
 
 </launch>

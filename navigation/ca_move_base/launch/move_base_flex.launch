@@ -1,8 +1,5 @@
 <launch>
-  <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
-  <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
-  <arg name="tf_prefix" value="$(arg ns)_tf"          doc="Tf prefix"/>
-
+  <arg name="ns"    default="create1"                 doc="Namespace of the robot"/>
   <arg name="laser" default="$(optenv LASER rplidar)" doc="Laser for mapping the environment"/>
 
   <arg name="global_planner" value="$(optenv GLOBAL_PLANNER gbp)"/>
@@ -23,26 +20,26 @@
 
     <rosparam file="$(find ca_move_base)/config/$(arg local_planner)_local_planner_params.yaml" command="load" />
 
-    <!-- We want a single map for multi-robots -->
-    <remap from="map" to="/map"/>
-    <remap from="/laser/scan" to="$(arg laser)/scan"/>
+    <remap from="map"        to="/map"/>
+    <remap from="laser/scan" to="$(arg laser)/scan"/>
+    <remap from="odom"       to="odom_combined"/>
+    <remap from="cmd_vel"    to="cmd_vel"/>
     <!-- <remap from="/mobile_base/sensors/bumper_pointcloud"
            to="mobile_base/sensors/bumper_pointcloud"/> -->
 
     <!-- Remap frames for specific robots -->
-    <param name="local_costmap/robot_base_frame" value="$(arg tf_prefix)/base_link"/>
-    <param name="global_costmap/robot_base_frame" value="$(arg tf_prefix)/base_link"/>
-    <param name="local_costmap/global_frame" value="$(arg tf_prefix)/odom"/>
+    <param name="local_costmap/robot_base_frame" value="$(arg ns)/base_link"/>
+    <param name="global_costmap/robot_base_frame" value="$(arg ns)/base_link"/>
+    <param name="local_costmap/global_frame" value="$(arg ns)/odom"/>
     <param name="global_costmap/global_frame" value="map"/>
-    <param name="local_costmap/obstacle_layer/scan/sensor_frame" value="$(arg tf_prefix)/laser_link"/>
+    <param name="local_costmap/obstacle_layer/scan/sensor_frame" value="$(arg ns)/laser_link"/>
 
-    <param name="robot_frame" value="$(arg tf_prefix)/base_link"/>
+    <param name="robot_frame" value="$(arg ns)/base_link"/>
 
     <param name="global_costmap/obstacle_layer/scan/topic" value="$(arg laser)/scan"/>
     <param name="local_costmap/obstacle_layer/scan/topic"  value="$(arg laser)/scan"/>
 
     <param name="tf_timeout" value="1.5"/>
-
   </node>
 
   <node pkg="mbf_costmap_nav" type="move_base_legacy_relay.py" name="move_base_adapter" output="screen">

@@ -1,11 +1,8 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
-  <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
-
   <node type="rviz" name="rviz" pkg="rviz" required="false"
         args="-d $(find ca_tools)/rviz/config.rviz
               -s $(find ca_tools)/rviz/utn_logo.png">
-    <remap from="/move_base_simple/goal" to="/$(arg ns)/move_base_simple/goal"/>
+    <remap from="/move_base_simple/goal" to="move_base_simple/goal"/>
   </node>
 </launch>

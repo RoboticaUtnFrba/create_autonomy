@@ -3,8 +3,8 @@
   <arg name="y" default="0" doc="Y coordinate of the destination goal [m]."/>
   <arg name="Y" default="0" doc="Yaw angle of the destination goal [degrees]."/>
 
-  <arg name="robot_id" default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
-  <arg name="ns"       value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1."/>
+  <arg name="id" default="$(optenv ID 1)" doc="Unique identifier of the robot [1-Inf.)"/>
+  <arg name="ns" value="create$(arg id)"  doc="Namespace of the robot. By default: create1."/>
 
   <node pkg="ca_move_base" type="send_move_base_goal" name="navigation_goals"
         ns="$(arg ns)" output="screen"

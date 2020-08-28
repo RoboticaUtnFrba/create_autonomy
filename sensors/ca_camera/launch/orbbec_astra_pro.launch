@@ -4,9 +4,9 @@
   http://wiki.ros.org/openni_launch/Tutorials/IntrinsicCalibration
  -->
 
-  <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
-  <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
-  <arg name="tf_prefix" value="$(arg ns)_tf"          doc="Tf prefix"/>
+  <arg name="id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
+  <arg name="ns"        value="create$(arg id)" doc="Namespace of the robot. By default: create1"/>
+  <arg name="tf_prefix" value="$(arg ns)"          doc="Tf prefix"/>
 
   <arg name="camera"    value="astra"                 doc="Astra camera"/>
 

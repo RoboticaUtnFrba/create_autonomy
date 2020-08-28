@@ -201,7 +201,7 @@ Visualization Manager:
               Value: true
           Name: RobotModel
           Robot Description: create1/robot_description
-          TF Prefix: create1_tf
+          TF Prefix: create1
           Update Interval: 0
           Value: true
           Visual Enabled: true
@@ -210,63 +210,63 @@ Visualization Manager:
           Frame Timeout: 15
           Frames:
             All Enabled: false
-            create1_tf/base_footprint:
+            create1/base_footprint:
               Value: false
-            create1_tf/base_link:
+            create1/base_link:
               Value: true
-            create1_tf/battery_link:
+            create1/battery_link:
               Value: false
-            create1_tf/bumper_link:
+            create1/bumper_link:
               Value: false
-            create1_tf/caster_wheel_link:
+            create1/caster_wheel_link:
               Value: false
-            create1_tf/front_left_cliff_sensor_link:
+            create1/front_left_cliff_sensor_link:
               Value: false
-            create1_tf/front_right_cliff_sensor_link:
+            create1/front_right_cliff_sensor_link:
               Value: false
-            create1_tf/imu_link:
+            create1/imu_link:
               Value: false
-            create1_tf/laser_link:
+            create1/laser_link:
               Value: false
-            create1_tf/nvidia_jetson_nano_link:
+            create1/nvidia_jetson_nano_link:
               Value: false
-            create1_tf/odom:
+            create1/odom:
               Value: true
-            create1_tf/omni_sensor_link:
+            create1/omni_sensor_link:
               Value: false
-            create1_tf/plate_bottom_link:
+            create1/plate_bottom_link:
               Value: false
-            create1_tf/plate_upper_link:
+            create1/plate_upper_link:
               Value: false
-            create1_tf/pole_large_0_link:
+            create1/pole_large_0_link:
               Value: false
-            create1_tf/pole_large_1_link:
+            create1/pole_large_1_link:
               Value: false
-            create1_tf/pole_large_2_link:
+            create1/pole_large_2_link:
               Value: false
-            create1_tf/pole_large_3_link:
+            create1/pole_large_3_link:
               Value: false
-            create1_tf/pole_short_0_link:
+            create1/pole_short_0_link:
               Value: false
-            create1_tf/pole_short_1_link:
+            create1/pole_short_1_link:
               Value: false
-            create1_tf/pole_short_2_link:
+            create1/pole_short_2_link:
               Value: false
-            create1_tf/pole_short_3_link:
+            create1/pole_short_3_link:
               Value: false
-            create1_tf/rplidar_link:
+            create1/rplidar_link:
               Value: false
-            create1_tf/side_left_cliff_sensor_link:
+            create1/side_left_cliff_sensor_link:
               Value: false
-            create1_tf/side_right_cliff_sensor_link:
+            create1/side_right_cliff_sensor_link:
               Value: false
-            create1_tf/turtlebot_stack_base_link:
+            create1/turtlebot_stack_base_link:
               Value: false
-            create1_tf/wall_sensor_link:
+            create1/wall_sensor_link:
               Value: false
-            create1_tf/wheel_left_link:
+            create1/wheel_left_link:
               Value: false
-            create1_tf/wheel_right_link:
+            create1/wheel_right_link:
               Value: false
             map:
               Value: true
@@ -277,56 +277,56 @@ Visualization Manager:
           Show Names: true
           Tree:
             map:
-              create1_tf/odom:
-                create1_tf/base_footprint:
-                  create1_tf/base_link:
-                    create1_tf/bumper_link:
+              create1/odom:
+                create1/base_footprint:
+                  create1/base_link:
+                    create1/bumper_link:
                       {}
-                    create1_tf/caster_wheel_link:
+                    create1/caster_wheel_link:
                       {}
-                    create1_tf/front_left_cliff_sensor_link:
+                    create1/front_left_cliff_sensor_link:
                       {}
-                    create1_tf/front_right_cliff_sensor_link:
+                    create1/front_right_cliff_sensor_link:
                       {}
-                    create1_tf/omni_sensor_link:
+                    create1/omni_sensor_link:
                       {}
-                    create1_tf/rplidar_link:
-                      create1_tf/laser_link:
+                    create1/rplidar_link:
+                      create1/laser_link:
                         {}
-                    create1_tf/side_left_cliff_sensor_link:
+                    create1/side_left_cliff_sensor_link:
                       {}
-                    create1_tf/side_right_cliff_sensor_link:
+                    create1/side_right_cliff_sensor_link:
                       {}
-                    create1_tf/turtlebot_stack_base_link:
-                      create1_tf/plate_bottom_link:
-                        create1_tf/nvidia_jetson_nano_link:
+                    create1/turtlebot_stack_base_link:
+                      create1/plate_bottom_link:
+                        create1/nvidia_jetson_nano_link:
                           {}
-                      create1_tf/plate_upper_link:
-                        create1_tf/imu_link:
+                      create1/plate_upper_link:
+                        create1/imu_link:
                           {}
-                      create1_tf/pole_large_0_link:
+                      create1/pole_large_0_link:
                         {}
-                      create1_tf/pole_large_1_link:
+                      create1/pole_large_1_link:
                         {}
-                      create1_tf/pole_large_2_link:
+                      create1/pole_large_2_link:
                         {}
-                      create1_tf/pole_large_3_link:
+                      create1/pole_large_3_link:
                         {}
-                      create1_tf/pole_short_0_link:
+                      create1/pole_short_0_link:
                         {}
-                      create1_tf/pole_short_1_link:
+                      create1/pole_short_1_link:
                         {}
-                      create1_tf/pole_short_2_link:
+                      create1/pole_short_2_link:
                         {}
-                      create1_tf/pole_short_3_link:
+                      create1/pole_short_3_link:
                         {}
-                    create1_tf/wall_sensor_link:
+                    create1/wall_sensor_link:
                       {}
-                  create1_tf/battery_link:
+                  create1/battery_link:
                     {}
-                  create1_tf/wheel_left_link:
+                  create1/wheel_left_link:
                     {}
-                  create1_tf/wheel_right_link:
+                  create1/wheel_right_link:
                     {}
           Update Interval: 0
           Value: true
@@ -828,7 +828,7 @@ Visualization Manager:
       Name: Current View
       Near Clip Distance: 0.009999999776482582
       Pitch: 1.5697963237762451
-      Target Frame: create1_tf/base_footprint
+      Target Frame: create1/base_footprint
       Value: XYOrbit (rviz)
       Yaw: 6.213183403015137
     Saved: ~

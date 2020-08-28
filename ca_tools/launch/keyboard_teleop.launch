@@ -1,14 +1,14 @@
 <launch>
-  <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
-  <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
+  <arg name="id"  default="$(optenv ID 1)" doc="Unique identifier of the robot [1-Inf.)"/>
+  <arg name="ns"  value="create$(arg id)"  doc="Namespace of the robot. By default: create1"/>
 
-  <arg name="type"      default="turtlebot" doc="Type of node. Options: turtlebot or simple"/>
+  <arg name="type" default="turtlebot" doc="Type of node. Options: turtlebot or simple"/>
 
   <node pkg="ca_tools" type="key_teleop.py" name="keyboard_teleop"
         ns="$(arg ns)" output="screen"
-        if="$(eval str(arg('robot_id')).isdigit() and (arg('robot_id') > 0) and arg('type')=='simple' )"/>
+        if="$(eval str(arg('id')).isdigit() and (arg('id') > 0) and arg('type')=='simple' )"/>
 
   <node pkg="ca_tools" type="turtlebot_teleop_key" name="turtlebot_teleop_keyboard"
         ns="$(arg ns)" output="screen"
-        if="$(eval str(arg('robot_id')).isdigit() and (arg('robot_id') > 0) and arg('type')=='turtlebot' )"/>
+        if="$(eval str(arg('id')).isdigit() and (arg('id') > 0) and arg('type')=='turtlebot' )"/>
 </launch>
