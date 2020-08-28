@@ -11,9 +11,9 @@
     <param name="base_frame_id" value="$(arg ns)/base_footprint"/>
 
     <!-- data source to integrate (PointCloud2) -->
-		<remap from="cloud_in"      to="$(arg laser)/depth/points"/>
+    <remap from="cloud_in"      to="$(arg laser)/depth/points"/>
     <remap from="projected_map" to="/map"/>
-	</node>
+  </node>
 
   <!-- Static transform is needed for map -->
   <node pkg="tf" type="static_transform_publisher" name="map_static_tf"

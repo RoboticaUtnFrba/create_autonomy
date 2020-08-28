@@ -1,40 +1,40 @@
 <launch>
-	<arg name="env" default="empty"              doc="Name of the environment"/>
-	<arg name="gui" default="$(optenv GUI true)" doc="Start gzclient (Gazebo's GUI)"/>
+  <arg name="env" default="empty"              doc="Name of the environment"/>
+  <arg name="gui" default="$(optenv GUI true)" doc="Start gzclient (Gazebo's GUI)"/>
 
-	<arg name="paused"  value="$(optenv PAUSED false)"  doc="Start the simulation paused"/>
-	<arg name="debug"   value="$(optenv DEBUG false)" 	doc="Enable debugging with gdb"/>
-	<arg name="verbose" value="$(optenv VERBOSE false)" doc="Enable verbose output in Gazebo"/>
+  <arg name="paused"  value="$(optenv PAUSED false)"  doc="Start the simulation paused"/>
+  <arg name="debug"   value="$(optenv DEBUG false)" 	doc="Enable debugging with gdb"/>
+  <arg name="verbose" value="$(optenv VERBOSE false)" doc="Enable verbose output in Gazebo"/>
 
-	<!-- Launch Gazebo world -->
-	<include file="$(find gazebo_ros)/launch/empty_world.launch">
-		<arg name="debug"        value="$(arg debug)" />
-		<arg name="gui"          value="$(arg gui)" />
-		<arg name="paused"       value="$(arg paused)"/>
-		<arg name="use_sim_time" value="true"/>
-		<arg name="verbose"      value="$(arg verbose)"/>
-		<arg name="world_name"   value="$(find ca_gazebo)/worlds/$(arg env).world"/>
-	</include>
+  <!-- Launch Gazebo world -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="debug"        value="$(arg debug)" />
+    <arg name="gui"          value="$(arg gui)" />
+    <arg name="paused"       value="$(arg paused)"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="verbose"      value="$(arg verbose)"/>
+    <arg name="world_name"   value="$(find ca_gazebo)/worlds/$(arg env).world"/>
+  </include>
 
-	<arg name="pose1_x" default="0"/>
-	<arg name="pose1_y" default="0"/>
-	<arg name="pose1_Y" default="0"/>
+  <arg name="pose1_x" default="0"/>
+  <arg name="pose1_y" default="0"/>
+  <arg name="pose1_Y" default="0"/>
 
-	<arg name="pose2_x" default="1"/>
-	<arg name="pose2_y" default="1"/>
-	<arg name="pose2_Y" default="0"/>
+  <arg name="pose2_x" default="1"/>
+  <arg name="pose2_y" default="1"/>
+  <arg name="pose2_Y" default="0"/>
 
-	<!-- Spawn robot/s -->
-	<include file="$(find ca_gazebo)/launch/include/spawn_multirobot.launch">
+  <!-- Spawn robot/s -->
+  <include file="$(find ca_gazebo)/launch/include/spawn_multirobot.launch">
     <arg name="env" value="$(arg env)"/>
 
-		<arg name="pose1_x" default="$(arg pose1_x)"/>
-		<arg name="pose1_y" default="$(arg pose1_y)"/>
-		<arg name="pose1_Y" default="$(arg pose1_Y)"/>
+    <arg name="pose1_x" default="$(arg pose1_x)"/>
+    <arg name="pose1_y" default="$(arg pose1_y)"/>
+    <arg name="pose1_Y" default="$(arg pose1_Y)"/>
 
-		<arg name="pose2_x" default="$(arg pose2_x)"/>
-		<arg name="pose2_y" default="$(arg pose2_y)"/>
-		<arg name="pose2_Y" default="$(arg pose2_Y)"/>
-	</include>
+    <arg name="pose2_x" default="$(arg pose2_x)"/>
+    <arg name="pose2_y" default="$(arg pose2_y)"/>
+    <arg name="pose2_Y" default="$(arg pose2_Y)"/>
+  </include>
 
 </launch>
