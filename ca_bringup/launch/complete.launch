@@ -14,8 +14,8 @@
 
   <group ns="$(arg ns)">
     <include file="$(find ca_slam)/launch/depthimage_to_laserscan.launch">
-      <arg name="id"    value="$(arg id)"/>
       <arg name="laser" value="$(arg laser)"/>
+      <arg name="ns"    value="$(arg ns)"/>
     </include>
 
     <!-- Localization node -->
@@ -26,9 +26,9 @@
     <!-- Navigation stack -->
     <include file="$(find ca_move_base)/launch/navigate.launch">
       <arg name="env"          value="$(arg env)"/>
-      <arg name="id"           value="$(arg id)"/>
       <arg name="laser"        value="$(arg laser)"/>
       <arg name="localization" value="$(arg localization)"/>
+      <arg name="ns"           value="$(arg ns)"/>
     </include>
   </group>
 </launch>
