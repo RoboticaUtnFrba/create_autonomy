@@ -39,7 +39,7 @@
 
 using gazebo::VirtualWallSensorPlugin;
 
-static const char create2_model_name_prefix[] = "irobot_create2.";
+static const char create2_model_name_prefix[] = "create";
 static const size_t create2_model_name_prefix_length = sizeof(create2_model_name_prefix) - 1;
 static const ros::Duration update_rate = ros::Duration(0.01);  // 100 Hz
 
@@ -77,7 +77,7 @@ void VirtualWallSensorPlugin::Load(gazebo::sensors::SensorPtr sensor, sdf::Eleme
 void VirtualWallSensorPlugin::OnAddEntity()
 {
   const auto & world_models = this->world_->Models();
-  // Filter models which name starts with `irobot_create2.` and are continued with a number.
+  // Filter models which name starts with `create` and are continued with a number.
   create_2_models_.resize(0);
   pubs_.resize(0);
   std::copy_if(

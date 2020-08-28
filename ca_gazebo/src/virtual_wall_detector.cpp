@@ -26,7 +26,7 @@
 
 #include <string>
 
-static const char create2_model_name_prefix[] = "irobot_create2.";
+static const char create2_model_name_prefix[] = "create";
 static const size_t create2_model_name_prefix_length = sizeof(create2_model_name_prefix) - 1;
 
 namespace gazebo
