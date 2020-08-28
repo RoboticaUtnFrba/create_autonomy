@@ -6,11 +6,27 @@
   <arg name="env"  default="empty"                doc="Name of the environment"/>
   <arg name="rviz" default="$(optenv RVIZ false)" doc="Flag to use RViz"/>
 
+  <arg name="pose1_x" default="0"/>
+  <arg name="pose1_y" default="0"/>
+  <arg name="pose1_Y" default="0"/>
+
+  <arg name="pose2_x" default="1"/>
+  <arg name="pose2_y" default="1"/>
+  <arg name="pose2_Y" default="0"/>
+
   <!-- Start 1 robot -->
   <group ns="$(arg ns)">
-    <include file="$(find ca_gazebo)/launch/spawn_create.launch">
+    <include file="$(find ca_gazebo)/launch/include/spawn_create.launch">
       <arg name="env"      value="$(arg env)"/>
       <arg name="robot_id" value="$(arg nr)"/>
+
+      <arg name="pose_x" value="$(arg pose1_x)" if="$(eval nr == 1)"/>
+      <arg name="pose_y" value="$(arg pose1_y)" if="$(eval nr == 1)"/>
+      <arg name="pose_Y" value="$(arg pose1_Y)" if="$(eval nr == 1)"/>
+
+      <arg name="pose_x" value="$(arg pose2_x)" if="$(eval nr == 2)"/>
+      <arg name="pose_y" value="$(arg pose2_y)" if="$(eval nr == 2)"/>
+      <arg name="pose_Y" value="$(arg pose2_Y)" if="$(eval nr == 2)"/>
     </include>
 
     <!-- RViz -->
@@ -18,7 +34,8 @@
   </group>
 
   <!-- Recursively spawn more robots -->
-  <include file="$(find ca_gazebo)/launch/spawn_multirobot.launch" if="$(eval arg('nr') - 1 > 0)">
+  <include if="$(eval arg('nr') - 1 > 0)"
+           file="$(find ca_gazebo)/launch/include/spawn_multirobot.launch">
     <arg name="env"  value="$(arg env)"/>
     <arg name="nr"   value="$(eval arg('nr') - 1)"/>
     <arg name="rviz" value="false"/>

@@ -10,12 +10,6 @@ catkin_package()
 
 roslaunch_add_file_check(launch)
 
-install(DIRECTORY scripts/
-        DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-        USE_SOURCE_PERMISSIONS
-        PATTERN ".svn" EXCLUDE
-)
-
 install(
   DIRECTORY launch meshes urdf
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}

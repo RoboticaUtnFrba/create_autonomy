@@ -1,8 +1,11 @@
 <launch>
   <arg name="robot_id"  default="$(optenv ID 1)"      doc="Unique identifier of the robot [1-Inf.)"/>
   <arg name="ns"        value="create$(arg robot_id)" doc="Namespace of the robot. By default: create1"/>
-  <arg name="tf_prefix" value="$(arg ns)_tf"          doc="Tf prefix"/>
+
   <arg name="env"       default="empty"               doc="Name of the environment"/>
+  <arg name="pose_x"    default="0"                   doc=""/>
+  <arg name="pose_y"    default="0"                   doc=""/>
+  <arg name="pose_Y"    default="0"                   doc=""/>
 
   <arg name="enable_ros_control" value="$(optenv ROS_CONTROL false)" doc="Enable ros_control"/>
   <arg name="use_nodelets" default="$(optenv NODELET true)"
@@ -10,15 +13,15 @@
   <arg name="localization" default="$(optenv LOCALIZATION none)"
        doc="Localization type. More options here: https://github.com/RoboticaUtnFrba/create_autonomy/wiki/Launching-options"/>
 
-  <param name="tf_prefix" value="$(arg tf_prefix)"/>
-
   <!-- Create 2 description -->
   <include file="$(find ca_description)/launch/create_description.launch">
     <arg name="robot_id" value="$(arg robot_id)"/>
   </include>
 
   <!-- Spawn URDF into Gazebo -->
-  <node pkg="ca_description" type="robot_spawner.py" name="robot_spawner" output="screen"/>
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
+        args="-param robot_description -urdf -model $(arg ns)
+              -x $(arg pose_x) -y $(arg pose_y) -z 0 -Y $(arg pose_Y)"/>
 
   <!-- Running Gazebo (non-nodelet) version of depthimage_to_laserscan for 3D cameras -->
   <include file="$(find ca_slam)/launch/depthimage_to_laserscan_gazebo.launch">
@@ -31,8 +34,15 @@
   <!-- Nodelet manager -->
 	<node pkg="nodelet" type="nodelet" name="nodelet_manager" args="manager" if="$(arg use_nodelets)"/>
 
+  <!-- Localization pose -->
+  <param name="$(arg localization)/initial_pose_x" value="$(arg pose_x)"/>
+  <param name="$(arg localization)/initial_pose_y" value="$(arg pose_y)"/>
+  <param name="$(arg localization)/initial_pose_a" value="$(arg pose_Y)"/>
+
   <!-- Localization -->
-  <include file="$(find ca_localization)/launch/localize.launch"/>
+  <include file="$(find ca_localization)/launch/localize.launch">
+    <arg name="robot_id" value="$(arg robot_id)"/>
+  </include>
 
   <!-- Navigation -->
   <include if="$(eval str(arg('localization'))!='none')"
