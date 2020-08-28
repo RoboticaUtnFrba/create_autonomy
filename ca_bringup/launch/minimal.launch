@@ -29,7 +29,8 @@
   <group ns="$(arg ns)">
     <!-- Robot description -->
     <include file="$(find ca_description)/launch/create_description.launch">
-      <arg name="ns" value="$(arg ns)"/>
+      <arg name="laser" value="$(arg laser)"/>
+      <arg name="ns"    value="$(arg ns)"/>
     </include>
 
     <!-- RViz -->
