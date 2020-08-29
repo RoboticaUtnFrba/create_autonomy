@@ -2,6 +2,9 @@
   <arg name="ns" default="create1" doc="Namespace of the robot"/>
 
   <group ns="d435">
+    <!-- Remap topic to match with input of the other nodes -->
+    <remap from="depth/color/points" to="depth/points"/>
+
     <include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml">
       <arg name="enable_pointcloud" value="true"/>
       <arg name="enable_sync"       value="true"/>
