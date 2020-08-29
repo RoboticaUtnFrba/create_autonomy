@@ -25,13 +25,14 @@ image_proc and depth_image_proc.
 
   <!-- rgbd_launch specific arguments -->
   <!-- Arguments for remapping all device namespaces -->
-  <arg name="rgb"                         value="rgb" />
-  <arg name="depth_registered_pub"        value="depth_registered" />
-  <arg name="depth_registered"            value="depth_registered" />
+  <arg name="rgb"                  value="rgb" />
+  <arg name="depth"                value="depth" />
+  <arg name="depth_registered_pub" value="depth_registered" />
+  <arg name="depth_registered"     value="depth_registered" />
 
   <!-- Disable bond topics by default -->
-  <arg name="bond"                        value="false" />
-  <arg name="respawn"                     value="$(arg bond)" />
+  <arg name="bond"    value="false" />
+  <arg name="respawn" value="$(arg bond)" />
 
   <group ns="d435">
 
