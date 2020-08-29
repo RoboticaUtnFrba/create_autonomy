@@ -1,19 +1,20 @@
 <launch>
   <arg name="ns" default="create1" doc="Namespace of the robot"/>
 
-  <include file="$(find realsense2_camera)/launch/rs_camera.launch">
-    <arg name="camera"            value="d435"/>
-    <arg name="enable_pointcloud" value="true"/>
-    <arg name="enable_sync"       value="true"/>
-    <arg name="external_manager"  value="false"/>
-    <arg name="manager"           value="realsense2_camera_manager"/>
-    <arg name="publish_tf"        value="false"/>
-    <arg name="publish_odom_tf"   value="false"/>
+  <group ns="d435">
+    <include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml">
+      <arg name="enable_pointcloud" value="true"/>
+      <arg name="enable_sync"       value="true"/>
+      <arg name="external_manager"  value="false"/>
+      <arg name="manager"           value="realsense2_camera_manager"/>
+      <arg name="publish_tf"        value="false"/>
+      <arg name="publish_odom_tf"   value="false"/>
 
-    <arg name="base_frame_id"          value="$(arg ns)/d435_link"/>
-    <arg name="depth_frame_id"         value="$(arg ns)/d435_depth_frame"/>
-    <arg name="color_frame_id"         value="$(arg ns)/d435_color_frame"/>
-    <arg name="depth_optical_frame_id" value="$(arg ns)/d435_depth_optical_frame"/>
-    <arg name="color_optical_frame_id" value="$(arg ns)/d435_color_optical_frame"/>
-  </include>
+      <arg name="base_frame_id"          value="$(arg ns)/d435_link"/>
+      <arg name="depth_frame_id"         value="$(arg ns)/d435_depth_frame"/>
+      <arg name="color_frame_id"         value="$(arg ns)/d435_color_frame"/>
+      <arg name="depth_optical_frame_id" value="$(arg ns)/d435_depth_optical_frame"/>
+      <arg name="color_optical_frame_id" value="$(arg ns)/d435_color_optical_frame"/>
+    </include>
+  </group>
 </launch>
