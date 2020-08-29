@@ -1,7 +1,8 @@
 database_path: "rtabmap.db"
 
-subscribe_depth: true
-subscribe_scan: true
+subscribe_depth: false
+subscribe_rgbd: true
+subscribe_scan: false
 map_negative_poses_ignored: true
 
 # When sending goals on /rtabmap/goal topic, use actionlib to communicate with move_base
@@ -14,9 +15,9 @@ RGBD:
   # Set to false to generate map correction between /map and /odom
   OptimizeFromGraphEnd: false
   # Update map only if the robot is moving
-  AngularUpdate: 0.1
+  AngularUpdate: 0.01
   # Update map only if the robot is moving
-  LinearUpdate: 0.1
+  LinearUpdate: 0.01
   ProximityPathMaxNeighbors: 0
 Kp:
   MaxDepth: 4.0
