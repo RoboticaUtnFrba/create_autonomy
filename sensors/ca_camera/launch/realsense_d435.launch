@@ -76,7 +76,7 @@ image_proc and depth_image_proc.
           args="load depth_image_proc/point_cloud_xyzrgb $(arg manager) $(arg bond)" respawn="$(arg respawn)">
       <remap from="rgb/image_rect_color"        to="$(arg rgb)/image_rect_color" />
       <remap from="rgb/camera_info"             to="$(arg rgb)/camera_info" />
-      <remap from="depth_registered/image_rect" to="$(arg depth_registered_filtered)/sw_registered/image_rect_raw" />
+      <remap from="depth_registered/image_rect" to="$(arg depth_registered)/sw_registered/image_rect_raw" />
       <remap from="depth_registered/points"     to="$(arg depth_registered)/points" />
     </node>
 
