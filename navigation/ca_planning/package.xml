@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>ca_planning</name>
-  <version>0.0.0</version>
-  <description>Planning package. It includes the following global planners:
+  <version>1.0.0</version>
+  <description>Jump Point Search planning package.
+  It includes the following global planners:
     - jps_planner/JumpPointSearchROS
   </description>
 
+  <author email="emiliano.borghi@gmail.com">Emiliano Borghi</author>
   <maintainer email="emiliano.borghi@gmail.com">Emiliano Borghi</maintainer>
 
   <license>BSD</license>
-
-  <author email="emiliano.borghi@gmail.com">Emiliano Borghi</author>
 
   <buildtool_depend>catkin</buildtool_depend>
 
@@ -38,6 +38,7 @@
   <exec_depend>roscpp</exec_depend>
   <exec_depend>std_msgs</exec_depend>
 
+  <test_depend>roslint</test_depend>
 
   <export>
     <!-- In order for pluginlib to query all available plugins on a system across all ROS packages, each package must explicitly specify the plugins it exports and which package libraries contain those plugins. -->

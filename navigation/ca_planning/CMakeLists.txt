@@ -10,6 +10,7 @@ endif()
 set(BUILD_SHARED_LIBS ON)
 
 find_package(Eigen3 REQUIRED)
+find_package(jps3d REQUIRED)
 
 find_package(catkin REQUIRED COMPONENTS
   base_local_planner
@@ -18,6 +19,7 @@ find_package(catkin REQUIRED COMPONENTS
   nav_core
   pluginlib
   roscpp
+  roslint
   std_msgs
 )
 
@@ -35,7 +37,9 @@ endif()
 ###################################
 
 catkin_package(
- CATKIN_DEPENDS
+  LIBRARIES
+    jps_ros
+  CATKIN_DEPENDS
     base_local_planner
     costmap_2d
     geometry_msgs
@@ -53,21 +57,15 @@ include_directories(
   include
   ${catkin_INCLUDE_DIRS}
   ${EIGEN3_INCLUDE_DIRS}
+  ${JPS3D_INCLUDE_DIRS}
 )
 
-add_library(${PROJECT_NAME}_lib
-    src/dmp.cpp
-    src/graph_search.cpp
-    src/jps_planner/graph_search.cpp
-    src/jps_planner/jps_planner.cpp
-    src/jps_ros.cpp
-)
-add_dependencies(${PROJECT_NAME}_lib ${jps_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(${PROJECT_NAME}_lib ${catkin_LIBRARIES})
-set_target_properties(${PROJECT_NAME}_lib PROPERTIES OUTPUT_NAME jps_planner)
+add_library (jps_ros src/jps_ros.cpp)
+target_link_libraries(jps_ros ${catkin_LIBRARIES} ${JPS3D_LIBRARIES})
+add_dependencies(jps_ros ${catkin_EXPORTED_TARGETS})
 
 add_executable(${PROJECT_NAME}_node src/jps_node.cpp)
-target_link_libraries(${PROJECT_NAME}_node ${PROJECT_NAME}_lib)
+target_link_libraries(${PROJECT_NAME}_node jps_ros ${JPS3D_LIBRARIES} ${catkin_LIBRARIES})
 set_target_properties(${PROJECT_NAME}_node PROPERTIES OUTPUT_NAME jps_node)
 
 #############
@@ -80,7 +78,7 @@ install(TARGETS
 )
 
 install(TARGETS
-    ${PROJECT_NAME}_lib
+    jps_ros
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
@@ -100,6 +98,9 @@ install(DIRECTORY
 ## Testing ##
 #############
 
-add_executable(test_distance_map_planner_2d test/test_distance_map_planner_2d.cpp)
-target_link_libraries(test_distance_map_planner_2d ${PROJECT_NAME}_lib ${YAMLCPP_LIBRARIES} ${Boost_LIBRARIES})
-add_test(test_distance_map_planner_2d test_distance_map_planner_2d ${CMAKE_SOURCE_DIR}/test/data/corridor.yaml)
+add_executable(${PROJECT_NAME}_test test/test_distance_map_planner_2d.cpp)
+target_link_libraries(${PROJECT_NAME}_test ${JPS3D_LIBRARIES} ${YAMLCPP_LIBRARIES} ${Boost_LIBRARIES})
+add_test(test_distance_map_planner_2d ${PROJECT_NAME}_test ${CMAKE_SOURCE_DIR}/test/data/corridor.yaml)
+
+set(ROSLINT_CPP_OPTS "--filter=-build/c++11,-build/header_guard")
+roslint_cpp()

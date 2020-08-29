@@ -69,8 +69,8 @@ USER ${USER}
 RUN rosdep install --from-paths src --rosdistro=${ROS1_DISTRO} -yi -r --os=ubuntu:bionic
 USER root
 RUN /bin/bash -c ". /opt/ros/${ROS1_DISTRO}/setup.bash; \
-        catkin_make -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/opt/ros/${ROS1_DISTRO}; \
-        cd build; make install"
+        catkin_make_isolated --install \
+        -DCMAKE_BUILD_TYPE=Release --install-space /opt/ros/${ROS1_DISTRO}"
 RUN rm -r ${DEPS_WS}
 
 # Install dependencies from apt

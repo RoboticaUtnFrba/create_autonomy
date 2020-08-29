@@ -35,6 +35,10 @@ repositories:
     type: git
     url: https://github.com/RoboticaUtnFrba/ipa_coverage_planning.git
     version: melodic_dev
+  jps3d:
+    type: git
+    url: https://github.com/KumarRobotics/jps3d.git
+    version: master
   libcreate:
     type: git
     url: https://github.com/RoboticaUtnFrba/libcreate.git
@@ -47,7 +51,7 @@ repositories:
     type: git
     url: https://github.com/RoboticaUtnFrba/ros_astra_camera.git
     version: master
-  viso2:
-    type: git
-    url: https://github.com/RoboticaUtnFrba/viso2.git
-    version: kinetic
+  # viso2:
+  #   type: git
+  #   url: https://github.com/RoboticaUtnFrba/viso2.git
+  #   version: kinetic
