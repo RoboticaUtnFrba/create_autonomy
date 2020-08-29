@@ -12,6 +12,8 @@
 
   <depend>astra_camera</depend>
   <depend>camera_calibration</depend>
+  <depend>depth_image_proc</depend>
+  <depend>image_proc</depend>
   <depend>openni2_launch</depend>
   <depend>realsense2_camera</depend>
   <depend>rplidar_ros</depend>

@@ -4,6 +4,8 @@ project(ca_camera)
 find_package(catkin REQUIRED COMPONENTS
   astra_camera
   camera_calibration
+  depth_image_proc
+  image_proc
   openni2_launch
   realsense2_camera
 	rplidar_ros
