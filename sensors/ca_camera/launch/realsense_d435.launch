@@ -19,12 +19,12 @@ NOTICE: To use this launch file you must first install ros package rgbd_launch.
 <launch>
   <arg name="ns" default="create1" doc="Namespace of the robot"/>
 
-  <arg name="manager" value="realsense2_camera_manager"/>
+  <arg name="align_depth" value="false"/>
+  <arg name="manager"     value="realsense2_camera_manager"/>
 
   <!-- rgbd_launch specific arguments -->
   <!-- Arguments for remapping all device namespaces -->
   <arg name="rgb"                         value="rgb" />
-  <arg name="depth"                       value="depth" />
   <arg name="depth_registered_pub"        value="depth_registered" />
   <arg name="depth_registered"            value="depth_registered" />
 
@@ -32,21 +32,14 @@ NOTICE: To use this launch file you must first install ros package rgbd_launch.
   <arg name="bond"                        value="false" />
   <arg name="respawn"                     value="$(arg bond)" />
 
-  <!-- Processing Modules -->
-  <arg name="rgb_processing"              value="true" />
-  <arg name="debayer_processing"          value="false"/>
-  <arg name="depth_processing"            value="true" />
-  <arg name="depth_registered_processing" value="true" />
-  <arg name="hw_registered_processing"    value="true" />
-
   <group ns="d435">
 
     <include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml">
-      <arg name="align_depth"       value="true"/>
+      <arg name="align_depth"       value="$(arg align_depth)"/>
       <arg name="enable_pointcloud" value="false"/>
       <arg name="enable_sync"       value="true"/>
       <arg name="external_manager"  value="false"/>
-      <arg name="filters"           value="pointcloud"/>
+      <arg name="filters"           value=""/>
       <arg name="manager"           value="$(arg manager)"/>
       <arg name="publish_tf"        value="false"/>
       <arg name="publish_odom_tf"   value="false"/>
@@ -57,7 +50,7 @@ NOTICE: To use this launch file you must first install ros package rgbd_launch.
       <arg name="depth_optical_frame_id" value="$(arg ns)/d435_depth_optical_frame"/>
       <arg name="color_optical_frame_id" value="$(arg ns)/d435_color_optical_frame"/>
 
-      <arg name="aligned_depth_to_color_frame_id" default="$(arg ns)/d435_color_optical_frame"/>
+      <!-- <arg name="aligned_depth_to_color_frame_id" default="$(arg ns)/d435_color_optical_frame"/> -->
     </include>
 
     <!-- RGB processing -->
@@ -69,14 +62,30 @@ NOTICE: To use this launch file you must first install ros package rgbd_launch.
       <arg name="debayer_processing"            value="$(arg debayer_processing)" />
     </include>
 
-    <!-- Publish registered XYZRGB point cloud with hardware registered input (ROS Realsense depth alignment) -->
-    <node pkg="nodelet" type="nodelet" name="points_xyzrgb_hw_registered"
+    <node pkg="nodelet" type="nodelet" name="register_depth"
+          args="load depth_image_proc/register $(arg manager) $(arg bond)" respawn="$(arg respawn)">
+      <remap from="rgb/camera_info"             to="$(arg rgb)/camera_info" />
+      <remap from="depth/camera_info"           to="$(arg depth)/camera_info" />
+      <remap from="depth/image_rect"            to="$(arg depth)/image_rect_raw" />
+      <remap from="depth_registered/image_rect" to="$(arg depth_registered)/sw_registered/image_rect_raw" />
+    </node>
+
+    <!-- Publish registered XYZRGB point cloud with software registered input -->
+    <node pkg="nodelet" type="nodelet" name="points_xyzrgb_sw_registered"
           args="load depth_image_proc/point_cloud_xyzrgb $(arg manager) $(arg bond)" respawn="$(arg respawn)">
       <remap from="rgb/image_rect_color"        to="$(arg rgb)/image_rect_color" />
       <remap from="rgb/camera_info"             to="$(arg rgb)/camera_info" />
-      <remap from="depth_registered/image_rect" to="$(arg depth_registered)/image_raw" />
-      <remap from="depth_registered/points"     to="$(arg depth_registered_pub)/points" />
+      <remap from="depth_registered/image_rect" to="$(arg depth_registered_filtered)/sw_registered/image_rect_raw" />
+      <remap from="depth_registered/points"     to="$(arg depth_registered)/points" />
     </node>
+
+    <!--
+      /rgb
+        /image_rect_color
+        /camera_info
+      /depth_registered/image_raw
+      /scan
+     -->
 
   </group>
 </launch>
