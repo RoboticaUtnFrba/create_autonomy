@@ -63,6 +63,14 @@
     <arg name="laser" value="$(arg laser)"/>
   </include>
 
+  <!-- RTAB-Map -->
+  <include if="$(eval arg('localization')=='rtab_localization')"
+           file="$(find ca_slam)/launch/rtab.launch">
+    <arg name="ns"            value="$(arg ns)"/>
+    <arg name="rtabmapviz"    value="false"/>
+    <arg name="localization"  value="true"/>
+  </include>
+
   <!--
     #######################
             MAPPING
@@ -102,7 +110,6 @@
   <include if="$(eval arg('localization')=='rtab')"
            file="$(find ca_slam)/launch/rtab.launch">
     <arg name="ns"            value="$(arg ns)"/>
-    <arg name="rgbd_odometry" value="false"/>
     <arg name="rtabmapviz"    value="false"/>
     <arg name="localization"  value="false"/>
   </include>
