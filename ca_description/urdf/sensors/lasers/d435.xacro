@@ -9,12 +9,10 @@
 <xacro:property name="name"   value="d435"/>
 <xacro:property name="parent" value="base_link"/>
 
-<xacro:arg name="add_plug" default="false"/>
-
-<xacro:sensor_d435 parent="${parent}" use_nominal_extrinsics="false">
+<xacro:sensor_d435 name="${name}" parent="${parent}" use_nominal_extrinsics="true">
   <origin xyz="${laser_origin}"/>
 </xacro:sensor_d435>
 
-<!-- <xacro:sim_3d_sensor name="${name}" color="Gazebo/FlatBlack"/> -->
+<xacro:sim_3d_sensor name="${name}" color="Gazebo/FlatBlack"/>
 
 </robot>

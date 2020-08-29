@@ -28,8 +28,9 @@
                                 robot_name:=$(arg ns)
                                 stack:=$(arg stack)
                                 laser:=$(arg laser)
-                                enable_ros_control:=$(arg enable_ros_control)"/>
-  <!-- TODO (@eborghi10): Use only 1 robot_description for multiple robots -->
+                                enable_ros_control:=$(arg enable_ros_control)
+                                add_plug:=false"/>
+
   <param name="robot_description" command="$(find xacro)/xacro $(arg model) $(arg xacro_args)"/>
 
   <!-- Robot state publisher-->
