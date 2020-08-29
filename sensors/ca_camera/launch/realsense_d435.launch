@@ -66,7 +66,7 @@ image_proc and depth_image_proc.
 
     <node pkg="nodelet" type="nodelet" name="register_depth"
           args="load depth_image_proc/register $(arg manager) $(arg bond)" respawn="$(arg respawn)">
-      <remap from="rgb/camera_info"             to="$(arg rgb)/camera_info" />
+      <remap from="rgb/camera_info"             to="color/camera_info" />
       <remap from="depth/camera_info"           to="$(arg depth)/camera_info" />
       <remap from="depth/image_rect"            to="$(arg depth)/image_rect_raw" />
       <remap from="depth_registered/image_rect" to="$(arg depth_registered)/sw_registered/image_rect_raw" />
@@ -76,18 +76,10 @@ image_proc and depth_image_proc.
     <node pkg="nodelet" type="nodelet" name="points_xyzrgb_sw_registered"
           args="load depth_image_proc/point_cloud_xyzrgb $(arg manager) $(arg bond)" respawn="$(arg respawn)">
       <remap from="rgb/image_rect_color"        to="$(arg rgb)/image_rect_color" />
-      <remap from="rgb/camera_info"             to="$(arg rgb)/camera_info" />
+      <remap from="rgb/camera_info"             to="color/camera_info" />
       <remap from="depth_registered/image_rect" to="$(arg depth_registered)/sw_registered/image_rect_raw" />
       <remap from="depth_registered/points"     to="$(arg depth_registered)/points" />
     </node>
-
-    <!--
-      /rgb
-        /image_rect_color
-        /camera_info
-      /depth_registered/image_raw
-      /scan
-     -->
 
   </group>
 </launch>
