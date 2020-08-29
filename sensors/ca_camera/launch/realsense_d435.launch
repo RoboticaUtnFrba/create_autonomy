@@ -59,8 +59,9 @@ image_proc and depth_image_proc.
     <node pkg="nodelet" type="nodelet" name="$(arg rgb)_rectify_color"
           args="load image_proc/rectify $(arg manager) $(arg bond)"
           respawn="$(arg respawn)">
-      <remap from="image_mono" to="$(arg rgb)/image_raw" />
-      <remap from="image_rect" to="$(arg rgb)/image_rect_color" />
+      <remap from="image_mono"  to="color/image_raw" />
+      <remap from="camera_info" to="color/camera_info" />
+      <remap from="image_rect"  to="$(arg rgb)/image_rect_color" />
     </node>
 
     <node pkg="nodelet" type="nodelet" name="register_depth"
