@@ -1,0 +1,55 @@
+serial_no:       ""
+usb_port_id:     ""
+device_type:     ""
+json_file_path:  ""
+rosbag_filename: ""
+
+enable_pointcloud:         false
+pointcloud_texture_stream: "RS2_STREAM_COLOR"  # use RS2_STREAM_ANY to avoid using texture
+pointcloud_texture_index:  0
+enable_sync:               true
+align_depth:               false
+
+fisheye_width:   0
+fisheye_height:  0
+enable_fisheye:  false
+enable_fisheye1: false
+enable_fisheye2: false
+
+depth_width:  640
+depth_height: 480
+enable_depth: true
+
+color_width:  640
+color_height: 480
+enable_color: true
+
+infra_width:   640
+infra_height:  480
+enable_infra:  false
+enable_infra1: false
+enable_infra2: false
+
+fisheye_fps:  30
+depth_fps:    30
+infra_fps:    30
+color_fps:    30
+gyro_fps:     0
+accel_fps:    0
+enable_gyro:  false
+enable_accel: false
+enable_pose:  false
+
+publish_tf:      false
+tf_publish_rate: 0  # static transform
+
+odom_frame_id:           "odom"
+topic_odom_in:           "odom_in"
+calib_odom_file:         ""
+publish_odom_tf:         false
+filters:                 ""
+clip_distance:           -1
+linear_accel_cov:        0.01
+initial_reset:           false
+unite_imu_method:        none  # Options are: [none, copy, linear_interpolation]
+allow_no_texture_points: false

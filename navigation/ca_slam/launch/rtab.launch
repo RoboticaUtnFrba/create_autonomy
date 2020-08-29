@@ -1,3 +1,8 @@
+<!--
+  Setup RTAB-Map with a 3D camera and Odometry:
+
+  http://wiki.ros.org/rtabmap_ros/Tutorials/SetupOnYourRobot#Kinect_.2B-_Odometry
+ -->
 <launch>
   <arg name="ns"    default="create1"                 doc="Namespace of the robot"/>
   <arg name="laser" default="$(optenv LASER rplidar)" doc="Laser for mapping the environment"/>
@@ -15,69 +20,71 @@
   <!-- Can be increased from 5 to 10 Hz to avoid some TF warnings -->
   <arg name="wait_for_transform" value="0.1"/>
 
-  <!-- Mapping -->
-  <!-- <group ns="rtabmap"> -->
+  <!-- Should be true for not synchronized camera topics
+      (e.g., false for kinectv2, zed, realsense, true for xtion, kinect360)-->
+  <arg name="sync" value="false" if="$(eval arg('laser')=='d435' or
+                                            arg('laser')=='r200')"/>
+  <arg name="sync" value="true"  if="$(eval arg('laser')=='kinect' or
+                                            arg('laser')=='xtion_pro' or
+                                            arg('laser')=='astra')"/>
 
-    <node pkg="nodelet" type="nodelet" name="rgbd_sync"
-          args="standalone rtabmap_ros/rgbd_sync" output="screen">
-      <remap from="rgb/image"       to="$(arg laser)/rgb/image_rect_color"/>
-      <remap from="depth/image"     to="$(arg laser)/depth_registered/image_raw"/>
-      <remap from="rgb/camera_info" to="$(arg laser)/rgb/camera_info"/>
-      <remap from="rgbd_image"      to="$(arg rgbd_topic)"/>
+  <node pkg="nodelet" type="nodelet" name="rgbd_sync"
+        args="standalone rtabmap_ros/rgbd_sync" output="screen">
+    <remap from="rgb/image"       to="$(arg laser)/rgb/image_rect_color"/>
+    <remap from="depth/image"     to="$(arg laser)/depth_registered/image_raw"/>
+    <remap from="rgb/camera_info" to="$(arg laser)/rgb/camera_info"/>
+    <remap from="rgbd_image"      to="$(arg rgbd_topic)"/>
 
-      <!-- Should be true for not synchronized camera topics
-           (e.g., false for kinectv2, zed, realsense, true for xtion, kinect360)-->
-      <param name="approx_sync"       value="true"/>
-    </node>
+    <param name="approx_sync"       value="$(arg sync)"/>
+  </node>
 
-    <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="$(arg args)">
-      <rosparam file="$(find ca_slam)/config/rtabmap.yaml"/>
-      <param name="frame_id" type="string" value="$(arg ns)/base_footprint"/>
-      <param name="wait_for_transform_duration" type="double" value="$(arg wait_for_transform)"/>
+  <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="$(arg args)">
+    <rosparam file="$(find ca_slam)/config/rtabmap.yaml"/>
+    <param name="frame_id" type="string" value="$(arg ns)/base_footprint"/>
+    <param name="wait_for_transform_duration" type="double" value="$(arg wait_for_transform)"/>
 
-      <remap from="move_base" to="move_base"/>
+    <remap from="move_base" to="move_base"/>
 
-      <!-- inputs -->
-      <remap from="depth/image"     to="$(arg depth_topic)"/>
-      <remap from="odom"            to="odom_combined"/>
-      <remap from="rgb/camera_info" to="$(arg camera_info_topic)"/>
-      <remap from="rgb/image"       to="$(arg rgb_topic)"/>
-      <remap from="scan"            to="$(arg laser)/scan"/>
-      <remap from="rgbd_image"      to="$(arg rgbd_topic)"/>
+    <!-- inputs -->
+    <remap from="depth/image"     to="$(arg depth_topic)"/>
+    <remap from="odom"            to="odom_combined"/>
+    <remap from="rgb/camera_info" to="$(arg camera_info_topic)"/>
+    <remap from="rgb/image"       to="$(arg rgb_topic)"/>
+    <remap from="scan"            to="$(arg laser)/scan"/>
+    <remap from="rgbd_image"      to="$(arg rgbd_topic)"/>
 
-      <!-- Fix odom covariance as in simulation the covariance in /odom topic is high (0.1 for linear and 0.05 for angular) -->
-      <param name="odom_frame_id"            value="$(arg ns)/odom"/>
-      <param name="odom_tf_linear_variance"  value="0.001"/>
-      <param name="odom_tf_angular_variance" value="0.001"/>
+    <!-- Fix odom covariance as in simulation the covariance in /odom topic is high (0.1 for linear and 0.05 for angular) -->
+    <param name="odom_frame_id"            value="$(arg ns)/odom"/>
+    <param name="odom_tf_linear_variance"  value="0.001"/>
+    <param name="odom_tf_angular_variance" value="0.001"/>
 
-  	  <!-- output -->
-  	  <remap from="grid_map" to="/map"/>
+    <!-- output -->
+    <remap from="grid_map" to="/map"/>
 
-      <!-- localization mode -->
-      <param     if="$(arg localization)" name="Mem/IncrementalMemory" type="string" value="false"/>
-      <param unless="$(arg localization)" name="Mem/IncrementalMemory" type="string" value="true"/>
-      <param name="Mem/InitWMWithAllNodes" type="string" value="$(arg localization)"/>
-    </node>
+    <!-- localization mode -->
+    <param     if="$(arg localization)" name="Mem/IncrementalMemory" type="string" value="false"/>
+    <param unless="$(arg localization)" name="Mem/IncrementalMemory" type="string" value="true"/>
+    <param name="Mem/InitWMWithAllNodes" type="string" value="$(arg localization)"/>
+  </node>
 
-    <!-- visualization with rtabmapviz -->
-    <node if="$(arg rtabmapviz)" pkg="rtabmap_ros" type="rtabmapviz" name="rtabmapviz" args="-d $(find rtabmap_ros)/launch/config/rgbd_gui.ini" output="screen">
-  	  <param name="subscribe_depth"             type="bool"   value="false"/>
-      <param name="subscribe_rgbd"              type="bool"   value="true"/>
-      <param name="subscribe_scan"              type="bool"   value="false"/>
-      <param name="frame_id"                    type="string" value="$(arg ns)/base_footprint"/>
-      <param name="wait_for_transform_duration" type="double" value="0.2"/>
+  <!-- visualization with rtabmapviz -->
+  <node if="$(arg rtabmapviz)" pkg="rtabmap_ros" type="rtabmapviz" name="rtabmapviz" args="-d $(find rtabmap_ros)/launch/config/rgbd_gui.ini" output="screen">
+    <param name="subscribe_depth"             type="bool"   value="false"/>
+    <param name="subscribe_rgbd"              type="bool"   value="true"/>
+    <param name="subscribe_scan"              type="bool"   value="false"/>
+    <param name="frame_id"                    type="string" value="$(arg ns)/base_footprint"/>
+    <param name="wait_for_transform_duration" type="double" value="0.2"/>
 
-      <remap from="rgb/image"       to="$(arg rgb_topic)"/>
-      <remap from="depth/image"     to="$(arg depth_topic)"/>
-      <remap from="rgb/camera_info" to="$(arg camera_info_topic)"/>
-      <remap from="scan"            to="$(arg laser)/scan"/>
-      <remap from="odom"            to="odom_combined"/>
+    <remap from="rgb/image"       to="$(arg rgb_topic)"/>
+    <remap from="depth/image"     to="$(arg depth_topic)"/>
+    <remap from="rgb/camera_info" to="$(arg camera_info_topic)"/>
+    <remap from="scan"            to="$(arg laser)/scan"/>
+    <remap from="odom"            to="odom_combined"/>
 
-      <!-- RTAB-Map's parameters -->
-      <param name="RGBD/AngularUpdate"        type="string" value="0.01"/>
-      <param name="RGBD/LinearUpdate"         type="string" value="0.01"/>
-      <param name="RGBD/OptimizeFromGraphEnd" type="string" value="false"/>
-    </node>
+    <!-- RTAB-Map's parameters -->
+    <param name="RGBD/AngularUpdate"        type="string" value="0.01"/>
+    <param name="RGBD/LinearUpdate"         type="string" value="0.01"/>
+    <param name="RGBD/OptimizeFromGraphEnd" type="string" value="false"/>
+  </node>
 
-  <!-- </group> -->
 </launch>
