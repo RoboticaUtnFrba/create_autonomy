@@ -10,12 +10,25 @@
   <arg name="rgb_topic"         value="$(arg laser)/rgb/image_rect_color"/>
   <arg name="depth_topic"       value="$(arg laser)/depth_registered/image_raw"/>
   <arg name="camera_info_topic" value="$(arg laser)/rgb/camera_info"/>
+  <arg name="rgbd_topic"        value="$(arg laser)/rgbd/image"/>
 
   <!-- Can be increased from 5 to 10 Hz to avoid some TF warnings -->
   <arg name="wait_for_transform" value="0.1"/>
 
   <!-- Mapping -->
   <!-- <group ns="rtabmap"> -->
+
+    <node pkg="nodelet" type="nodelet" name="rgbd_sync"
+          args="standalone rtabmap_ros/rgbd_sync" output="screen">
+      <remap from="rgb/image"       to="$(arg laser)/rgb/image_rect_color"/>
+      <remap from="depth/image"     to="$(arg laser)/depth_registered/image_raw"/>
+      <remap from="rgb/camera_info" to="$(arg laser)/rgb/camera_info"/>
+      <remap from="rgbd_image"      to="$(arg rgbd_topic)"/>
+
+      <!-- Should be true for not synchronized camera topics
+           (e.g., false for kinectv2, zed, realsense, true for xtion, kinect360)-->
+      <param name="approx_sync"       value="true"/>
+    </node>
 
     <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="$(arg args)">
       <rosparam file="$(find ca_slam)/config/rtabmap.yaml"/>
@@ -30,6 +43,7 @@
       <remap from="rgb/camera_info" to="$(arg camera_info_topic)"/>
       <remap from="rgb/image"       to="$(arg rgb_topic)"/>
       <remap from="scan"            to="$(arg laser)/scan"/>
+      <remap from="rgbd_image"      to="$(arg rgbd_topic)"/>
 
       <!-- Fix odom covariance as in simulation the covariance in /odom topic is high (0.1 for linear and 0.05 for angular) -->
       <param name="odom_frame_id"            value="$(arg ns)/odom"/>
