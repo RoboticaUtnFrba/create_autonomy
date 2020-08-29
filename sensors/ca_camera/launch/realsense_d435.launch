@@ -51,8 +51,6 @@ image_proc and depth_image_proc.
       <arg name="color_frame_id"         value="$(arg ns)/d435_color_frame"/>
       <arg name="depth_optical_frame_id" value="$(arg ns)/d435_depth_optical_frame"/>
       <arg name="color_optical_frame_id" value="$(arg ns)/d435_color_optical_frame"/>
-
-      <!-- <arg name="aligned_depth_to_color_frame_id" default="$(arg ns)/d435_color_optical_frame"/> -->
     </include>
 
     <!-- Color rectified image -->
@@ -69,7 +67,7 @@ image_proc and depth_image_proc.
       <remap from="rgb/camera_info"             to="color/camera_info" />
       <remap from="depth/camera_info"           to="$(arg depth)/camera_info" />
       <remap from="depth/image_rect"            to="$(arg depth)/image_rect_raw" />
-      <remap from="depth_registered/image_rect" to="$(arg depth_registered)/sw_registered/image_rect_raw" />
+      <remap from="depth_registered/image_rect" to="$(arg depth_registered)/image_raw" />
     </node>
 
     <!-- Publish registered XYZRGB point cloud with software registered input -->
@@ -77,7 +75,7 @@ image_proc and depth_image_proc.
           args="load depth_image_proc/point_cloud_xyzrgb $(arg manager) $(arg bond)" respawn="$(arg respawn)">
       <remap from="rgb/image_rect_color"        to="$(arg rgb)/image_rect_color" />
       <remap from="rgb/camera_info"             to="color/camera_info" />
-      <remap from="depth_registered/image_rect" to="$(arg depth_registered)/sw_registered/image_rect_raw" />
+      <remap from="depth_registered/image_rect" to="$(arg depth_registered)/image_raw" />
       <remap from="depth_registered/points"     to="$(arg depth_registered)/points" />
     </node>
 
