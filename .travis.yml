@@ -25,6 +25,8 @@ install:
   # Install dependencies
   - sudo rosdep init
   - rosdep update
+  # Install ROS base
+  - sudo apt-get install -y ros-${CI_ROS_DISTRO}-ros-base
   # Create workspace
   #
   - mkdir -p $CREATE_AUTONOMY_SRC
@@ -37,21 +39,17 @@ install:
   - cd $CATKIN_WS
   - rosdep install --from-paths ./ -i -y --rosdistro $CI_ROS_DISTRO --skip-keys=jps3d
 
+# Build packages
 before_script:
-  - source /opt/ros/${CI_ROS_DISTRO}/setup.bash && \
-    catkin_make_isolated --install --install-space /opt/ros/${CI_ROS_DISTRO}
-  - sudo rm -r .
+  - source /opt/ros/${CI_ROS_DISTRO}/setup.bash
+  - catkin config --install -i /opt/ros/${CI_ROS_DISTRO}
+  - catkin build --dry-run --verbose --cmake-args -DCMAKE_BUILD_TYPE=Release -j$(nproc)
 
 script:
-  - source /opt/ros/$CI_ROS_DISTRO/setup.bash
-  - cd $CATKIN_WS
-  # Build packages
-  - catkin_make -DCMAKE_BUILD_TYPE=Release
-  # Run the tests, ensuring the path is set correctly.
-  - source devel/setup.bash
+  - source /opt/ros/${CI_ROS_DISTRO}/setup.bash
   # Run tests
   # NOTE: GAZEBO TESTS FAIL IN PARALLEL
-  - catkin_make run_tests -j1 && catkin_test_results
+  - catkin run_tests -j1 && catkin_test_results
   # Lint package files ONLY for create_autonomy
   - sudo apt-get install -y python-catkin-lint
   - catkin lint -W2 --strict --explain $CREATE_AUTONOMY_SRC
@@ -66,4 +64,4 @@ script:
   # -------
   # sudo pip install pep8ify
   # pep8ify -nw .
-  - catkin_make roslint
+  - cd $CATKIN_WS/build && make roslint

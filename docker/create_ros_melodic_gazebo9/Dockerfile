@@ -69,7 +69,8 @@ USER ${USER}
 RUN rosdep install --from-paths src --rosdistro=${ROS1_DISTRO} -yi -r --os=ubuntu:bionic --skip-keys=jps3d
 USER root
 RUN /bin/bash -c ". /opt/ros/${ROS1_DISTRO}/setup.bash; \
-    catkin_make_isolated --install --install-space /opt/ros/${ROS1_DISTRO} -DCMAKE_BUILD_TYPE=Release"
+    catkin config --install -i /opt/ros/${ROS1_DISTRO}; \
+    catkin build --dry-run --verbose --cmake-args -DCMAKE_BUILD_TYPE=Release"
 RUN rm -r ${DEPS_WS}
 
 # Install dependencies from apt
