@@ -35,7 +35,12 @@ install:
   - ln -s $TRAVIS_BUILD_DIR $CREATE_AUTONOMY_SRC
   # Use rosdep to install all dependencies (including ROS itself)
   - cd $CATKIN_WS
-  - rosdep install --from-paths ./ -i -y --rosdistro $CI_ROS_DISTRO
+  - rosdep install --from-paths ./ -i -y --rosdistro $CI_ROS_DISTRO --skip-keys=jps3d
+
+before_script:
+  - source /opt/ros/${CI_ROS_DISTRO}/setup.bash && \
+    catkin_make_isolated --install --install-space /opt/ros/${CI_ROS_DISTRO}
+  - sudo rm -r .
 
 script:
   - source /opt/ros/$CI_ROS_DISTRO/setup.bash
