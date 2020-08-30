@@ -60,17 +60,16 @@ RUN apt-get install -y librealsense2-dkms librealsense2-utils librealsense2-dev
 ENV DEPS_WS=/deps_ws
 RUN mkdir -p ${DEPS_WS}/src
 WORKDIR ${DEPS_WS}/src
-RUN apt-get install -y python3-vcstool
+RUN apt-get install -y python3-vcstool python-catkin-tools
 COPY dependencies.repos ${DEPS_WS}/src/dependencies.repos
 RUN vcs import . < dependencies.repos
 WORKDIR ${DEPS_WS}
 RUN apt-get update
 USER ${USER}
-RUN rosdep install --from-paths src --rosdistro=${ROS1_DISTRO} -yi -r --os=ubuntu:bionic
+RUN rosdep install --from-paths src --rosdistro=${ROS1_DISTRO} -yi -r --os=ubuntu:bionic --skip-keys=jps3d
 USER root
 RUN /bin/bash -c ". /opt/ros/${ROS1_DISTRO}/setup.bash; \
-        catkin_make_isolated --install \
-        -DCMAKE_BUILD_TYPE=Release --install-space /opt/ros/${ROS1_DISTRO}"
+    catkin_make_isolated --install --install-space /opt/ros/${ROS1_DISTRO} -DCMAKE_BUILD_TYPE=Release"
 RUN rm -r ${DEPS_WS}
 
 # Install dependencies from apt

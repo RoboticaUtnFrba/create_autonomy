@@ -35,9 +35,9 @@ repositories:
     type: git
     url: https://github.com/RoboticaUtnFrba/ipa_coverage_planning.git
     version: melodic_dev
-  jps3d:
+  jps_global_planner:
     type: git
-    url: https://github.com/KumarRobotics/jps3d.git
+    url: https://github.com/eborghi10/jps_global_planner.git
     version: master
   libcreate:
     type: git

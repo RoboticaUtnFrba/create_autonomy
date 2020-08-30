@@ -27,6 +27,7 @@
   <exec_depend>dwa_local_planner</exec_depend>
   <exec_depend>global_planner</exec_depend>
   <exec_depend>iris_lama_ros</exec_depend>
+  <exec_depend>jps_global_planner</exec_depend>
   <exec_depend>map_server</exec_depend>
   <exec_depend>mbf_costmap_nav</exec_depend>
   <exec_depend>move_base</exec_depend>
