@@ -27,8 +27,13 @@ install:
   - rosdep update
   # Install ROS base
   - sudo apt-get install -y ros-${CI_ROS_DISTRO}-ros-base
+  # Install jps3d
+  - sudo apt-get install -y libeigen3-dev libyaml-cpp-dev libboost-dev
+  - git clone https://github.com/KumarRobotics/jps3d.git /tmp/jps3d
+  - mkdir -p /tmp/jps3d/build && cd /tmp/jps3d/build && cmake .. && make -j$(nproc)
+  - sudo make install
+  - sudo ldconfig
   # Create workspace
-  #
   - mkdir -p $CREATE_AUTONOMY_SRC
   # Clone manual dependencies to $CATKIN_WS_SRC
   - wget -q https://raw.githubusercontent.com/${TRAVIS_REPO_SLUG}/${TRAVIS_COMMIT}/dependencies.repos
@@ -42,14 +47,13 @@ install:
 # Build packages
 before_script:
   - source /opt/ros/${CI_ROS_DISTRO}/setup.bash
-  - catkin config --install -i /opt/ros/${CI_ROS_DISTRO}
-  - catkin build --dry-run --verbose --cmake-args -DCMAKE_BUILD_TYPE=Release -j$(nproc)
+  - catkin_make -DCMAKE_BUILD_TYPE=Release -j$(nproc)
 
 script:
-  - source /opt/ros/${CI_ROS_DISTRO}/setup.bash
+  - source devel/setup.bash
   # Run tests
   # NOTE: GAZEBO TESTS FAIL IN PARALLEL
-  - catkin run_tests -j1 && catkin_test_results
+  - catkin_make run_tests -j1 && catkin_test_results
   # Lint package files ONLY for create_autonomy
   - sudo apt-get install -y python-catkin-lint
   - catkin lint -W2 --strict --explain $CREATE_AUTONOMY_SRC
@@ -64,4 +68,4 @@ script:
   # -------
   # sudo pip install pep8ify
   # pep8ify -nw .
-  - cd $CATKIN_WS/build && make roslint
+  - catkin_make roslint
