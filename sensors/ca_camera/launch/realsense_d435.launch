@@ -35,11 +35,10 @@ image_proc and depth_image_proc.
 
   <group ns="d435">
     <!-- Realsense D435 nodelets -->
-    <node pkg="nodelet" type="nodelet" name="$(arg manager)" args="manager"
-          output="screen" required="$(arg required)"/>
+    <node pkg="nodelet" type="nodelet" name="$(arg manager)"
+          args="manager" output="screen"/>
     <node pkg="nodelet" type="nodelet" name="realsense2_camera"
-          args="load realsense2_camera/RealSenseNodeFactory $(arg manager)"
-          required="$(arg required)">
+          args="load realsense2_camera/RealSenseNodeFactory $(arg manager)">
 
       <rosparam command="load" file="$(find ca_camera)/config/d435.yaml"/>
 
