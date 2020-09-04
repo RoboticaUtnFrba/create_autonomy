@@ -4,11 +4,11 @@ JumpPointSearchROS:
   debug: false
   dmp:
     potential_radius:
-      x: 3.0
-      y: 3.0
+      x: 1.5
+      y: 1.5
     search_radius:
-      x: 0.5
-      y: 0.5
+      x: 1.0
+      y: 1.0
     potential_map_range:
-      x: 3.0
-      y: 3.0
+      x: 10.0
+      y: 10.0
