@@ -28,8 +28,8 @@ IsBatteryLevelOK::IsBatteryLevelOK(const std::string& name, const BT::NodeConfig
 
   ros::NodeHandle nh_;
   // Battery voltage subscription
-  sub_ = nh_.subscribe<std_msgs::Float64>(topic, 1,
-      [this](const std_msgs::Float64::ConstPtr& msg)
+  sub_ = nh_.subscribe<std_msgs::Float32>(topic, 1,
+      [this](const std_msgs::Float32::ConstPtr& msg)
       {
         current_voltage_ = msg->data;
       });  // NOLINT(whitespace/braces)

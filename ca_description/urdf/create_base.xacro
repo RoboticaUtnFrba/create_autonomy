@@ -94,13 +94,7 @@
       <origin xyz="0.13 0 ${caster_z}"/>
     </xacro:caster_wheel>
 
-    <!-- Use discharge_current=50 to debug Behavior Tree -->
-    <xacro:battery_sensor
-        namespace="${robot_name}"
-        voltage="14.4"
-        capacity_ah="4.5"
-        charge_current="0.2"
-        discharge_current="1.9">
+    <xacro:battery_sensor namespace="${robot_name}">
       <origin xyz="0.085 0 ${base_height}"/>
     </xacro:battery_sensor>
 

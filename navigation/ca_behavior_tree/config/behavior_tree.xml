@@ -4,7 +4,7 @@
     <BehaviorTree ID="BehaviorTree">
         <Fallback>
             <ReactiveSequence name="Autonomy Sequence">
-                <Condition ID="IsBatteryLevelOK" name="Low Level Battery Check" topic="/battery/battery_voltage" warning_voltage="4"/>
+                <Condition ID="IsBatteryLevelOK" name="Low Level Battery Check" topic="/create1/battery/voltage" warning_voltage="4"/>
                 <KeepRunningUntilFailure>
                     <Sequence name="Waypoint Sequence">
                         <Action ID="MoveBase" goal="-6.432;3.35;0.0" name="Waypoint 1" robot="create1"/>

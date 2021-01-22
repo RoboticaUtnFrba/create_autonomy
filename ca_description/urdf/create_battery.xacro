@@ -2,16 +2,13 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
 <xacro:macro name="battery_sensor"
-             params="name:=battery parent:=base_footprint namespace:=create
-                     voltage capacity_ah charge_current discharge_current
-                     *origin">
+             params="name:=battery parent:=base_footprint namespace:=create *origin">
 
   <xacro:include filename="$(find ca_description)/urdf/utils/inertias.xacro"/>
   <xacro:include filename="$(find ca_description)/urdf/utils/conversions.xacro"/>
 
   <xacro:property name="parent_link" value="${parent}"/>
   <xacro:property name="link_name"   value="${name}_link"/>
-  <xacro:property name="dummy_link"  value="${link_name}_dummy"/>
 
   <xacro:property name="mass"        value="1"/>
   <xacro:property name="size_x_in"   value="2.2"/>
@@ -36,43 +33,41 @@
     </visual>
   </link>
 
-  <joint name="${name}_dummy_joint" type="continuous">
-    <parent link="${parent_link}"/>
-    <child link="${dummy_link}"/>
-  </joint>
-
-  <link name="${dummy_link}">
-    <xacro:dummy_inertia/>
-  </link>
-
   <gazebo reference="${link_name}">
     <material>Gazebo/ZincYellow</material>
   </gazebo>
 
-  <gazebo reference="${dummy_link}">
-    <battery name="${name}">
-      <voltage>${voltage}</voltage>
-    </battery>
-  </gazebo>
+   <gazebo>
+    <xacro:property name="params_yaml"   value="$(find ca_gazebo)/config/battery.yaml"/>
+    <xacro:property name="battery_param" value="${load_yaml(params_yaml)}"/>
 
-  <gazebo>
-    <plugin name="battery_discharge" filename="libbattery_discharge.so">
-      <ros_node>${namespace}</ros_node>
-      <link_name>${dummy_link}</link_name>
-      <battery_name>${name}</battery_name>
-      <constant_coef>${voltage}</constant_coef>
-      <linear_coef>${-voltage/4}</linear_coef>
-      <initial_charge>${capacity_ah}</initial_charge>
-      <capacity>${capacity_ah}</capacity>
-      <resistance>0.061523</resistance>
-      <smooth_current_tau>1.9499</smooth_current_tau>
-      <charge_rate>${charge_current}</charge_rate>
-    </plugin>
-
-    <plugin name="battery_consumer" filename="libbattery_consumer.so">
-      <link_name>${dummy_link}</link_name>
-      <battery_name>${name}</battery_name>
-      <power_load>${discharge_current * voltage}</power_load>
+    <plugin filename="libcreate_battery_plugin.so" name="${name}">
+      <frame_id>${namespace}/${link_name}</frame_id>
+      <battery_topic>${name}/status</battery_topic>
+      <consumer_topic>${name}/consumer</consumer_topic>
+      <battery_voltage_topic>${name}/voltage</battery_voltage_topic>
+      <publish_voltage>${battery_param['publish_voltage']}</publish_voltage>
+      <num_of_consumers>${battery_param['num_of_consumers']}</num_of_consumers>
+      <technology>${battery_param['technology']}</technology>
+      <design_capacity>${battery_param['design_capacity']}</design_capacity>
+      <number_of_cells>${battery_param['number_of_cells']}</number_of_cells>
+      <nominal_voltage>${battery_param['nominal_voltage']}</nominal_voltage>
+      <full_charge_voltage>${battery_param['full_charge_voltage']}</full_charge_voltage>
+      <cut_off_voltage>${battery_param['cut_off_voltage']}</cut_off_voltage>
+      <internal_resistance>${battery_param['internal_resistance']}</internal_resistance>
+      <current_filter_tau>${battery_param['current_filter_tau']}</current_filter_tau>
+      <polarization_constant>${battery_param['polarization_constant']}</polarization_constant>
+      <exponential_voltage>${battery_param['exponential_voltage']}</exponential_voltage>
+      <exponential_capacity>${battery_param['exponential_capacity']}</exponential_capacity>
+      <characteristic_time>${battery_param['characteristic_time']}</characteristic_time>
+      <reversible_voltage_temp>${battery_param['reversible_voltage_temp']}</reversible_voltage_temp>
+      <arrhenius_rate_polarization>${battery_param['arrhenius_rate_polarization']}</arrhenius_rate_polarization>
+      <capacity_temp_coeff>${battery_param['capacity_temp_coeff']}</capacity_temp_coeff>
+      <design_temperature>${battery_param['design_temperature']}</design_temperature>
+      <temperature_response_tau>${battery_param['temperature_response_tau']}</temperature_response_tau>
+      <use_nonlinear_model>True</use_nonlinear_model>
+      <update_rate>10.0</update_rate>
+      <rosDebugLevel>Debug</rosDebugLevel>
     </plugin>
   </gazebo>
 

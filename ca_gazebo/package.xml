@@ -10,13 +10,15 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <depend>brass_gazebo_battery</depend>
   <depend>ca_msgs</depend>
   <depend>gazebo</depend>
   <depend>gazebo_plugins</depend>
   <depend>roscpp</depend>
+  <depend>std_msgs</depend>
   <depend>tf</depend>
   <depend>tf2_ros</depend>
+
+  <build_depend>message_generation</build_depend>
 
   <exec_depend>ca_control</exec_depend>
   <exec_depend>ca_description</exec_depend>
@@ -27,6 +29,7 @@
   <exec_depend>ca_swarm</exec_depend>
   <exec_depend>ca_tools</exec_depend>
   <exec_depend>gazebo_ros</exec_depend>
+  <exec_depend>message_runtime</exec_depend>
   <exec_depend>nodelet</exec_depend>
   <exec_depend>xacro</exec_depend>
 

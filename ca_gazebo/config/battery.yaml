@@ -1,0 +1,32 @@
+# Battery configuration file
+
+# number of load subscribers to instantiate
+num_of_consumers: 1
+publish_voltage: True
+technology: 2
+design_capacity: 4.0
+number_of_cells: 6
+nominal_voltage: 24
+full_charge_voltage: 25.2
+cut_off_voltage: 18.0
+internal_resistance: 0.11
+# coefficient for the low pass filter on the drawn current
+current_filter_tau: 1
+# polarization constant [V/Ah]
+polarization_constant: 0.07
+# voltage at the end of the exponential area [V]
+exponential_voltage: 0.7
+# capacity at the end of the exponential area [1/Ah]
+exponential_capacity: 3.0
+# characteristic time [s] of i*
+characteristic_time: 420
+# Linear temperature dependent voltage shift [V/K]
+reversible_voltage_temp: 0.05
+# Arrhenius rate of polarization constant [K]
+arrhenius_rate_polarization: 850
+# Temperature dependence of capacity [Ah/K]
+capacity_temp_coeff: 0.01
+# Design temperature where polarization constant is unchanged
+design_temperature: 25
+# coefficient for the internal battery temperature filter
+temperature_response_tau: 0.5

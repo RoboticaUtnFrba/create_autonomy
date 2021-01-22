@@ -16,11 +16,11 @@ cmake_policy(SET CMP0054 NEW)
 
 find_package(catkin REQUIRED
   COMPONENTS
-    brass_gazebo_battery
     ca_msgs
     gazebo_plugins
     roscpp
     roslint
+    std_msgs
     tf
     tf2_ros
 )
@@ -35,6 +35,7 @@ set(SERVICESIM_PLUGIN_LIST
 
 set(PLUGIN_LIST
   cliff_msg_publisher
+  create_battery_plugin
   create_bumper_plugin
   create_cliff_plugin
   create_diff_drive
@@ -44,6 +45,17 @@ set(PLUGIN_LIST
   traffic_light_plugin
   virtual_wall_detector
   world_time_publisher
+)
+
+########################
+## Message generation ##
+########################
+
+# Generate custom messages/services
+add_service_files(DIRECTORY srv)
+
+generate_messages(
+  DEPENDENCIES std_msgs
 )
 
 ###########
@@ -91,13 +103,18 @@ endforeach()
 ###### iRobot Create plugins ######
 ###################################
 
-foreach(PLUGIN ${PLUGIN_LIST})
-  catkin_package(
-    INCLUDE_DIRS include
-    LIBRARIES ${PLUGIN}
-    CATKIN_DEPENDS ca_msgs
-  )
+catkin_package(
+  INCLUDE_DIRS
+    include
+  LIBRARIES
+    ${PLUGIN_LIST}
+  CATKIN_DEPENDS
+    ca_msgs
+    message_runtime
+    std_msgs
+)
 
+foreach(PLUGIN ${PLUGIN_LIST})
   add_library(${PLUGIN} src/${PLUGIN}.cpp)
 
   add_dependencies(${PLUGIN} ${catkin_EXPORTED_TARGETS})

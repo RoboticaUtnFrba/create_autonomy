@@ -6,6 +6,8 @@
   <arg name="pose_y" default="0"     doc="Pose Y"/>
   <arg name="pose_Y" default="0"     doc="Pose Yaw"/>
 
+  <arg name="high_battery_consumption" default="$(optenv HIGH_BATTERY_CONSUMPTION false)" doc="Start discharging the battery at 4 A"/>
+
   <arg name="enable_ros_control" value="$(optenv ROS_CONTROL false)" doc="Enable ros_control"/>
   <arg name="use_nodelets" default="$(optenv NODELET true)"
        doc="Use nodelets: http://wiki.ros.org/nodelet" />
@@ -52,5 +54,8 @@
     <arg name="localization" value="$(arg localization)"/>
     <arg name="ns"     value="$(arg ns)"/>
   </include>
+
+  <!-- Battery consumer -->
+  <node name="battery_consumer" pkg="ca_gazebo" type="battery_consumer" output="screen" args="$(arg high_battery_consumption)"/>
 
 </launch>

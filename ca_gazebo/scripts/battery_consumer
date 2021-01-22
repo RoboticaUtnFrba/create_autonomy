@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# This scipt drains current from the battery plugin setting the topic /battery/consumer/0
+# with the corresponding amount of current specified as argument of this script.
+
+set -e
+
+# A ROS node receives 2 arguments by default + the one passed to the script (which equals to 3)
+
+if [[ ($# -eq 3) && ($1 == "true") ]]; then
+  echo "Draining 4 A from the battery."
+  rostopic pub --latch battery/consumer/0 std_msgs/Float32 "data: 4.0"
+else
+  echo "Battery consumer is not draining current."
+fi
