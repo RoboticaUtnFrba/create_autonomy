@@ -10,13 +10,12 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <build_depend>camera_calibration</build_depend>
-  
-  <exec_depend>camera_calibration</exec_depend>
+  <depend>camera_calibration</depend>
+
+  <exec_depend>ca_tools</exec_depend>
   <exec_depend>gscam</exec_depend>
   <exec_depend>image_proc</exec_depend>
   <exec_depend>rqt_pose_view</exec_depend>
+  <exec_depend>viso2_ros</exec_depend>
 
-  <export>
-  </export>
 </package>

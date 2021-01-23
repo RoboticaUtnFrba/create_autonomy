@@ -9,18 +9,19 @@ add_compile_options(-std=c++11)
 ## enforcing cleaner code.
 add_definitions(-Wall -Werror)
 
+# Supress a warning
+cmake_policy(SET CMP0054 OLD)
 find_package(gazebo 9 REQUIRED)
+cmake_policy(SET CMP0054 NEW)
 
 find_package(catkin REQUIRED
   COMPONENTS
     brass_gazebo_battery
     ca_msgs
     gazebo_plugins
-    gazebo_ros
     roscpp
     roslint
     tf
-    tf2
     tf2_ros
 )
 
@@ -63,7 +64,13 @@ foreach(PLUGIN ${SERVICESIM_PLUGIN_LIST})
   catkin_package(
     INCLUDE_DIRS include
     LIBRARIES ${PLUGIN}
-    CATKIN_DEPENDS ca_msgs
+    CATKIN_DEPENDS
+      brass_gazebo_battery
+      ca_msgs
+      gazebo_plugins
+      roscpp
+      tf
+      tf2_ros
   )
 
   add_library(${PLUGIN} SHARED src/servicesim/${PLUGIN}.cc)

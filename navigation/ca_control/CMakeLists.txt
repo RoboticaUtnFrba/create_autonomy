@@ -5,25 +5,16 @@ add_compile_options(-std=c++11)
 
 find_package(catkin REQUIRED COMPONENTS
   controller_manager
-  diff_drive_controller
-  joint_state_controller
   libcreate
-  robot_state_publisher
   roslint
-  topic_tools
 )
 
 catkin_package(
   INCLUDE_DIRS
     include
-  LIBRARIES
-    libcreate
   CATKIN_DEPENDS
     controller_manager
-    diff_drive_controller
-    joint_state_controller
     libcreate
-    robot_state_publisher
 )
 
 ###########

@@ -10,8 +10,6 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <depend>roslint</depend>
-
   <depend>actionlib</depend>
   <depend>amcl</depend>
   <depend>ca_move_base</depend>
@@ -19,12 +17,14 @@
   <depend>move_base</depend>
   <depend>move_base_msgs</depend>
   <depend>roscpp</depend>
-  <depend>rospy</depend>
   <depend>tf</depend>
   <depend>tf2_ros</depend>
 
   <exec_depend>dwa_local_planner</exec_depend>
   <exec_depend>map_server</exec_depend>
+  <exec_depend>rospy</exec_depend>
+
+  <test_depend>roslint</test_depend>
 
   <export>
   </export>

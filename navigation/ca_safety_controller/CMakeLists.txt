@@ -34,18 +34,20 @@ include_directories(include
         ${catkin_INCLUDE_DIRS})
 
 add_library(${PROJECT_NAME}_nodelet src/nodelet.cpp)
-add_dependencies(${PROJECT_NAME}_nodelet ca_msgs_gencpp)
+add_dependencies(${PROJECT_NAME}_nodelet ${catkin_EXPORTED_TARGETS})
 target_link_libraries(${PROJECT_NAME}_nodelet ${catkin_LIBRARIES})
 
 install(TARGETS ${PROJECT_NAME}_nodelet
-        DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-)
+        DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION})
+
 install(DIRECTORY include/${PROJECT_NAME}/
-        DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-)
+        DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION})
+
 install(DIRECTORY launch plugins
-        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-)
+        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
+
+install(FILES plugins/nodelet_plugins.xml
+        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/plugins)
 
 set(ROSLINT_CPP_OPTS "--filter=-build/c++11")
 roslint_cpp()

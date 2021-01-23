@@ -15,20 +15,18 @@ if(RTIMULib-NOTFOUND)
   )
 endif()
 
-find_package(catkin REQUIRED COMPONENTS
-  i2c_imu
-  imu_filter_madgwick
-  rospy
-  sensor_msgs
-  tf
-)
+find_package(catkin REQUIRED)
 
-catkin_package(CATKIN_DEPENDS
-  rospy
-  sensor_msgs
-)
+catkin_package()
 
-include_directories(${catkin_INCLUDE_DIRS})
+#############
+## Install ##
+#############
+
+install(DIRECTORY
+  config
+  launch
+DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 
 install(DIRECTORY scripts
         DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}

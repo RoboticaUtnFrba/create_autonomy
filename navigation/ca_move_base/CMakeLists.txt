@@ -5,19 +5,18 @@ add_compile_options(-std=c++11)
 
 find_package(catkin REQUIRED COMPONENTS
   actionlib
-  amcl
-  iris_lama
-  iris_lama_ros
-  move_base
   move_base_msgs
-  octomap_server
   roscpp
-  tf
+  tf2
+  tf2_geometry_msgs
 )
 
-catkin_package(
- CATKIN_DEPENDS
+catkin_package(CATKIN_DEPENDS
+  actionlib
   move_base_msgs
+  roscpp
+  tf2
+  tf2_geometry_msgs
 )
 
 include_directories(${catkin_INCLUDE_DIRS})

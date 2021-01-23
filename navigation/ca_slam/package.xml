@@ -2,7 +2,7 @@
 <package format="2">
   <name>ca_slam</name>
   <version>0.0.0</version>
-  <description>Wrapper for SLAM</description>
+  <description>SLAM capabilities.</description>
 
   <maintainer email="emiliano.borghi@gmail.com">Emiliano Borghi</maintainer>
 
@@ -11,9 +11,9 @@
   <buildtool_depend>catkin</buildtool_depend>
 
   <exec_depend>depthimage_to_laserscan</exec_depend>
+  <exec_depend>gmapping</exec_depend>
+  <exec_depend>nodelet</exec_depend>
   <exec_depend>rtabmap_ros</exec_depend>
   <exec_depend>slam_gmapping</exec_depend>
 
-  <export>
-  </export>
 </package>

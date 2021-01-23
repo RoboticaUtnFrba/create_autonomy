@@ -11,11 +11,9 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <build_depend>hector_geotiff</build_depend>
-  <build_depend>hector_mapping</build_depend>
-
   <exec_depend>hector_geotiff</exec_depend>
   <exec_depend>hector_mapping</exec_depend>
+  <exec_depend>hector_trajectory_server</exec_depend>
 
   <export/>
 </package>

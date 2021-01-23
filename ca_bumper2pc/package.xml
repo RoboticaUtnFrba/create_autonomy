@@ -28,8 +28,8 @@
   <run_depend>sensor_msgs</run_depend>
 
   <test_depend>roslint</test_depend>
-  <export>
 
+  <export>
     <nodelet plugin="${prefix}/plugins/nodelet_plugins.xml"/>
   </export>
 </package>

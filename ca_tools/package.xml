@@ -14,15 +14,13 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <build_depend>roslint</build_depend>
-
-  <depend>ca_move_base</depend>
-  <depend>geometry_msgs</depend>
-  <depend>joy_teleop</depend>
-  <depend>rospy</depend>
-
+  <exec_depend>ca_move_base</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
   <exec_depend>joy</exec_depend>
+  <exec_depend>joy_teleop</exec_depend>
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>rviz</exec_depend>
 
-  <export>
-  </export>
+  <test_depend>roslint</test_depend>
+
 </package>

@@ -16,7 +16,6 @@ find_package(catkin REQUIRED COMPONENTS
   move_base_msgs
   roscpp
   roslint
-  rospy
   tf
   tf2_ros
 )
@@ -26,9 +25,15 @@ find_package(catkin REQUIRED COMPONENTS
 ###################################
 catkin_package(
   CATKIN_DEPENDS
+    actionlib
+    amcl
+    ca_move_base
     geometry_msgs
+    move_base
     move_base_msgs
-    rospy
+    roscpp
+    tf
+    tf2_ros
 )
 
 ###########

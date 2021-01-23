@@ -37,8 +37,10 @@ include_directories(
 add_subdirectory(src)
 
 install(DIRECTORY launch plugins
-        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-)
+        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
+
+install(FILES plugins/nodelet_plugins.xml
+        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/plugins)
 
 install(DIRECTORY scripts
         DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})

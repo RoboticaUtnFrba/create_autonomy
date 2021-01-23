@@ -10,9 +10,16 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <exec_depend>controller_manager</exec_depend>
+  <exec_depend>ca_camera</exec_depend>
+  <exec_depend>ca_control</exec_depend>
+  <exec_depend>ca_description</exec_depend>
+  <exec_depend>ca_imu</exec_depend>
+  <exec_depend>ca_localization</exec_depend>
+  <exec_depend>ca_move_base</exec_depend>
   <exec_depend>ca_node</exec_depend>
+  <exec_depend>ca_slam</exec_depend>
+  <exec_depend>ca_tools</exec_depend>
+  <exec_depend>controller_manager</exec_depend>
+  <exec_depend>nodelet</exec_depend>
 
-  <export>
-  </export>
 </package>

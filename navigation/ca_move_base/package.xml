@@ -10,39 +10,29 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <build_depend>actionlib</build_depend>
-  <build_depend>amcl</build_depend>
-  <build_depend>iris_lama</build_depend>
-  <build_depend>iris_lama_ros</build_depend>
-  <build_depend>move_base</build_depend>
-  <build_depend>move_base_msgs</build_depend>
-  <build_depend>octomap_server</build_depend>
-  <build_depend>roscpp</build_depend>
-  <build_depend>tf</build_depend>
+  <depend>actionlib</depend>
+  <depend>move_base_msgs</depend>
+  <depend>roscpp</depend>
+  <depend>tf2</depend>
+  <depend>tf2_geometry_msgs</depend>
 
-  <build_export_depend>actionlib</build_export_depend>
-  <build_export_depend>amcl</build_export_depend>
-  <build_export_depend>move_base</build_export_depend>
-  <build_export_depend>move_base_msgs</build_export_depend>
-  <build_export_depend>roscpp</build_export_depend>
-  <build_export_depend>tf</build_export_depend>
-
-  <exec_depend>actionlib</exec_depend>
   <exec_depend>amcl</exec_depend>
+  <exec_depend>ca_bumper2pc</exec_depend>
+  <exec_depend>ca_cartographer</exec_depend>
+  <exec_depend>ca_hector</exec_depend>
+  <exec_depend>ca_slam</exec_depend>
   <exec_depend>carrot_planner</exec_depend>
   <exec_depend>clear_costmap_recovery</exec_depend>
   <exec_depend>dwa_local_planner</exec_depend>
   <exec_depend>global_planner</exec_depend>
-  <exec_depend>iris_lama</exec_depend>
   <exec_depend>iris_lama_ros</exec_depend>
   <exec_depend>map_server</exec_depend>
   <exec_depend>mbf_costmap_nav</exec_depend>
   <exec_depend>move_base</exec_depend>
-  <exec_depend>move_base_msgs</exec_depend>
   <exec_depend>octomap_server</exec_depend>
-  <exec_depend>roscpp</exec_depend>
   <exec_depend>rotate_recovery</exec_depend>
   <exec_depend>teb_local_planner</exec_depend>
   <exec_depend>tf</exec_depend>
+
 
 </package>

@@ -10,11 +10,11 @@
   <buildtool_depend>catkin</buildtool_depend>
 
   <depend>controller_manager</depend>
-  <depend>diff_drive_controller</depend>
-  <depend>joint_state_controller</depend>
   <depend>libcreate</depend>
-  <depend>robot_state_publisher</depend>
-  <depend>topic_tools</depend>
+
+  <exec_depend>ca_driver</exec_depend>
+  <exec_depend>diff_drive_controller</exec_depend>
+  <exec_depend>topic_tools</exec_depend>
 
   <test_depend>roslint</test_depend>
 
