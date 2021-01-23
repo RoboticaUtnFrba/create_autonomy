@@ -101,9 +101,7 @@ endforeach()
 
 install(DIRECTORY
 			launch
-			media
-			models
-      test
+			test
 			worlds
 		DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 

@@ -36,18 +36,4 @@
   <test_depend>roslint</test_depend>
   <test_depend>rostest</test_depend>
 
-  <export>
-    <gazebo_ros gazebo_media_path="${prefix}
-                                  :${prefix}/media
-                                  :${prefix}/models/create_hector_nist_arenas"/>
-    <gazebo_ros gazebo_model_path="${prefix}/models
-                                  :${prefix}/models/create_autorace
-                                  :${prefix}/models/create_house
-                                  :${prefix}/models/create_servicesim
-                                  :${prefix}/models/sweet_home_3d"/>
-    <gazebo_ros plugin_path="${prefix}/lib
-                            :${prefix}/models/create_autorace/gazebo_traffic_plugin
-                            :${prefix}/src/create_servicesim
-                            :${prefix}/models/sweet_home_3d"/>
-  </export>
 </package>
