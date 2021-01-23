@@ -22,4 +22,6 @@
   <exec_depend>controller_manager</exec_depend>
   <exec_depend>nodelet</exec_depend>
 
+  <test_depend>roslaunch</test_depend>
+
 </package>

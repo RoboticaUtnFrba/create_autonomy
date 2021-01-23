@@ -1,5 +1,3 @@
-#catkin_lint: ignore duplicate_cmd
-#catkin_lint: ignore uninstalled_export_lib
 cmake_minimum_required(VERSION 3.5.2)
 project(ca_gazebo)
 
@@ -81,14 +79,17 @@ catkin_package(
 )
 
 foreach(PLUGIN ${PLUGIN_LIST})
-  add_library(${PLUGIN} src/${PLUGIN}.cpp)
+  set(TARGET_NAME ${PROJECT_NAME}_${PLUGIN})
 
-  add_dependencies(${PLUGIN} ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
+  add_library(${TARGET_NAME} src/${PLUGIN}.cpp)
 
-  target_link_libraries(${PLUGIN}
-    ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
+  add_dependencies(${TARGET_NAME} ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
 
-  install(TARGETS ${TARGET}
+  target_link_libraries(${TARGET_NAME} ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
+
+  set_target_properties(${TARGET_NAME} PROPERTIES OUTPUT_NAME ${PLUGIN})
+
+  install(TARGETS ${TARGET_NAME}
     ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
     LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
     RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}

@@ -34,5 +34,6 @@
   <exec_depend>teb_local_planner</exec_depend>
   <exec_depend>tf</exec_depend>
 
+  <test_depend>roslaunch</test_depend>
 
 </package>
