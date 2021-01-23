@@ -26,14 +26,6 @@ find_package(catkin REQUIRED
     tf2_ros
 )
 
-set(SERVICESIM_PLUGIN_LIST
-  AttachModelPlugin
-  CollisionActorPlugin
-  FollowActorPlugin
-  TrajectoryActorPlugin
-  VicinityPlugin
-)
-
 set(PLUGIN_LIST
   cliff_msg_publisher
   create_battery_plugin
@@ -68,38 +60,6 @@ include_directories(
 	${catkin_INCLUDE_DIRS}
 	${GAZEBO_INCLUDE_DIRS}
 )
-
-########################
-## ServiceSim plugins ##
-########################
-
-foreach(PLUGIN ${SERVICESIM_PLUGIN_LIST})
-  catkin_package(
-    INCLUDE_DIRS include
-    LIBRARIES ${PLUGIN}
-    CATKIN_DEPENDS
-      ca_msgs
-      gazebo_plugins
-      message_generation
-      roscpp
-      std_msgs
-      tf
-      tf2_ros
-  )
-
-  add_library(${PLUGIN} SHARED src/servicesim/${PLUGIN}.cc)
-
-  add_dependencies(${PLUGIN} ${catkin_EXPORTED_TARGETS})
-
-  target_link_libraries(${PLUGIN}
-    ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
-
-  install(TARGETS ${PLUGIN}
-    ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-    LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-    RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
-  )
-endforeach()
 
 ###################################
 ###### iRobot Create plugins ######
