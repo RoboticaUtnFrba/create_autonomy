@@ -2,9 +2,9 @@
   <arg name="ns"    default="create1"                 doc="Namespace of the robot"/>
   <arg name="laser" default="$(optenv LASER rplidar)" doc="Laser for mapping the environment"/>
 
-  <arg name="localization" doc="Autonomous method for localization/navigation."/>
+  <arg name="localization" default="" doc="Autonomous method for localization/navigation."/>
   <arg name="navigation"   value="$(optenv NAVIGATION move_base)" doc="Navigation framework to use"/>
-  <arg name="env"/>
+  <arg name="env"          default="empty"/>
 
   <!-- Bumper to point cloud -->
 	<include file="$(find ca_bumper2pc)/launch/standalone.launch"/>
