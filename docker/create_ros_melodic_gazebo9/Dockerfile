@@ -64,6 +64,7 @@ RUN apt-get install -y python3-vcstool
 COPY dependencies.repos ${DEPS_WS}/src/dependencies.repos
 RUN vcs import . < dependencies.repos
 WORKDIR ${DEPS_WS}
+RUN apt-get update
 USER ${USER}
 RUN rosdep install --from-paths src --rosdistro=${ROS1_DISTRO} -yi -r --os=ubuntu:bionic
 USER root
