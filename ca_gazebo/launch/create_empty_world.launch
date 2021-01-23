@@ -1,6 +1,6 @@
 <launch>
-  <arg name="env" default="empty"              doc="Name of the environment"/>
-  <arg name="gui" default="$(optenv GUI true)" doc="Start gzclient (Gazebo's GUI)"/>
+  <arg name="env" default="empty"                  doc="Name of the environment"/>
+  <arg name="gui" default="$(optenv GUI true)"     doc="Start gzclient (Gazebo's GUI)"/>
 
   <arg name="paused"  value="$(optenv PAUSED false)"  doc="Start the simulation paused"/>
   <arg name="debug"   value="$(optenv DEBUG false)" 	doc="Enable debugging with gdb"/>

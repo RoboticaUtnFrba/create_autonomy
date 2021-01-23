@@ -5,11 +5,11 @@
 
     <include file="$(find ca_gazebo)/launch/create_house.launch"/>
 
-    <include file="$(find ca_node)/launch/smach_controller.launch">
+    <include file="$(find ca_node)/launch/state_machine.launch">
         <arg name="ns" value="create1"/>
     </include>
 
-    <include file="$(find ca_node)/launch/smach_controller.launch">
+    <include file="$(find ca_node)/launch/state_machine.launch">
         <arg name="ns" value="create2"/>
     </include>
 </launch>

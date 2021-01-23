@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 import rospy
-import rostest
 import unittest
-import sys
 
 import numpy as np
 
@@ -10,17 +8,12 @@ from sensor_msgs.msg import JointState
 
 __author__ = 'Emiliano Borghi'
 
-PKG = 'ca_gazebo'
-NAME = 'static'
-
 class StaticRobotTest(unittest.TestCase):
 
   def __init__(self, *args):
-    # Init ROS and params
-    rospy.init_node(NAME, anonymous=True)
-    self.timeout = rospy.get_param("~timeout_s", default=10.0)
+    self.timeout = rospy.get_param("static_test/timeout_s", default=10.0)
     rospy.loginfo("Timeout set to {} seconds".format(self.timeout))
-    self.position_error = float(rospy.get_param("~position_error", default=1e-6))
+    self.position_error = float(rospy.get_param("static_test/position_error", default=1e-6))
     # Call TestCase class
     super(StaticRobotTest, self).__init__(*args)
 
@@ -53,6 +46,3 @@ class StaticRobotTest(unittest.TestCase):
       self.initial_position = msg.position
     else:
        self.final_position = msg.position
-
-if __name__ == '__main__':
-  rostest.rosrun(PKG, NAME, StaticRobotTest, sys.argv)

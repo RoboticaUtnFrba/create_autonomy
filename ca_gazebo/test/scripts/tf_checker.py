@@ -1,14 +1,9 @@
 #!/usr/bin/env python
 import rospy
-import rostest
 import unittest
-import sys
 import tf2_ros
 
 __author__ = 'Emiliano Borghi'
-
-PKG = 'ca_gazebo'
-NAME = 'tf_checker'
 
 class TfCheckerTests(unittest.TestCase):
 
@@ -17,8 +12,6 @@ class TfCheckerTests(unittest.TestCase):
     super(TfCheckerTests, self).__init__(*args)
 
   def setUp(self):
-    # Init ROS and params
-    rospy.init_node(NAME, anonymous=True)
     # Setup the tf listener
     self.buffer = tf2_ros.Buffer()
     self.tl = tf2_ros.TransformListener(self.buffer)
@@ -46,6 +39,3 @@ class TfCheckerTests(unittest.TestCase):
       for child in self.tf_tree[parent]:
         rospy.loginfo("Checking Tf {} --> {}".format(parent, child))
         self.check_tree('create1/' + parent, 'create1' + child)
-
-if __name__ == '__main__':
-  rostest.rosrun(PKG, NAME, TfCheckerTests, sys.argv)

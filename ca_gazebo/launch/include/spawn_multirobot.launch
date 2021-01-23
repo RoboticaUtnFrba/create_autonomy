@@ -15,7 +15,7 @@
   <arg name="pose2_Y" default="0"/>
 
   <!-- Start 1 robot -->
-  <group ns="$(arg ns)">
+  <group ns="$(arg ns)" if="$(eval arg('nr') > 0)">
     <include file="$(find ca_gazebo)/launch/include/spawn_create.launch">
       <arg name="env" value="$(arg env)"/>
       <arg name="ns"  value="$(arg ns)"/>

@@ -160,17 +160,9 @@ install(DIRECTORY scripts
 ## Testing ##
 #############
 
-set(ROSLINT_CPP_OPTS "--filter=-build/c++11")
-roslint_cpp()
-
 if(CATKIN_ENABLE_TESTING)
-  find_package(rostest REQUIRED)
-  # Tests list
-  foreach(TEST
-    # hz
-    publish
-    static
-  )
-    add_rostest(test/${TEST}.test)
-  endforeach()
+  set(ROSLINT_CPP_OPTS "--filter=-build/c++11")
+  roslint_cpp()
+
+  add_subdirectory(test)
 endif()

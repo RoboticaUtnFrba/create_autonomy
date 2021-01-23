@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<launch>
+  <param name="sim_time" value="true"/>
+
+  <include file="$(find ca_gazebo)/launch/create_empty_world.launch">
+    <arg name="gui" value="false"/>
+  </include>
+
+  <!-- Change real-time factor of Gazebo -->
+  <node pkg="ca_gazebo" type="set_properties" name="gazebo_physics_properties" output="screen">
+    <param name="real_time_factor" value="5"/>
+  </node>
+
+  <!-- Tests parameters -->
+  <rosparam command="load" file="$(find ca_gazebo)/test/params/hz.yaml"/>
+  <rosparam command="load" file="$(find ca_gazebo)/test/params/static.yaml" ns="static_test"/>
+  <rosparam command="load" file="$(find ca_gazebo)/test/params/tf.yaml" ns="tf_test"/>
+
+  <test pkg="ca_gazebo" type="create_tests.py" test-name="create_tests" time-limit="3600.0" />
+</launch>

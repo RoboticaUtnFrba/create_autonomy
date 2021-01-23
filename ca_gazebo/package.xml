@@ -32,6 +32,7 @@
   <exec_depend>nodelet</exec_depend>
   <exec_depend>xacro</exec_depend>
 
+  <test_depend>roslaunch</test_depend>
   <test_depend>roslint</test_depend>
   <test_depend>rostest</test_depend>
 
