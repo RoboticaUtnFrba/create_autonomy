@@ -18,6 +18,7 @@ find_package(catkin REQUIRED
   COMPONENTS
     ca_msgs
     gazebo_plugins
+    message_generation
     roscpp
     roslint
     std_msgs
@@ -77,10 +78,11 @@ foreach(PLUGIN ${SERVICESIM_PLUGIN_LIST})
     INCLUDE_DIRS include
     LIBRARIES ${PLUGIN}
     CATKIN_DEPENDS
-      brass_gazebo_battery
       ca_msgs
       gazebo_plugins
+      message_generation
       roscpp
+      std_msgs
       tf
       tf2_ros
   )
@@ -110,14 +112,18 @@ catkin_package(
     ${PLUGIN_LIST}
   CATKIN_DEPENDS
     ca_msgs
+    gazebo_plugins
     message_runtime
+    roscpp
     std_msgs
+    tf
+    tf2_ros
 )
 
 foreach(PLUGIN ${PLUGIN_LIST})
   add_library(${PLUGIN} src/${PLUGIN}.cpp)
 
-  add_dependencies(${PLUGIN} ${catkin_EXPORTED_TARGETS} ca_gazebo_gencpp)
+  add_dependencies(${PLUGIN} ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME}_gencpp)
 
   target_link_libraries(${PLUGIN}
     ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})

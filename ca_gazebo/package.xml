@@ -13,12 +13,11 @@
   <depend>ca_msgs</depend>
   <depend>gazebo</depend>
   <depend>gazebo_plugins</depend>
+  <depend>message_generation</depend>
   <depend>roscpp</depend>
   <depend>std_msgs</depend>
   <depend>tf</depend>
   <depend>tf2_ros</depend>
-
-  <build_depend>message_generation</build_depend>
 
   <exec_depend>ca_control</exec_depend>
   <exec_depend>ca_description</exec_depend>
