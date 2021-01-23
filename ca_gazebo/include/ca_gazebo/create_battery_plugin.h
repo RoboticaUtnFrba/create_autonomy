@@ -1,4 +1,27 @@
-#pragma once
+#ifndef CA_GAZEBO_CREATE_BATTERY_PLUGIN_H
+#define CA_GAZEBO_CREATE_BATTERY_PLUGIN_H
+
+/*
+ *  Gazebo - Outdoor Multi-Robot Simulator
+ *  Copyright (C) 2021
+ *     Emiliano Borghi
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ */
+/*
+ * Desc: Battery plugin
+ * Author: Emiliano Borghi
+ * Date: 22 Jan 2021
+ */
 
 #include <algorithm>
 #include <assert.h>
@@ -6,6 +29,7 @@
 #include <map>
 #include <mutex>
 #include <string>
+#include <vector>
 
 // Gazebo
 #include <gazebo/gazebo.hh>
@@ -103,11 +127,13 @@ private:
   void nonlinearDischargeVoltageUpdate();
 
   // Services
-  bool setCharge(ca_gazebo::SetCharge::Request& req, ca_gazebo::SetCharge::Response& res);
+  bool setCharge(ca_gazebo::SetCharge::Request& req,  // NOLINT(runtime/references)
+                 ca_gazebo::SetCharge::Response& res);  // NOLINT(runtime/references)
+  bool resetModel(ca_gazebo::Reset::Request& req,  // NOLINT(runtime/references)
+                  ca_gazebo::Reset::Response& res);  // NOLINT(runtime/references)
+  bool setTemperature(ca_gazebo::SetTemperature::Request& req,  // NOLINT(runtime/references)
+                      ca_gazebo::SetTemperature::Response& res);  // NOLINT(runtime/references)
 
-  bool resetModel(ca_gazebo::Reset::Request& req, ca_gazebo::Reset::Response& res);
-
-  bool setTemperature(ca_gazebo::SetTemperature::Request& req, ca_gazebo::SetTemperature::Response& res);
   // Callback Queue
   ros::CallbackQueue queue_;
   std::thread callback_queue_thread_;
@@ -116,3 +142,5 @@ private:
   void currentCallback(const std_msgs::Float32::ConstPtr& current, int consumer_id);
 };
 }  // namespace gazebo
+
+#endif  // CA_GAZEBO_CREATE_BATTERY_PLUGIN_H

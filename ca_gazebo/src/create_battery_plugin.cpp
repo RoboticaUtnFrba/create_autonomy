@@ -1,3 +1,28 @@
+/*
+ *  Gazebo - Outdoor Multi-Robot Simulator
+ *  Copyright (C) 2021
+ *     Emiliano Borghi
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ */
+/*
+ * Desc: Battery plugin
+ * Author: Emiliano Borghi
+ * Date: 22 Jan 2021
+ */
+
+#include <string>
+#include <vector>
+
 #include <ca_gazebo/create_battery_plugin.h>
 
 namespace gazebo
@@ -122,8 +147,8 @@ void GazeboRosBattery::Load(physics::ModelPtr parent, sdf::ElementPtr sdf)
   Reset();
 }
 
-bool GazeboRosBattery::setTemperature(ca_gazebo::SetTemperature::Request& req,
-                                      ca_gazebo::SetTemperature::Response& res)
+bool GazeboRosBattery::setTemperature(ca_gazebo::SetTemperature::Request& req,  // NOLINT(runtime/references)
+                                      ca_gazebo::SetTemperature::Response& res)  // NOLINT(runtime/references)
 {
   service_lock.lock();
   temp_set_ = req.temperature.data;
@@ -133,7 +158,8 @@ bool GazeboRosBattery::setTemperature(ca_gazebo::SetTemperature::Request& req,
   return true;
 }
 
-bool GazeboRosBattery::setCharge(ca_gazebo::SetCharge::Request& req, ca_gazebo::SetCharge::Response& res)
+bool GazeboRosBattery::setCharge(ca_gazebo::SetCharge::Request& req,  // NOLINT(runtime/references)
+                                 ca_gazebo::SetCharge::Response& res)  // NOLINT(runtime/references)
 {
   service_lock.lock();
   discharge_ = req.charge.data;
@@ -143,7 +169,8 @@ bool GazeboRosBattery::setCharge(ca_gazebo::SetCharge::Request& req, ca_gazebo::
   return true;
 }
 
-bool GazeboRosBattery::resetModel(ca_gazebo::Reset::Request& req, ca_gazebo::Reset::Response& res)
+bool GazeboRosBattery::resetModel(ca_gazebo::Reset::Request& req,  // NOLINT(runtime/references)
+                                  ca_gazebo::Reset::Response& res)  // NOLINT(runtime/references)
 {
   service_lock.lock();
   if (req.reset.data)
@@ -198,8 +225,8 @@ void GazeboRosBattery::nonlinearDischargeVoltageUpdate()
 {
   double t = temperature_ + 273.15;
   double t0 = design_temperature_ + 273.15;
-  double e0_t = constant_voltage_ + reversible_voltage_temp_ * (t - t0);  // TODO: Don't increase for t>t0 ?
-  double qt = design_capacity_ + capacity_temp_coeff_ * (t - t0);         // TODO: Don't increase for t>t0 ?
+  double e0_t = constant_voltage_ + reversible_voltage_temp_ * (t - t0);  // TODO(eborghi10): Don't increase for t>t0 ?
+  double qt = design_capacity_ + capacity_temp_coeff_ * (t - t0);         // TODO(eborghi10): Don't increase for t>t0 ?
   double kt = polarization_constant_ * exp(arrhenius_rate_polarization_ * (1 / t - 1 / t0));
   voltage_ = e0_t - kt * qt / (qt + discharge_) * (current_lpf_ * (characteristic_time_ / 3600.0) - discharge_) +
              exponential_voltage_ * exp(-exponential_capacity_ * -discharge_);
