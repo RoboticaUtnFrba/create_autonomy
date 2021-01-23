@@ -83,7 +83,7 @@ catkin_package(
 foreach(PLUGIN ${PLUGIN_LIST})
   add_library(${PLUGIN} src/${PLUGIN}.cpp)
 
-  add_dependencies(${PLUGIN} ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME}_gencpp)
+  add_dependencies(${PLUGIN} ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
 
   target_link_libraries(${PLUGIN}
     ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
