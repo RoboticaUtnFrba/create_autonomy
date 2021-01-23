@@ -167,7 +167,7 @@ if(CATKIN_ENABLE_TESTING)
   find_package(rostest REQUIRED)
   # Tests list
   foreach(TEST
-    hz
+    # hz
     publish
     static
   )

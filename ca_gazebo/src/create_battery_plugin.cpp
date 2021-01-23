@@ -192,7 +192,7 @@ void GazeboRosBattery::Reset()
   battery_empty_ = false;
   internal_cutt_off_ = false;
   model_initialised_ = true;
-  ROS_WARN_NAMED(plugin_name_, "%s: Battery model reset.", gazebo_ros_->info());
+  ROS_INFO_NAMED(plugin_name_, "%s: Battery model reset.", gazebo_ros_->info());
 }
 
 // simple linear discharge model
