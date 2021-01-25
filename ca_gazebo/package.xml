@@ -27,6 +27,7 @@
   <exec_depend>ca_slam</exec_depend>
   <exec_depend>ca_swarm</exec_depend>
   <exec_depend>ca_tools</exec_depend>
+  <exec_depend>create_gazebo_models</exec_depend>
   <exec_depend>gazebo_ros</exec_depend>
   <exec_depend>message_runtime</exec_depend>
   <exec_depend>nodelet</exec_depend>
