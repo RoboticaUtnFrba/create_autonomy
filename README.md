@@ -17,15 +17,17 @@ This package wraps the C++ library [libcreate][libcreate], which uses iRobot's [
 
 ## [Features](docs/FEATURES.md)
 
-## [Installation](docs/INSTALLATION.md)
+## [Installation](https://github.com/RoboticaUtnFrba/create_autonomy/wiki/Setup-Docker)
 
 ## [Running the driver](docs/LAUNCH.md)
 
 ### [Parameters](docs/PARAMETERS.md)
 
-### [Repository structure](docs/STRUCTURE.md)
+### [Repository structure](https://github.com/RoboticaUtnFrba/create_autonomy/wiki/Project-structure)
 
 ## [Commanding your Create](docs/COMMAND.md)
+
+## [Wiki](https://github.com/RoboticaUtnFrba/create_autonomy/wiki)
 
 ## [Contributions](docs/CONTRIBUTION.md)
 
