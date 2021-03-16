@@ -17,26 +17,26 @@ def run_dev_environment(command, ros="melodic", gazebo="9"):
     user_host = ut.get_user()
     user_docker = "create"
     docker_args = []
-    dockerfile  = "create_ros_{}_gazebo{}".format(ros, gazebo)
-    temp_volume = "/home/{}/.{}".format(user_host, IMAGE_NAME)
+    dockerfile  = f"create_ros_{ros}_gazebo{gazebo}"
+    temp_volume = f"/home/{user_host}/.{IMAGE_NAME}"
 
     docker_args.append("-it")
     docker_args.append("--rm")
-    docker_args.append("--env=\"DISPLAY\"")
-    docker_args.append("--volume=\"/tmp/.X11-unix:/tmp/.X11-unix:rw\"")
-    docker_args.append("--volume=\"$HOME/.Xauthority:/root/.Xauthority:rw\"")
-    docker_args.append("--name=\"{}\"".format(IMAGE_NAME))
+    docker_args.append("--env DISPLAY")
+    docker_args.append("--volume /tmp/.X11-unix:/tmp/.X11-unix:rw")
+    docker_args.append("--volume $HOME/.Xauthority:/root/.Xauthority:rw")
+    docker_args.append(f"--name {IMAGE_NAME}")
     docker_args.append("--privileged")
-    docker_args.append("--network=\"host\"")
-    docker_args.append("--user {0}:{0}".format(ut.get_uid()))
+    docker_args.append("--network host")
+    docker_args.append(f"--user {ut.get_uid()}:{ut.get_uid()}")
     # Keep user settings
-    docker_args.append("--volume {}/.gazebo/:/home/{}/.gazebo/".format(temp_volume, user_docker))
+    docker_args.append(f"--volume {temp_volume}/.gazebo/:/home/{user_docker}/.gazebo/")
     # Mount workspace
-    docker_args.append("--volume {}:/{}/src".format(os.path.dirname(ut.get_repo_root()), WS_NAME))
-    docker_args.append("--volume {}/ws/build/:/{}/build/".format(temp_volume, WS_NAME))
-    docker_args.append("--volume {}/ws/devel/:/{}/devel/".format(temp_volume, WS_NAME))
+    docker_args.append(f"--volume {os.path.dirname(ut.get_repo_root())}:/{WS_NAME}/src")
+    docker_args.append(f"--volume {temp_volume}/ws/build/:/{WS_NAME}/build/")
+    docker_args.append(f"--volume {temp_volume}/ws/devel/:/{WS_NAME}/devel/")
     # VSCode needs HOME to be defined in order to work in the container
-    docker_args.append("-e HOME=/home/{}".format(user_docker))
+    docker_args.append(f"-e HOME=/home/{user_docker}")
 
     # USB devices for the real robot
     docker_args.append(ut.mount_resource("/dev/roomba"))
@@ -57,30 +57,30 @@ def run_dev_environment(command, ros="melodic", gazebo="9"):
 
     docker_args.append("-e ROS_HOSTNAME=localhost")
     docker_args.append("-e ROS_MASTER_URI=http://localhost:11311")
-    docker_args.append("--workdir /{}/".format(WS_NAME))
+    docker_args.append(f"--workdir /{WS_NAME}/")
 
     if ut.is_nvidia():
         docker_args.append("--gpus all")
-        dockerfile = 'create_{}_nvidia'.format(ros)
+        dockerfile = f"create_{ros}_nvidia"
 
     # Join arguments together separated by a space
     docker_args = ' '.join(docker_args)
-    docker_command = "docker run {} {} {}".format(docker_args, dockerfile, command)
+    docker_command = f"docker run {docker_args} {dockerfile} {command}"
 
-    ut.create_directory("{}/.gazebo/".format(temp_volume))
-    ut.create_directory("{}/ws/build/".format(temp_volume))
-    ut.create_directory("{}/ws/devel/".format(temp_volume))
+    ut.create_directory(f"{temp_volume}/.gazebo/")
+    ut.create_directory(f"{temp_volume}/ws/build/")
+    ut.create_directory(f"{temp_volume}/ws/devel/")
 
     ut.run_command("xhost +local:root")
     ut.run_command(docker_command)
     ut.run_command("xhost -local:root")
 
 def attach_dev_environment(command):
-    command = 'docker exec -it --user {0}:{0} {1} {2}'.format(ut.get_uid(), IMAGE_NAME, command)
+    command = f"docker exec -it --user {ut.get_uid()}:{ut.get_uid()} {IMAGE_NAME} {command}"
     ut.run_command(command)
 
 def is_running():
-    command = 'docker ps | grep {} > /dev/null'.format(IMAGE_NAME)
+    command = f"docker ps | grep {IMAGE_NAME} > /dev/null"
     try:
         subprocess.check_call(command, shell=True)
     except Exception:

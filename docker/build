@@ -17,12 +17,13 @@ def main():
     args = parser.parse_args()
 
     # Select image to compile
-    image_name = 'create_{}_nvidia'.format(args.ros_version) \
+    image_name = f"create_{args.ros_version}_nvidia" \
             if ut.is_nvidia() \
-            else 'create_ros_{}_gazebo{}'.format(args.ros_version, args.gazebo_version)
+            else f"create_ros_{args.ros_version}_gazebo{args.gazebo_version}"
 
     # Build selected image
-    command = 'cd {} && make {}'.format(os.path.join(ut.get_repo_root(), 'docker'), image_name)
+    path_to_docker = os.path.join(ut.get_repo_root(), 'docker')
+    command = f"cd {path_to_docker} && make {image_name}"
     ut.run_command(command)
 
 if __name__ == '__main__':
