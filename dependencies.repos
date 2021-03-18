@@ -23,6 +23,10 @@ repositories:
     type: git
     url: https://github.com/RoboticaUtnFrba/i2c_imu.git
     version: master
+  libcreate:
+    type: git
+    url: https://github.com/RoboticaUtnFrba/libcreate.git
+    version: master
   octomap_mapping:
     type: git
     url: https://github.com/RoboticaUtnFrba/octomap_mapping.git

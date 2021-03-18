@@ -60,8 +60,6 @@ RUN apt-get install -y librealsense2-dkms librealsense2-utils librealsense2-dev
 ENV DEPS_WS=/deps_ws
 RUN mkdir -p ${DEPS_WS}/src
 WORKDIR ${DEPS_WS}/src
-# Compile libcreate, the driver for the iRobot Create 2 robot
-RUN git clone https://github.com/RoboticaUtnFrba/libcreate.git
 RUN apt-get install -y python3-vcstool
 COPY dependencies.repos ${DEPS_WS}/src/dependencies.repos
 RUN vcs import . < dependencies.repos
