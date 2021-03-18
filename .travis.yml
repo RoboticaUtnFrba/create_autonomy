@@ -31,8 +31,6 @@ install:
   # Clone manual dependencies to $CATKIN_WS_SRC
   - wget -q https://raw.githubusercontent.com/${TRAVIS_REPO_SLUG}/${TRAVIS_COMMIT}/dependencies.repos
   - /usr/bin/vcs import $CATKIN_WS_SRC < dependencies.repos
-  # Clone libcreate
-  - git clone https://github.com/RoboticaUtnFrba/libcreate.git
   # Add ONLY the package under integration to the workspace using a symlink
   - ln -s $TRAVIS_BUILD_DIR $CREATE_AUTONOMY_SRC
   # Use rosdep to install all dependencies (including ROS itself)
