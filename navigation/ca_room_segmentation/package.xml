@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>ca_room_segmentation</name>
+  <version>0.0.0</version>
+  <description>Room Segmentation package</description>
+
+  <author email="lucas_manfredi02@hotmail.com">Lucas Manfredi</author>
+  <author email="">Juan Balbi</author>
+  <maintainer email="eborghiorue@frba.utn.edu.ar">Emiliano Borghi</maintainer>
+
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+</package>
