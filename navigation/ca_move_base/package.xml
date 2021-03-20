@@ -20,6 +20,7 @@
   <exec_depend>ca_bumper2pc</exec_depend>
   <exec_depend>ca_cartographer</exec_depend>
   <exec_depend>ca_hector</exec_depend>
+  <exec_depend>ca_mapping<exec_depend>
   <exec_depend>ca_slam</exec_depend>
   <exec_depend>carrot_planner</exec_depend>
   <exec_depend>clear_costmap_recovery</exec_depend>

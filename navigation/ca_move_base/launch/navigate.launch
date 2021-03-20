@@ -37,7 +37,7 @@
 
   <!-- map_server for localization -->
   <include if="$(eval arg('localization')=='amcl' or arg('localization')=='lama')"
-           file="$(find ca_move_base)/launch/map_server.launch">
+           file="$(find ca_mapping)/launch/map_server.launch">
     <arg name="env" value="$(arg env)"/>
   </include>
 
