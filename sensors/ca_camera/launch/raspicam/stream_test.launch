@@ -1,8 +1,8 @@
 <launch>
     <arg name="cam_name" value="raspicam"/>
-    <arg name="cam_topic" value="/$(arg cam_name)/image_raw"/>
+    <arg name="cam_topic" value="$(arg cam_name)/image_raw"/>
 
-    <include file="$(find ca_visual_odometry)/launch/cam_mapping.launch"/>
+    <include file="$(find ca_camera)/launch/cam_mapping.launch"/>
 
-    <node pkg="image_view" type="image_view" name="$(arg cam_name)_stream_test" args="image:=$(arg cam_topic)"/>
+    <node pkg="image_view" type="image_view" name="$(arg cam_name)_stream" args="image:=$(arg cam_topic)"/>
 </launch>

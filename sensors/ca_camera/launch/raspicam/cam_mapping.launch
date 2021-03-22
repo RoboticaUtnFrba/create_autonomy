@@ -1,4 +1,6 @@
 <launch>
+    <arg name="ns" default="create1" doc="Namespace of the robot"/>
+
     <!-- gscam to receive frames from raspicam and remaping them to a ROS topic -->
     <arg name="cam_name" value="raspicam"/>
     <arg name="cam_topic" value="/$(arg cam_name)/image_raw"/>
@@ -8,18 +10,18 @@
     <!-- Include calibration config -->
     <arg name="calibrated" default="false"/>
     <!-- <arg if="$(arg calibrated)" name="config_file"
-      value="package://ca_visual_odometry/config/ost.yaml"/>
+      value="package://ca_camera/config/ost.yaml"/>
     <arg unless="$(arg calibrated)" name="config_file" value=""/> -->
-    <arg name="config_file" value="package://ca_visual_odometry/config/ost.yaml"/>
+    <arg name="config_file" value="package://ca_camera/config/ost.yaml"/>
 
     <!-- TODO (@eborghi10): Fix
          "Camera calibration file /home/create/.ros/camera_info/raspicam.yaml not found."
          When calibrated=false
       -->
-    <node pkg="gscam" type="gscam" name="$(arg cam_name)" ns="create1">
+    <node pkg="gscam" type="gscam" name="$(arg cam_name)" ns="$(arg ns)">
       <param name="camera_name" value="$(arg cam_name)"/>
       <remap from="camera/image_raw" to="$(arg cam_topic)"/>
       <param name="camera_info_url" value="$(arg config_file)"/>
-      <param name="frame_id"    value="create1_tf/raspicam_link_optical"/> <!--  -->
+      <param name="frame_id"    value="$(arg ns)/raspicam_link_optical"/> <!--  -->
     </node>
 </launch>

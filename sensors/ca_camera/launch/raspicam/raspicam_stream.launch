@@ -4,5 +4,5 @@
   -->
   <arg name="IP" default=""/>
 
-  <node name="raspicam_stream" pkg="ca_visual_odometry" type="stream_raspicam" args="$(arg IP)" output="screen"/>
+  <node name="raspicam_stream" pkg="ca_camera" type="stream_raspicam" args="$(arg IP)" output="screen"/>
 </launch>

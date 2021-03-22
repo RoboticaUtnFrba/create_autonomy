@@ -1,6 +1,6 @@
 <launch>
     <!-- Remap the raspicam frames -->
-    <include file="$(find ca_visual_odometry)/launch/cam_mapping.launch"/>
+    <include file="$(find ca_camera)/launch/cam_mapping.launch"/>
 
     <arg name="cam_name" value="raspicam"/>
     <arg name="cam_topic" value="/$(arg cam_name)/image_raw"/>
