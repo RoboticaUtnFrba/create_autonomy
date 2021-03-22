@@ -1,6 +1,6 @@
 <launch>
   <arg name="env"      default="empty" doc="Name of the environment that is used to load the map"/>
-	<arg name="map_file" value="$(find ca_move_base)/maps/$(arg env).yaml"/>
+	<arg name="map_file" value="$(find ca_mapping)/maps/$(arg env).yaml"/>
 
   <!-- Run the map server node with a predefined map -->
   <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)">
