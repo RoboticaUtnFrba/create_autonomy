@@ -20,16 +20,22 @@
   <exec_depend>ca_description</exec_depend>
   <exec_depend>ca_driver</exec_depend>
   <exec_depend>ca_msgs</exec_depend>
+  <exec_depend>diagnostic_msgs</exec_depend>
+  <exec_depend>diagnostic_updater</exec_depend>
   <exec_depend>ecl_threads</exec_depend>
   <exec_depend>geometry_msgs</exec_depend>
   <exec_depend>libcreate</exec_depend>
+  <exec_depend>nav_msgs</exec_depend>
   <exec_depend>nodelet</exec_depend>
   <exec_depend>pluginlib</exec_depend>
   <exec_depend>rospy</exec_depend>
+  <exec_depend>roscpp</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
   <exec_depend>smach</exec_depend>
   <exec_depend>smach_ros</exec_depend>
   <exec_depend>smach_viewer</exec_depend>
   <exec_depend>std_msgs</exec_depend>
+  <exec_depend>tf</exec_depend>
 
   <export>
     <nodelet plugin="${prefix}/plugins/nodelet_plugins.xml" />

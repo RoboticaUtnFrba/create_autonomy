@@ -36,20 +36,20 @@ include_directories(
 catkin_package(
   LIBRARIES ca_nodelet ca_driver
   CATKIN_DEPENDS
-    libcreate
-    roscpp
-    std_msgs
-    geometry_msgs
-    nav_msgs
-    sensor_msgs
-    tf
-    ca_msgs
     ca_description
+    ca_msgs
     diagnostic_msgs
     diagnostic_updater
+    ecl_threads
+    geometry_msgs
+    libcreate
+    nav_msgs
     nodelet
     pluginlib
-    ecl_threads
+    roscpp
+    sensor_msgs
+    std_msgs
+    tf
 )
 
 add_subdirectory(src)
