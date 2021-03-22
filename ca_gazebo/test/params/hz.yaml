@@ -13,25 +13,25 @@ cliff:
 cliff_front_left:
   topic: "/create1/front_left_cliff_sensor/raw"
   hz: 20.0
-  hzerror: 1.0
+  hzerror: 3.0
   test_duration: 5.0
 
 cliff_front_right:
   topic: "/create1/front_right_cliff_sensor/raw"
   hz: 20.0
-  hzerror: 1.0
+  hzerror: 3.0
   test_duration: 5.0
 
 cliff_side_left:
   topic: "/create1/side_left_cliff_sensor/raw"
   hz: 20.0
-  hzerror: 1.0
+  hzerror: 3.0
   test_duration: 5.0
 
 cliff_side_right:
   topic: "/create1/side_right_cliff_sensor/raw"
   hz: 20.0
-  hzerror: 1.0
+  hzerror: 3.0
   test_duration: 5.0
 
 gts:
