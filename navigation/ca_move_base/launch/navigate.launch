@@ -71,6 +71,12 @@
     <arg name="localization"  value="true"/>
   </include>
 
+  <!-- Visual odometry -->
+	<include if="$(eval arg('localization')=='visual_odometry')"
+           file="$(find ca_visual_odometry)/launch/vo_raspicam.launch">
+    <arg name="ns" value="$(arg ns)"/>
+  </include>
+
   <!--
     #######################
             MAPPING
