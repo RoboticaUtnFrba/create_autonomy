@@ -5,7 +5,11 @@
   <arg name="global_planner" value="$(optenv GLOBAL_PLANNER gbp)"/>
   <arg name="local_planner"  value="$(optenv LOCAL_PLANNER teb)"/>
 
-  <arg name="laser_topic"  value="$(arg laser)/scan"/>
+  <arg name="robot_frame" value="$(arg ns)/base_footprint"/>
+  <arg name="odom_frame"  value="$(arg ns)/odom"/>
+  <arg name="laser_frame" value="$(arg ns)/laser_link"/>
+
+  <arg name="laser_topic"   value="$(arg laser)/scan"/>
   <arg name="odom_topic"    value="odom_combined"/>
   <arg name="cmd_vel_topic" value="cmd_vel/out"/>
 
@@ -21,10 +25,6 @@
   <!-- move_base node -->
   <node pkg="move_base" type="move_base" name="move_base"
         respawn="false" output="screen" launch-prefix="$(arg gdb)">
-
-    <arg name="robot_frame"  value="$(arg tf_prefix)/base_footprint"/>
-    <arg name="odom_frame"   value="$(arg tf_prefix)/odom"/>
-    <arg name="laser_frame" value="$(arg tf_prefix)/laser_link"/>
 
     <rosparam file="$(find ca_move_base)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
     <rosparam file="$(find ca_move_base)/config/global_costmap_params.yaml" command="load" />
