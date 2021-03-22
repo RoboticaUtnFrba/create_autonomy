@@ -56,15 +56,16 @@ RUN add-apt-repository "deb http://realsense-hw-public.s3.amazonaws.com/Debian/a
 RUN apt-get install -y librealsense2-dkms librealsense2-utils librealsense2-dev
 
 # Install jps3d (Jump Point Search)
-ENV JPS3D_WS=/jps3d_ws
-RUN mkdir -p ${JPS3D_WS}/src
-WORKDIR ${JPS3D_WS}/src
+# Note: This is a library that is compiled with "make"
+ENV JPS3D_WS=/jps3d
 RUN apt-get install -y python-catkin-tools libeigen3-dev libyaml-cpp-dev libboost-dev
-RUN git clone https://github.com/KumarRobotics/jps3d.git
-WORKDIR ${JPS3D_WS}
-RUN /bin/bash -c ". /opt/ros/${ROS1_DISTRO}/setup.bash; \
-    catkin config --install -i /opt/ros/${ROS1_DISTRO}; \
-    catkin build --cmake-args -DCMAKE_BUILD_TYPE=Release"
+RUN git clone https://github.com/KumarRobotics/jps3d.git ${JPS3D_WS}
+RUN mkdir -p ${JPS3D_WS}/build
+WORKDIR ${JPS3D_WS}/build
+# RUN /bin/bash -c ". /opt/ros/${ROS1_DISTRO}/setup.bash; \
+#     catkin config --install -i /opt/ros/${ROS1_DISTRO}; \
+#     catkin build --cmake-args -DCMAKE_BUILD_TYPE=Release"
+RUN cmake .. && make -j$(nproc) && make install && ldconfig
 RUN rm -r ${JPS3D_WS}
 
 # Install dependencies with vcs
@@ -72,13 +73,13 @@ RUN rm -r ${JPS3D_WS}
 ENV DEPS_WS=/deps_ws
 RUN mkdir -p ${DEPS_WS}/src
 WORKDIR ${DEPS_WS}/src
-RUN apt-get install -y python3-vcstool python-catkin-tools
+RUN apt-get install -y python-catkin-tools python3-vcstool
 COPY dependencies.repos ${DEPS_WS}/src/dependencies.repos
 RUN vcs import . < dependencies.repos
 WORKDIR ${DEPS_WS}
 RUN apt-get update
 USER ${USER}
-RUN rosdep install --from-paths src --rosdistro=${ROS1_DISTRO} -yi -r --os=ubuntu:bionic --skip-keys=jps3d
+RUN rosdep install --from-paths src --rosdistro=${ROS1_DISTRO} -yi -r --os=ubuntu:bionic
 USER root
 RUN /bin/bash -c ". /opt/ros/${ROS1_DISTRO}/setup.bash; \
     catkin_make -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/opt/ros/${ROS1_DISTRO}; \

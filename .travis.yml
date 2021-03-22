@@ -42,7 +42,7 @@ install:
   - ln -s $TRAVIS_BUILD_DIR $CREATE_AUTONOMY_SRC
   # Use rosdep to install all dependencies (including ROS itself)
   - cd $CATKIN_WS
-  - rosdep install --from-paths ./ -i -y --rosdistro $CI_ROS_DISTRO --skip-keys=jps3d
+  - rosdep install --from-paths ./ -i -y --rosdistro $CI_ROS_DISTRO
 
 # Build packages
 before_script:
