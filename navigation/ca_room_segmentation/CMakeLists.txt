@@ -9,7 +9,6 @@ set(QTVERSION ${Qt5Widgets_VERSION})
 
 find_package(catkin REQUIRED
 	python_qt_binding
-	PyQt5
 )
 
 catkin_python_setup()

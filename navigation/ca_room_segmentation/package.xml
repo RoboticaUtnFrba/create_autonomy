@@ -12,7 +12,6 @@
   <buildtool_depend>catkin</buildtool_depend>
 
   <depend>python_qt_binding</depend>
-  <depend>PyQt5</depend>
 
   <exec_depend>ipa_room_segmentation</exec_depend>
 </package>
