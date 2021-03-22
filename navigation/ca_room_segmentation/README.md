@@ -20,3 +20,5 @@ rosrun ca_room_segmentation Interfaz.py
 ```
 
 More information about the package `ipa_room_segmentation` can be found [here](https://github.com/ipa320/ipa_coverage_planning/blob/indigo_dev/ipa_room_segmentation/readme.md) and (here)[http://wiki.ros.org/ipa_room_segmentation].
+
+The document explaining this package is [here](https://drive.google.com/file/d/1zWyM3eSH5mJpbYpZpAOByEis81tZmZ2D/view?usp=sharing) but it's in Spanish.
