@@ -13,7 +13,7 @@
 
   <node pkg="ca_tools" type="turtlebot_teleop_key" name="turtlebot_teleop_keyboard"
         ns="$(arg ns)" output="screen"
-        if="$(eval str(arg('id')).isdigit() and (arg('id') > 0) and arg('type')=='turtlebot' )"/>
+        if="$(eval str(arg('id')).isdigit() and (arg('id') > 0) and arg('type')=='turtlebot' )">
     <remap from="cmd_vel" to="cmd_vel/keyop"/>
   </node>
 </launch>
