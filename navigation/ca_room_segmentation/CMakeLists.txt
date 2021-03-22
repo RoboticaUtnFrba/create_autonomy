@@ -3,31 +3,14 @@ project(ca_room_segmentation)
 
 add_compile_options(-std=c++11)
 
-find_package(catkin REQUIRED COMPONENTS
-  actionlib
-  amcl
-  move_base
-  move_base_msgs
-  roscpp
-  tf
+find_package(Qt5 REQUIRED COMPONENTS Core Widgets OpenGL)
+set(QT_LIBRARIES Qt5::Widgets)
+set(QTVERSION ${Qt5Widgets_VERSION})
+
+find_package(catkin REQUIRED
+	python_qt_binding
+	PyQt5
 )
 
-catkin_package(
- CATKIN_DEPENDS
-  move_base_msgs
-)
-
-include_directories(${catkin_INCLUDE_DIRS})
-
-add_executable(send_goal src/send_robot_goal.cpp)
-
-## Specify libraries to link a library or executable target against
-target_link_libraries(send_goal
-  ${catkin_LIBRARIES}
-)
-
-install(TARGETS send_goal
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
+catkin_python_setup()
+catkin_package()

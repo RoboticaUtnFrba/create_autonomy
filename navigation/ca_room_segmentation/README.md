@@ -1,7 +1,7 @@
 # Room Segmentation
 
 ```bash
-export LOCALIZATION=pure_localization
+export LOCALIZATION=amcl
 export RVIZ=true
 export GUI=false
 export LASER=rplidar
@@ -9,6 +9,14 @@ export LASER=rplidar
 roslaunch ca_gazebo create_house.launch
 ```
 
+Execute the room segmentation action server:
+
 ```bash
-rosrun ca_room_segmentation move_base.py
+roslaunch ipa_room_segmentation room_segmentation_action_server.launch
 ```
+
+```bash
+rosrun ca_room_segmentation Interfaz.py
+```
+
+More information about the package `ipa_room_segmentation` can be found [here](https://github.com/ipa320/ipa_coverage_planning/blob/indigo_dev/ipa_room_segmentation/readme.md) and (here)[http://wiki.ros.org/ipa_room_segmentation].
