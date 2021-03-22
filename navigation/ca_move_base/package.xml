@@ -21,7 +21,9 @@
   <exec_depend>ca_cartographer</exec_depend>
   <exec_depend>ca_hector</exec_depend>
   <exec_depend>ca_mapping</exec_depend>
+  <exec_depend>ca_safety_controller</exec_depend>
   <exec_depend>ca_slam</exec_depend>
+  <exec_depend>ca_vel_mux</exec_depend>
   <exec_depend>ca_visual_odometry</exec_depend>
   <exec_depend>carrot_planner</exec_depend>
   <exec_depend>clear_costmap_recovery</exec_depend>
