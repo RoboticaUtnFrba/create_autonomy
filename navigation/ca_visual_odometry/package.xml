@@ -4,18 +4,11 @@
   <version>0.0.0</version>
   <description>ca_visual_odometry performs visual odometry localization</description>
 
-  <maintainer email="emiliano.borghi@gmail.com">Emiliano Borghi</maintainer>
+  <maintainer email="eborghiorue@frba.utn.edu.ar">Emiliano Borghi</maintainer>
 
   <license>BSD</license>
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <depend>camera_calibration</depend>
-
-  <exec_depend>ca_tools</exec_depend>
-  <exec_depend>gscam</exec_depend>
-  <exec_depend>image_proc</exec_depend>
-  <exec_depend>rqt_pose_view</exec_depend>
   <exec_depend>viso2_ros</exec_depend>
-
 </package>

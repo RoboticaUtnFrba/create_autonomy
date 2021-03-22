@@ -1,3 +1,0 @@
-frame_id: "raspicam_link_optical"
-camera_name: raspicam
-camera_info_url: "package://ca_visual_odometry/config/ost.yaml"

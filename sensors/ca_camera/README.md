@@ -15,3 +15,5 @@ https://github.com/IntelRealSense/realsense-ros/wiki/SLAM-with-D435i
 ## Intel RealSense R200
 
 http://wiki.ros.org/realsense_camera/Tutorials/Building_librealsense_from_Sources
+
+## [Raspicam camera for Raspberry](docs/raspicam.md)

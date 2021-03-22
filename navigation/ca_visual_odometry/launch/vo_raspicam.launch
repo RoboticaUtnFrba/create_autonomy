@@ -1,28 +1,17 @@
+<!--
+  Visual odometry node based on viso2_ros.
+
+  http://wiki.ros.org/viso2_ros
+ -->
 <launch>
-    <!-- Use calibration file only with the real robot -->
-    <arg name="simulation" default="false"/>
-    <arg if="$(arg simulation)" name="calib_file" value="false"/>
-    <arg unless="$(arg simulation)" name="calib_file" value="true"/>
+    <arg name="ns" default="create1" doc="Namespace of the robot"/>
 
-    <include file="$(find ca_visual_odometry)/launch/cam_mapping.launch">
-      <arg name="calibrated" value="$(arg calib_file)"/>
-    </include>
-
-    <!-- Recitifies image_raw -->
-    <node pkg="ca_visual_odometry" type="image_rect" name="image_rect" ns="create1"/>
-
-    <!-- Wait for Gazebo to be ready before running this node:
-         Specifically, we're waiting for the topics: /create1/raspicam/*
-      -->
-    <node pkg="viso2_ros" type="mono_odometer" name="visual_odometry" args="image:=raspicam/image_rect" output="screen" ns="create1">
+    <node pkg="viso2_ros" type="mono_odometer" name="visual_odometry"
+          args="image:=raspicam/image_rect" output="screen" ns="$(arg ns)">
       <rosparam file="$(find ca_visual_odometry)/config/viso2.yaml" command="load"/>
       <remap from="image" to="raspicam/image_rect"/>
-      <param name="base_link_frame_id" value="create1_tf/base_link"/>
-      <param name="odom_frame_id"      value="create1_tf/odom"/>
-      <param name="sensor_frame_id"    value="create1_tf/raspicam_link_optical"/> <!--  -->
+      <param name="base_link_frame_id" value="$(arg ns)/base_link"/>
+      <param name="odom_frame_id"      value="$(arg ns)/odom"/>
+      <param name="sensor_frame_id"    value="$(arg ns)/raspicam_link_optical"/>
     </node>
-
-    <!-- RViz -->
-    <arg name="rviz" default="false"/>
-    <include if="$(arg rviz)" file="$(find ca_tools)/launch/rviz.launch"/>
 </launch>
