@@ -83,10 +83,6 @@ Visualization Manager:
               Show Axes: false
               Show Trail: false
               Value: true
-            battery_link_dummy:
-              Alpha: 1
-              Show Axes: false
-              Show Trail: false
             bumper_link:
               Alpha: 1
               Show Axes: false
