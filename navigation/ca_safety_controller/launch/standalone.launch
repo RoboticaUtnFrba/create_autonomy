@@ -1,25 +1,29 @@
 <launch>
+  <arg name="ns" default="create1" doc="Namespace of the robot"/>
+  <arg name="nodelet_manager_name" default="nodelet_manager"/>
+
   <!-- Create safety controller -->
-  <node pkg="nodelet" type="nodelet" name="ca_safety_controller" output="screen"
-        args="load ca_safety_controller/SafetyControllerNodelet nodelet_manager">
-    <remap from="ca_safety_controller/enable"    to="enable"/>
-    <remap from="ca_safety_controller/disable"   to="disable"/>
-    <remap from="ca_safety_controller/reset"     to="reset"/>
-    <remap from="ca_safety_controller/cmd_vel"   to="cmd_vel/safe"/>
-    <remap from="ca_safety_controller/bumper"    to="bumper"/>
-    <remap from="ca_safety_controller/cliff"     to="cliff"/>
-    <remap from="ca_safety_controller/wheeldrop" to="wheeldrop"/>
+  <node pkg="nodelet" type="nodelet" name="safety_controller" output="screen"
+        args="load ca_safety_controller/SafetyControllerNodelet $(arg nodelet_manager_name)">
+
+    <param name="safety_controller/time_to_extend_bump_cliff_events" value="0.0"/>
+
+    <remap from="safety_controller/cmd_vel"   to="cmd_vel/safe"/>
+    <remap from="safety_controller/bumper"    to="bumper"/>
+    <remap from="safety_controller/cliff"     to="cliff"/>
+    <remap from="safety_controller/wheeldrop" to="wheeldrop"/>
   </node>
 
   <!-- Velocity Smoother -->
-  <node pkg="nodelet" type="nodelet" name="navigation_velocity_smoother"
-        args="load yocs_velocity_smoother/VelocitySmootherNodelet nodelet_manager">
+  <node pkg="nodelet" type="nodelet" name="velocity_smoother" output="screen"
+        args="load yocs_velocity_smoother/VelocitySmootherNodelet $(arg nodelet_manager_name)">
 
     <rosparam file="$(find ca_safety_controller)/config/smoother.yaml" command="load"/>
 
-    <remap from="navigation_velocity_smoother/smooth_cmd_vel" to="cmd_vel/smooth"/>
+    <remap from="velocity_smoother/raw_cmd_vel"    to="cmd_vel/nav"/>
+    <remap from="velocity_smoother/smooth_cmd_vel" to="cmd_vel/smooth"/>
+    <remap from="velocity_smoother/robot_cmd_vel"  to="cmd_vel"/>
     <!-- Robot velocity feedbacks; use the default base configuration -->
-    <remap from="navigation_velocity_smoother/odometry" to="odom"/>
-    <remap from="navigation_velocity_smoother/robot_cmd_vel" to="cmd_vel/nav"/>
+    <remap from="velocity_smoother/odometry"       to="$(arg ns)/odom_combined"/>
   </node>
 </launch>

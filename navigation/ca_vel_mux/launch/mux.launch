@@ -1,9 +1,10 @@
 <launch>
-  <arg name="config_file" value="$(find ca_vel_mux)/config/mux.yaml"/>
+  <arg name="nodelet_manager_name" default="nodelet_manager"/>
 
   <node pkg="nodelet" type="nodelet" name="yocs_cmd_vel_mux"
-        args="load yocs_cmd_vel_mux/CmdVelMuxNodelet nodelet_manager">
-    <param name="yaml_cfg_file" value="$(arg config_file)"/>
+        args="load yocs_cmd_vel_mux/CmdVelMuxNodelet $(arg nodelet_manager_name)">
+
+    <param name="yaml_cfg_file" value="$(find ca_vel_mux)/config/mux.yaml"/>
 
     <remap from="yocs_cmd_vel_mux/cmd_vel/smooth" to="cmd_vel/smooth"/>
     <remap from="yocs_cmd_vel_mux/cmd_vel/joy"    to="cmd_vel/joy"/>

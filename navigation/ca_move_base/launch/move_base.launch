@@ -11,7 +11,7 @@
 
   <arg name="laser_topic"   value="$(arg laser)/scan"/>
   <arg name="odom_topic"    value="odom_combined"/>
-  <arg name="cmd_vel_topic" value="cmd_vel/out"/>
+  <arg name="cmd_vel_topic" value="cmd_vel/nav"/>
 
   <!-- XTerm for gdb -->
   <arg name="backtrace"       default="$(optenv BACKTRACE false)" doc="Enable backtrace with gdb"/>
