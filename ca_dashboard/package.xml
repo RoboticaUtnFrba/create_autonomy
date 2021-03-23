@@ -17,16 +17,16 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <build_depend>ca_node</build_depend>
   <build_depend>ca_msgs</build_depend>
+  <build_depend>ca_node</build_depend>
   <build_depend>diagnostic_msgs</build_depend>
   <build_depend>rospy</build_depend>
   <build_depend>rqt_gui</build_depend>
   <build_depend>rqt_gui_py</build_depend>
   <build_depend>rqt_robot_dashboard</build_depend>
 
-  <exec_depend>ca_node</exec_depend>
   <exec_depend>ca_msgs</exec_depend>
+  <exec_depend>ca_node</exec_depend>
   <exec_depend>diagnostic_msgs</exec_depend>
   <exec_depend>rospy</exec_depend>
   <exec_depend>rqt_gui</exec_depend>
