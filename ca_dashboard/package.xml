@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<package>
+<package format="2">
   <name>ca_dashboard</name>
   <version>2.3.1</version>
   <description>
@@ -14,7 +14,7 @@
   <url type="bugtracker">https://github.com/turtlebot/turtlebot_create_desktop/issues</url>
   <author email="zklapow@gmail.com">Ze'ev Klapow</author>
   <author email="marcus.liebhardt@yujinrobot.com">Marcus Liebhardt</author>
-  
+
   <buildtool_depend>catkin</buildtool_depend>
 
   <build_depend>ca_node</build_depend>
@@ -24,15 +24,16 @@
   <build_depend>rqt_gui</build_depend>
   <build_depend>rqt_gui_py</build_depend>
   <build_depend>rqt_robot_dashboard</build_depend>
-  
-  <run_depend>ca_node</run_depend>
-  <run_depend>ca_msgs</run_depend>
-  <run_depend>diagnostic_msgs</run_depend>
-  <run_depend>rospy</run_depend>
-  <run_depend>rqt_gui</run_depend>
-  <run_depend>rqt_gui_py</run_depend>
-  <run_depend>rqt_robot_dashboard</run_depend>
-  
+
+  <exec_depend>ca_node</exec_depend>
+  <exec_depend>ca_msgs</exec_depend>
+  <exec_depend>diagnostic_msgs</exec_depend>
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>rqt_gui</exec_depend>
+  <exec_depend>rqt_gui_py</exec_depend>
+  <exec_depend>rqt_robot_dashboard</exec_depend>
+  <exec_depend>rqt_virtual_joy</exec_depend>
+
   <export>
     <rqt_gui plugin="${prefix}/plugins/plugin.xml"/>
   </export>
