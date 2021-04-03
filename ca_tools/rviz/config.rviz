@@ -4,11 +4,11 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
+        - /Global Options1
         - /Robot description1
         - /Sensors1
         - /Localization1
         - /Mapping1
-        - /Mapping1/Exploration1/Frontiers1
         - /Navigation1
       Splitter Ratio: 0.5600000023841858
     Tree Height: 647
@@ -270,6 +270,8 @@ Visualization Manager:
               Value: false
             map:
               Value: true
+            scanmatcher_frame:
+              Value: true
           Marker Scale: 1
           Name: TF
           Show Arrows: true
@@ -328,6 +330,8 @@ Visualization Manager:
                     {}
                   create1/wheel_right_link:
                     {}
+              scanmatcher_frame:
+                {}
           Update Interval: 0
           Value: true
       Enabled: true
@@ -436,13 +440,47 @@ Visualization Manager:
             Alpha: 1
             Axes Length: 1
             Axes Radius: 0.10000000149011612
+            Color: 85; 170; 127
+            Head Length: 0.15000000596046448
+            Head Radius: 0.05000000074505806
+            Shaft Length: 0.5
+            Shaft Radius: 0.02500000037252903
+            Value: Arrow
+          Topic: /create1/odom
+          Unreliable: false
+          Value: false
+        - Angle Tolerance: 0.10000000149011612
+          Class: rviz/Odometry
+          Covariance:
+            Orientation:
+              Alpha: 0.5
+              Color: 255; 255; 127
+              Color Style: Unique
+              Frame: Local
+              Offset: 1
+              Scale: 1
+              Value: true
+            Position:
+              Alpha: 0.30000001192092896
+              Color: 204; 51; 204
+              Scale: 1
+              Value: true
+            Value: true
+          Enabled: false
+          Keep: 1
+          Name: Fused odometry
+          Position Tolerance: 0.10000000149011612
+          Shape:
+            Alpha: 1
+            Axes Length: 1
+            Axes Radius: 0.10000000149011612
             Color: 255; 25; 0
             Head Length: 0.30000001192092896
             Head Radius: 0.10000000149011612
             Shaft Length: 1
             Shaft Radius: 0.05000000074505806
             Value: Arrow
-          Topic: /create1/odom
+          Topic: /create1/odom_combined
           Unreliable: false
           Value: false
         - Class: rviz/Group
@@ -484,17 +522,17 @@ Visualization Manager:
                   Value: true
                 Value: true
               Enabled: true
-              Head Length: 0.30000001192092896
-              Head Radius: 0.10000000149011612
+              Head Length: 0.15000000596046448
+              Head Radius: 0.05000000074505806
               Name: Pose
-              Shaft Length: 1
-              Shaft Radius: 0.05000000074505806
+              Shaft Length: 0.5
+              Shaft Radius: 0.02500000037252903
               Shape: Arrow
               Topic: /create1/amcl_pose
               Unreliable: false
               Value: true
-          Enabled: false
-          Name: ACML
+          Enabled: true
+          Name: AMCL
         - Class: rviz/Group
           Displays:
             - Class: rviz/MarkerArray
@@ -521,7 +559,7 @@ Visualization Manager:
                 {}
               Queue Size: 100
               Value: true
-          Enabled: false
+          Enabled: true
           Name: Cartographer
       Enabled: true
       Name: Localization
@@ -585,7 +623,7 @@ Visualization Manager:
               Use Fixed Frame: true
               Use rainbow: true
               Value: true
-          Enabled: false
+          Enabled: true
           Name: Octomap
         - Class: rviz/Group
           Displays:
@@ -594,10 +632,10 @@ Visualization Manager:
               Marker Topic: /create1/explore/frontiers
               Name: Frontiers
               Namespaces:
-                {}
-              Queue Size: 100
+                frontiers: true
+              Queue Size: 5
               Value: true
-          Enabled: false
+          Enabled: true
           Name: Exploration
       Enabled: true
       Name: Mapping
@@ -851,7 +889,7 @@ Visualization Manager:
       Position:
         X: 0
         Y: 0
-        Z: 11.774673461914062
+        Z: 9.374673843383789
       Target Frame: create1/base_footprint
       Value: FPS (rviz)
       Yaw: 3.1415927410125732
