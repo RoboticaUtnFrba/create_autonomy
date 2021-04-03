@@ -4,6 +4,7 @@ ros-*-amcl
 ros-*-behaviortree-cpp-v3
 ros-*-camera-calibration
 ros-*-carrot-planner
+ros-*-cartographer-ros
 ros-*-controller-manager
 ros-*-depthimage-to-laserscan
 ros-*-diff-drive-controller

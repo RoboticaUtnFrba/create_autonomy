@@ -17,29 +17,6 @@ RUN apt-get update && \
     gazebo9 \
     libgazebo9-dev
 
-# Install custom cartographer
-ENV CARTO_WS="/home/${USER}/catkin_ws"
-RUN mkdir ${CARTO_WS}
-WORKDIR ${CARTO_WS}
-RUN apt-get install -y \
-        ninja-build \
-        python-rosdep \
-        python-wstool \
-        stow
-RUN wstool init src && \
-    wstool merge -t src \
-        https://raw.githubusercontent.com/RoboticaUtnFrba/cartographer_ros/master/cartographer_ros.rosinstall && \
-    wstool update -t src
-RUN src/cartographer/scripts/install_proto3.sh --local
-RUN src/cartographer/scripts/install_abseil.sh
-USER ${USER}
-RUN rosdep install --from-paths src --rosdistro=${ROS1_DISTRO} -yi -r --os=ubuntu:bionic
-# Change again to root in order to install in /opt
-USER root
-RUN /bin/bash -c "source /opt/ros/${ROS1_DISTRO}/setup.bash && \
-    catkin_make_isolated --install --use-ninja --install-space /opt/ros/${ROS1_DISTRO}"
-RUN rm -rf ${CARTO_WS}
-
 # Install RTIMULib
 WORKDIR ${WS_DIR}
 ENV IMU_SCRIPT="install_rtimulib.sh"
