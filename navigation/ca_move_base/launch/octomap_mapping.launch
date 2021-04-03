@@ -11,7 +11,7 @@
     <param name="base_frame_id" value="$(arg ns)/base_footprint"/>
 
     <!-- data source to integrate (PointCloud2) -->
-    <remap from="cloud_in"      to="$(arg laser)/depth/points"/>
+    <remap from="cloud_in"      to="$(arg laser)/depth_registered/points"/>
     <remap from="projected_map" to="/map"/>
   </node>
 
