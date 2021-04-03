@@ -9,7 +9,7 @@ USER root
 RUN echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -sc) main" > /etc/apt/sources.list.d/gazebo-stable.list
 
 # Setup keys for Gazebo
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys D2486D2DD83DB69272AFE98867170598AF249743
+RUN wget https://packages.osrfoundation.org/gazebo.key -O - | apt-key add -
 
 # Install Gazebo 9
 RUN apt-get update && \
@@ -51,7 +51,7 @@ RUN /bin/bash ${IMU_SCRIPT}
 RUN rm -r ${IMU_SCRIPT}
 
 # Install the latest Intel® RealSense™ SDK 2.0
-RUN apt-key adv --keyserver keys.gnupg.net --recv-key F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE || apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE
+RUN curl -sSL 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xF6E65AC044F831AC80A06380C8B3A55A6F3EFCDE' | sudo apt-key add -
 RUN add-apt-repository "deb http://realsense-hw-public.s3.amazonaws.com/Debian/apt-repo $(lsb_release -sc) main" -u
 RUN apt-get install -y librealsense2-dkms librealsense2-utils librealsense2-dev
 

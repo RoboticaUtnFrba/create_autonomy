@@ -18,7 +18,10 @@ RUN apt-get update && \
     bash-completion \
     build-essential \
     curl \
+    dirmngr \
     git \
+    gnupg \
+    gnupg2 \
     libqt4-dev \
     mesa-utils \
     pkg-config \
