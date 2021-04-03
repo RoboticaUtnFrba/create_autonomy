@@ -5,5 +5,6 @@
   <node pkg="explore_lite" type="explore" name="explore"
         output="screen" respawn="true" ns="$(arg ns)">
     <rosparam command="load" file="$(find ca_mapping_exploration)/config/explore_lite.yaml"/>
+    <param name="robot_base_frame" value="$(arg ns)/base_footprint"/>
   </node>
 </launch>
