@@ -12,31 +12,34 @@ import os
 
 IMAGE_NAME = "robotica_utn_frba"
 WS_NAME    = "create_ws"
+UID        = ut.get_uid()
+
 
 def run_dev_environment(command, ros="melodic", gazebo="9"):
-    user_host = ut.get_user()
     user_docker = "create"
-    docker_args = []
+    docker_home = f"/home/{user_docker}"
     dockerfile  = f"create_ros_{ros}_gazebo{gazebo}"
-    temp_volume = f"/home/{user_host}/.{IMAGE_NAME}"
+    temp_volume = f"$HOME/.{IMAGE_NAME}"
 
+    docker_args = []
     docker_args.append("-it")
     docker_args.append("--rm")
     docker_args.append("--env DISPLAY")
     docker_args.append("--volume /tmp/.X11-unix:/tmp/.X11-unix:rw")
-    docker_args.append("--volume $HOME/.Xauthority:/root/.Xauthority:rw")
+    docker_args.append(f"--volume $HOME/.Xauthority:{docker_home}/.Xauthority:rw")
+    docker_args.append(f"--volume $HOME/.bash_history:{docker_home}/.bash_history:rw")
     docker_args.append(f"--name {IMAGE_NAME}")
     docker_args.append("--privileged")
     docker_args.append("--network host")
-    docker_args.append(f"--user {ut.get_uid()}:{ut.get_uid()}")
+    docker_args.append(f"--user {UID}:{UID}")
     # Keep user settings
-    docker_args.append(f"--volume {temp_volume}/.gazebo/:/home/{user_docker}/.gazebo/")
+    docker_args.append(f"--volume {temp_volume}/.gazebo/:{docker_home}/.gazebo/")
     # Mount workspace
     docker_args.append(f"--volume {os.path.dirname(ut.get_repo_root())}:/{WS_NAME}/src")
     docker_args.append(f"--volume {temp_volume}/ws/build/:/{WS_NAME}/build/")
     docker_args.append(f"--volume {temp_volume}/ws/devel/:/{WS_NAME}/devel/")
     # VSCode needs HOME to be defined in order to work in the container
-    docker_args.append(f"-e HOME=/home/{user_docker}")
+    docker_args.append(f"-e HOME={docker_home}")
 
     # USB devices for the real robot
     docker_args.append(ut.mount_resource("/dev/roomba"))
@@ -75,9 +78,11 @@ def run_dev_environment(command, ros="melodic", gazebo="9"):
     ut.run_command(docker_command)
     ut.run_command("xhost -local:root")
 
+
 def attach_dev_environment(command):
-    command = f"docker exec -it --user {ut.get_uid()}:{ut.get_uid()} {IMAGE_NAME} {command}"
+    command = f"docker exec -it --user {UID}:{UID} {IMAGE_NAME} {command}"
     ut.run_command(command)
+
 
 def is_running():
     command = f"docker ps | grep {IMAGE_NAME} > /dev/null"
@@ -87,6 +92,7 @@ def is_running():
         return False
 
     return True
+
 
 def main():
     # Parse arguments
@@ -100,6 +106,7 @@ def main():
         run_dev_environment(args.command, ros=args.ros_version, gazebo=args.gazebo_version)
     else:
         attach_dev_environment(args.command)
+
 
 if __name__ == '__main__':
     main()
