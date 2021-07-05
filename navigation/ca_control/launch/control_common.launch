@@ -17,6 +17,6 @@
   <node name="ros_control_odom_remapper" pkg="topic_tools" type="relay"
     args="mobile_base_controller/odom odom" />
   <node name="ros_control_cmd_vel_remapper" pkg="topic_tools" type="relay"
-    args="cmd_vel mobile_base_controller/cmd_vel" />
+    args="cmd_vel/out mobile_base_controller/cmd_vel" />
 
 </launch>
