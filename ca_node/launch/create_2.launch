@@ -6,5 +6,6 @@
     <rosparam command="load" file="$(find ca_driver)/config/default.yaml"/>
     <param name="namespace"  value="$(arg ns)"/>
     <param name="tf_prefix"  value="$(arg ns)"/>
+    <remap from="$(arg ns)/cmd_vel" to="$(arg ns)/cmd_vel/out"/>
   </node>
 </launch>
