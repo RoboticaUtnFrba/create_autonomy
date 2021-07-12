@@ -6,7 +6,7 @@
 # http://wiki.ros.org/nav_core#BaseGlobalPlanner
 
 # Move base
-base_local_planner: "SBPLLatticePlanner"
+base_global_planner: "SBPLLatticePlanner"
 
 # Move base flex
 controllers:

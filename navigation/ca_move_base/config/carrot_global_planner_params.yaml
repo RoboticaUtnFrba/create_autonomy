@@ -1,5 +1,5 @@
 # Move base
-base_local_planner: "carrot_planner/CarrotPlanner"
+base_global_planner: "carrot_planner/CarrotPlanner"
 
 # Move base flex
 planners:

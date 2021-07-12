@@ -4,7 +4,7 @@
 # http://wiki.ros.org/global_planner
 
 # Move base
-base_local_planner: "global_planner/GlobalPlanner"
+base_global_planner: "global_planner/GlobalPlanner"
 
 # Move base flex
 planners:
