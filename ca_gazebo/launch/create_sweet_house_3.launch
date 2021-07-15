@@ -3,7 +3,7 @@
     <arg name="env" value="sweet_house_3"/>
 
       <arg name="pose1_x" value="0"/>
-      <arg name="pose1_y" value="0"/>
+      <arg name="pose1_y" value="0.14"/>
       <arg name="pose1_Y" value="0"/>
 
       <arg name="pose2_x" value="3"/>
