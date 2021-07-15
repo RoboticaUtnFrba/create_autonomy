@@ -52,7 +52,7 @@ RUN mkdir -p ${DEPS_WS}/src
 WORKDIR ${DEPS_WS}/src
 RUN apt-get install -y python-catkin-tools python3-vcstool
 COPY dependencies.repos ${DEPS_WS}/src/dependencies.repos
-RUN vcs import . < dependencies.repos
+RUN vcs import . < dependencies.repos --recursive
 WORKDIR ${DEPS_WS}
 RUN apt-get update
 USER ${USER}
