@@ -37,6 +37,14 @@
   <!-- Nodelet manager -->
   <node pkg="nodelet" type="nodelet" name="nodelet_manager" args="manager" if="$(arg use_nodelets)"/>
 
+  <!-- Safety controller -->
+  <include file="$(find ca_safety_controller)/launch/standalone.launch">
+    <arg name="ns" value="$(arg ns)"/>
+  </include>
+
+  <!-- Velocity multiplexer -->
+  <include file="$(find ca_vel_mux)/launch/mux.launch"/>
+
   <!-- Localization pose -->
   <param name="$(arg localization)/initial_pose_x" value="$(arg pose_x)"/>
   <param name="$(arg localization)/initial_pose_y" value="$(arg pose_y)"/>

@@ -1,15 +1,17 @@
 <launch>
-  <arg name="nodelet_manager_name" default="nodelet_manager"/>
+  <arg name="nodelet_manager_name" value="nodelet_manager"/>
+  <arg name="name" value="cmd_vel_mux"/>
 
-  <node pkg="nodelet" type="nodelet" name="yocs_cmd_vel_mux"
+
+  <node pkg="nodelet" type="nodelet" name="$(arg name)"
         args="load yocs_cmd_vel_mux/CmdVelMuxNodelet $(arg nodelet_manager_name)">
 
     <param name="yaml_cfg_file" value="$(find ca_vel_mux)/config/mux.yaml"/>
 
-    <remap from="yocs_cmd_vel_mux/cmd_vel/smooth" to="cmd_vel/smooth"/>
-    <remap from="yocs_cmd_vel_mux/cmd_vel/joy"    to="cmd_vel/joy"/>
-    <remap from="yocs_cmd_vel_mux/cmd_vel/keyop"  to="cmd_vel/keyop"/>
-    <remap from="yocs_cmd_vel_mux/cmd_vel/safe"   to="cmd_vel/safe"/>
-    <remap from="yocs_cmd_vel_mux/cmd_vel/out"    to="cmd_vel/out"/>
+    <remap from="$(arg name)/cmd_vel/smooth" to="cmd_vel/smooth"/>
+    <remap from="$(arg name)/cmd_vel/joy"    to="cmd_vel/joy"/>
+    <remap from="$(arg name)/cmd_vel/keyop"  to="cmd_vel/keyop"/>
+    <remap from="$(arg name)/cmd_vel/safe"   to="cmd_vel/safe"/>
+    <remap from="$(arg name)/cmd_vel/out"    to="cmd_vel/out"/>
   </node>
 </launch>

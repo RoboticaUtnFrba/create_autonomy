@@ -12,7 +12,15 @@
     <arg name="laser" value="$(arg laser)"/>
   </include>
 
+  <!-- Safety controller -->
+  <include file="$(find ca_safety_controller)/launch/standalone.launch">
+    <arg name="ns" value="$(arg ns)"/>
+  </include>
+
   <group ns="$(arg ns)">
+    <!-- Velocity multiplexer -->
+    <include file="$(find ca_vel_mux)/launch/mux.launch"/>
+
     <include file="$(find ca_slam)/launch/depthimage_to_laserscan.launch">
       <arg name="laser" value="$(arg laser)"/>
       <arg name="ns"    value="$(arg ns)"/>
